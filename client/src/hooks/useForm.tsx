@@ -12,7 +12,7 @@ const useForm = (initialState: IUserLoginData) => {
     }
 
     return {
-        values, handleChange
+        values, handleChange, setValues
     }
 
 }
