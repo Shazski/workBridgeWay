@@ -60,7 +60,7 @@ const Login: FC = () => {
                         <div className="flex justify-center mt-5">
                             <div className='w-64'>
                                 <Select
-                                    label="Select Version"
+                                    label="Select User Type"
                                     placeholder="Select a version"
                                     value={selectedVersion}
                                     onChange={handleSelectChange}

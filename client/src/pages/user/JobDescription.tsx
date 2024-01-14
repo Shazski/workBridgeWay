@@ -11,7 +11,7 @@ const JobDescription = () => {
             <div className="mt-24  text-center ">
                 <FindJobCard showCatTag={false} showApplied={false} />
             </div>
-            <div>
+            <div className="">
                 <JobDescriptionSection/>
             </div>
         </div>

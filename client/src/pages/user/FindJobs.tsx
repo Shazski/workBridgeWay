@@ -11,7 +11,7 @@ const FindJobs = () => {
             <div className="bg-blue-50">
             <FindJobTopSection/>
             </div>
-            <div className="ms-4 md:ms-20 xl:ms-64">
+            <div className="flex justify-center ">
                 <FindJobSideBar/>
             </div>
         </div>

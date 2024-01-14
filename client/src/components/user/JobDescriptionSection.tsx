@@ -3,7 +3,7 @@ const JobDescriptionSection = () => {
     return (
         <div>
 
-            <div className="flex ms-12 md:ms-56  mt-16">
+            <div className="flex ms-4 md:ms-0 justify-center mt-16">
                 <div className=" w-4/12">
                     <h2 className="text-2xl font-serif">Description</h2>
                     <h2 className="text-xs text-gray-500 mt-3">Stripe is looking for Social Media Marketing expert to help manage our online networks. You will be responsible for monitoring our social media channels, creating content, finding effective ways to engage the community and incentivize others to engage on our channels.</h2>
