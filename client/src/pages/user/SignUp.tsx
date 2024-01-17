@@ -1,8 +1,8 @@
-import { FC} from 'react'
+import { FC } from 'react'
 import SignUpNavbar from '../../components/user/SignUpNavbar'
 import { Link } from 'react-router-dom'
 import { Formik, Form } from "formik"
-import SignUpInputField from "../../components/user/SignUpInputField" 
+import SignUpInputField from "../../components/user/SignUpInputField"
 import { validationSchemaSignUp } from '../../validations/ValidationSchema'
 
 const SignUp: FC = () => {
@@ -12,9 +12,9 @@ const SignUp: FC = () => {
                 <SignUpNavbar />
             </div>
             <div className='w-11/12 md:w-6/12'>
-                    <div>
-                        <h1 className='text-end mt-5 font-semibold'>Have an account?<Link to='/login' className='text-green-500 font-bold ps-2'>Sign in!</Link></h1>
-                    </div>
+                <div>
+                    <h1 className='text-end mt-5 font-semibold'>Have an account?<Link to='/login' className='text-green-500 font-bold ps-2'>Sign in!</Link></h1>
+                </div>
                 <div className='flex flex-col items-center'>
                     <div className='text-center mt-12'>
                         <h1 className='text-3xl font-bold'>Get Started With WorkBridgeWay</h1>

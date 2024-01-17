@@ -7,17 +7,19 @@ import Home from './pages/user/Home'
 import FindJobs from './pages/user/FindJobs'
 import JobDescription from './pages/user/JobDescription'
 import CompanyRegister from './pages/company/CompanyRegister'
-import CompanySideBar from './components/company/CompanySideBar'
-import CompanyNavbar from './components/company/CompanyNavbar'
+// import CompanySideBar from './components/company/CompanySideBar'
+// import CompanyNavbar from './components/company/CompanyNavbar'
 import ComapnyDashboard from './pages/company/ComapnyDashboard'
 import JobApplicants from './pages/company/JobApplicants'
+import AdminSideBar from './components/admin/AdminSideBar'
 function App() {
   return (
     <div className='md:flex'>
       <Router>
-        <CompanySideBar />
+        {/* <CompanySideBar /> */}
+        <AdminSideBar />
         <div className='flex-1'>
-          <CompanyNavbar />
+          {/* <CompanyNavbar /> */}
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<Login />} />
