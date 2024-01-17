@@ -1,6 +1,4 @@
-import dotenv from "dotenv";
-import { JWT_SECRET, PORT } from "../../config/index";
-dotenv.config();
+import { ENV, PORT, RABBITMQ_URL } from "../../config/index";
 
 export class EnvironmentChecker {
   constructor() {}
@@ -8,7 +6,8 @@ export class EnvironmentChecker {
   async check() {
     try {
       this.checkEnvVariable(`${PORT}`);
-      this.checkEnvVariable(`${JWT_SECRET}`);
+      this.checkEnvVariable(`${ENV}`);
+      this.checkEnvVariable(`${RABBITMQ_URL}`);
     } catch (error) {}
   }
 
