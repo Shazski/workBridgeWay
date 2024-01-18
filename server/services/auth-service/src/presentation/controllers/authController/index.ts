@@ -1,6 +1,7 @@
+import { DependenciesData } from "../../../application/interfaces/IDependencies";
 import signUpUser from "./signUpUser";
 
-export = (dependencies: any) => {
+export = (dependencies: DependenciesData) => {
     return {
         signUpUser:signUpUser(dependencies)
     }

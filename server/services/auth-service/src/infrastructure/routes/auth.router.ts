@@ -1,6 +1,7 @@
 import express from "express";
 import { authController } from "../../presentation/controllers";
-export = (dependencies: any) => {
+import { DependenciesData } from "../../application/interfaces/IDependencies";
+export = (dependencies: DependenciesData) => {
   const router = express.Router();
   const { signUpUser } = authController(dependencies);
   router.post("/sign-up", signUpUser);

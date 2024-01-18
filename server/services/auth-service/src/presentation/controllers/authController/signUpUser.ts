@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorResponse } from "../../../utils";
 import { SignUpValidator } from "../../../utils";
-export = (dependencies: any): any => {
+import { DependenciesData } from "../../../application/interfaces/IDependencies";
+export = (dependencies: DependenciesData): any => {
   const {
     user_useCase: { findUserByEmail_useCase, signUpUser_useCase },
   } = dependencies;
-
   const signUpUser = async (
     req: Request,
     res: Response,
@@ -38,7 +38,11 @@ export = (dependencies: any): any => {
       const userData = await signUpUser_useCase(dependencies).execute(
         userCredentials
       );
-      if(!userData) return res.json({success:false, message:"Phone number already existing"})
+      if (!userData)
+        return res.json({
+          success: false,
+          message: "Phone number already existing",
+        });
       console.log(userData, "my user data");
       res.status(201).json({ success: true, userData });
     } catch (error) {
