@@ -2,13 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import { ErrorResponse } from "../../../utils";
 import { SignUpValidator } from "../../../utils";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
+import { generateToken } from "../../../utils/externalServices/jwt/generateToken";
 export = (dependencies: DependenciesData): any => {
   const {
     user_useCase: {
       findUserByEmail_useCase,
       signUpUser_useCase,
       sendOtp_useCase,
-      verifyOtp_useCase
+      verifyOtp_useCase,
     },
   } = dependencies;
   const signUpUser = async (
@@ -48,21 +49,27 @@ export = (dependencies: DependenciesData): any => {
         return res.json({ success: true, message: "Otp sent successfully" });
       } catch (error) {
         console.log(error, "<< Something Went Wrong in OTP section >>");
-       return res.json({ success: false, message: "Something went wrong in otp" });
+        return res.json({
+          success: false,
+          message: "Something went wrong in otp",
+        });
       }
     }
 
     //verify otp if otp is present
     try {
-      const isOtpVerified = await verifyOtp_useCase(dependencies).execute(userCredentials.email, userCredentials.otp)
-      if(!isOtpVerified) return next(
-        ErrorResponse.unauthorized(
-          "Otp is wrong try another"
-        )
-      )
+      const isOtpVerified = await verifyOtp_useCase(dependencies).execute(
+        userCredentials.email,
+        userCredentials.otp
+      );
+      if (!isOtpVerified)
+        return next(ErrorResponse.unauthorized("Otp is Invalid try another"));
     } catch (error) {
-      console.log(error, "<< Something went wrong in verifyOtp >>")
-     return res.json({success:false, message:"Something went wrong in verifyotp"})
+      console.log(error, "<< Something went wrong in verifyOtp >>");
+      return res.json({
+        success: false,
+        message: "Otp invalid",
+      });
     }
 
     //create a new user if otp is present
@@ -76,10 +83,12 @@ export = (dependencies: DependenciesData): any => {
             success: false,
             message: "Phone number already existing",
           });
-        console.log(userData, "my user data");
+
+        const token = generateToken(userData._id);
+        res.cookie("user_jwt", token, { maxAge: 30 * 24 * 60 * 60 * 1000 });
         res.status(201).json({ success: true, userData });
       } catch (error) {
-        console.log(error, "eror");
+        console.log(error, "<<Something went wrong in user signup>>");
       }
     }
   };
