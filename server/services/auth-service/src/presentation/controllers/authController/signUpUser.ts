@@ -4,7 +4,12 @@ import { SignUpValidator } from "../../../utils";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
 export = (dependencies: DependenciesData): any => {
   const {
-    user_useCase: { findUserByEmail_useCase, signUpUser_useCase },
+    user_useCase: {
+      findUserByEmail_useCase,
+      signUpUser_useCase,
+      sendOtp_useCase,
+      verifyOtp_useCase
+    },
   } = dependencies;
   const signUpUser = async (
     req: Request,
@@ -19,34 +24,63 @@ export = (dependencies: DependenciesData): any => {
     //To check whether the user email is taken or not
     try {
       const userExist = await findUserByEmail_useCase(dependencies).execute(
-        userCredentials?.email
+        userCredentials
       );
 
       if (userExist) {
         return next(
-          ErrorResponse.forbidden("Email already resgitered, try another email")
+          ErrorResponse.forbidden(
+            "Email or Phone already resgitered, try another email"
+          )
         );
       }
     } catch (error) {
       console.log(error, "<< Something went Wrong>>");
       next(error);
     }
-    //Check whether the otp is correct or wrong
+    //if user not present sent otp to user using nodemailer
+    if (!userCredentials.otp) {
+      try {
+        const otp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
 
-    //create a new user
+        await sendOtp_useCase(dependencies).execute(userCredentials.email, otp);
+
+        return res.json({ success: true, message: "Otp sent successfully" });
+      } catch (error) {
+        console.log(error, "<< Something Went Wrong in OTP section >>");
+       return res.json({ success: false, message: "Something went wrong in otp" });
+      }
+    }
+
+    //verify otp if otp is present
     try {
-      const userData = await signUpUser_useCase(dependencies).execute(
-        userCredentials
-      );
-      if (!userData)
-        return res.json({
-          success: false,
-          message: "Phone number already existing",
-        });
-      console.log(userData, "my user data");
-      res.status(201).json({ success: true, userData });
+      const isOtpVerified = await verifyOtp_useCase(dependencies).execute(userCredentials.email, userCredentials.otp)
+      if(!isOtpVerified) return next(
+        ErrorResponse.unauthorized(
+          "Otp is wrong try another"
+        )
+      )
     } catch (error) {
-      console.log(error, "eror");
+      console.log(error, "<< Something went wrong in verifyOtp >>")
+     return res.json({success:false, message:"Something went wrong in verifyotp"})
+    }
+
+    //create a new user if otp is present
+    if (userCredentials.otp) {
+      try {
+        const userData = await signUpUser_useCase(dependencies).execute(
+          userCredentials
+        );
+        if (!userData)
+          return res.json({
+            success: false,
+            message: "Phone number already existing",
+          });
+        console.log(userData, "my user data");
+        res.status(201).json({ success: true, userData });
+      } catch (error) {
+        console.log(error, "eror");
+      }
     }
   };
   return signUpUser;

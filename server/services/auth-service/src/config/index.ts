@@ -1,3 +1,3 @@
-import { PORT, RABBITMQ_URL, ENV } from "./envConfig/env";
+import { PORT, RABBITMQ_URL, ENV, MAILER_EMAIL, MAILER_PASSWORD, MONGO_URL } from "./envConfig/env";
 
-export { PORT, ENV, RABBITMQ_URL };
+export { PORT, ENV, RABBITMQ_URL, MAILER_EMAIL, MAILER_PASSWORD, MONGO_URL };

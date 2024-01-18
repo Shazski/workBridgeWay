@@ -2,10 +2,10 @@ import { IUser } from "../../../../../domain/entities/user.entity";
 import UserSchema, { IUserData } from "../../schema/userSchema";
 
 export const findUserByEmail_repo = async (
-  email: string
+  userCredentials: IUser
 ): Promise<boolean | IUserData> => {
   try {
-    const userExists = await UserSchema.findOne({ email: email });
+    const userExists = await UserSchema.findOne({$or:[{email:userCredentials.email},{phone:userCredentials.phone}]});
     if (!userExists) return false;
     return userExists as IUserData;
   } catch (error) {

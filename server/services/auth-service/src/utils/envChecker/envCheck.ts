@@ -1,4 +1,4 @@
-import { ENV, PORT, RABBITMQ_URL } from "../../config/index";
+import { ENV, PORT, RABBITMQ_URL, MAILER_EMAIL, MAILER_PASSWORD, MONGO_URL } from "../../config/index";
 
 export class EnvironmentChecker {
   constructor() {}
@@ -8,6 +8,9 @@ export class EnvironmentChecker {
       this.checkEnvVariable(`${PORT}`);
       this.checkEnvVariable(`${ENV}`);
       this.checkEnvVariable(`${RABBITMQ_URL}`);
+      this.checkEnvVariable(`${MAILER_EMAIL}`);
+      this.checkEnvVariable(`${MAILER_PASSWORD}`);
+      this.checkEnvVariable(`${MONGO_URL}`);
     } catch (error) {}
   }
 

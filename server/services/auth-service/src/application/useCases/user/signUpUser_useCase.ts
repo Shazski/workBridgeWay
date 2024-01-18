@@ -1,6 +1,7 @@
 import { IUser } from "../../../domain/entities/user.entity";
 import rabbitmqConfig from "../../../infrastructure/messageBroker/rabbitmq/rabbitmq.config";
-export const signUpUser_useCase = (dependencies: any) => {
+import { DependenciesData } from "../../interfaces/IDependencies";
+export const signUpUser_useCase = (dependencies: DependenciesData) => {
   const { RabbitMQClient } = dependencies;
 
   if (!RabbitMQClient) throw new Error("Rabbitmq dependency is required");
@@ -13,7 +14,6 @@ export const signUpUser_useCase = (dependencies: any) => {
       "userSignUp"
     );
   };
-  console.log(execute,"executefdsfasdfasdasdasda")
   return {
     execute,
   };
