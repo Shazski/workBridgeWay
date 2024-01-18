@@ -2,9 +2,16 @@ const FRONTEND_BASE_URL = "http://localhost/5173";
 
 const corsOptions: object = {
   origin: `http://${FRONTEND_BASE_URL}`,
-  methods:['GET','PUT','PATCH', 'POST', 'DELETE'],
+  methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
   credentials: true,
   optionSuccessStatus: 200,
 };
 
-export { corsOptions, FRONTEND_BASE_URL };
+const cookieConfig = {
+  secure: true,
+  httpOnly: true,
+  maxAge: 1000 * 60 * 60 * 24,
+  sameSite: false,
+};
+
+export { corsOptions, FRONTEND_BASE_URL, cookieConfig };

@@ -3,6 +3,7 @@ import { ErrorResponse } from "../../../utils";
 import { SignUpValidator } from "../../../utils";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
 import { generateToken } from "../../../utils/externalServices/jwt/generateToken";
+import { cookieConfig } from "../../../utils/constants/constant";
 export = (dependencies: DependenciesData): any => {
   const {
     user_useCase: {
@@ -84,9 +85,9 @@ export = (dependencies: DependenciesData): any => {
             message: "Phone number already existing",
           });
 
-        const token = generateToken(userData._id);
-        res.cookie("user_jwt", token, { maxAge: 30 * 24 * 60 * 60 * 1000 });
-        res.status(201).json({ success: true, userData });
+        const token =  generateToken(userData._id);
+        res.cookie("user_jwt", token, cookieConfig);
+        res.status(201).json({ success: true, userData, token });
       } catch (error) {
         console.log(error, "<<Something went wrong in user signup>>");
       }
