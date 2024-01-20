@@ -13,7 +13,7 @@ const CompanyDashboardGreeting = () => {
     }
     return (
         <div>
-            <div className="flex justify-around mt-10">
+            <div className="xl:flex ms-12 lg:ms-0 justify-around mt-10">
                 <div>
                     <h1 className="font-serif text-xl font-bold">Good{greeting > 12 ? "Afternoon" : "Morning"}, Sharoon</h1>
                     <h1 className="text-gray-500">Here is your job listing statics report from july 19 - july 25</h1>
@@ -29,8 +29,8 @@ const CompanyDashboardGreeting = () => {
                     </div>
                 </div>
             </div>
-            <div className="xl:flex justify-around">
-                <DataBox color="bg-green-500" data="76" message="New Candidates to review" />
+            <div className="2xl:flex ms-12  lg:ms-0 justify-around">
+                <DataBox color="bg-lightgreen" data="76" message="New Candidates to review" />
                 <DataBox color="bg-teal-400" data="3" message="Schedule for today" />
                 <DataBox color="bg-blue-400" data="24" message="Messages received" />
             </div>

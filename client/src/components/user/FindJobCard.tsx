@@ -20,7 +20,7 @@ const FindJobCard = ({ showCatTag = true, showApplied = true }: { showCatTag?: b
                 </div>
             </div>
             <div className="lg:ms-24 ms-2">
-                <button className="bg-green-500 text-white font-semibold px-10 py-2 md:mt-6 mt-4 me-4 rounded-sm">Apply</button>
+                <button className="bg-lightgreen text-white font-semibold px-10 py-2 md:mt-6 mt-4 me-4 rounded-sm">Apply</button>
                 {
                     showApplied ? <h1 className="text-xs mt-2 text-gray-500">5 applied of 10 capacity</h1> : <></>
                 }

@@ -13,7 +13,7 @@ const SignUp: FC = () => {
             </div>
             <div className='w-11/12 md:w-6/12'>
                 <div>
-                    <h1 className='text-end mt-5 font-semibold'>Have an account?<Link to='/login' className='text-green-500 font-bold ps-2'>Sign in!</Link></h1>
+                    <h1 className='text-end mt-5 font-semibold'>Have an account?<Link to='/login' className='text-lightgreen font-bold ps-2'>Sign in!</Link></h1>
                 </div>
                 <div className='flex flex-col items-center'>
                     <div className='text-center mt-12'>
@@ -21,7 +21,7 @@ const SignUp: FC = () => {
                         <h1 className='text-xs text-gray-600'>Getting started is Easy</h1>
                     </div>
                     <div className='w-28 mt-3 flex justify-center'>
-                        <div className='flex border-green-500 border hover:cursor-pointer px-2 py-1 rounded-sm'>
+                        <div className='flex border-lightgreen border hover:cursor-pointer px-2 py-1 rounded-sm'>
                             <img className='w-8' src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="" />
                             <h1 className='pt-1'>Google</h1>
                         </div>
@@ -44,7 +44,7 @@ const SignUp: FC = () => {
                         <SignUpInputField />
                         <div className='flex flex-col items-center'>
                             <div>
-                                <button className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-green-500 hover:scale-95 hover:font-semibold bg-green-500'>
+                                <button className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-lightgreen hover:scale-95 hover:font-semibold bg-lightgreen'>
                                     Create Account
                                 </button>
                             </div>

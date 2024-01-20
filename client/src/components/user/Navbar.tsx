@@ -10,8 +10,8 @@ const Navbar: FC = () => {
                 <NavLink to="/companies" className='font-sans hidden sm:block hover:cursor-pointer'>Browse Companies</NavLink>
             </div>
             <div className='flex gap-3 items-center md:ms-auto ms-32  md:me-64 '>
-                <Link to='/login' className=' md:border-e-2 border-gray-200 pe-10 py-2 text-green-500 font-bold'>Login</Link>
-                <Link to='/signup' className=' hidden md:flex rounded-sm text-white bg-green-500 px-3 py-2'>Sign Up</Link>
+                <Link to='/login' className=' md:border-e-2 border-gray-200 pe-10 py-2 text-lightgreen font-bold'>Login</Link>
+                <Link to='/signup' className=' hidden md:flex rounded-sm text-white bg-lightgreen px-3 py-2'>Sign Up</Link>
             </div>
         </div>
     )

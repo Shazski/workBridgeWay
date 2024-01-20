@@ -27,7 +27,7 @@ const Footer = () => {
                     <h1 className="pt-2">The latest job news, articles, sent to your inbox weekly</h1>
                     <div className="mt-5 xl:flex gap-3">
                         <input type="text" placeholder="Email Address" className="py-2 md:h-10 md:ps-2 rounded-md" />
-                        <button className="py-2 bg-green-500 text-white px-4 mt-3 md:mt-0 rounded-md">Subscribe</button>
+                        <button className="py-2 bg-lightgreen text-white px-4 mt-3 md:mt-0 rounded-md">Subscribe</button>
                     </div>
                 </div>
             </div>

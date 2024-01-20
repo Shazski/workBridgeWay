@@ -8,7 +8,11 @@ export default withMT( {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        'lightgreen':'#20DC49'
+      }
+    },
   },
   plugins: [],
 })

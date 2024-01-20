@@ -28,7 +28,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -36,7 +36,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -44,7 +44,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -52,7 +52,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -60,7 +60,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -68,7 +68,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -76,7 +76,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -84,7 +84,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -92,7 +92,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                     <tr
                                         className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
@@ -100,7 +100,7 @@ const JobApplicantsTable = () => {
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="border rounded-xl border-yellow-500 text-yellow-800 px-2 py-1 mt-1 md:w-20">Interview</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">13 july, 2023</h1></td>
                                         <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">Designer</h1></td>
-                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-green-500 border-green-500 border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
+                                        <td className="whitespace-nowrap px-6 py-4"><h1 className="text-lightgreen border-lightgreen border bg-gray-300 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</h1></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -108,8 +108,8 @@ const JobApplicantsTable = () => {
                                 <h1 className="text-gray-500 text-sm">View 10 Applicants Per Page</h1>
                                 <div className="flex me-44 gap-3">
                                     <MdOutlineKeyboardArrowLeft className="text-2xl mt-1" />
-                                    <NavLink to="/company-applicants/1" className={({ isActive }) => `rounded-md px-4 py-1  ${isActive ? "bg-green-500 text-white font-bold" : ""}`}>1</NavLink>
-                                    <NavLink to="/company-applicants/2" className={({ isActive }) => `rounded-md px-4 py-1  ${isActive ? "bg-green-500 text-white font-bold" : ""}`}>2</NavLink>
+                                    <NavLink to="/company-applicants/1" className={({ isActive }) => `rounded-md px-4 py-1  ${isActive ? "bg-lightgreen text-white font-bold" : ""}`}>1</NavLink>
+                                    <NavLink to="/company-applicants/2" className={({ isActive }) => `rounded-md px-4 py-1  ${isActive ? "bg-lightgreen text-white font-bold" : ""}`}>2</NavLink>
                                     <MdOutlineKeyboardArrowRight className="text-2xl mt-1" />
                                 </div>
                             </div>

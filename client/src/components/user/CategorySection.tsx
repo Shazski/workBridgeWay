@@ -14,7 +14,7 @@ const CategorySection = () => {
                 <h1 className="font-serif text-3xl">Explore by <span className="text-blue-500">category</span></h1>
             </div>
             <div className="grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 ">
-                <div className="border w-64 h-44 mt-10  hover:bg-green-500 text-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10  hover:bg-lightgreen text-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
                     <MdDesignServices className="text-4xl m-5" />
                     <h1 className="font-serif text-lg ps-5">Design</h1>
                     <div className="flex">
@@ -22,7 +22,7 @@ const CategorySection = () => {
                         <FaArrowRight className="ms-5 mt-5" />
                     </div>
                 </div>
-                <div className="border w-64 h-44 mt-10   hover:bg-green-500 text-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10   hover:bg-lightgreen text-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
                     <BsGraphUpArrow className="text-4xl m-5 " />
 
                     <h1 className="font-serif text-lg ps-5">Sales</h1>
@@ -31,7 +31,7 @@ const CategorySection = () => {
                         <FaArrowRight className="ms-5 mt-5" />
                     </div>
                 </div>
-                <div className="border w-64 h-44 mt-10 hover:bg-green-500 text-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10 hover:bg-lightgreen text-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
                     <AiOutlineSound className="text-4xl m-5 " />
                     <h1 className="font-serif text-lg ps-5">Marketing</h1>
                     <div className="flex">
@@ -39,7 +39,7 @@ const CategorySection = () => {
                         <FaArrowRight className="ms-5 mt-5" />
                     </div>
                 </div>
-                <div className="border w-64 h-44 mt-10 text-green-500 hover:bg-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10 text-green-500 hover:bg-lightgreen hover:scale-105 hover:cursor-pointer hover:text-white">
                     <FaMoneyBillTrendUp className="text-4xl m-5 " />
                     <h1 className="font-serif text-lg ps-5">Finance</h1>
                     <div className="flex">
@@ -47,7 +47,7 @@ const CategorySection = () => {
                         <FaArrowRight className="ms-5 mt-5" />
                     </div>
                 </div>
-                <div className="border w-64 h-44 mt-10  text-green-500 hover:bg-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10  text-green-500 hover:bg-lightgreen hover:scale-105 hover:cursor-pointer hover:text-white">
                     <GrCloudComputer className="text-4xl m-5 " />
                     <h1 className="font-serif text-lg ps-5">Technology</h1>
                     <div className="flex">
@@ -55,7 +55,7 @@ const CategorySection = () => {
                         <FaArrowRight className="ms-5 mt-5" />
                     </div>
                 </div>
-                <div className="border w-64 h-44 mt-10 text-green-500  hover:bg-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10 text-green-500  hover:bg-lightgreen hover:scale-105 hover:cursor-pointer hover:text-white">
                     <MdOutlineEngineering className="text-4xl m-5 " />
                     <h1 className="font-serif text-lg ps-5">Engineering</h1>
                     <div className="flex">
@@ -63,7 +63,7 @@ const CategorySection = () => {
                         <FaArrowRight className="ms-5 mt-5" />
                     </div>
                 </div>
-                <div className="border w-64 h-44 mt-10 text-green-500  hover:bg-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10 text-green-500  hover:bg-lightgreen hover:scale-105 hover:cursor-pointer hover:text-white">
                     <FaBusinessTime className="text-4xl m-5 " />
                     <h1 className="font-serif text-lg ps-5">Business</h1>
                     <div className="flex">
@@ -71,7 +71,7 @@ const CategorySection = () => {
                         <FaArrowRight className="ms-5 mt-5" />
                     </div>
                 </div>
-                <div className="border w-64 h-44 mt-10 text-green-500 hover:bg-green-500 hover:scale-105 hover:cursor-pointer hover:text-white">
+                <div className="border w-64 h-44 mt-10 text-green-500 hover:bg-lightgreen hover:scale-105 hover:cursor-pointer hover:text-white">
                     <IoPeople className="text-4xl m-5 " />
                     <h1 className="font-serif text-lg ps-5">Human Resource</h1>
                     <div className="flex">

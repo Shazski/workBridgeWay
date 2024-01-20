@@ -36,7 +36,7 @@ const Login: FC = () => {
                     <h3 className='mt-2 text-sm font-semibold'>Login into your account</h3>
                 </div>
                 <div className='flex justify-center mt-7'>
-                    <div className='flex border-green-500 border hover:cursor-pointer px-2 py-1 rounded-sm'>
+                    <div className='flex border-lightgreen border hover:cursor-pointer px-2 py-1 rounded-sm'>
                         <img className='w-8' src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="" />
                         <h1 className='pt-1'>Google</h1>
                     </div>
@@ -75,7 +75,7 @@ const Login: FC = () => {
                             <h2 className='text-red-600 hover:cursor-pointer pt-2 text-center'>Reset password</h2>
                         </div>
                         <div>
-                            <button className='border px-24 py-2.5 rounded-md border-gray-400 mt-5 text-gray-400 hover:text-green-500 hover:border-green-500 hover:scale-105 hover:font-semibold'>
+                            <button className='border px-24 py-2.5 rounded-md border-gray-400 mt-5 text-gray-400 hover:text-lightgreen hover:border-lightgreen hover:scale-105 hover:font-semibold'>
                                 Login
                             </button>
                         </div>

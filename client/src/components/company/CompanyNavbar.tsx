@@ -12,7 +12,7 @@ const CompanyNavbar = () => {
                 </div>
             </div>
             <div>
-                <button className="bg-green-500 rounded-sm px-4 py-2 mt-5 me-12 text-white font-bold">+ Post a job</button>
+                <button className="bg-lightgreen rounded-sm px-4 py-2 mt-5 me-12 text-white font-bold">+ Post a job</button>
             </div>
         </div>
     )
