@@ -7,7 +7,10 @@ import { validationSchemaSignUp } from '../../validations/ValidationSchema'
 import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
 import { IUserSelector } from '../../interface/IuserSlice'
-import { userSignUp } from '../../redux/actions/user/userActions'
+import { googleAuth, userSignUp } from '../../redux/actions/user/userActions'
+import { ToastContainer, toast } from 'react-toastify'
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth"
+import { app } from '../../firebase/firebaseConfig'
 
 
 const SignUp: FC = () => {
@@ -21,6 +24,23 @@ const SignUp: FC = () => {
             navigate('/otp')
         }
     }, [user, navigate]);
+
+    const handleOAuth = async () => {
+        try {
+            console.log("hello auth")
+            const provider = new GoogleAuthProvider();
+            const auth = getAuth(app)
+            const result = await signInWithPopup(auth, provider)
+            const userData = {
+                userName: result?.user?.displayName,
+                email: result?.user?.email,
+                profilePic: result?.user?.photoURL
+            }
+            dispatch(googleAuth(userData))
+        } catch (error) {
+            console.error("Error in Oauth : ", error)
+        }
+    }
 
     return (
         <div className='flex '>
@@ -37,7 +57,7 @@ const SignUp: FC = () => {
                         <h1 className='text-xs text-gray-600'>Getting started is Easy</h1>
                     </div>
                     <div className='w-28 mt-3 flex justify-center'>
-                        <div className='flex border-lightgreen border hover:cursor-pointer px-2 py-1 rounded-sm'>
+                        <div onClick={handleOAuth} className='flex border-lightgreen border hover:cursor-pointer px-2 py-1 rounded-sm'>
                             <img className='w-8' src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="" />
                             <h1 className='pt-1'>Google</h1>
                         </div>
@@ -52,14 +72,15 @@ const SignUp: FC = () => {
                     error && <h1 className='text-red-600 font-semibold text-center pt-5'>{error}</h1>
                 }
                 <Formik
-                    initialValues={{ userName: "", email: "", password: "", phone: 0, confirmPassword: "", }}
+                    initialValues={{ userName: "", email: "", password: "", phone: "", confirmPassword: "" }}
                     validationSchema={validationSchemaSignUp}
                     onSubmit={async (values, { resetForm }) => {
                         console.log(values, "my values after submitting the form")
                         const { confirmPassword, ...restValues } = values
                         console.log(confirmPassword)
                         const userData = await dispatch(userSignUp(restValues))
-                        if(userData.payload.success) {
+                        if (userData.payload.success) {
+                            toast.success("otp sent successfully")
                             navigate('/otp')
                         }
                         resetForm()
@@ -85,6 +106,7 @@ const SignUp: FC = () => {
                     </Form>
                 </Formik>
             </div>
+            <ToastContainer />
         </div>
     )
 }

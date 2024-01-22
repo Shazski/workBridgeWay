@@ -13,3 +13,21 @@ export const userSignUp = createAsyncThunk('user/userSignUp', async (userCredent
         return handleError(axiosError, rejectWithValue);
     }
 })
+export const googleAuth = createAsyncThunk('user/googleAuth', async (userCredentials:IUserLoginData, { rejectWithValue }) => {
+    try {
+        const { data } = await axios.post(`${AUTH_BASE_URL}/google`, userCredentials, config)
+        return data
+    } catch (error) {
+        const axiosError = error as AxiosError<MyApiError>;
+        return handleError(axiosError, rejectWithValue);
+    }
+})
+export const logoutUser = createAsyncThunk('user/logoutUser', async (_, { rejectWithValue }) => {
+    try {
+        const { data } = await axios.get(`${AUTH_BASE_URL}/logout`, config)
+        return data
+    } catch (error) {
+        const axiosError = error as AxiosError<MyApiError>;
+        return handleError(axiosError, rejectWithValue);
+    }
+})

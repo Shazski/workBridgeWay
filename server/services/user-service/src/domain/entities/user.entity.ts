@@ -8,6 +8,7 @@ export interface IUser extends Document {
     role: string;
     phone: number | null;
     profilePic?: string | null;
+    status?: boolean;
     skills?: string[] | null;
     socialLinks?: {
       link?: string | null;

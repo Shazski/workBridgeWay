@@ -40,7 +40,7 @@ function App() {
           </div>
         </Router>
       </div>
-      {(user.role === "user") && <Footer />}
+      {(user?.role === "user") && <Footer />}
     </div>
   )
 }
