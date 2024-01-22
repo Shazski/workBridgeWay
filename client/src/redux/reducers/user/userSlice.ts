@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 import { persistReducer } from "redux-persist";
 import { persistConfig } from "../../../config/constants";
-import { logoutUser, userSignUp } from "../../actions/user/userActions";
+import { googleAuth, logoutUser, userSignUp } from "../../actions/user/userActions";
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -24,6 +24,19 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(userSignUp.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(googleAuth.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(googleAuth.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(googleAuth.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

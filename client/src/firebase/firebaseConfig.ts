@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 
-console.log(import.meta.env.FIRE_BASE_API_KEY)
 const firebaseConfig = {
   apiKey: `AIzaSyCg5SEoAYIt7hpRxFmSxYW5z2mITvLzG9s`,
   authDomain: "workbridgeway-d9742.firebaseapp.com",

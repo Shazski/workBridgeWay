@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorResponse } from "../../../utils";
-import { SignUpValidator } from "../../../utils";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
-import { generateToken } from "../../../utils/externalServices/jwt/generateToken";
+import { generateToken } from "../../../utils";
 import { cookieConfig } from "../../../utils/constants/constant";
 export = (dependencies: DependenciesData): any => {
   const {

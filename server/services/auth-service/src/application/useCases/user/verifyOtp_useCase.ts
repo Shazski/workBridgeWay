@@ -6,7 +6,6 @@ export const verifyOtp_useCase = (dependencies: DependenciesData) => {
   } = dependencies;
   try {
     const execute = async (email: string, otp: number) => {
-      console.log(email, otp,"otp verification" )
       return await verifyOtp(email, otp);
     };
     return {

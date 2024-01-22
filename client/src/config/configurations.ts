@@ -9,6 +9,7 @@ export const config = {
     "Content-Type": "application/json",
   },
   withCredentials: true,
+  credentials: "include",
 };
 
 export const handleError = (

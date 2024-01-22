@@ -17,7 +17,6 @@ export default class MessageHandler {
                 break;
             case 'userSignUp':
                 response = await userRepo.SignUpUser_repo(data)
-                console.log(response,"my last;y response")
                 break;
             default:
                 response = 'Request-key notfound'

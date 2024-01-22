@@ -13,6 +13,7 @@ export default class Consumer {
         (message: ConsumeMessage | null) => {
           if (message) {
             console.log(
+              "message and correlation id",
               JSON.parse(message.content.toString()),
               message.properties.correlationId.toString()
             );
@@ -34,7 +35,12 @@ export default class Consumer {
           if (!correlationId || !replyTo) {
             console.log("Some properties are missing..");
           } else {
-            MessageHandler.handle(operation, JSON.parse(message.content.toString()),correlationId, replyTo)
+            MessageHandler.handle(
+              operation,
+              JSON.parse(message.content.toString()),
+              correlationId,
+              replyTo
+            );
           }
         },
         {

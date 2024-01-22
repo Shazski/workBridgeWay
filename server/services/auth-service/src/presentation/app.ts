@@ -18,7 +18,7 @@ app.use(cookieParser())
 app.use("/api/v1", routes(dependencies));
 
 app.use((req: Request, res: Response) => {
-  res.status(404).json({ success: false, status: 404, message: "Not found" });
+  res.status(404).json({ success: false, status: 404, message: "Api Not found" });
 });
 
 app.use(errorHandler);
