@@ -1,5 +1,5 @@
 export interface UserState {
-    user: null | UserData;
+    user: UserData;
     loading: boolean;
     error: null | string;
   }
@@ -10,3 +10,9 @@ export interface UserState {
     email: string;
     role:string;
   }
+
+export interface IUserSelector {
+  user:UserState,
+  loading: boolean,
+  error: null | string
+}

@@ -16,7 +16,7 @@ const UsersSchema: Schema = new Schema(
       },
     ],
     dob: { type: String },
-    name: { type: String, required: true },
+    userName: { type: String, required: true },
     chatStatus: { type: String, enum: ["online", "offline"] },
     jobStatus: { type: String },
     about: { type: String },

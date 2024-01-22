@@ -1,7 +1,9 @@
 import { FC } from 'react'
 import LOGO from "../../assets/images/Logo.png"
 import { Link, NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 const Navbar: FC = () => {
+    const { user } = useSelector((state: any) => state.user)
     return (
         <div className='flex fixed top-0 w-full z-50 bg-white shadow-md'>
             <div className='flex items-center gap-3'>
@@ -10,8 +12,21 @@ const Navbar: FC = () => {
                 <NavLink to="/companies" className='font-sans hidden sm:block hover:cursor-pointer'>Browse Companies</NavLink>
             </div>
             <div className='flex gap-3 items-center md:ms-auto ms-32  md:me-64 '>
-                <Link to='/login' className=' md:border-e-2 border-gray-200 pe-10 py-2 text-lightgreen font-bold'>Login</Link>
-                <Link to='/signup' className=' hidden md:flex rounded-sm text-white bg-lightgreen px-3 py-2'>Sign Up</Link>
+                {
+                    !user ? (
+                        <div>
+
+                            <Link to='/login' className=' md:border-e-2 border-gray-200 pe-10 py-2 text-lightgreen font-bold'>Login</Link>
+                            <Link to='/signup' className=' hidden md:flex rounded-sm text-white bg-lightgreen px-3 py-2'>Sign Up</Link>
+                        </div>
+                    )
+                        : (
+                            <div className='flex gap-3'>
+                                <h1 className='font-medium mt-3'>Welcome {user.userName}</h1>
+                                <h1 className='bg-lightgreen px-4 py-3 cursor-pointer text-white font-semibold'>DashBoad</h1>
+                            </div>
+                        )
+                }
             </div>
         </div>
     )

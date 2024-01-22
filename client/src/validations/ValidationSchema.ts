@@ -2,7 +2,6 @@ import * as Yup from "yup";
 
 export const validationSchemaSignUp = Yup.object().shape({
   userName: Yup.string().required("User name is required"),
-  companyLogo: Yup.mixed().required("Logo is required"),
   phone: Yup.number()
     .required("Phone number is required")
     .min(1000000000, "Must include 10 digits")
@@ -24,6 +23,7 @@ export const validationSchemaSignUp = Yup.object().shape({
 
 export const validationSchemaCompanyRegister = Yup.object().shape({
   name: Yup.string().required("Company name is required"),
+  companyLogo: Yup.mixed().required("Logo is required"),
   location: Yup.string().required("Company location is required"),
   linkedIn: Yup.string().required("Company linkedIn link is required"),
   email: Yup.string()

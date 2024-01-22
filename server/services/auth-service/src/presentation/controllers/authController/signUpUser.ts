@@ -19,26 +19,26 @@ export = (dependencies: DependenciesData): any => {
     next: NextFunction
   ) => {
     const userCredentials = req.body;
-    const { error, value: data } = SignUpValidator.validator.validate(
-      userCredentials,
-      { abortEarly: true }
-    );
-    //To check whether the user email is taken or not
-    try {
-      const userExist = await findUserByEmail_useCase(dependencies).execute(
-        userCredentials
-      );
 
-      if (userExist) {
-        return next(
-          ErrorResponse.forbidden(
-            "Email or Phone already resgitered, try another email"
-          )
+    //To check whether the user email is taken or not
+    if (!userCredentials.otp) {
+
+      try {
+        const userExist = await findUserByEmail_useCase(dependencies).execute(
+          userCredentials
         );
+
+        if (userExist) {
+          return next(
+            ErrorResponse.forbidden(
+              "Email or Phone already resgitered, try another email"
+            )
+          );
+        }
+      } catch (error) {
+        console.log(error, "<< Something went Wrong>>");
+        next(error);
       }
-    } catch (error) {
-      console.log(error, "<< Something went Wrong>>");
-      next(error);
     }
     //if user not present sent otp to user using nodemailer
     if (!userCredentials.otp) {
@@ -46,8 +46,12 @@ export = (dependencies: DependenciesData): any => {
         const otp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
 
         await sendOtp_useCase(dependencies).execute(userCredentials.email, otp);
-
-        return res.json({ success: true, message: "Otp sent successfully" });
+        const { confirmPassword, ...restValues } = userCredentials;
+        return res.json({
+          user: restValues,
+          success: true,
+          message: "Otp sent successfully",
+        });
       } catch (error) {
         console.log(error, "<< Something Went Wrong in OTP section >>");
         return res.json({
@@ -58,36 +62,48 @@ export = (dependencies: DependenciesData): any => {
     }
 
     //verify otp if otp is present
-    try {
-      const isOtpVerified = await verifyOtp_useCase(dependencies).execute(
-        userCredentials.email,
-        userCredentials.otp
-      );
-      if (!isOtpVerified)
-        return next(ErrorResponse.unauthorized("Otp is Invalid try another"));
-    } catch (error) {
-      console.log(error, "<< Something went wrong in verifyOtp >>");
-      return res.json({
-        success: false,
-        message: "Otp invalid",
-      });
+    if (userCredentials.otp) {
+      try {
+        const isOtpVerified = await verifyOtp_useCase(dependencies).execute(
+          userCredentials.email,
+          userCredentials.otp
+        );
+        console.log(isOtpVerified, "verified or not");
+        if (!isOtpVerified) {
+          console.log("error at verify otp not verified");
+          const { confirmPassword, ...restValues } = userCredentials;
+          // return next(ErrorResponse.unauthorized("Otp is Invalid try another"));
+          return res.status(401).json({
+            user: restValues,
+            success: false,
+            message: "Otp is Invalid try another",
+          });
+        }
+      } catch (error) {
+        console.log(error, "<< Something went wrong in verifyOtp >>");
+        return res.json({
+          success: false,
+          message: "Otp invalid",
+        });
+      }
     }
 
     //create a new user if otp is present
     if (userCredentials.otp) {
       try {
-        const userData = await signUpUser_useCase(dependencies).execute(
+        const user = await signUpUser_useCase(dependencies).execute(
           userCredentials
         );
-        if (!userData)
+        if (!user)
           return res.json({
             success: false,
-            message: "Phone number already existing",
+            message: "Something Went wrong try again in create user",
           });
 
-        const token =  generateToken(userData._id);
+        const token = generateToken(user._id);
         res.cookie("user_jwt", token, cookieConfig);
-        res.status(201).json({ success: true, userData, token });
+        user.token = token
+        res.status(201).json(user);
       } catch (error) {
         console.log(error, "<<Something went wrong in user signup>>");
       }

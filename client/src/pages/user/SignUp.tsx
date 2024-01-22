@@ -1,11 +1,27 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import SignUpNavbar from '../../components/user/SignUpNavbar'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Formik, Form } from "formik"
 import SignUpInputField from "../../components/user/SignUpInputField"
 import { validationSchemaSignUp } from '../../validations/ValidationSchema'
+import { useSelector, useDispatch } from 'react-redux'
+import { AppDispatch } from '../../redux/store'
+import { IUserSelector } from '../../interface/IuserSlice'
+import { userSignUp } from '../../redux/actions/user/userActions'
+
 
 const SignUp: FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const { user, loading, error } = useSelector((state: IUserSelector) => state.user);
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        console.log(user)
+        if (user?.email) {
+            navigate('/otp')
+        }
+    }, [user, navigate]);
+
     return (
         <div className='flex '>
             <div className='hidden md:flex w-5/12'>
@@ -32,20 +48,37 @@ const SignUp: FC = () => {
                         <div className="pt-5 border-b border-gray-500 w-8 mx-2"></div>
                     </div>
                 </div>
-
+                {
+                    error && <h1 className='text-red-600 font-semibold text-center pt-5'>{error}</h1>
+                }
                 <Formik
-                    initialValues={{ userName: "", email: "", password: "", phone: "", confirmPassword: "", }}
+                    initialValues={{ userName: "", email: "", password: "", phone: 0, confirmPassword: "", }}
                     validationSchema={validationSchemaSignUp}
-                    onSubmit={(values, { resetForm }) => {
-                        console.log(values)
+                    onSubmit={async (values, { resetForm }) => {
+                        console.log(values, "my values after submitting the form")
+                        const { confirmPassword, ...restValues } = values
+                        console.log(confirmPassword)
+                        const userData = await dispatch(userSignUp(restValues))
+                        if(userData.payload.success) {
+                            navigate('/otp')
+                        }
                         resetForm()
                     }}>
                     <Form>
                         <SignUpInputField />
                         <div className='flex flex-col items-center'>
                             <div>
-                                <button className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-lightgreen hover:scale-95 hover:font-semibold bg-lightgreen'>
-                                    Create Account
+                                <button type='submit' className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-lightgreen hover:scale-95 hover:font-semibold bg-lightgreen'>
+                                    {
+                                        loading ? (
+                                            <h1 className='animate-bounce duration-100'>Loading...</h1>
+                                        ) :
+                                            (
+                                                <h1 className='animate-pulse duration-100'>
+                                                    Create Account
+                                                </h1>
+                                            )
+                                    }
                                 </button>
                             </div>
                         </div>

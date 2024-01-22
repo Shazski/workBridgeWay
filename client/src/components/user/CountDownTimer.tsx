@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const CountdownTimer = () => {
+const CountdownTimer = ({resendOtp}: {resendOtp: () => void}) => {
   const initialSeconds = 120; // 2 minutes
   const [seconds, setSeconds] = useState<number>(initialSeconds);
 
@@ -25,7 +25,7 @@ const CountdownTimer = () => {
 
             <h1>{formatTime(seconds)}</h1>
             ):(
-                <button className='bg-blue-400 rounded-md px-2 py-1 text-white text-xs font-medium'>Resend otp</button>
+                <button onClick={resendOtp} className='bg-blue-400 rounded-md px-2 py-1 text-white text-xs font-medium'>Resend otp</button>
             )
         }
     </div>

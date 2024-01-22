@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/user/Login'
 import SignUp from './pages/user/SignUp'
 import Home from './pages/user/Home'
@@ -13,7 +13,9 @@ import ComapnyDashboard from './pages/company/ComapnyDashboard'
 import JobApplicants from './pages/company/JobApplicants'
 import Otp from './pages/user/Otp'
 import AdminSideBar from './components/admin/AdminSideBar'
+import { useSelector } from 'react-redux'
 function App() {
+  const { user } = useSelector((state: any) => state?.user)
   const company = false
   const admin = false
   return (
@@ -26,10 +28,10 @@ function App() {
             {company && <CompanyNavbar />}
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/signup' element={<SignUp />} />
+              <Route path='/login' element={(user && !user.user) ? <Navigate to={'/'} /> : user?.user ? <Navigate to={'/otp'} /> : <Login />} />
+              <Route path='/signup' element={(user && !user.user) ? <Navigate to={'/'} /> : user?.user ? <Navigate to={'/otp'} /> : <SignUp />} />
               <Route path='/jobs' element={<FindJobs />} />
-              <Route path='/otp' element={<Otp />} />
+              <Route path='/otp' element={user ? <Otp /> : <Navigate to={'/signup'} />} />
               <Route path='/jobs/:id' element={<JobDescription />} />
               <Route path='/company-register' element={<CompanyRegister />} />
               <Route path='/company-dashboard' element={<ComapnyDashboard />} />
@@ -38,7 +40,7 @@ function App() {
           </div>
         </Router>
       </div>
-      <Footer/>
+      {(user.role === "user") && <Footer />}
     </div>
   )
 }

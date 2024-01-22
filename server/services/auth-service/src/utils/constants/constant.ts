@@ -1,7 +1,7 @@
-const FRONTEND_BASE_URL = "http://localhost/5173";
+const FRONTEND_BASE_URL = "http://localhost:5173";
 
 const corsOptions: object = {
-  origin: `http://${FRONTEND_BASE_URL}`,
+  origin: `http://localhost:5173`,
   methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
   credentials: true,
   optionSuccessStatus: 200,
