@@ -5,4 +5,5 @@ export interface IUserLoginData {
     phone?:string | null 
     otp?:number | null,
     profilePic?:string | null
+    showSidebar?:boolean | null
 }

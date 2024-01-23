@@ -7,28 +7,29 @@ import CategorySection from '../../components/user/CategorySection'
 import FeaturedJobs from '../../components/user/FeaturedJobs'
 import LatestJobs from '../../components/user/LatestJobs'
 const Home: FC = () => {
+
   return (
     <div className=''>
       <div>
-      <Navbar/>
+        <Navbar />
       </div>
       <div className='bg-blue-50'>
-      <HomeTopSection/>
+        <HomeTopSection />
       </div>
       <div className='mt-7 w-full'>
-      <img  src={COMPANYIMG} className='w-full h-20 md:h-32' alt="" />
+        <img src={COMPANYIMG} className='w-full h-20 md:h-32' alt="" />
       </div>
       <div className='bg-white'>
-        <CategorySection/>
+        <CategorySection />
       </div>
       <div className='mt-12 flex justify-center md:h-80'>
         <img src={CTAIMG} alt="" />
       </div>
       <div>
-        <FeaturedJobs/>
+        <FeaturedJobs />
       </div>
       <div className='bg-blue-50'>
-        <LatestJobs/>
+        <LatestJobs />
       </div>
     </div>
   )

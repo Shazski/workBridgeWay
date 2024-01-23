@@ -3,7 +3,7 @@ import LOGO from "../../assets/images/Logo.png"
 import PROFILE from "../../assets/images/defaultProfile.jpg"
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { logoutUser } from '../../redux/actions/user/userActions'
 import { AppDispatch } from '../../redux/store'
 const Navbar: FC = () => {
@@ -23,34 +23,40 @@ const Navbar: FC = () => {
                 }}>Find Jobs</NavLink>
                 <NavLink to="/companies" className='font-sans hidden sm:block hover:cursor-pointer'>Browse Companies</NavLink>
             </div>
-            <div className='flex gap-3 md:ms-60'>
+            <div className='flex gap-3 md:me-[125px]'>
                 {
                     !user ? (
-                        <>
+                        <div className='flex gap-3'>
 
-                            <Link to='/login' className=' md:border-e-2 border-gray-200 pe-10 py-2 text-lightgreen font-bold'>Login</Link>
+                            <Link to='/login' className=' md:border-e-2 border-gray-200 pe-6 py-2 text-lightgreen font-bold'>Login</Link>
                             <Link to='/signup' className=' hidden md:flex rounded-sm text-white bg-lightgreen px-3 py-2'>Sign Up</Link>
-                        </>
+                        </div>
                     )
                         : (
                             <div className='flex gap-2'>
-                                <div>
-                                    <h1 className='font-medium mt-2 hidden md:flex'>Welcome {user.userName}</h1>
+
+                                <div className='mt-1.5'>
+                                    <Link to="/user/dashboard" className='border bg-lightgreen px-4 py-2 cursor-pointer rounded-md text-white  font-semibold'>Dashboard</Link>
                                 </div>
-                                <div>
-                                    <img src={`${user.profilePic || PROFILE}`} alt="no profile found" className='w-10 rounded-full' />
-                                </div>
-                                <div>
-                                    <h1 className='border border-lightgreen px-4 py-2 cursor-pointer rounded-md text-lightgreen font-medium'>Dashboard</h1>
-                                </div>
-                                <div>
-                                    <h1 onClick={() => { dispatch(logoutUser()), toast.success("logout successfull") }} className='bg-red-500 px-4 py-2 rounded-md cursor-pointer text-white font-semibold'>Logout</h1>
+
+                                <div className='group'>
+                                    <img src={`${user.profilePic || PROFILE}`} alt="no profile found" className='w-10 rounded-full hover:cursor-pointer' />
+                                    <div className='w-full h-full bg-transparent'>
+                                        <div className='absolute  flex-col items-center gap-3 top-20 rounded-md bg-white right-5 w-60 hidden  group-hover:flex hover:flex'>
+                                            <div>
+                                                <h1 className='text-center'>{user?.userName}</h1>
+                                            </div>
+                                            <div className='mb-4'>
+                                                <h1 onClick={() => { dispatch(logoutUser()), toast.success("logout successfull") }} className='bg-red-500 px-4 py-1.5 rounded-md cursor-pointer text-center text-white font-semibold w-24'>Logout</h1>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )
                 }
+
             </div>
-            <ToastContainer />
         </div>
     )
 }

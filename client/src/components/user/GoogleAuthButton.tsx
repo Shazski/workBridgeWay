@@ -1,5 +1,4 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
-import React from 'react'
 import { app } from '../../firebase/firebaseConfig';
 import { AppDispatch } from '../../redux/store';
 import { useDispatch } from 'react-redux';
@@ -9,7 +8,6 @@ const GoogleAuthButton = () => {
     const dispatch = useDispatch<AppDispatch>()
     const handleOAuth = async () => {
         try {
-            console.log("hello auth")
             const provider = new GoogleAuthProvider();
             const auth = getAuth(app)
             const result = await signInWithPopup(auth, provider)

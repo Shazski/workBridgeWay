@@ -13,7 +13,7 @@ const reducer = combineReducers({
 
 
 
- export const store = configureStore({
+export const store = configureStore({
   reducer: reducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

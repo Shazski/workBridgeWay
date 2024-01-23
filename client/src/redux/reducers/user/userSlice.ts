@@ -6,11 +6,12 @@ import { googleAuth, logoutUser, userSignUp } from "../../actions/user/userActio
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null as IUserLoginData | null,
+    user: null as any | null,
     error: null as string | null,
     loading: false as boolean,
   },
-  reducers: {},
+  reducers: {
+  },
 
   extraReducers(builder) {
     builder
@@ -59,5 +60,4 @@ const userSlice = createSlice({
 
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
 
-// export const { actions: userActions } = userSlice;
 export default persistedUserReducer;
