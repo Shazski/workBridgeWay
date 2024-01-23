@@ -1,12 +1,13 @@
 import { FC, useEffect } from 'react'
 import LOGO from "../../assets/images/Logo.png"
 import PROFILE from "../../assets/images/defaultProfile.jpg"
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast, ToastContainer } from 'react-toastify'
 import { logoutUser } from '../../redux/actions/user/userActions'
 import { AppDispatch } from '../../redux/store'
 const Navbar: FC = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: any) => state.user)
     useEffect(() => {
@@ -16,8 +17,10 @@ const Navbar: FC = () => {
     return (
         <div className='flex fixed top-0 w-full z-50 bg-white justify-between items-center shadow-md'>
             <div className='flex items-center gap-3'>
-                <img src={LOGO} alt="" className='w-36' />
-                <NavLink to='/jobs' className='font-sans hover:cursor-pointer'>Find Jobs</NavLink>
+                <img onClick={() => navigate('/')} src={LOGO} alt="" className='w-36 cursor-pointer' />
+                <NavLink to='/jobs' className={({ isActive }) => {
+                    return `font-sans hover:cursor-pointer ${isActive ? 'border-b-4 border-lightgreen text-lightgreen' : ''}`
+                }}>Find Jobs</NavLink>
                 <NavLink to="/companies" className='font-sans hidden sm:block hover:cursor-pointer'>Browse Companies</NavLink>
             </div>
             <div className='flex gap-3 md:ms-60'>

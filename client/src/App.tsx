@@ -16,17 +16,16 @@ import AdminSideBar from './components/admin/AdminSideBar'
 import { useSelector } from 'react-redux'
 function App() {
   const { user } = useSelector((state: any) => state?.user)
-  const company = false
-  const admin = false
   return (
     <div className=''>
       <div className='md:flex'>
         <Router>
-          {company && <CompanySideBar />}
-          {admin && <AdminSideBar />}
+          {user.role === "company" && <CompanySideBar />}
+          {user.role === "admin" && <AdminSideBar />}
           <div className='flex-1'>
-            {company && <CompanyNavbar />}
+            {user.role === "company" && <CompanyNavbar />}
             <Routes>
+              {/* common routes */}
               <Route path='/' element={<Home />} />
               <Route path='/login' element={(user && !user.user) ? <Navigate to={'/'} /> : user?.user ? <Navigate to={'/otp'} /> : <Login />} />
               <Route path='/signup' element={(user && !user.user) ? <Navigate to={'/'} /> : user?.user ? <Navigate to={'/otp'} /> : <SignUp />} />
@@ -34,6 +33,8 @@ function App() {
               <Route path='/otp' element={user ? <Otp /> : <Navigate to={'/signup'} />} />
               <Route path='/jobs/:id' element={<JobDescription />} />
               <Route path='/company-register' element={<CompanyRegister />} />
+
+              {/* company routes */}
               <Route path='/company-dashboard' element={<ComapnyDashboard />} />
               <Route path='/company-applicants/:id' element={<JobApplicants />} />
             </Routes>

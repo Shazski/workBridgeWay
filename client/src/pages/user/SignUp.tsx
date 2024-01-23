@@ -7,10 +7,10 @@ import { validationSchemaSignUp } from '../../validations/ValidationSchema'
 import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
 import { IUserSelector } from '../../interface/IuserSlice'
-import { googleAuth, userSignUp } from '../../redux/actions/user/userActions'
+import { userSignUp } from '../../redux/actions/user/userActions'
 import { ToastContainer, toast } from 'react-toastify'
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth"
-import { app } from '../../firebase/firebaseConfig'
+
+import GoogleAuthButton from '../../components/user/GoogleAuthButton'
 
 
 const SignUp: FC = () => {
@@ -25,22 +25,7 @@ const SignUp: FC = () => {
         }
     }, [user, navigate]);
 
-    const handleOAuth = async () => {
-        try {
-            console.log("hello auth")
-            const provider = new GoogleAuthProvider();
-            const auth = getAuth(app)
-            const result = await signInWithPopup(auth, provider)
-            const userData = {
-                userName: result?.user?.displayName,
-                email: result?.user?.email,
-                profilePic: result?.user?.photoURL
-            }
-            dispatch(googleAuth(userData))
-        } catch (error) {
-            console.error("Error in Oauth : ", error)
-        }
-    }
+    
 
     return (
         <div className='flex '>
@@ -56,12 +41,7 @@ const SignUp: FC = () => {
                         <h1 className='text-3xl font-bold'>Get Started With WorkBridgeWay</h1>
                         <h1 className='text-xs text-gray-600'>Getting started is Easy</h1>
                     </div>
-                    <div className='w-28 mt-3 flex justify-center'>
-                        <div onClick={handleOAuth} className='flex border-lightgreen border hover:cursor-pointer px-2 py-1 rounded-sm'>
-                            <img className='w-8' src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="" />
-                            <h1 className='pt-1'>Google</h1>
-                        </div>
-                    </div>
+                    <GoogleAuthButton/>
                     <div className="flex items-center justify-center text-center">
                         <div className="pt-5 border-b border-gray-500 w-8 mx-2"></div>
                         <h1 className='text-center pt-5 text-xs'>Or continue with</h1>

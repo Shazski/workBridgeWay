@@ -6,6 +6,6 @@ export const connect = async () => {
     mongoose.connect(String(MONGO_URL));
     console.log("Auth database connected successfully");
   } catch (error) {
-    console.log(error, "<< Something went wrong >>");
+    console.log(error, "<< Something went wrong in mongoose Connection>>");
   }
 };

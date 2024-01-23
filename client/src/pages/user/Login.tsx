@@ -7,6 +7,7 @@ import BLURIMAGE from "../../assets/images/blur-image.png"
 // import { Select, Option } from "@material-tailwind/react";
 import useForm from '../../hooks/useForm'
 import { IUserLoginData } from '../../interface/IuserLogin'
+import GoogleAuthButton from '../../components/user/GoogleAuthButton'
 const Login: FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const { values, handleChange } = useForm({} as IUserLoginData)
@@ -28,18 +29,15 @@ const Login: FC = () => {
     //     })
     // };
     return (
-        <div className='flex'>
-            <div className='md:w-4/6 w-11/12'>
+        <div className='flex justify-center' >
+            <div className='md:w-4/6 w-11/12 flex flex-col items-center'>
                 <Navbar />
                 <div className='text-center'>
                     <h1 className='font-bold text-3xl mt-16'>Welcome Back</h1>
                     <h3 className='mt-2 text-sm font-semibold'>Login into your account</h3>
                 </div>
-                <div className='flex justify-center mt-7'>
-                    <div className='flex border-lightgreen border hover:cursor-pointer px-2 py-1 rounded-sm'>
-                        <img className='w-8' src="http://pngimg.com/uploads/google/google_PNG19635.png" alt="" />
-                        <h1 className='pt-1'>Google</h1>
-                    </div>
+                <div>
+                    <GoogleAuthButton />
                 </div>
                 <div>
                     <div className="flex items-center justify-center text-center">
