@@ -1,6 +1,7 @@
-import jobApply from "./jobApply"
-export = (dependencies: any) => {
+import { IDependenciesData } from "../../../application/interfaces/IDependenciesData"
+import editUser_controller from "./editUser_controller"
+export = (dependencies: IDependenciesData) => {
     return {
-        apply:jobApply(dependencies)
+        editUser:editUser_controller(dependencies)
     }
 }

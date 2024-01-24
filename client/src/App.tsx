@@ -12,20 +12,31 @@ import CompanyDashboard from './pages/company/ComapnyDashboard';
 import JobApplicants from './pages/company/JobApplicants';
 import Otp from './pages/user/Otp';
 import AdminSideBar from './components/admin/AdminSideBar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Dashboard from './pages/user/Dashboard';
 import UserSidebar from './components/user/UserSidebar';
 import { ToastContainer } from 'react-toastify';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import Profile from './pages/user/Profile';
 import Applications from './pages/user/Applications';
 import Messages from './pages/user/Messages';
 import Settings from './pages/user/Settings';
 import ProfilePic from './components/user/ProfilePic';
+import { AppDispatch } from './redux/store';
+import { makeErrorDisable } from './redux/reducers/user/userSlice';
 
 function App() {
-  const { user } = useSelector((state: any) => state?.user);
+  const dispatch = useDispatch<AppDispatch>()
+  const { user, error } = useSelector((state: any) => state?.user);
 
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        dispatch(makeErrorDisable())
+      }, 10000);
+    }
+
+  }, [error, dispatch])
 
   const ProtectedRoute = ({ element }: { element: ReactNode }) => {
 
@@ -65,7 +76,7 @@ function App() {
                 <Route path='applications' element={<Applications />} />
                 <Route path='settings' element={<Settings />} >
                   <Route path='edit-profile' element={<ProfilePic />} />
-                  <Route path='edit-login' element={<Settings />} />
+                  <Route path='edit-login' element={<ProfilePic />} />
                 </Route>
               </Route>
             </Routes>

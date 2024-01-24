@@ -2,7 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 import { persistReducer } from "redux-persist";
 import { persistConfig } from "../../../config/constants";
-import { googleAuth, logoutUser, userSignUp } from "../../actions/user/userActions";
+import {
+  editUser,
+  googleAuth,
+  logoutUser,
+  userSignUp,
+} from "../../actions/user/userActions";
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -11,6 +16,9 @@ const userSlice = createSlice({
     loading: false as boolean,
   },
   reducers: {
+    makeErrorDisable: (state) => {
+      state.error = "";
+    },
   },
 
   extraReducers(builder) {
@@ -54,10 +62,23 @@ const userSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(editUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });
-
+export const { makeErrorDisable  } =  userSlice.actions
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
 
 export default persistedUserReducer;

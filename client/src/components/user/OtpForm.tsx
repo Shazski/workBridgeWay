@@ -73,7 +73,7 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
   }
 
   return (
-    <div className='flex flex-col items-center bg-blue-gray-800 text-white rounded-md w-6/12 h-96 justify-center mt-32 bg-transparent'>
+    <div className='flex flex-col items-center bg-teal-600 text-black rounded-md w-6/12 h-96 justify-center mt-32 bg-transparent'>
       <div>
         <h1 className='font-semibold'>Enter Otp sent to {user?.user?.email}</h1>
       </div>

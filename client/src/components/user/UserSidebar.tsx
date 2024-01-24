@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom"
+import { NavLink, Outlet, useLocation } from "react-router-dom"
 import { GoHome } from "react-icons/go";
 import { FiGitPullRequest } from "react-icons/fi";
 import { MdCorporateFare } from "react-icons/md";
@@ -12,6 +12,10 @@ import { logoutUser } from "../../redux/actions/user/userActions";
 const UserSidebar = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: any) => state.user)
+    const location = useLocation();
+    const isSettingsActive = () => {
+        return location.pathname.startsWith('/user/settings');
+    };
     return (
         <div className="flex">
             <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-1/5 w-1/4 h-screen overflow-y-auto'>
@@ -68,9 +72,10 @@ const UserSidebar = () => {
                 </div>
                 <div className='mt-3 ms-3 flex gap-3'>
 
-                    <NavLink to='/user/settings/edit-profile' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}>
+                <NavLink
+                    to="/user/settings/edit-profile"
+                    className={`px-6 py-3 w-16 md:w-52 ${isSettingsActive() ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`}
+                >
                         <div className="flex gap-3">
                             <CiSettings className="text-xl" />
                             <h1 className="hidden md:flex">

@@ -3,12 +3,7 @@ import cors from "cors";
 import { corsOptions } from "../utils";
 import { errorHandler } from "../utils";
 import routes from "../infrastructure/routes";
-
-const dependencies = {
-    userRepo: {
-        data:"hello"
-    }
-}
+import dependencies from "../utils/config/dependencies";
 
 const app = express();
 app.use(express.json());

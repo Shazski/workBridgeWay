@@ -1,15 +1,17 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DEFAULTPROFILE from "../../assets/images/defaultProfile.jpg";
 import { CiImageOn } from "react-icons/ci";
 import { useRef, useState, useEffect } from "react";
-
+import { AppDispatch } from "../../redux/store";
+import { editUser } from "../../redux/actions/user/userActions";
+import {toast} from "react-toastify"
 const ProfilePic = () => {
     const [userData, setUserData] = useState<any>(null)
     const profileRef = useRef<HTMLInputElement | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [droppedImage, setDroppedImage] = useState<string | null>(null);
-    const { user } = useSelector((state: any) => state.user);
-
+    const { user, error } = useSelector((state: any) => state.user);
+    const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         const newUserData = {
             userName: user?.userName,
@@ -25,7 +27,7 @@ const ProfilePic = () => {
         e.preventDefault();
         const files = e.dataTransfer.files;
         if (files.length > 0) {
-
+            if (profileRef.current) profileRef.current.value = ""
             userData.profilePic = files[0];
             const imageUrl = URL.createObjectURL(files[0]);
             setDroppedImage(imageUrl);
@@ -47,21 +49,11 @@ const ProfilePic = () => {
         }
     };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("dfasdsad")
         const { name, value } = event.currentTarget
-        console.log(name, value)
-        const file: any = event.target.files
-        if (name === 'profilePic' && file) {
-            setUserData({
-                ...userData,
-                [name]: file[0],
-            })
-        } else {
-            setUserData({
-                ...userData,
-                [name]: value,
-            });
-        }
+        setUserData({
+            ...userData,
+            [name]: value,
+        });
     }
     const imageUpload = async (image: any) => {
         setIsLoading(true)
@@ -83,14 +75,15 @@ const ProfilePic = () => {
     }
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        if (userData.profilePic) {
+        if (profileRef.current?.value) {
             console.log("is it here cpomigng")
             const profilePic = await imageUpload(userData.profilePic)
             userData.profilePic = profilePic
+        } else {
+            delete userData.profilePic
         }
-        console.log(userData, "my userData details")
-        // await dispatch(editUser(formData))
-        // setImagePreview(null)
+        await dispatch(editUser(userData))
+        toast.success("personal details updated")
     }
 
     return (
@@ -122,11 +115,12 @@ const ProfilePic = () => {
                     </div>
                     <input ref={profileRef} type="file" id="profilepic" hidden accept=".png, .jpg" onChange={handleFileChange} />
                 </div>
-                <div className="ms-6 mt-4 md:flex  w-full">
+                <div className="ms-6 mt-4 md:flex">
                     <div className="md:w-4/12">
                         <h1 className="font-semibold text-sm">Personal Details</h1>
                     </div>
                     <div className="flex flex-col gap-y-3">
+                        {error && <h1 className="text-red-600 font-semibold">{error}</h1>}
                         <div className="md:flex flex-col">
                             <label className="" htmlFor="">Full Name</label>
                             <input type="text" value={userData?.userName} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleChange} name="userName" />

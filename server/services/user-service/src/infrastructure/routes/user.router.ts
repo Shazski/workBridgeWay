@@ -2,8 +2,8 @@ import express from "express";
 import { userController } from "../../presentation/controllers";
 
 export = (dependencies: any) => {
-  const { apply } = userController(dependencies);
+  const { editUser } = userController(dependencies);
   const router = express.Router();
-  router.post("/apply-job", apply);
+  router.post("/edit-user", editUser);
   return router;
 };
