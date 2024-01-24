@@ -40,3 +40,23 @@ export const validationSchemaCompanyRegister = Yup.object().shape({
     .required("confirm your password")
     .oneOf([Yup.ref("password")], "Passwords must Match"),
 });
+
+export const validatePassword = (password: string) => {
+  const minLength = 8;
+  const uppercaseRegex = /[A-Z]/;
+  const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+  if (password.length < minLength) {
+      return "Password must be at least 8 characters long";
+  }
+
+  if (!uppercaseRegex.test(password)) {
+      return "Password must contain at least one uppercase letter";
+  }
+
+  if (!symbolRegex.test(password)) {
+      return "Password must contain at least one special symbol";
+  }
+  // Password meets all criteria
+  return null; 
+};

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
 import { generateToken } from "../../../utils";
 import { cookieConfig } from "../../../utils/constants/constant";
+import sentGoogleAuthPasswordMail from "../../../utils/externalServices/nodemailer/sentGoogleAuthPassword";
 
 export = (dependencies: DependenciesData) => {
   const {
@@ -29,6 +30,8 @@ export = (dependencies: DependenciesData) => {
         const user = await signUpUser_useCase(dependencies).execute(
           userCredentials
         );
+        if(user)
+        await sentGoogleAuthPasswordMail(user.email, strongPassword);
 
         res.status(201).json(user);
       }

@@ -1,18 +1,19 @@
-import { IUser } from "../../../domain/entities/user.entity"
-import { IDependenciesData } from "../../interfaces/IDependenciesData"
+import { IUser } from "../../../domain/entities/user.entity";
+import { IDependenciesData } from "../../interfaces/IDependenciesData";
 
 export const editUser_useCase = (dependencies: IDependenciesData) => {
-    const {userRepo: {editUser_repo}} = dependencies
+  const {
+    userRepo: { editUser_repo },
+  } = dependencies;
+  const execute = async (userCredentials: IUser) => {
     try {
-        const execute = async (userCredentials: IUser) => {
-            return await editUser_repo(userCredentials)
-       }
-       return {
-        execute
-       }     
+      return await editUser_repo(userCredentials);
     } catch (error) {
-        console.log(error,"<< Something went wrong in edit user usecase >>")
-        return false
+      console.log(error, "<< Something went wrong in edit user usecase >>");
+      return false;
     }
-   
-}
+  };
+  return {
+    execute,
+  };
+};

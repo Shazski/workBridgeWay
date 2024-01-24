@@ -104,7 +104,7 @@ const ProfilePic = () => {
                         <div>
                             <img onClick={handleImageClick} src={droppedImage || user?.profilePic || DEFAULTPROFILE} alt="" className="w-20 h-20 rounded-full" />
                         </div>
-                        <div className="border-2 flex flex-col items-center cursor-pointer justify-center border-lightgreen w-60 h-24 border-dashed">
+                        <div className="border-2 flex mb-3 flex-col items-center cursor-pointer justify-center border-lightgreen w-60 h-24 border-dashed">
                             <div>
                                 <CiImageOn className="text-xl text-lightgreen" />
                             </div>
@@ -117,26 +117,26 @@ const ProfilePic = () => {
                 </div>
                 <div className="ms-6 mt-4 md:flex">
                     <div className="md:w-4/12">
-                        <h1 className="font-semibold text-sm">Personal Details</h1>
+                        <h1 className="font-medium font-sans text-sm">Personal Details</h1>
                     </div>
                     <div className="flex flex-col gap-y-3">
                         {error && <h1 className="text-red-600 font-semibold">{error}</h1>}
                         <div className="md:flex flex-col">
-                            <label className="" htmlFor="">Full Name</label>
+                            <label className="text-gray-600 font-medium font-sans" htmlFor="">Full Name</label>
                             <input type="text" value={userData?.userName} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleChange} name="userName" />
                         </div>
                         <div className="md:flex gap-4">
                             <div className="md:flex flex-col ">
-                                <label className="text-start" htmlFor="">Email</label>
+                                <label className="text-gray-600 font-medium font-sans" htmlFor="">Email</label>
                                 <input readOnly type="text" value={userData?.email} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-56 rounded-md" onChange={handleChange} name="email" />
                             </div>
                             <div className="md:flex flex-col mt-3 md:mt-0">
-                                <label className="text-start" htmlFor="">Phone</label>
+                                <label className="text-gray-600 font-medium font-sans" htmlFor="">Phone</label>
                                 <input type="number" value={userData?.phone} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 rounded-md" onChange={handleChange} name="phone" />
                             </div>
                         </div>
                         <div className="md:flex flex-col">
-                            <label className="" htmlFor="">Date of Birth</label>
+                            <label className="text-gray-600 font-medium font-sans" htmlFor="">Date of Birth</label>
                             <input type="Date" value={userData?.dob} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleChange} name="dob" />
                         </div>
                         <div className="mt-4 md:text-end">

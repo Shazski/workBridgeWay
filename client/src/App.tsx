@@ -24,6 +24,7 @@ import Settings from './pages/user/Settings';
 import ProfilePic from './components/user/ProfilePic';
 import { AppDispatch } from './redux/store';
 import { makeErrorDisable } from './redux/reducers/user/userSlice';
+import UpdateLoginDetails from './components/user/UpdateLoginDetails';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -76,7 +77,7 @@ function App() {
                 <Route path='applications' element={<Applications />} />
                 <Route path='settings' element={<Settings />} >
                   <Route path='edit-profile' element={<ProfilePic />} />
-                  <Route path='edit-login' element={<ProfilePic />} />
+                  <Route path='edit-login' element={<UpdateLoginDetails/>} />
                 </Route>
               </Route>
             </Routes>

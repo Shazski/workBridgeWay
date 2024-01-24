@@ -2,6 +2,7 @@ import RabbitMqClient from '../../infrastructure/messageBroker/rabbitmq/client'
 
 interface useCaseData {
   editUser_useCase: any;
+  findUserByEmail_useCase: any
 }
 
 export interface userRepoData {

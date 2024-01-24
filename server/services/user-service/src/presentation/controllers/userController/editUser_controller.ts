@@ -19,7 +19,9 @@ export = (dependencies: IDependenciesData) => {
         return next(ErrorResponse.conflict("Phone number is already taken"));
       const user = updatedUser;
       res.status(201).json(user);
-    } catch (error) {}
+    } catch (error) {
+        next(error)
+    }
   };
   return editUser;
 };

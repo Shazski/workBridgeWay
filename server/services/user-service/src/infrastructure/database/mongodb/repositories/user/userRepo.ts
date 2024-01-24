@@ -1,5 +1,6 @@
 import { IUser } from "../../../../../domain/entities/user.entity";
 import UserSchema, { IUserData } from "../../schema/userSchema";
+import bcrypt from "bcrypt";
 
 export const findUserByEmail_repo = async (
   userCredentials: IUser
@@ -14,9 +15,7 @@ export const findUserByEmail_repo = async (
         ],
       });
     } else {
-      userExists = await UserSchema.findOne({
-        $or: [{ email: userCredentials.email }],
-      });
+      userExists = await UserSchema.findOne({ email: userCredentials.email });
     }
     if (!userExists) return false;
     return userExists as IUserData;
@@ -47,6 +46,10 @@ export const editUser_repo = async (
   userCredentials: IUser
 ): Promise<IUser | boolean> => {
   try {
+    if (userCredentials.password) {
+      const hashedPassword = await bcrypt.hash(userCredentials.password, 10);
+      userCredentials.password = hashedPassword;
+    }
     const updatedUser = await UserSchema.findOneAndUpdate(
       { email: userCredentials.email },
       {
@@ -55,6 +58,7 @@ export const editUser_repo = async (
       { new: true }
     );
     if (!updatedUser) return false;
+
     return updatedUser;
   } catch (error: any) {
     if (error?.code === 11000) {
