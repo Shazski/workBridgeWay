@@ -3,6 +3,7 @@ import { GoHome } from "react-icons/go";
 import { FiGitPullRequest } from "react-icons/fi";
 import { MdCorporateFare } from "react-icons/md";
 import { TbMessageReport } from "react-icons/tb";
+import { CiSettings } from "react-icons/ci";
 import LOGO from "../../assets/images/Logo.png"
 import { IoExitOutline } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +14,7 @@ const UserSidebar = () => {
     const { user } = useSelector((state: any) => state.user)
     return (
         <div className="flex">
-            <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-4/12 lg:w-1/4 xl:w-1/5 w-1/4 h-screen overflow-y-auto'>
+            <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-1/5 w-1/4 h-screen overflow-y-auto'>
                 <div className='flex'>
                     <img src={LOGO} alt="" className='w-24' />
                     <h1 className='mt-5 font-bold text-lightgreen hidden md:flex '>WorkBridgeWay</h1>
@@ -61,6 +62,19 @@ const UserSidebar = () => {
                             <TbMessageReport className="text-xl" />
                             <h1 className="hidden md:flex">
                                 My Profile
+                            </h1>
+                        </div>
+                    </NavLink>
+                </div>
+                <div className='mt-3 ms-3 flex gap-3'>
+
+                    <NavLink to='/user/settings/edit-profile' className={({ isActive }) => {
+                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                    }}>
+                        <div className="flex gap-3">
+                            <CiSettings className="text-xl" />
+                            <h1 className="hidden md:flex">
+                                Settings
                             </h1>
                         </div>
                     </NavLink>

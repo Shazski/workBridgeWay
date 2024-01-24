@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import { corsOptions } from "../utils";
 import { errorHandler } from "../utils";

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const ProfileHeader = ({ page = "Dashboard" }: { page?: string }) => {
     return (
-        <div className="flex justify-between items-center h-16 border-b-2">
+        <div className="flex justify-between bg-white sticky top-0 items-center h-16 border-b-2">
             <div className="ms-12">
                 <h1 className="text-2xl font-serif font-semibold">{page}</h1>
             </div>

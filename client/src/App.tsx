@@ -20,6 +20,8 @@ import { ReactNode } from 'react';
 import Profile from './pages/user/Profile';
 import Applications from './pages/user/Applications';
 import Messages from './pages/user/Messages';
+import Settings from './pages/user/Settings';
+import ProfilePic from './components/user/ProfilePic';
 
 function App() {
   const { user } = useSelector((state: any) => state?.user);
@@ -61,6 +63,10 @@ function App() {
                 <Route path='profile' element={<Profile />} />
                 <Route path='messages' element={<Messages />} />
                 <Route path='applications' element={<Applications />} />
+                <Route path='settings' element={<Settings />} >
+                  <Route path='edit-profile' element={<ProfilePic />} />
+                  <Route path='edit-login' element={<Settings />} />
+                </Route>
               </Route>
             </Routes>
           </div>
