@@ -69,7 +69,6 @@ export = (dependencies: DependenciesData): any => {
         );
         console.log(isOtpVerified, "verified or not");
         if (!isOtpVerified) {
-          console.log("error at verify otp not verified");
           const { confirmPassword, ...restValues } = userCredentials;
           // return next(ErrorResponse.unauthorized("Otp is Invalid try another"));
           return res.status(401).json({

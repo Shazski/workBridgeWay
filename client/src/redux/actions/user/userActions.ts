@@ -93,3 +93,26 @@ export const changeUserPassowrd = createAsyncThunk(
     }
   }
 );
+export const changeUserEmail = createAsyncThunk(
+  "user/changeUserEmail",
+  async (
+    userCredentials: {
+      email: string ;
+      oldEmail?: string ;
+      otp?:number ;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${USER_BASE_URL}/update-email`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);

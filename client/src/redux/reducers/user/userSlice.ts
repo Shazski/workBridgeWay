@@ -3,6 +3,7 @@ import { IUserLoginData } from "../../../interface/IuserLogin";
 import { persistReducer } from "redux-persist";
 import { persistConfig } from "../../../config/constants";
 import {
+  changeUserEmail,
   changeUserPassowrd,
   editUser,
   googleAuth,
@@ -87,6 +88,23 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(changeUserPassowrd.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(changeUserEmail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(changeUserEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        if(action.payload.message) {
+          state.user.newEmail = action.payload.message as IUserLoginData;
+        } else {
+          state.user = action.payload as IUserLoginData
+        }
+        state.error = null;
+      })
+      .addCase(changeUserEmail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

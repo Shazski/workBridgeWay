@@ -4,6 +4,7 @@ export interface IUserLoginData {
     password?:string | null,
     phone?:string | null 
     otp?:number | null,
-    profilePic?:string | null
-    showSidebar?:boolean | null
+    profilePic?:string | File | null | FileList
+    showSidebar?:boolean | null,
+    dob?:string | number | readonly string[] | undefined | Date
 }

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import LOGO from "../../assets/images/Logo.png"
 import PROFILE from "../../assets/images/defaultProfile.jpg"
 import { Link, NavLink, useNavigate } from 'react-router-dom'
@@ -10,9 +10,6 @@ const Navbar: FC = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: any) => state.user)
-    useEffect(() => {
-        console.log(user)
-    }, [user]);
 
     return (
         <div className='flex fixed top-0 w-full z-50 bg-white justify-between items-center shadow-md'>
@@ -25,7 +22,7 @@ const Navbar: FC = () => {
             </div>
             <div className='flex gap-3 md:me-[125px]'>
                 {
-                    !user ? (
+                    !user?.email ? (
                         <div className='flex gap-3'>
 
                             <Link to='/login' className=' md:border-e-2 border-gray-200 pe-6 py-2 text-lightgreen font-bold'>Login</Link>
@@ -40,9 +37,9 @@ const Navbar: FC = () => {
                                 </div>
 
                                 <div className='group'>
-                                    <img src={`${user.profilePic || PROFILE}`} alt="no profile found" className='w-10 rounded-full hover:cursor-pointer' />
+                                    <img src={`${user?.profilePic || PROFILE}`} alt="no profile found" className='w-10 rounded-full duration-700 hover:cursor-pointer' />
                                     <div className='w-full h-full bg-transparent'>
-                                        <div className='absolute  flex-col items-center gap-3 top-20 rounded-md bg-white right-5 w-60 hidden  group-hover:flex hover:flex'>
+                                        <div className='absolute  flex-col items-center gap-3 top-20 rounded-md bg-white right-5 w-60 hidden group-hover:flex hover:flex'>
                                             <div>
                                                 <h1 className='text-center'>{user?.userName}</h1>
                                             </div>

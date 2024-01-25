@@ -14,10 +14,12 @@ export interface IUser extends Document {
       link?: string | null;
       socialMedia?: string | null;
     }[];
+    newEmail?:string | null
     dob?: string | null;
     chatStatus?: string | null;
     jobStatus?: string | null;
     about?: string | null;
     languages?: string[] | null;
     education?: string | null;
+    oldEmail?: string | null
   }

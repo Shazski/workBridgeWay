@@ -4,9 +4,10 @@ import { CiImageOn } from "react-icons/ci";
 import { useRef, useState, useEffect } from "react";
 import { AppDispatch } from "../../redux/store";
 import { editUser } from "../../redux/actions/user/userActions";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify"
+import { IUserLoginData } from "../../interface/IuserLogin";
 const ProfilePic = () => {
-    const [userData, setUserData] = useState<any>(null)
+    const [userData, setUserData] = useState<IUserLoginData>({ email: "", phone: "", userName: "", profilePic: null, dob: "" })
     const profileRef = useRef<HTMLInputElement | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [droppedImage, setDroppedImage] = useState<string | null>(null);
@@ -123,21 +124,21 @@ const ProfilePic = () => {
                         {error && <h1 className="text-red-600 font-semibold">{error}</h1>}
                         <div className="md:flex flex-col">
                             <label className="text-gray-600 font-medium font-sans" htmlFor="">Full Name</label>
-                            <input type="text" value={userData?.userName} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleChange} name="userName" />
+                            <input type="text" value={userData?.userName || ""} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleChange} name="userName" />
                         </div>
                         <div className="md:flex gap-4">
                             <div className="md:flex flex-col ">
                                 <label className="text-gray-600 font-medium font-sans" htmlFor="">Email</label>
-                                <input readOnly type="text" value={userData?.email} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-56 rounded-md" onChange={handleChange} name="email" />
+                                <input readOnly type="text" value={userData?.email || ""} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-56 rounded-md" onChange={handleChange} name="email" />
                             </div>
                             <div className="md:flex flex-col mt-3 md:mt-0">
                                 <label className="text-gray-600 font-medium font-sans" htmlFor="">Phone</label>
-                                <input type="number" value={userData?.phone} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 rounded-md" onChange={handleChange} name="phone" />
+                                <input type="number" value={userData?.phone || ""} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 rounded-md" onChange={handleChange} name="phone" />
                             </div>
                         </div>
                         <div className="md:flex flex-col">
                             <label className="text-gray-600 font-medium font-sans" htmlFor="">Date of Birth</label>
-                            <input type="Date" value={userData?.dob} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleChange} name="dob" />
+                            <input type="Date" value={userData?.dob ? userData.dob.toString().split('T')[0] : ""} className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleChange} name="dob" />
                         </div>
                         <div className="mt-4 md:text-end">
                             <button type="submit" className="px-4  py-2 bg-lightgreen text-white font-semibold">{isLoading ? "Updating..." : "Save Profile"}</button>

@@ -13,7 +13,7 @@ app.use(cors(corsOptions));
 app.use("/api/v1", routes(dependencies));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(404).json({ success: false, status: 400, message: "Not Found" });
+  res.status(404).json({ success: false, status: 400, message: "Url Not Found" });
 });
 
 app.use(errorHandler);

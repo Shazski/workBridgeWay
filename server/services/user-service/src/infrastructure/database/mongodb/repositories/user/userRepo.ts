@@ -45,12 +45,22 @@ export const SignUpUser_repo = async (
 export const editUser_repo = async (
   userCredentials: IUser
 ): Promise<IUser | boolean> => {
+  let updatedUser: IUser | null
   try {
     if (userCredentials.password) {
       const hashedPassword = await bcrypt.hash(userCredentials.password, 10);
       userCredentials.password = hashedPassword;
     }
-    const updatedUser = await UserSchema.findOneAndUpdate(
+    if(userCredentials.oldEmail) {
+      updatedUser = await UserSchema.findOneAndUpdate(
+        { email: userCredentials.oldEmail },
+        {
+          $set: { email : userCredentials.email },
+        },
+        { new: true }
+      );
+    }
+    updatedUser = await UserSchema.findOneAndUpdate(
       { email: userCredentials.email },
       {
         $set: { ...userCredentials },

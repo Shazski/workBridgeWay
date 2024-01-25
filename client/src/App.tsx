@@ -41,11 +41,11 @@ function App() {
 
   const ProtectedRoute = ({ element }: { element: ReactNode }) => {
 
-    return user ? element : <Navigate to="/login" />;
+    return user?.email ? element : <Navigate to="/login" />;
   }
 
   return (
-    <div className=''>
+    <div>
       <ToastContainer />
       <div className='md:flex'>
         <Router>
@@ -57,12 +57,13 @@ function App() {
 
               {/* common routes */}
               <Route path='/' element={<Home />} />
-              <Route path='/login' element={(user && !user.user) ? <Navigate to={'/'} /> : user?.user ? <Navigate to={'/otp'} /> : <Login />} />
-              <Route path='/signup' element={(user && !user.user) ? <Navigate to={'/'} /> : user?.user ? <Navigate to={'/otp'} /> : <SignUp />} />
+              <Route path='/login' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <Login />} />
+              <Route path='/signup' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <SignUp />} />
               <Route path='/jobs' element={<FindJobs />} />
-              <Route path='/otp' element={user ? <Otp /> : <Navigate to={'/signup'} />} />
+              <Route path='/otp' element={user?.email ? <Otp /> : <Navigate to={'/signup'} />} />
               <Route path='/jobs/:id' element={<JobDescription />} />
               <Route path='/company-register' element={<CompanyRegister />} />
+              <Route path='/update-email/otp' element={<Otp />} />
 
 
               {/* company routes */}

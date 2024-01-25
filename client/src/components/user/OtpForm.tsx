@@ -3,17 +3,18 @@ import CountdownTimer from './CountDownTimer';
 import { AppDispatch } from '../../redux/store';
 import { useSelector, useDispatch } from "react-redux"
 import { toast } from "react-toastify"
-import { userSignUp } from '../../redux/actions/user/userActions';
-import { useNavigate } from 'react-router-dom';
+import { changeUserEmail, userSignUp } from '../../redux/actions/user/userActions';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IUserLoginData } from '../../interface/IuserLogin';
 const OtpForm = ({ length = 4 }: { length: number }) => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
+  const location = useLocation()
   const { user, error } = useSelector((state: any) => state.user)
   const [otp, setOtp] = useState<(string | number)[]>(new Array(length).fill(""))
   const inputRef = useRef<(HTMLInputElement | null)[]>(new Array(length).fill(""));
-  const formData:IUserLoginData = {
+  const formData: IUserLoginData = {
     email: user?.user?.email || user?.email,
     userName: user?.user?.userName || user?.userName,
     password: user?.user?.password || user?.password,
@@ -23,11 +24,10 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
     if (inputRef.current[0]) {
       inputRef.current[0].focus()
     }
-    console.log(user,"user redux data")
-    if(user && !user?.user) {
+    if (user && !user?.user && location.pathname === "/otp") {
       navigate('/')
     }
-  }, [user, navigate])
+  }, [user, navigate, location.pathname])
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value
 
@@ -51,11 +51,36 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
     inputRef.current[index]?.setSelectionRange(1, 1)
   }
 
-  
+  const handleMultipleSubmit = () => {
+    if (location.pathname === "/otp") {
+      handleSignUpSubmit()
+    } else {
+      handleUpdateEmailSubmit()
+    }
+  }
+  const handleUpdateEmailSubmit = async () => {
+    const combinedOtp = otp.join("");
+    const newFormData: { email: any; otp?: number, oldEmail: string } = {
+      email: user.newEmail,
+      oldEmail: user.email
+    };
 
-  const handleSubmit = async () => {
+    if (Number(combinedOtp) > 0) {
+      newFormData.otp = Number(combinedOtp);
+    } else {
+      newFormData.otp = 1
+    }
+
+    const success = await dispatch(changeUserEmail(newFormData));
+
+    if (success.payload.email) {
+      toast.success("Email Updated successfully");
+      navigate('/user/settings/edit-login');
+    }
+  };
+
+  const handleSignUpSubmit = async () => {
     const combinedOtp = otp.join("")
-    console.log(combinedOtp)
     const newFormData = { ...formData }
 
     newFormData.otp = Number(combinedOtp)
@@ -73,7 +98,7 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
   }
 
   return (
-    <div className='flex flex-col items-center bg-teal-600 text-black rounded-md w-6/12 h-96 justify-center mt-32 bg-transparent'>
+    <div className='flex flex-col items-center bg-teal-700 text-black rounded-md w-6/12 h-96 justify-center mt-32 bg-transparent'>
       <div>
         <h1 className='font-semibold'>Enter Otp sent to {user?.user?.email}</h1>
       </div>
@@ -92,6 +117,7 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
               onChange={(e) => handleChange(index, e)}
               onClick={() => handleClick(index)}
               className='border w-12 h-12 ms-1 cursor-pointer rounded-md text-lightgreen text-xl text-center'
+              required
             />
           })
         }
@@ -101,7 +127,7 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
         {<CountdownTimer resendOtp={handleResendOtp} />}
       </div>
       <div className='mt-6'>
-        <button onClick={handleSubmit} className='bg-lightgreen text-white font-semibold px-6 py-2 rounded-md'>submit</button>
+        <button onClick={handleMultipleSubmit} className='bg-lightgreen text-white font-semibold px-6 py-2 rounded-md'>submit</button>
       </div>
     </div>
   )

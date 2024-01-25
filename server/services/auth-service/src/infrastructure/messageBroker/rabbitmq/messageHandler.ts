@@ -1,3 +1,5 @@
+import { saveOtp } from '../../database/mongodb/repositories/otp/saveOtp';
+import { verifyOtp } from '../../database/mongodb/repositories/otp/verifyOtp';
 import rabbitMQClient from './client'
 
 export default class MessageHandler {
@@ -11,8 +13,11 @@ export default class MessageHandler {
         console.log('the operation is', operation);
         console.log('the data is', data);
         switch (operation) {
-            case 'signUpUser':
-                response = ''
+            case 'saveOtp':
+                response = await saveOtp(data.email,data.otp)
+                break;
+            case 'verifyOtp':
+                response = await verifyOtp(data.email,data.otp)
                 break;
             default:
                 response = 'Request-key notfound'
