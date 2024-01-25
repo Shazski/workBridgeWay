@@ -54,7 +54,6 @@ const UpdateLoginDetails = () => {
             oldEmail: user.email
         }
        const res = await dispatch(changeUserEmail(userCredentials))
-       console.log(res.payload)
         if(res.payload.success) {
             navigate('/update-email/otp')
         }
@@ -76,7 +75,7 @@ const UpdateLoginDetails = () => {
                             </div>
                             <h1 className="text-gray-600 text-xs">Your email address is verified</h1>
                             <label className="text-gray-600 font-medium font-sans mt-3" htmlFor="">Update Email</label>
-                            <input type="email" className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleEmailChange} value={newEmail} placeholder="Enter your new email" name="email" />
+                            <input required type="email" className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleEmailChange} value={newEmail} placeholder="Enter your new email" name="email" />
                         </div>
                         {err && <h1 className="text-red-600 font-semibold">{err}</h1>}
                         <div className="mt-4 md:text-end">

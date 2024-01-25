@@ -93,14 +93,22 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
   }
 
   const handleResendOtp = () => {
-    const newFormData = { ...formData }
-    dispatch(userSignUp(newFormData))
+    if (location.pathname === "/otp") {
+      const newFormData = { ...formData }
+      dispatch(userSignUp(newFormData))
+    } else {
+      const resendOtpObj = {
+        email: user.newEmail,
+        oldEmail: user.email
+      }
+      dispatch(changeUserEmail(resendOtpObj))
+    }
   }
 
   return (
     <div className='flex flex-col items-center bg-teal-700 text-black rounded-md w-6/12 h-96 justify-center mt-32 bg-transparent'>
       <div>
-        <h1 className='font-semibold'>Enter Otp sent to {user?.user?.email}</h1>
+        <h1 className='font-semibold'>Enter Otp sent to {user?.user?.email || user?.newEmail}</h1>
       </div>
       {
         error && <h1 className='text-red-600 font-semibold'>{error}</h1>
