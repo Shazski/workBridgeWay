@@ -74,9 +74,9 @@ export const changeUserPassowrd = createAsyncThunk(
   "user/changeUserPassowrd",
   async (
     userCredentials: {
-      newPassword: string ;
-      oldPassword: string ;
-      email?: string ;
+      newPassword: string;
+      oldPassword: string;
+      email?: string;
     },
     { rejectWithValue }
   ) => {
@@ -97,15 +97,81 @@ export const changeUserEmail = createAsyncThunk(
   "user/changeUserEmail",
   async (
     userCredentials: {
-      email: string ;
-      oldEmail?: string ;
-      otp?:number ;
+      email: string;
+      oldEmail?: string;
+      otp?: number;
     },
     { rejectWithValue }
   ) => {
     try {
       const { data } = await axios.post(
         `${USER_BASE_URL}/update-email`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const addSkill = createAsyncThunk(
+  "user/addSkill",
+  async (
+    userCredentials: {
+      email: string;
+      skill: string;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${USER_BASE_URL}/add-skill`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const removeSkill = createAsyncThunk(
+  "user/removeSkill",
+  async (
+    userCredentials: {
+      email: string;
+      skill: string;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${USER_BASE_URL}/remove-skill`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const updateUserAbout = createAsyncThunk(
+  "user/updateUserAbout",
+  async (
+    userCredentials: {
+      email: string;
+      about: string;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${USER_BASE_URL}/update-about`,
         userCredentials,
         config
       );

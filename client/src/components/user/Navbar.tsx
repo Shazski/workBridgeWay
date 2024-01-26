@@ -37,7 +37,7 @@ const Navbar: FC = () => {
                                 </div>
 
                                 <div className='group'>
-                                    <img src={`${user?.profilePic || PROFILE}`} alt="no profile found" className='w-10 rounded-full duration-700 hover:cursor-pointer' />
+                                    <img src={`${user?.profilePic || PROFILE}`} alt="no profile found" className='w-10 rounded-full h-10 duration-700 hover:cursor-pointer' />
                                     <div className='w-full h-full bg-transparent'>
                                         <div className='absolute  flex-col items-center gap-3 top-20 rounded-md bg-white right-5 w-60 hidden group-hover:flex hover:flex'>
                                             <div>

@@ -4,11 +4,10 @@ import { IoLanguageSharp } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { IoPhonePortraitOutline } from "react-icons/io5";
 import { CiMail } from "react-icons/ci";
-import { useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
-const ProfileTopSection = () => {
-    const languages = ["english", "malalayalam"]
-    const { user } = useSelector((state: any) => state.user)
+const ProfileTopSection = ({ user }) => {
+    const languages = ["english", "malayalam", "englsih", 'asdsad', "dasdasd", 'dasdas']
+
     return (
         <div className='mt-5 ms-4'>
             <div className="lg:flex gap-4">
@@ -25,12 +24,12 @@ const ProfileTopSection = () => {
                         <Link to={'/user/settings/edit-profile'} className='text-sm  font-semibold px-2 lg:py-3 lg:px-6 text-lightgreen py-1 border border-gray-200 '>Edit Profile</Link>
                     </div>
                 </div>
-                <div className="w-6/12 lg:w-2/6  border h-48 lg:h-60 mt-2 lg:mt-0">
+                <div className="w-9/12 sm:6/12 lg:w-2/6  border h-48 lg:h-60 mt-2 lg:mt-0">
                     <div className='m-2 '>
                         <div className="flex justify-between">
                             <h1 className='font-semibold text-blue-gray-800 mt-0.5'>Additonal Details</h1>
                             <div className='border h-7  border-gray-300'>
-                           <Link to={'/user/settings/edit-login'}><FaRegEdit className=' text-lightgreen my-1 mx-2'/></Link> 
+                                <Link to={'/user/settings/edit-login'}><FaRegEdit className=' text-lightgreen my-1 mx-2' /></Link>
                             </div>
                         </div>
                         <div className='flex gap-x-1'>
@@ -50,11 +49,15 @@ const ProfileTopSection = () => {
                         <div className='lg:ms-5'>
                             <div className="flex gap-x-2">
 
-                                {
-                                    languages.map((value, index) => (
-                                        <h1 key={index} className='text-blue-gray-700 text-sm'>{value}</h1>
-                                    ))
-                                }
+                                <div className='grid grid-cols-3 md:grid-cols-4 gap-x-2 '>
+                                    {
+                                        languages.map((value, index) => (
+                                            <div key={index}>
+                                                <h1 className='text-blue-gray-700 text-sm'>{value}</h1>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>

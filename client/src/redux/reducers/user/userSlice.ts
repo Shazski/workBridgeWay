@@ -3,11 +3,14 @@ import { IUserLoginData } from "../../../interface/IuserLogin";
 import { persistReducer } from "redux-persist";
 import { persistConfig } from "../../../config/constants";
 import {
+  addSkill,
   changeUserEmail,
   changeUserPassowrd,
   editUser,
   googleAuth,
   logoutUser,
+  removeSkill,
+  updateUserAbout,
   userSignUp,
 } from "../../actions/user/userActions";
 const userSlice = createSlice({
@@ -75,6 +78,45 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(editUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(addSkill.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addSkill.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(addSkill.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(removeSkill.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeSkill.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(removeSkill.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateUserAbout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserAbout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(updateUserAbout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
