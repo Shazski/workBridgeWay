@@ -146,4 +146,53 @@ export const updateUserAbout_repo = async (userCredentials: {
     return false;
   }
 };
+export const addUserSocialLinks_repo = async (userCredentials: {
+  email: string;
+  socialLinks:{
+    socialMedia:string,
+    link:string
+  }
+}): Promise<IUser | boolean> => {
+  try {
+    const updatedUser = await UserSchema.findOneAndUpdate(
+      { email: userCredentials.email },
+      {
+        $push: {
+          socialLinks: userCredentials.socialLinks,
+        },
+      },
+      { new: true }
+    );
+    if (!updatedUser) return false;
 
+    return updatedUser;
+  } catch (error) {
+    console.log("<Something went wrong in add social link repo>");
+    return false;
+  }
+};
+export const removeUserSocialLinks_repo = async (userCredentials: {
+  socialLinks: {
+    socialMedia:string,
+    link:string
+  };
+  email: string;
+}): Promise<IUser | boolean> => {
+  try {
+    const updatedUser = await UserSchema.findOneAndUpdate(
+      { email: userCredentials.email },
+      {
+        $pull: {
+          socialLinks: userCredentials.socialLinks,
+        },
+      },
+      { new: true }
+    );
+    if (!updatedUser) return false;
+
+    return updatedUser;
+  } catch (error) {
+    console.log("<Something went wrong in remove user socialLinks repo>");
+    return false;
+  }
+};

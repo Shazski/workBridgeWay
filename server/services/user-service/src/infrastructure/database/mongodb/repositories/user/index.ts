@@ -5,6 +5,8 @@ import {
   addUserSkills_repo,
   removeUserSkills_repo,
   updateUserAbout_repo,
+  addUserSocialLinks_repo,
+  removeUserSocialLinks_repo,
 } from "./userRepo";
 
 export = {
@@ -14,4 +16,6 @@ export = {
   addUserSkills_repo,
   removeUserSkills_repo,
   updateUserAbout_repo,
+  addUserSocialLinks_repo,
+  removeUserSocialLinks_repo
 };

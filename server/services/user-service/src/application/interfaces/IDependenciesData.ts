@@ -8,6 +8,8 @@ interface useCaseData {
   addUserSkills_useCase: any;
   removeUserSkill_useCase: any;
   updateUserAbout_useCase: any;
+  addUserSocialLinks_useCase: any;
+  removeUserSocialLinks_useCase: any;
 }
 
 export interface userRepoData {
@@ -17,6 +19,8 @@ export interface userRepoData {
   addUserSkills_repo: any;
   removeUserSkills_repo: any;
   updateUserAbout_repo: any
+  addUserSocialLinks_repo: any
+  removeUserSocialLinks_repo: any
 }
 
 export interface IDependenciesData {

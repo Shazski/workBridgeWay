@@ -13,7 +13,7 @@ const ProfileTopSection = ({ user }) => {
             <div className="lg:flex gap-4">
                 <div className="w-11/12  border lg:h-60 lg:w-7/12">
                     <div className='m-2 relative'>
-                        <img src={PROFILECOVERPIC} alt="" className='lg:w-[750px] lg:h-32 ' />
+                        <img src={PROFILECOVERPIC} alt="" className='lg:w-[750px] xl:w-[800px] lg:h-32 2xl:w-[850px]' />
                         <img src={user?.profilePic || DEFAULTPROFILE} alt="" className='rounded-full w-16 h-16 absolute sm:top-20 top-16 ms-3 lg:w-32 lg:h-32 lg:top-20 lg:ms-6 border-4 border-white ' />
                     </div>
                     <div className='ms-24 lg:ms-52 '>

@@ -5,6 +5,8 @@ import { verifyOtp_useCase } from "./verifyOtp_useCase";
 import { addUserSkills_useCase } from "./addUserSkills_useCase";
 import { removeUserSkill_useCase } from "./removeUserSkill_useCase";
 import { updateUserAbout_useCase } from "./updateUserAbout_useCase";
+import { addUserSocialLinks_useCase } from "./addUserSocialLinks_useCase";
+import { removeUserSocialLinks_useCase } from "./removeUserSocialLinks_useCase";
 export = {
     editUser_useCase,
     findUserByEmail_useCase,
@@ -12,6 +14,8 @@ export = {
     verifyOtp_useCase,
     addUserSkills_useCase,
     removeUserSkill_useCase,
-    updateUserAbout_useCase
+    updateUserAbout_useCase,
+    addUserSocialLinks_useCase,
+    removeUserSocialLinks_useCase,
 }
 

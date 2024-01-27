@@ -5,6 +5,8 @@ import updateEmail_controller from "./updateEmail_controller"
 import addUserSkills_controller from "./addUserSkills_controller"
 import removeUserSkill_controller from "./removeUserSkill_controller"
 import updateUserAbout_controller from "./updateUserAbout_controller"
+import addUserSocialLinks_controller from "./addUserSocialLinks_controller"
+import removeUserSocialLinks_controller from "./removeUserSocialLinks_controller"
 export = (dependencies: IDependenciesData) => {
     return {
         editUser:editUser_controller(dependencies),
@@ -13,5 +15,7 @@ export = (dependencies: IDependenciesData) => {
         addUserSkills:addUserSkills_controller(dependencies),
         removeSkill:removeUserSkill_controller(dependencies),
         updateUserAbout:updateUserAbout_controller(dependencies),
+        addUserSocialLinks: addUserSocialLinks_controller(dependencies),
+        removeUserSocialLinks:removeUserSocialLinks_controller(dependencies)
     }
 }

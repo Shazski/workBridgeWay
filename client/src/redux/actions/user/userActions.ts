@@ -182,3 +182,53 @@ export const updateUserAbout = createAsyncThunk(
     }
   }
 );
+export const updateUserSocialLinks = createAsyncThunk(
+  "user/updateUserSocialLinks",
+  async (
+    userCredentials: {
+      email: string;
+      socialLinks: {
+        socialMedia: string;
+        link: string;
+      };
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${USER_BASE_URL}/add-socialLinks`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const removeUserSocialLinks = createAsyncThunk(
+  "user/removeUserSocialLinks",
+  async (
+    userCredentials: {
+      email: string;
+      socialLinks: {
+        socialMedia: string;
+        link: string;
+      };
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${USER_BASE_URL}/remove-socialLinks`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);

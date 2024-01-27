@@ -5,7 +5,6 @@ const useForm = (initialState: IUserLoginData) => {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.currentTarget
-
         setValues({
             ...values, [name]: value
         })

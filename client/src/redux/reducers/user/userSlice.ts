@@ -10,7 +10,9 @@ import {
   googleAuth,
   logoutUser,
   removeSkill,
+  removeUserSocialLinks,
   updateUserAbout,
+  updateUserSocialLinks,
   userSignUp,
 } from "../../actions/user/userActions";
 const userSlice = createSlice({
@@ -117,6 +119,32 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(updateUserAbout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateUserSocialLinks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserSocialLinks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(updateUserSocialLinks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(removeUserSocialLinks.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeUserSocialLinks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(removeUserSocialLinks.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
