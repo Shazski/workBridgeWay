@@ -6,6 +6,7 @@ export interface useCaseData {
     sendOtp_useCase: any;
     verifyOtp_useCase: any;
     registerCompany_useCase: any;
+    findCompanyByEmail_useCase: any
 }
 
 export interface otpRepoData {

@@ -22,7 +22,7 @@ const UsersSchema: Schema = new Schema(
     jobStatus: { type: String },
     about: { type: String },
     languages: [{ type: String }],
-    phone: { type: Number, unique:true },
+    phone: { type: Number, unique:true, sparse: true },
     education: { type: String },
   },
   {
@@ -43,15 +43,6 @@ UsersSchema.pre("save", function (next) {
 
   });
 });
-
-//prevent password sending to frontend
-UsersSchema.methods.toJSON = function () {
-    const user = this;
-    const userObject = user.toObject();
-    delete userObject.password;
-    delete userObject.__v;
-    return userObject;
-  };
 
 const Users = mongoose.model<IUser>("Users", UsersSchema);
 

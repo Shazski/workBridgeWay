@@ -5,7 +5,11 @@ import { MdCorporateFare } from "react-icons/md";
 import { TbMessageReport } from "react-icons/tb";
 import LOGO from "../../assets/images/Logo.png"
 import { IoExitOutline } from "react-icons/io5"
+import { useDispatch } from "react-redux"
+import { logoutUser } from "../../redux/actions/user/userActions";
+import { AppDispatch } from "../../redux/store";
 const AdminSideBar = () => {
+    const dispatch = useDispatch<AppDispatch>()
     return (
         <>
             <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-4/12 lg:w-3/12 xl:w-3/12 2xl:w-2/12 w-2/12 h-screen overflow-y-auto'>
@@ -49,6 +53,17 @@ const AdminSideBar = () => {
                 </div>
                 <div className='mt-3 md:ms-3 flex gap-3'>
 
+                    <NavLink to='/admin-all-users' className={({ isActive }) => {
+                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                    }}>
+                        <div className="flex gap-3">
+                            <TbMessageReport className="text-xl" />
+                            <h1 className="hidden md:flex">All Users</h1>
+                        </div>
+                    </NavLink>
+                </div>
+                <div className='mt-3 md:ms-3 flex gap-3'>
+
                     <NavLink to='/admin-company-complaints' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}>
@@ -60,7 +75,7 @@ const AdminSideBar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className="flex mt-60 md:ms-8 relative">
+                <div onClick={() => dispatch(logoutUser())} className="flex mt-60 md:ms-8 relative cursor-pointer">
                     <div>
                     <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
                     <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>

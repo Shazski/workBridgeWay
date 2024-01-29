@@ -5,4 +5,6 @@ export interface ICompanyData {
     linkedIn:string,
     companyLogo?:string | null
     location?:string
+    createdAt?:Date | null
+    stage?:string | null
 }

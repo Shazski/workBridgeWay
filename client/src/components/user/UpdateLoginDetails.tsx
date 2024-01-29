@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import VERIFIED from '../../assets/images/verified.png'
+import { toast } from "react-toastify"
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { validatePassword } from "../../validations/ValidationSchema";
 import { changeUserEmail, changeUserPassowrd } from "../../redux/actions/user/userActions";
@@ -37,12 +38,13 @@ const UpdateLoginDetails = () => {
         });
     };
 
-    const handlePasswordSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handlePasswordSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         password.email = user?.email
-        dispatch(changeUserPassowrd(password))
+        await dispatch(changeUserPassowrd(password))
+        toast.success("Password changed successfully")
     }
-    const handleEmailSubmit = async(e: FormEvent<HTMLFormElement>) => {
+    const handleEmailSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (newEmail === user.email) {
             setErr("The email is same as your email")
@@ -53,8 +55,8 @@ const UpdateLoginDetails = () => {
             email: newEmail,
             oldEmail: user.email
         }
-       const res = await dispatch(changeUserEmail(userCredentials))
-        if(res.payload.success) {
+        const res = await dispatch(changeUserEmail(userCredentials))
+        if (res.payload.success) {
             navigate('/update-email/otp')
         }
     }

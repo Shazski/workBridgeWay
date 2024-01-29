@@ -249,3 +249,22 @@ export const companyRegister = createAsyncThunk(
     }
   }
 );
+export const userLogin = createAsyncThunk(
+  "user/userLogin",
+  async (
+    userCredentials: any,
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${AUTH_BASE_URL}/login`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);

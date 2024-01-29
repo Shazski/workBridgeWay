@@ -8,7 +8,11 @@ import { FaPeopleArrows } from "react-icons/fa6";
 import { SlCalender } from "react-icons/sl";
 import { ImProfile } from "react-icons/im";
 import { GoHome } from "react-icons/go";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux"
+import { logoutUser } from "../../redux/actions/user/userActions";
 const CompanySideBar = () => {
+    const dispatch = useDispatch<AppDispatch>()
     return (
         <>
             <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-4/12 lg:w-3/12 xl:w-3/12 2xl:w-2/12 w-2/12 h-screen overflow-y-auto hidden'>
@@ -79,7 +83,7 @@ const CompanySideBar = () => {
                             <h1>Schedules</h1>
                         </div> </NavLink>
                 </div>
-                <div className="flex mt-auto ms-5 relative">
+                <div onClick={() => dispatch(logoutUser())} className="flex mt-auto ms-5 relative cursor-pointer">
                     <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5" />
                     <h1 className=" bg-gray-300 px-12 py-3 rounded-lg text-red-600 mt-0.5">Logout</h1>
                 </div>

@@ -25,6 +25,7 @@ import ProfilePic from './components/user/ProfilePic';
 import { AppDispatch } from './redux/store';
 import { makeErrorDisable } from './redux/reducers/user/userSlice';
 import UpdateLoginDetails from './components/user/UpdateLoginDetails';
+import CompanyRequest from './pages/admin/CompanyRequest';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -39,9 +40,14 @@ function App() {
 
   }, [error, dispatch])
 
-  const ProtectedRoute = ({ element }: { element: ReactNode }) => {
-
+  const UserProtectedRoute = ({ element }: { element: ReactNode }) => {
     return user?.email ? element : <Navigate to="/login" />;
+  }
+  const CompanyProtectedRoute = ({ element }: { element: ReactNode }) => {
+    return user?.role === "company" ? element : <Navigate to="/login" />;
+  }
+  const AdminProtectedRoute = ({ element }: { element: ReactNode }) => {
+    return user?.role === "admin" ? element : <Navigate to="/login" />;
   }
 
   return (
@@ -56,31 +62,34 @@ function App() {
             <Routes>
 
               {/* common routes */}
-              <Route path='/' element={<Home />} />
+              <Route path='/' element={user?.role === "company" ? <Navigate to={'/company-dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin-dashboard'}/>: <Home />} />
               <Route path='/login' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <Login />} />
               <Route path='/signup' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <SignUp />} />
               <Route path='/jobs' element={<FindJobs />} />
               <Route path='/otp' element={user?.email ? <Otp /> : <Navigate to={'/signup'} />} />
               <Route path='/jobs/:id' element={<JobDescription />} />
               <Route path='/company-register' element={<CompanyRegister />} />
-              <Route path='/update-email/otp' element={<Otp />} />
-
+              <Route path='/update-email/otp' element={user?.newEmail ? <Otp />: <Navigate to="/login" />} />
 
               {/* company routes */}
-              <Route path='/company-dashboard' element={<CompanyDashboard />} />
-              <Route path='/company-applicants/:id' element={<JobApplicants />} />
+              <Route path='/company-dashboard' element={<CompanyProtectedRoute element={<CompanyDashboard />} />} />
+              <Route path='/company-applicants/:id' element={<CompanyProtectedRoute element={<JobApplicants />} />} />
 
               {/* user routes */}
-              <Route path='user' element={<ProtectedRoute element={<UserSidebar />} />}>
+              <Route path='user' element={<UserProtectedRoute element={<UserSidebar />} />}>
                 <Route path='dashboard' element={<Dashboard />} />
                 <Route path='profile' element={<Profile />} />
                 <Route path='messages' element={<Messages />} />
                 <Route path='applications' element={<Applications />} />
                 <Route path='settings' element={<Settings />} >
                   <Route path='edit-profile' element={<ProfilePic />} />
-                  <Route path='edit-login' element={<UpdateLoginDetails/>} />
+                  <Route path='edit-login' element={<UpdateLoginDetails />} />
                 </Route>
               </Route>
+
+              {/* Admin Routes */}
+              <Route path='/admin-dashboard' element={<AdminProtectedRoute element={<Dashboard/>}/>}/>
+              <Route path='/admin-company-requests' element={<AdminProtectedRoute element={<CompanyRequest/>}/>}/>
             </Routes>
           </div>
         </Router>

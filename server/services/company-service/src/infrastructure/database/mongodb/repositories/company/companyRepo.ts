@@ -15,3 +15,18 @@ export const registerCompany = async (
     return false;
   }
 };
+export const findCompanyByEmail = async (
+  companyCredentials: ICompany
+): Promise<ICompanyData | boolean> => {
+  try {
+    const companyExists:ICompanyData | null = await CompanySchema.findOne({
+      email:companyCredentials.email
+    });
+    if (!companyExists) return false;
+
+    return companyExists;
+  } catch (error) {
+    console.log("<<Something went wrong in find company by email repo >>");
+    return false;
+  }
+};

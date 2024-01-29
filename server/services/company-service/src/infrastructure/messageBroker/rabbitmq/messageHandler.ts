@@ -12,6 +12,9 @@ export default class MessageHandler {
             case 'registerCompany':
                 response = await companyRepo.registerCompany(data)
                 break;
+            case 'companyExists':
+                response = await companyRepo.findCompanyByEmail(data)
+                break;
             default:
                 response = 'Request-key notfound'
                 break;

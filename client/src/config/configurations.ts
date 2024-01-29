@@ -12,6 +12,10 @@ export const config = {
   credentials: "include",
 };
 
+export const appJson = {
+  "Content-Type": "application/json",
+};
+
 export const handleError = (
   error: AxiosError<MyApiError>,
   rejectWithValue: (value: string | unknown) => string | unknown

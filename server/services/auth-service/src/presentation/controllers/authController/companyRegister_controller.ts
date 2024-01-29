@@ -8,7 +8,7 @@ export = (dependencies:DependenciesData) => {
         const companyCredentials:ICompanyData = req.body
         try {
             const companyExists = await findUserByEmail_useCase(dependencies).execute(companyCredentials)
-            if(companyExists) return next(ErrorResponse.conflict("email is already registered"))
+            if(companyExists) return next(ErrorResponse.conflict("email or phone is already registered"))
 
             const userCredentials = {
                 userName:req.body.name,

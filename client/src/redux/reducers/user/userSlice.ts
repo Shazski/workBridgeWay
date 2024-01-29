@@ -14,6 +14,7 @@ import {
   removeUserSocialLinks,
   updateUserAbout,
   updateUserSocialLinks,
+  userLogin,
   userSignUp,
 } from "../../actions/user/userActions";
 const userSlice = createSlice({
@@ -168,10 +169,10 @@ const userSlice = createSlice({
       })
       .addCase(changeUserEmail.fulfilled, (state, action) => {
         state.loading = false;
-        if(action.payload.message) {
+        if (action.payload.message) {
           state.user.newEmail = action.payload.message as IUserLoginData;
         } else {
-          state.user = action.payload as IUserLoginData
+          state.user = action.payload as IUserLoginData;
         }
         state.error = null;
       })
@@ -191,9 +192,22 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(userLogin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(userLogin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(userLogin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
-export const { makeErrorDisable  } =  userSlice.actions
+export const { makeErrorDisable } = userSlice.actions;
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
 
 export default persistedUserReducer;

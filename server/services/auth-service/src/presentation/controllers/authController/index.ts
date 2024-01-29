@@ -3,6 +3,7 @@ import googleAuth from "./googleAuth";
 import logoutUser from "./logoutUser";
 import signUpUser from "./signUpUser";
 import companyRegister_controller from "./companyRegister_controller";
+import login_controller from "./login_controller";
 
 export = (dependencies: DependenciesData) => {
     return {
@@ -10,5 +11,6 @@ export = (dependencies: DependenciesData) => {
         logoutUser:logoutUser(),
         googleAuth:googleAuth(dependencies),
         companyRegister:companyRegister_controller(dependencies),
+        login:login_controller(dependencies)
     }
 }

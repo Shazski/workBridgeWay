@@ -1,5 +1,6 @@
-import { registerCompany } from "./companyRepo";
+import { registerCompany,findCompanyByEmail } from "./companyRepo";
 
 export = {
-    registerCompany
+    registerCompany,
+    findCompanyByEmail
 }

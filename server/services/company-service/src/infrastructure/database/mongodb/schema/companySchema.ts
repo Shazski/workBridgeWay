@@ -14,19 +14,12 @@ const CompanySchema: Schema = new Schema(
     headOffice: { type: String },
     founded: { type: String },
     websiteLink: { type: String },
+    stage:{Type:String},
     password: { type: String, required: true },
     description: { type: String },
     techStack: [{ type: String, default: [] }],
   },
   {
-    toJSON: {
-      transform(doc, ret) {
-        delete ret.password;
-        delete ret._v;
-        delete ret.createdAt;
-        delete ret.updatedAt;
-      },
-    },
     timestamps: true,
   }
 );

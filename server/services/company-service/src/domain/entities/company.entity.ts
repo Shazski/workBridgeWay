@@ -2,15 +2,16 @@ import { Document, ObjectId } from "mongoose";
 
 export interface ICompany extends Document {
   _id: ObjectId;
-  Email: String | null;
-  CompanyLogo: String | null;
-  Name: String | null;
-  LinkedIn: String | null;
-  Locations: String[] | null;
-  HeadOffice: String | null;
-  Founded: String | null;
-  WebsiteLink: String | null;
-  Password: String | null;
-  Description: String | null;
-  TechStack: String[] | null;
+  email: String | null;
+  companyLogo: String | null;
+  name: String | null;
+  linkedIn: String | null;
+  locations: String[] | null;
+  headOffice: String | null;
+  founded: String | null;
+  websiteLink: String | null;
+  password: String | null;
+  description: String | null;
+  techStack: String[] | null;
+  stage: string | null
 }
