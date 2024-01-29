@@ -3,6 +3,6 @@ export interface ICompanyData {
     email:string,
     password?:string,
     linkedIn:string,
-    companyLogo?:string | null
+    companyLogo?:string
     location?:string
 }

@@ -23,6 +23,9 @@ export default class ErrorResponse extends Error {
   static notFound(msg: string): ErrorResponse {
     return new ErrorResponse(404, msg || "Not Found");
   }
+  static conflict(msg: string): ErrorResponse {
+    return new ErrorResponse(409, msg || "Conflict");
+  }
 
   static internalError(msg: string): ErrorResponse {
     return new ErrorResponse(500, msg || "internal Server Error");

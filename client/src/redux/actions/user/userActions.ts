@@ -7,6 +7,7 @@ import {
 } from "../../../config/configurations";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 import { AUTH_BASE_URL, USER_BASE_URL } from "../../../config/constants";
+import { ICompanyData } from "../../../interface/ICompanyData";
 
 export const userSignUp = createAsyncThunk(
   "user/userSignUp",
@@ -222,6 +223,22 @@ export const removeUserSocialLinks = createAsyncThunk(
     try {
       const { data } = await axios.post(
         `${USER_BASE_URL}/remove-socialLinks`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const companyRegister = createAsyncThunk(
+  "user/companyRegister",
+  async (userCredentials: ICompanyData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${AUTH_BASE_URL}/company-register`,
         userCredentials,
         config
       );

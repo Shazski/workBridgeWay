@@ -21,7 +21,6 @@ export = (dependencies: DependenciesData): any => {
 
     //To check whether the user email is taken or not
     if (!userCredentials.otp) {
-
       try {
         const userExist = await findUserByEmail_useCase(dependencies).execute(
           userCredentials

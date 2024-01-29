@@ -7,7 +7,7 @@ const UsersSchema: Schema = new Schema(
     email: { type: String, required: true,unique:true },
     profilePic: { type: String },
     password: { type: String, required: true },
-    role: { type: String, required: true, enum: ["user"], default:"user" },
+    role: { type: String, required: true, enum: ["user","company","employee","admin"], default:"user" },
     skills: [{ type: String }],
     socialLinks: [
       {

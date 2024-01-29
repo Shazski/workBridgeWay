@@ -25,6 +25,7 @@ export const validationSchemaCompanyRegister = Yup.object().shape({
   name: Yup.string().required("Company name is required"),
   companyLogo: Yup.mixed().required("Logo is required"),
   location: Yup.string().required("Company location is required"),
+  phone: Yup.number().required("Phone is required"),
   linkedIn: Yup.string().required("Company linkedIn link is required"),
   email: Yup.string()
     .email("Invalid email address")
@@ -35,7 +36,7 @@ export const validationSchemaCompanyRegister = Yup.object().shape({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       "Password must be at least 8 characters and include uppercase letter, lowercase letter,and special character"
     )
-    .max(10, "Must be less than 10 characters"),
+    .max(20, "Must be less than 20 characters"),
   confirmPassword: Yup.string()
     .required("confirm your password")
     .oneOf([Yup.ref("password")], "Passwords must Match"),

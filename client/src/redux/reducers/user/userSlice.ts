@@ -6,6 +6,7 @@ import {
   addSkill,
   changeUserEmail,
   changeUserPassowrd,
+  companyRegister,
   editUser,
   googleAuth,
   logoutUser,
@@ -177,7 +178,19 @@ const userSlice = createSlice({
       .addCase(changeUserEmail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+      .addCase(companyRegister.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(companyRegister.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(companyRegister.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
   },
 });
 export const { makeErrorDisable  } =  userSlice.actions

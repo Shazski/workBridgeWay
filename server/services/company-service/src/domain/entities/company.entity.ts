@@ -6,11 +6,11 @@ export interface ICompany extends Document {
   CompanyLogo: String | null;
   Name: String | null;
   LinkedIn: String | null;
-  Locations: String | null;
+  Locations: String[] | null;
   HeadOffice: String | null;
   Founded: String | null;
   WebsiteLink: String | null;
   Password: String | null;
   Description: String | null;
-  TechStack: String | null;
+  TechStack: String[] | null;
 }

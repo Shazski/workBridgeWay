@@ -2,6 +2,7 @@ import LOGO from "../../assets/images/defaultProfile.jpg"
 import PICBTN from '../../assets/images/PicButton.png'
 import CLOSEEYE from "../../assets/images/close-eye.jpg"
 import OPENEYE from "../../assets/images/open-eye.png"
+import { useDispatch, useSelector } from "react-redux"
 import { FC, useState, useRef, ChangeEvent } from 'react'
 import SignUpNavbar from '../../components/user/SignUpNavbar'
 // import { Link } from 'react-router-dom'
@@ -9,7 +10,11 @@ import { Formik, Form, Field, ErrorMessage, isObject } from "formik"
 import { validationSchemaCompanyRegister } from '../../validations/ValidationSchema'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AppDispatch } from "../../redux/store"
+import { companyRegister } from "../../redux/actions/user/userActions"
 const CompanyRegister: FC = () => {
+    const { error } = useSelector((state: any) => state.user)
+    const dispatch = useDispatch<AppDispatch>()
     const [loading, setLoading] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
@@ -53,9 +58,11 @@ const CompanyRegister: FC = () => {
                         <img src={PICBTN} alt="" className='w-5 absolute ms-16 mt-14' />
                     </div>
                 </div>
-
+                    { error &&
+                        <h1 className="text-center text-red-600 font-semibold mt-5">{error}</h1>
+                    }
                 <Formik
-                    initialValues={{ name: "", email: "", password: "", location: "", linkedIn: "", companyLogo: null, confirmPassword: "", }}
+                    initialValues={{ name: "", email: "", password: "", location: "", linkedIn: "", companyLogo: null, confirmPassword: "",phone:"", }}
                     validationSchema={validationSchemaCompanyRegister}
                     onSubmit={async (values, { resetForm }) => {
                         if (!isObject(values.companyLogo)) {
@@ -64,17 +71,20 @@ const CompanyRegister: FC = () => {
                             console.log(typeof values.companyLogo)
                             const companyLogo = await imageUpload(values.companyLogo)
                             values.companyLogo = companyLogo
-                            console.log(values, "logocompan")
-                            setImgPreview("")
-                            toast.success("Register success you will get an email after admin verification")
-                            resetForm()
+                            const res = await dispatch(companyRegister(values))
+                            console.log(res, "response data")
+                            if(res.payload.success) {
+                                toast.success("Register success you will get an email after admin verification")
+                                resetForm()
+                            } 
                         }
                     }}>
                     {({ setFieldValue }) => (
                         <Form>
                             <div className='text-center pt-12'>
                                 <div>
-                                    <Field type="text" placeholder='Company Name' name="name" className='border ps-2 rounded-md h-12 w-64' required />
+                                    <ErrorMessage name="companyLogo" component="div" className="text-red-600" />
+                                    <Field type="text" placeholder='Company Name' name="name" className='border outline-none ps-2 rounded-md h-12 w-64' required />
                                     <input ref={imgRef} type="file" placeholder='Company Name' className='border ps-2 rounded-md h-12 w-64 hidden' onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                         const selectedFile = e.target.files && e.target.files[0];
                                         if (selectedFile) {
@@ -83,34 +93,37 @@ const CompanyRegister: FC = () => {
                                         }
                                     }} />
                                     <ErrorMessage name="name" component="div" className="text-red-600" />
-                                    <ErrorMessage name="companyLogo" component="div" className="text-red-600" />
                                 </div>
                                 <div>
-                                    <Field type="email" placeholder='Company Email' name="email" className='border ps-2 rounded-md h-12 w-64 mt-3' required />
+                                    <Field type="email" placeholder='Company Email' name="email" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
                                     <ErrorMessage name="email" component="div" className="text-red-600" />
                                 </div>
                                 <div>
-                                    <Field type="text" placeholder='Company Location' name="location" className='border ps-2 rounded-md h-12 w-64 mt-3' required />
+                                    <Field type="text" placeholder='Company Location' name="location" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
                                     <ErrorMessage name="location" component="div" className="text-red-600" />
                                 </div>
                                 <div>
-                                    <Field type="text" placeholder='Company LinkedIn Link' name="linkedIn" className='border ps-2 rounded-md h-12 w-64 mt-3' required />
+                                    <Field type="text" placeholder='Company LinkedIn Link' name="linkedIn" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
                                     <ErrorMessage name="linkedIn" component="div" className="text-red-600" />
                                 </div>
+                                <div>
+                                    <Field type="number" placeholder='Company phone' name="phone" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
+                                    <ErrorMessage name="phone" component="div" className="text-red-600" />
+                                </div>
                                 <div className='flex justify-center relative'>
-                                    <Field name="password" type={showPassword ? "text" : "password"} placeholder='Password' className='border  ps-2 rounded-md h-12 w-64 mt-3' required />
+                                    <Field name="password" type={showPassword ? "text" : "password"} placeholder='Password' className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
                                     <img className='absolute hover:cursor-pointer top-4 right-1/4 w-6 h-8 pt-2 lg:right-auto ms-56 lg:left-auto' src={showPassword ? OPENEYE : CLOSEEYE} alt="" onClick={() => setShowPassword(!showPassword)} />
                                 </div>
                                 <ErrorMessage name="password" component="div" className="text-red-600" />
                                 <div className='flex justify-center relative'>
-                                    <Field name="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder='Confirm Password' className='border  ps-2 rounded-md h-12 w-64 mt-3' required />
+                                    <Field name="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder='Confirm Password' className='outline-none border  ps-2 rounded-md h-12 w-64 mt-3' required />
                                     <img className='absolute hover:cursor-pointer top-4 right-1/4 w-6 h-8 pt-2 lg:right-auto ms-56 lg:left-auto' src={showConfirmPassword ? OPENEYE : CLOSEEYE} alt="" onClick={() => setShowConfirmPassword(!showConfirmPassword)} />
                                 </div>
                                 <ErrorMessage name="confirmPassword" component="div" className="text-red-600" />
                             </div>
                             <div className='flex flex-col items-center'>
                                 <div>
-                                    <button type="submit" className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-green-500 hover:scale-95 hover:font-semibold bg-green-500'>
+                                    <button type="submit" className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-lightgreen hover:scale-95 hover:font-semibold bg-lightgreen'>
                                         {loading ? "Loading..." : "Register"}
                                     </button>
                                 </div>

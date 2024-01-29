@@ -4,11 +4,12 @@ import { combineReducers } from "@reduxjs/toolkit";
 import persistStore from "redux-persist/es/persistStore"; 
 import profileSlice from "./reducers/user/profileSlice";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist";
-
+import companySlice from "./reducers/company/companySlice";
 
 const reducer = combineReducers({
     user: persistedUserReducer,
-    profile:profileSlice
+    profile:profileSlice,
+    company:companySlice,
 })
 
 

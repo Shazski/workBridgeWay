@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import SignUpNavbar from '../../components/user/SignUpNavbar'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Formik, Form } from "formik"
 import SignUpInputField from "../../components/user/SignUpInputField"
 import { validationSchemaSignUp } from '../../validations/ValidationSchema'
@@ -8,8 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
 import { IUserSelector } from '../../interface/IuserSlice'
 import { userSignUp } from '../../redux/actions/user/userActions'
-import { ToastContainer, toast } from 'react-toastify'
-
+import {toast } from 'react-toastify'
 import GoogleAuthButton from '../../components/user/GoogleAuthButton'
 
 
@@ -25,7 +24,7 @@ const SignUp: FC = () => {
         }
     }, [user, navigate]);
 
-    
+
 
     return (
         <div className='flex '>
@@ -41,7 +40,7 @@ const SignUp: FC = () => {
                         <h1 className='text-3xl font-bold'>Get Started With WorkBridgeWay</h1>
                         <h1 className='text-xs text-gray-600'>Getting started is Easy</h1>
                     </div>
-                    <GoogleAuthButton/>
+                    <GoogleAuthButton />
                     <div className="flex items-center justify-center text-center">
                         <div className="pt-5 border-b border-gray-500 w-8 mx-2"></div>
                         <h1 className='text-center pt-5 text-xs'>Or continue with</h1>
@@ -81,12 +80,15 @@ const SignUp: FC = () => {
                                             )
                                     }
                                 </button>
+                                <div className='flex justify-center gap-x-2 mt-2'>
+                                    <h1 className="font-semibold">Register Your Company?</h1>
+                                    <NavLink to={'/company-register'} className="text-center text-lightgreen font-bold">Register</NavLink>
+                                </div>
                             </div>
                         </div>
                     </Form>
                 </Formik>
             </div>
-            <ToastContainer />
         </div>
     )
 }
