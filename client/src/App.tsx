@@ -6,8 +6,8 @@ import Footer from './components/user/Footer';
 import FindJobs from './pages/user/FindJobs';
 import JobDescription from './pages/user/JobDescription';
 import CompanyRegister from './pages/company/CompanyRegister';
-import CompanySideBar from './components/company/CompanySideBar';
-import CompanyNavbar from './components/company/CompanyNavbar';
+// import CompanySideBar from './components/company/CompanySideBar';
+// import CompanyNavbar from './components/company/CompanyNavbar';
 import CompanyDashboard from './pages/company/ComapnyDashboard';
 import JobApplicants from './pages/company/JobApplicants';
 import Otp from './pages/user/Otp';
@@ -26,6 +26,10 @@ import { AppDispatch } from './redux/store';
 import { makeErrorDisable } from './redux/reducers/user/userSlice';
 import UpdateLoginDetails from './components/user/UpdateLoginDetails';
 import CompanyRequest from './pages/admin/CompanyRequest';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AllUsers from './pages/admin/AllUsers';
+import CompanyList from './pages/admin/CompanyList';
+import Complaints from './pages/admin/Complaints';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -53,16 +57,14 @@ function App() {
   return (
     <div>
       <ToastContainer />
-      <div className='md:flex'>
         <Router>
-          {user?.role === 'company' && <CompanySideBar />}
-          {user?.role === 'admin' && <AdminSideBar />}
-          <div className='flex-1'>
-            {user?.role === 'company' && <CompanyNavbar />}
+          {/* {user?.role === 'company' && <CompanySideBar />} */}
+          <div>
+            {/* {user?.role === 'company' && <CompanyNavbar /> */}
             <Routes>
 
               {/* common routes */}
-              <Route path='/' element={user?.role === "company" ? <Navigate to={'/company-dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin-dashboard'}/>: <Home />} />
+              <Route path='/' element={user?.role === "company" ? <Navigate to={'/company-dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin/dashboard'}/>: <Home />} />
               <Route path='/login' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <Login />} />
               <Route path='/signup' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <SignUp />} />
               <Route path='/jobs' element={<FindJobs />} />
@@ -88,12 +90,17 @@ function App() {
               </Route>
 
               {/* Admin Routes */}
-              <Route path='/admin-dashboard' element={<AdminProtectedRoute element={<Dashboard/>}/>}/>
-              <Route path='/admin-company-requests' element={<AdminProtectedRoute element={<CompanyRequest/>}/>}/>
+              <Route path='admin' element={<AdminProtectedRoute element={<AdminSideBar/>}/>}>
+              <Route path='dashboard' element={<AdminProtectedRoute element={<AdminDashboard/>}/>}/>
+              <Route path='companies' element={<AdminProtectedRoute element={<CompanyList/>}/>}/>
+              <Route path='all-users' element={<AdminProtectedRoute element={<AllUsers/>}/>}/>
+              <Route path='company-complaints' element={<AdminProtectedRoute element={<Complaints/>}/>}/>
+              <Route path='company-requests' element={<AdminProtectedRoute element={<CompanyRequest/>}/>}/>
+              </Route>
             </Routes>
           </div>
         </Router>
-      </div>
+
       {(user?.role === 'user') && <Footer />}
     </div>
   );

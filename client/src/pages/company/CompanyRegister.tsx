@@ -100,7 +100,7 @@ const CompanyRegister: FC = () => {
                                 </div>
                                 <div>
                                     <Field type="text" placeholder='Company Location' name="location" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
-                                    <ErrorMessage name="location" component="div" className="text-red-600" />
+                                    <ErrorMessage name="headOffice" component="div" className="text-red-600" />
                                 </div>
                                 <div>
                                     <Field type="text" placeholder='Company LinkedIn Link' name="linkedIn" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />

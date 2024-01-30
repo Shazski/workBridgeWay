@@ -18,7 +18,7 @@ const UserSidebar = () => {
     };
     return (
         <div className="flex">
-            <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
+            <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
                 <div className='flex'>
                     <NavLink to="/"><img src={LOGO} alt="" className='w-24' /></NavLink>
                     <h1 className='mt-5 font-bold text-lightgreen hidden md:flex '>WorkBridgeWay</h1>

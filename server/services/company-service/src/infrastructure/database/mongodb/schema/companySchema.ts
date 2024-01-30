@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
 import { ICompany } from "../../../../domain/entities/company.entity";
 import bcrypt from "bcrypt";
 
@@ -14,7 +14,7 @@ const CompanySchema: Schema = new Schema(
     headOffice: { type: String },
     founded: { type: String },
     websiteLink: { type: String },
-    stage:{Type:String},
+    stage: { type: String, default: "pending" },
     password: { type: String, required: true },
     description: { type: String },
     techStack: [{ type: String, default: [] }],

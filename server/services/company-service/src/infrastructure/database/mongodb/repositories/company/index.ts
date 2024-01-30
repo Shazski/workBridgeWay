@@ -1,6 +1,8 @@
-import { registerCompany,findCompanyByEmail } from "./companyRepo";
+import { registerCompany,findCompanyByEmail, getAllCompanyData_repo,updateRequest } from "./companyRepo";
 
 export = {
     registerCompany,
-    findCompanyByEmail
+    findCompanyByEmail,
+    getAllCompanyData_repo,
+    updateRequest
 }

@@ -15,7 +15,7 @@ const CompanySideBar = () => {
     const dispatch = useDispatch<AppDispatch>()
     return (
         <>
-            <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-4/12 lg:w-3/12 xl:w-3/12 2xl:w-2/12 w-2/12 h-screen overflow-y-auto hidden'>
+            <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-4/12 lg:w-3/12 xl:w-3/12 2xl:w-2/12 w-2/12 h-screen overflow-y-auto hidden'>
                 <div className='flex'>
                     <img src={LOGO} alt="" className='w-28' />
                     <h1 className='mt-5 font-bold text-lightgreen hidden md:flex'>WorkBridgeWay</h1>

@@ -1,8 +1,9 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, Outlet } from "react-router-dom"
 import { GoHome } from "react-icons/go";
 import { FiGitPullRequest } from "react-icons/fi";
+import { FaUsers } from "react-icons/fa";
 import { MdCorporateFare } from "react-icons/md";
-import { TbMessageReport } from "react-icons/tb";
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import LOGO from "../../assets/images/Logo.png"
 import { IoExitOutline } from "react-icons/io5"
 import { useDispatch } from "react-redux"
@@ -11,15 +12,15 @@ import { AppDispatch } from "../../redux/store";
 const AdminSideBar = () => {
     const dispatch = useDispatch<AppDispatch>()
     return (
-        <>
-            <div className='border-e-2 md:flex md:flex-col md:sticky top-0 md:w-4/12 lg:w-3/12 xl:w-3/12 2xl:w-2/12 w-2/12 h-screen overflow-y-auto'>
+        <div className="flex">
+            <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
                 <div className='flex'>
                     <img src={LOGO} alt="" className='w-24' />
                     <h1 className='mt-5 font-bold text-lightgreen hidden md:flex '>WorkBridgeWay</h1>
                 </div>
                 <div className='mt-12 md:ms-3 inline-flex gap-3'>
 
-                    <NavLink to='/admin-dashboard' className={({ isActive }) => {
+                    <NavLink to='/admin/dashboard' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}> <div className="inline-flex gap-3">
                             <GoHome className="text-xl" /> <h1 className="hidden md:flex">
@@ -29,7 +30,7 @@ const AdminSideBar = () => {
                 </div>
                 <div className='mt-3 md:ms-3 flex gap-3'>
 
-                    <NavLink to='/admin-company-requests' className={({ isActive }) => {
+                    <NavLink to='/admin/company-requests' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}> <div className="flex gap-3">
                             <FiGitPullRequest className="text-xl" />
@@ -41,7 +42,7 @@ const AdminSideBar = () => {
                 </div>
                 <div className='mt-3 md:ms-3 flex gap-3'>
 
-                    <NavLink to='/admin-companies' className={({ isActive }) => {
+                    <NavLink to='/admin/companies' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}> <div className="flex gap-3">
                             <MdCorporateFare className="text-xl" />
@@ -53,22 +54,22 @@ const AdminSideBar = () => {
                 </div>
                 <div className='mt-3 md:ms-3 flex gap-3'>
 
-                    <NavLink to='/admin-all-users' className={({ isActive }) => {
+                    <NavLink to='/admin/all-users' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}>
                         <div className="flex gap-3">
-                            <TbMessageReport className="text-xl" />
+                            <FaUsers className="text-xl" />
                             <h1 className="hidden md:flex">All Users</h1>
                         </div>
                     </NavLink>
                 </div>
                 <div className='mt-3 md:ms-3 flex gap-3'>
 
-                    <NavLink to='/admin-company-complaints' className={({ isActive }) => {
+                    <NavLink to='/admin/company-complaints' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}>
                         <div className="flex gap-3">
-                            <TbMessageReport className="text-xl" />
+                            <MdOutlineReportGmailerrorred className="text-xl" />
                             <h1 className="hidden md:flex">
                             All Complaints
                             </h1>
@@ -91,7 +92,10 @@ const AdminSideBar = () => {
                     </div>
                 </div>
             </div>
-        </>
+            <div className="w-full">
+            <Outlet/>
+            </div>
+        </div>
     )
 }
 

@@ -5,3 +5,10 @@
 body {
     overflow-x: hidden;
 }
+
+.scrollbar::-webkit-scrollbar {
+    display:none;
+}
+.paginationactive {
+    @apply bg-lightgreen
+}

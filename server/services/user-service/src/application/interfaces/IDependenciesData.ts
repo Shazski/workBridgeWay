@@ -23,8 +23,14 @@ export interface userRepoData {
   removeUserSocialLinks_repo: any
 }
 
+interface adminUseCaseData {
+  getAllCompany_useCase:any
+  updateCompanyRequest_useCase: any
+}
+
 export interface IDependenciesData {
   user_useCase: useCaseData;
+  admin_useCase:adminUseCaseData
   userRepo: userRepoData;
   RabbitMqClient:typeof RabbitMqClient
 }
