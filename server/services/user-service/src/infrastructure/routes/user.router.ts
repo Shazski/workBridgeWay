@@ -14,6 +14,7 @@ export = (dependencies: IDependenciesData) => {
     removeUserSocialLinks,
   } = userController(dependencies);
   const router = express.Router();
+  
   router.post("/edit-user", editUser);
   router.post("/update-password", updatePassword);
   router.post("/update-email", updateEmail);

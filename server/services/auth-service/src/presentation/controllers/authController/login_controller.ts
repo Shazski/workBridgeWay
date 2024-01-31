@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
 import { ErrorResponse, dependencies, generateToken } from "../../../utils";
 import bcrypt from "bcrypt";
+import { cookieConfig } from "../../../utils/constants/constant";
 export = (dependencies: DependenciesData) => {
   const {
     user_useCase: { findUserByEmail_useCase, findCompanyByEmail_useCase },
@@ -12,7 +13,7 @@ export = (dependencies: DependenciesData) => {
       const user = await findUserByEmail_useCase(dependencies).execute(
         userCredentials
       );
-      console.log(user, "user data");
+
       if (!user)
         return next(ErrorResponse.unauthorized("The email is not registered"));
 
@@ -31,7 +32,12 @@ export = (dependencies: DependenciesData) => {
             ErrorResponse.unauthorized("Incorrect password or email")
           );
         const token = generateToken(user._id);
-        return res.cookie("user_auth", token).status(200).json(user);
+        delete user.password;
+        user.token = token
+        return res
+          .cookie("auth_jwt", token, cookieConfig)
+          .status(200)
+          .json(user);
       } else if (user.role === "company") {
         const company = await findCompanyByEmail_useCase(dependencies).execute(
           userCredentials
@@ -44,7 +50,7 @@ export = (dependencies: DependenciesData) => {
             )
           );
         }
-        const passwordMatchCompany = bcrypt.compareSync(
+        const passwordMatchCompany: boolean = bcrypt.compareSync(
           userCredentials.password,
           company.password
         );
@@ -53,7 +59,9 @@ export = (dependencies: DependenciesData) => {
             ErrorResponse.unauthorized("email or password is incorrect")
           );
         const token = generateToken(user._id);
-        res.cookie("company_auth", token).status(200).json(user);
+        delete user.password;
+        user.token = token
+        res.cookie("auth_jwt", token, cookieConfig).status(200).json(user);
       } else {
         console.log("else case work");
       }

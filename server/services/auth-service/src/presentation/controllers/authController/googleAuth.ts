@@ -21,8 +21,9 @@ export = (dependencies: DependenciesData) => {
       );
       if (userExists) {
         const token = generateToken(userExists._id);
-        res.cookie("user_jwt", token, cookieConfig);
+        res.cookie("auth_jwt", token, cookieConfig);
         const user = userExists;
+        user.token = token
         res.status(201).json(user);
       } else {
         const strongPassword = Math.random().toString(36).slice(-8);
@@ -32,7 +33,9 @@ export = (dependencies: DependenciesData) => {
         );
         if(user)
         await sentGoogleAuthPasswordMail(user.email, strongPassword);
-
+        const token = generateToken(user._id);
+        res.cookie("auth_jwt", token, cookieConfig);
+        user.token =  token;
         res.status(201).json(user);
       }
     } catch (error) {

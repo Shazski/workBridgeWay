@@ -14,7 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 if (ENV === "dev") app.use(logger("dev"));
-
 app.use("/api/v1", routes(dependencies));
 
 app.use((req: Request, res: Response, next: NextFunction) => {

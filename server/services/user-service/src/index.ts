@@ -9,7 +9,6 @@ import { connect } from "./config/index";
 
   env.check();
   await connect();
-
   app.listen(PORT, () => {
     console.log(`User service is running on port ${PORT}`)
     RabbitMQClient.initialize()

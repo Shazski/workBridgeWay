@@ -5,14 +5,11 @@ import persistStore from "redux-persist/es/persistStore";
 import profileSlice from "./reducers/user/profileSlice";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import companySlice from "./reducers/company/companySlice";
-
 const reducer = combineReducers({
     user: persistedUserReducer,
     profile:profileSlice,
     company:companySlice,
 })
-
-
 
 export const store = configureStore({
   reducer: reducer,
@@ -21,7 +18,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    })
 });
 
 export const persistor = persistStore(store)

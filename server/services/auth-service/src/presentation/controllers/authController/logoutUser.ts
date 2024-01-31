@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorResponse } from "../../../utils";
+import { DependenciesData } from "../../../application/interfaces/IDependencies";
 
-export = () => {
+export = (dependencies: DependenciesData) => {
   const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      res.clearCookie("user_jwt");
+      res.clearCookie("auth_jwt");
       return res.json({ success: true, message: "successfully logged out" });
     } catch (error) {
       next(ErrorResponse.badRequest("something went wrong"));

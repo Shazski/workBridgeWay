@@ -9,7 +9,7 @@ export const verifyToken = (
 ) => {
   try {
     const token =
-      req.cookies("user_jwt") || req.headers[`authorization`]?.split(" ")[1];
+      req.cookies("auth_jwt") || req.headers[`authorization`]?.split(" ")[1];
     if (!token) {
       return res
         .status(404)
@@ -23,5 +23,6 @@ export const verifyToken = (
     });
   } catch (error) {
     console.log("<< Something went wrong in verifying token >>");
+    next(error)
   }
 };

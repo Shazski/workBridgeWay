@@ -8,5 +8,5 @@ export {
     ErrorResponse,
     EnvironmentCheck,
     corsOptions,
-    sendOtp
+    sendOtp,
 }

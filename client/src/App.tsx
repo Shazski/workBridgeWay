@@ -36,12 +36,14 @@ function App() {
   const { user, error } = useSelector((state: any) => state?.user);
 
   useEffect(() => {
+
+    
+
     if (error) {
       setTimeout(() => {
         dispatch(makeErrorDisable())
       }, 10000);
     }
-
   }, [error, dispatch])
 
   const UserProtectedRoute = ({ element }: { element: ReactNode }) => {
@@ -58,11 +60,8 @@ function App() {
     <div>
       <ToastContainer />
         <Router>
-          {/* {user?.role === 'company' && <CompanySideBar />} */}
           <div>
-            {/* {user?.role === 'company' && <CompanyNavbar /> */}
             <Routes>
-
               {/* common routes */}
               <Route path='/' element={user?.role === "company" ? <Navigate to={'/company-dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin/dashboard'}/>: <Home />} />
               <Route path='/login' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <Login />} />

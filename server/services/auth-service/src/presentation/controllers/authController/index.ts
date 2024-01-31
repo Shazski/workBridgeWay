@@ -8,7 +8,7 @@ import login_controller from "./login_controller";
 export = (dependencies: DependenciesData) => {
     return {
         signUpUser:signUpUser(dependencies),
-        logoutUser:logoutUser(),
+        logoutUser:logoutUser(dependencies),
         googleAuth:googleAuth(dependencies),
         companyRegister:companyRegister_controller(dependencies),
         login:login_controller(dependencies)
