@@ -10,8 +10,20 @@ import useForm from "../../hooks/useForm";
 const ProfileAbout = ({ user }) => {
     const dispatch = useDispatch<AppDispatch>()
     const [isAboutModalOpen, setIsAboutModalOpen] = useState<boolean>(false)
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
     const [isSocialModalOpen, setIsSocialModalOpen] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
+    const [removeValue, setRemoveValue] = useState<{
+
+        socialMedia: string,
+        link: string,
+
+    }>({
+
+        socialMedia: "",
+        link: "",
+
+    })
     const { values, handleChange } = useForm({ socialMedia: "", link: "", email: user?.email })
     const [about, setAbout] = useState<string>("")
 
@@ -43,25 +55,25 @@ const ProfileAbout = ({ user }) => {
             }
         }
         if (!userObj.socialLinks.socialMedia || !userObj.socialLinks.link) return;
-        for(const key in user.socialLinks) {
-            if(user.socialLinks[key].socialMedia === values?.socialMedia || user.socialLinks[key].link === values?.link) {
-              return setError("This social media or its link is already in your profile")
+        for (const key in user.socialLinks) {
+            if (user.socialLinks[key].socialMedia === values?.socialMedia || user.socialLinks[key].link === values?.link) {
+                return setError("This social media or its link is already in your profile")
             }
         }
 
         await dispatch(updateUserSocialLinks(userObj))
 
     }
-    const handleRemove = async (value:{socialMedia:string,link:string}) => {
+    const handleRemove = async (value: { socialMedia: string, link: string }) => {
         const userObj = {
             email: user?.email,
-            socialLinks:{
-                socialMedia:value.socialMedia,
+            socialLinks: {
+                socialMedia: value.socialMedia,
                 link: value.link
             }
         }
         console.log(userObj)
-        const res =await dispatch(removeUserSocialLinks(userObj))
+        const res = await dispatch(removeUserSocialLinks(userObj))
         console.log(res)
         toast.success("sociaLink removed successfully")
     }
@@ -110,6 +122,13 @@ const ProfileAbout = ({ user }) => {
                                     </div>
                                 </form>
                             </Modal>
+                            <Modal isVisible={isConfirmModalOpen} onClose={() => setIsConfirmModalOpen(false)} >
+                                <h1 className="uppercase font-semibold text-center">Do you want to delete?</h1>
+                                <div className="flex gap-x-2 justify-center ">
+                                    <button onClick={() => handleRemove(removeValue)} className="bg-red-600 text-white font-semibold px-3 mt-2 py-2 rounded-md">Yes</button>
+                                    <button onClick={() => setIsConfirmModalOpen(false)} className="bg-blue-600 text-white font-semibold px-4 mt-2 py-2 rounded-md">No</button>
+                                </div>
+                            </Modal>
                         </div>
                         {
                             user?.socialLinks.length > 0 ? (
@@ -118,7 +137,7 @@ const ProfileAbout = ({ user }) => {
                                         <div key={index}>
                                             <div className='flex justify-between gap-x-1'>
                                                 <h1 className='text-blue-gray-400 text-sm lg:mt-6'>{value?.socialMedia}</h1>
-                                                <h1 onClick={() => handleRemove(value)} className="text-xs text-red-600 mt-6 me-5 cursor-pointer">X</h1>
+                                                <h1 onClick={() => {setRemoveValue(value),setIsConfirmModalOpen(true)} } className="text-xs text-red-600 mt-6 me-5 cursor-pointer">X</h1>
                                             </div>
                                             <a href={`https://${value?.link}`} target="_blank" rel="noopener noreferrer" className='text-lightgreen text-sm'>{value?.link}</a>
                                         </div>
@@ -136,7 +155,7 @@ const ProfileAbout = ({ user }) => {
                     </div>
                 </div>
             </div>
-            <ProfileSkills user={user} isAboutModalOpen={isAboutModalOpen} isSocialModalOpen={isSocialModalOpen} />
+            <ProfileSkills user={user} isAboutModalOpen={isAboutModalOpen} isSocialModalOpen={isSocialModalOpen} isSocialConfirmModalOpen = {isConfirmModalOpen}/>
         </>
     )
 }

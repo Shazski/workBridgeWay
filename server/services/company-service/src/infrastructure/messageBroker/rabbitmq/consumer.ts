@@ -12,11 +12,6 @@ export default class Consumer {
         queue,
         (message: ConsumeMessage | null) => {
           if (message) {
-            console.log(
-              "message and correlation id",
-              JSON.parse(message.content.toString()),
-              message.properties.correlationId.toString()
-            );
             eventEmitter.emit(
               message.properties.correlationId.toString(),
               message

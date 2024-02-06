@@ -7,7 +7,6 @@ const Pagination = ({ length, sentToParent }) => {
     const recordsPerPage = 10;
     const npage = Math.ceil(length / recordsPerPage)
     const numbers = [...Array(npage + 1).keys()].slice(1)
-    // Function to send the current page number to parent component for data fetching
     const handleClick = (n:number) => {
         setCurrentPage(n)
         const paginationData =  {

@@ -86,7 +86,6 @@ const CompanyRequest = () => {
     const firstIndex = lastIndex - 10;
     
     const getDataFromChild = (paginationData: { currentPage: number, recordsPerPage: number, }) => {
-        console.log(paginationData)
         handlePageChange(paginationData.currentPage);
     }
 
@@ -166,7 +165,7 @@ const CompanyRequest = () => {
                                         )
                                     }
                                 </table>
-                                <div className='absolute  bottom-14 flex justify-center w-full'>
+                                <div className=' flex justify-end w-full'>
                                     <Pagination length={filteredData?.length ?? 0} sentToParent={getDataFromChild} />
                                 </div>
                             </div>

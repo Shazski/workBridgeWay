@@ -18,7 +18,6 @@ const Login: FC = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(userLogin(values))
-        console.log(values)
     }
     return (
         <div className='flex justify-center' >
@@ -42,10 +41,10 @@ const Login: FC = () => {
                 <div className='text-center pt-12'>
                     <form onSubmit={handleSubmit}>
                         <div>
-                            <input type="text" placeholder='Email' name="email" onChange={handleChange} className='border ps-2 outlin rounded-md h-12 w-64' />
+                            <input type="text" placeholder='Email' name="email" onChange={handleChange} className='border ps-2 outlin rounded-md h-12 w-64' required />
                         </div>
                         <div className='flex justify-center relative'>
-                            <input name="password" type={showPassword ? "text" : "password"} onChange={handleChange} placeholder='Password' className='border  ps-2 rounded-md h-12 w-64 mt-5' />
+                            <input name="password" type={showPassword ? "text" : "password"} onChange={handleChange} placeholder='Password' className='border  ps-2 rounded-md h-12 w-64 mt-5' required />
                             <img className='absolute hover:cursor-pointer top-6 right-1/4 w-6 h-8 pt-2 lg:right-auto ms-56 lg:left-auto' src={showPassword ? OPENEYE : CLOSEEYE} alt="" onClick={() => setShowPassword(!showPassword)} />
                         </div>
                         <div className=''>

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { addSkill, removeSkill } from "../../redux/actions/user/userActions";
 import { toast } from "react-toastify";
-const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen }: { user: { skills: string[], email: string }, isAboutModalOpen: boolean, isSocialModalOpen: boolean }) => {
+const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConfirmModalOpen }: { user: { skills: string[], email: string }, isAboutModalOpen: boolean, isSocialModalOpen: boolean, isSocialConfirmModalOpen:boolean }) => {
     const dispatch = useDispatch<AppDispatch>()
     const [skills, setSkills] = useState<string>("")
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
@@ -53,7 +53,7 @@ const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen }: { user: { 
             {(user?.skills.length > 0) ? (
                 <div className="flex flex-wrap mt-4">
                     {user?.skills.map((value, index) => (
-                        <div key={index} className={`bg-gray-100 ${isAboutModalOpen || isSocialModalOpen ? "" : "relative"}  rounded-md text-lightgreen font-medium px-4 py-1 m-2`}>
+                        <div key={index} className={`bg-gray-100 ${isAboutModalOpen || isSocialModalOpen || isSocialConfirmModalOpen ? "" : "relative"}  rounded-md text-lightgreen font-medium px-4 py-1 m-2`}>
                             {value}
                             <h1 onClick={() => handleConfirm(index)} className="text-xs cursor-pointer absolute top-0 left-1 text-red-600">x</h1>
                         </div>

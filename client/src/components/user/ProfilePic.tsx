@@ -84,7 +84,6 @@ const ProfilePic = () => {
             delete userData.profilePic
         }
        const res = await dispatch(editUser(userData))
-       console.log(res.payload)
        if(res.payload._id) {
            toast.success("personal details updated")
        } else {

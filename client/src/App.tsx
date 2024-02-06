@@ -30,15 +30,13 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AllUsers from './pages/admin/AllUsers';
 import CompanyList from './pages/admin/CompanyList';
 import Complaints from './pages/admin/Complaints';
+import CompanySideBar from './components/company/CompanySideBar';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
   const { user, error } = useSelector((state: any) => state?.user);
 
   useEffect(() => {
-
-    
-
     if (error) {
       setTimeout(() => {
         dispatch(makeErrorDisable())
@@ -47,7 +45,7 @@ function App() {
   }, [error, dispatch])
 
   const UserProtectedRoute = ({ element }: { element: ReactNode }) => {
-    return user?.email ? element : <Navigate to="/login" />;
+    return user?.role === "user" ? element : <Navigate to="/login" />;
   }
   const CompanyProtectedRoute = ({ element }: { element: ReactNode }) => {
     return user?.role === "company" ? element : <Navigate to="/login" />;
@@ -59,46 +57,50 @@ function App() {
   return (
     <div>
       <ToastContainer />
-        <Router>
-          <div>
-            <Routes>
-              {/* common routes */}
-              <Route path='/' element={user?.role === "company" ? <Navigate to={'/company-dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin/dashboard'}/>: <Home />} />
-              <Route path='/login' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <Login />} />
-              <Route path='/signup' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <SignUp />} />
-              <Route path='/jobs' element={<FindJobs />} />
-              <Route path='/otp' element={user?.email ? <Otp /> : <Navigate to={'/signup'} />} />
-              <Route path='/jobs/:id' element={<JobDescription />} />
-              <Route path='/company-register' element={<CompanyRegister />} />
-              <Route path='/update-email/otp' element={user?.newEmail ? <Otp />: <Navigate to="/login" />} />
+      <Router>
+        <div>
+          <Routes>
+            {/* common routes */}
+            <Route path='/' element={user?.role === "company" ? <Navigate to={'/company/dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin/dashboard'} /> : <Home />} />
+            <Route path='/login' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <Login />} />
+            <Route path='/signup' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <SignUp />} />
+            <Route path='/jobs' element={<FindJobs />} />
+            <Route path='/otp' element={user?.user?.email ? <Otp /> : <Navigate to={'/signup'} />} />
+            <Route path='/jobs/:id' element={<JobDescription />} />
+            <Route path='/company-register' element={<CompanyRegister />} />
+            <Route path='/update-email/otp' element={user?.newEmail ? <Otp /> : <Navigate to="/login" />} />
 
-              {/* company routes */}
-              <Route path='/company-dashboard' element={<CompanyProtectedRoute element={<CompanyDashboard />} />} />
-              <Route path='/company-applicants/:id' element={<CompanyProtectedRoute element={<JobApplicants />} />} />
+            {/* company routes */}
+            <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
+              <Route path='dashboard' element={<CompanyDashboard />} />
+              <Route path='applicants' element={<JobApplicants />} />
+            </Route>
+            {/* <Route path='/company-dashboard' element={<CompanyProtectedRoute element={<CompanyDashboard />} />} />
+              <Route path='/company-applicants/:id' element={<CompanyProtectedRoute element={<JobApplicants />} />} /> */}
 
-              {/* user routes */}
-              <Route path='user' element={<UserProtectedRoute element={<UserSidebar />} />}>
-                <Route path='dashboard' element={<Dashboard />} />
-                <Route path='profile' element={<Profile />} />
-                <Route path='messages' element={<Messages />} />
-                <Route path='applications' element={<Applications />} />
-                <Route path='settings' element={<Settings />} >
-                  <Route path='edit-profile' element={<ProfilePic />} />
-                  <Route path='edit-login' element={<UpdateLoginDetails />} />
-                </Route>
+            {/* user routes */}
+            <Route path='user' element={<UserProtectedRoute element={<UserSidebar />} />}>
+              <Route path='dashboard' element={<Dashboard />} />
+              <Route path='profile' element={<Profile />} />
+              <Route path='messages' element={<Messages />} />
+              <Route path='applications' element={<Applications />} />
+              <Route path='settings' element={<Settings />} >
+                <Route path='edit-profile' element={<ProfilePic />} />
+                <Route path='edit-login' element={<UpdateLoginDetails />} />
               </Route>
+            </Route>
 
-              {/* Admin Routes */}
-              <Route path='admin' element={<AdminProtectedRoute element={<AdminSideBar/>}/>}>
-              <Route path='dashboard' element={<AdminProtectedRoute element={<AdminDashboard/>}/>}/>
-              <Route path='companies' element={<AdminProtectedRoute element={<CompanyList/>}/>}/>
-              <Route path='all-users' element={<AdminProtectedRoute element={<AllUsers/>}/>}/>
-              <Route path='company-complaints' element={<AdminProtectedRoute element={<Complaints/>}/>}/>
-              <Route path='company-requests' element={<AdminProtectedRoute element={<CompanyRequest/>}/>}/>
-              </Route>
-            </Routes>
-          </div>
-        </Router>
+            {/* Admin Routes */}
+            <Route path='admin' element={<AdminProtectedRoute element={<AdminSideBar />} />}>
+              <Route path='dashboard' element={<AdminProtectedRoute element={<AdminDashboard />} />} />
+              <Route path='companies' element={<AdminProtectedRoute element={<CompanyList />} />} />
+              <Route path='all-users' element={<AdminProtectedRoute element={<AllUsers />} />} />
+              <Route path='company-complaints' element={<AdminProtectedRoute element={<Complaints />} />} />
+              <Route path='company-requests' element={<AdminProtectedRoute element={<CompanyRequest />} />} />
+            </Route>
+          </Routes>
+        </div>
+      </Router>
 
       {(user?.role === 'user') && <Footer />}
     </div>

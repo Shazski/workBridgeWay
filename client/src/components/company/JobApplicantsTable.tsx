@@ -1,15 +1,22 @@
+import { useState } from "react";
 import LOGO from "../../assets/images/Logo.png"
-import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import Pagination from "../Pagination";
 
 const JobApplicantsTable = () => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+
+   const handleChildData = (paginationData: { currentPage: number}) => {
+    setCurrentPage(paginationData.currentPage)
+   }
+   const lastIndex = currentPage * 10
+   const firstIndex = lastIndex - 10;
+   console.log(firstIndex)
     return (
-        <div className="mt-12 w-full">
-            <div className="flex flex-col">
-                <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                        <div className="overflow-hidden">
+        <div className="mt-12 flex-grow">
+            <div className="flex flex-col h-full">
+                <div className="overflow-auto sm:-mx-6 lg:-mx-8 flex-grow">
+                    <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8 ">
+                        <div className="">
                             <table className="min-w-full text-left text-sm font-light">
                                 <thead
                                     className="border-b bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600">
@@ -104,14 +111,8 @@ const JobApplicantsTable = () => {
                                     </tr>
                                 </tbody>
                             </table>
-                            <div className="flex justify-between">
-                                <h1 className="text-gray-500 text-sm">View 10 Applicants Per Page</h1>
-                                <div className="flex me-44 gap-3">
-                                    <MdOutlineKeyboardArrowLeft className="text-2xl mt-1" />
-                                    <NavLink to="/company-applicants/1" className={({ isActive }) => `rounded-md px-4 py-1  ${isActive ? "bg-lightgreen text-white font-bold" : ""}`}>1</NavLink>
-                                    <NavLink to="/company-applicants/2" className={({ isActive }) => `rounded-md px-4 py-1  ${isActive ? "bg-lightgreen text-white font-bold" : ""}`}>2</NavLink>
-                                    <MdOutlineKeyboardArrowRight className="text-2xl mt-1" />
-                                </div>
+                            <div>
+                                <Pagination length={22}  sentToParent={handleChildData}/>
                             </div>
                         </div>
                     </div>
