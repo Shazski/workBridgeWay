@@ -14,7 +14,6 @@ export const findCompanyByEmail_useCase = (dependencies: DependenciesData) => {
             "companyExists"
           );
           if(!companyData) return false
-
           return companyData
     } catch (error) {
         console.log("<< Something went wrong in find company email usecase >>")

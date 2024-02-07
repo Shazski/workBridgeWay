@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express"
 import {DependenciesData} from "../../../application/interfaces/IDependencies"
 import { ICompanyData } from "../../../application/interfaces/ICompanyLogin"
-import { ErrorResponse } from "../../../utils"
+import { ErrorResponse, generateToken } from "../../../utils"
+import { cookieConfig } from "../../../utils/constants/constant"
 export = (dependencies:DependenciesData) => {
     const {user_useCase:{findUserByEmail_useCase, signUpUser_useCase, registerCompany_useCase}} = dependencies
     const registerCompany =  async(req:Request, res:Response, next:NextFunction) =>{
@@ -22,11 +23,14 @@ export = (dependencies:DependenciesData) => {
             if(!user) return next(ErrorResponse.internalError("Something went wrong"))
 
             const company = await registerCompany_useCase(dependencies).execute(companyCredentials)
-            
+
             if(!company) {
-                return next(ErrorResponse.internalError("Something went wrong in registering company"))
+                return next(ErrorResponse.conflict("LinkedIn profile is already registered"))
             }
-            res.status(201).json({success:true,message:"Company registered successfully"})
+            const token = generateToken(company._id)
+            company.role = "company"
+            console.log(company,"data")
+            res.cookie("auth_jwt",token,cookieConfig).status(201).json(company)
 
         } catch (error) {
             console.log(error,"something went wrong in register user controller")

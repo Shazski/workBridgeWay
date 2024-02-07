@@ -1,13 +1,10 @@
 import PROFILECOVERPIC from '../../assets/images/profileCoverImage.webp'
 import DEFAULTPROFILE from "../../assets/images/defaultProfile.jpg"
-import { IoLanguageSharp } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { IoPhonePortraitOutline } from "react-icons/io5";
 import { CiMail } from "react-icons/ci";
 import { Link } from 'react-router-dom'
 const ProfileTopSection = ({ user }) => {
-    const languages = ["english", "malayalam", "englsih", 'asdsad', "dasdasd", 'dasdas']
-
     return (
         <div className='mt-5 ms-4'>
             <div className="lg:flex gap-4">
@@ -36,30 +33,12 @@ const ProfileTopSection = ({ user }) => {
                             <CiMail className="lg:mt-6" />
                             <h1 className='text-blue-gray-400 text-sm lg:mt-6'>Email</h1>
                         </div>
-                        <h1 className='text-blue-gray-700 text-sm lg:ms-5'>{user.email}</h1>
+                        <h1 className='text-blue-gray-700 text-sm lg:ms-5'>{user?.email}</h1>
                         <div className="flex gap-x-1">
                             <IoPhonePortraitOutline className='mt-1 lg:mt-4' />
                             <h1 className='text-blue-gray-400 text-sm mt-1  lg:mt-4'>Phone</h1>
                         </div>
-                        <h1 className='text-blue-gray-700 text-sm lg:ms-5'>{user.phone}</h1>
-                        <div className="flex gap-x-1">
-                            <IoLanguageSharp className="mt-1.5 lg:mt-4" />
-                            <h1 className='text-blue-gray-400 text-sm mt-1 lg:mt-4'>Languages</h1>
-                        </div>
-                        <div className='lg:ms-5'>
-                            <div className="flex gap-x-2">
-
-                                <div className='grid grid-cols-3 md:grid-cols-4 gap-x-2 '>
-                                    {
-                                        languages.map((value, index) => (
-                                            <div key={index}>
-                                                <h1 className='text-blue-gray-700 text-sm'>{value}</h1>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                        <h1 className='text-blue-gray-700 text-sm lg:ms-5'>{user?.phone}</h1>
                     </div>
                 </div>
             </div>

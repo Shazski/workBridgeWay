@@ -12,9 +12,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppDispatch } from "../../redux/store"
 import { companyRegister } from "../../redux/actions/user/userActions"
+import { NavLink, useNavigate } from "react-router-dom"
 const CompanyRegister: FC = () => {
     const { error } = useSelector((state: any) => state.user)
     const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
     const [loading, setLoading] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
@@ -58,30 +60,31 @@ const CompanyRegister: FC = () => {
                         <img src={PICBTN} alt="" className='w-5 absolute ms-16 mt-14' />
                     </div>
                 </div>
-                    { error &&
-                        <h1 className="text-center text-red-600 font-semibold mt-5">{error}</h1>
-                    }
+                {error &&
+                    <h1 className="text-center text-red-600 font-semibold mt-5">{error}</h1>
+                }
                 <Formik
-                    initialValues={{ name: "", email: "", password: "", location: "", linkedIn: "", companyLogo: null, confirmPassword: "",phone:"", }}
+                    initialValues={{ name: "", email: "", password: "", location: "", linkedIn: "", companyLogo: null, confirmPassword: "", phone: "", }}
                     validationSchema={validationSchemaCompanyRegister}
                     onSubmit={async (values, { resetForm }) => {
                         if (!isObject(values.companyLogo)) {
                             toast.error("Logo is required")
                         } else {
-                            console.log(typeof values.companyLogo)
                             const companyLogo = await imageUpload(values.companyLogo)
                             values.companyLogo = companyLogo
                             const res = await dispatch(companyRegister(values))
                             console.log(res, "response data")
-                            if(res.payload.success) {
+                            setImgPreview("")
+                            if (res.payload?.email) {
                                 toast.success("Register success you will get an email after admin verification")
+                                navigate('/company/dashboard')
                                 resetForm()
-                            } 
+                            }
                         }
                     }}>
                     {({ setFieldValue }) => (
                         <Form>
-                            <div className='text-center pt-12'>
+                            <div className='text-center pt-4'>
                                 <div>
                                     <ErrorMessage name="companyLogo" component="div" className="text-red-600" />
                                     <Field type="text" placeholder='Company Name' name="name" className='border outline-none ps-2 rounded-md h-12 w-64' required />
@@ -132,6 +135,10 @@ const CompanyRegister: FC = () => {
 
                     )}
                 </Formik>
+            <div className='flex justify-center gap-x-2 mt-2'>
+                <h1 className="font-semibold">Sign In?</h1>
+                <NavLink to={'/login'} className="text-center text-lightgreen font-bold">Sign In</NavLink>
+            </div>
             </div>
             <ToastContainer />
         </div>

@@ -43,13 +43,13 @@ export = (dependencies: DependenciesData) => {
           userCredentials
         );
 
-        if (!company?.approved) {
-          return next(
-            ErrorResponse.unauthorized(
-              `You are not approved by admin if approved you will recieve a mail`
-            )
-          );
-        }
+        // if (!company?.approved) {
+        //   return next(
+        //     ErrorResponse.unauthorized(
+        //       `You are not approved by admin if approved you will recieve a mail`
+        //     )
+        //   );
+        // }
         const passwordMatchCompany: boolean = bcrypt.compareSync(
           userCredentials.password,
           company.password
@@ -60,10 +60,11 @@ export = (dependencies: DependenciesData) => {
           );
         const token = generateToken(user._id);
         delete user.password;
+        company.role = "company"
         user.token = token
-        res.cookie("auth_jwt", token, cookieConfig).status(200).json(user);
+        res.cookie("auth_jwt", token, cookieConfig).status(200).json(company);
       } else {
-        console.log("else case work");
+        console.log("else case worked");
       }
     } catch (error) {
       console.log(" Something went wrong in login controller ");

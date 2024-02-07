@@ -11,7 +11,7 @@ export const registerCompany = async (
 
     return newCompany;
   } catch (error) {
-    console.log("<<Something went wrong in register company repo >>");
+    console.log(error,"<<Something went wrong in register company repo >>");
     return false;
   }
 };

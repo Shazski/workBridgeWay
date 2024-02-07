@@ -137,7 +137,7 @@ const ProfileAbout = ({ user }) => {
                                         <div key={index}>
                                             <div className='flex justify-between gap-x-1'>
                                                 <h1 className='text-blue-gray-400 text-sm lg:mt-6'>{value?.socialMedia}</h1>
-                                                <h1 onClick={() => {setRemoveValue(value),setIsConfirmModalOpen(true)} } className="text-xs text-red-600 mt-6 me-5 cursor-pointer">X</h1>
+                                                <h1 onClick={() => {setRemoveValue(value),setIsConfirmModalOpen(true)} } className="text-xs text-red-600 mt-6 me-5 cursor-pointer font-semibold">X</h1>
                                             </div>
                                             <a href={`https://${value?.link}`} target="_blank" rel="noopener noreferrer" className='text-lightgreen text-sm'>{value?.link}</a>
                                         </div>

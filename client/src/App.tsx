@@ -31,6 +31,7 @@ import AllUsers from './pages/admin/AllUsers';
 import CompanyList from './pages/admin/CompanyList';
 import Complaints from './pages/admin/Complaints';
 import CompanySideBar from './components/company/CompanySideBar';
+import WaitingPage from './pages/company/WaitingPage';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -53,7 +54,6 @@ function App() {
   const AdminProtectedRoute = ({ element }: { element: ReactNode }) => {
     return user?.role === "admin" ? element : <Navigate to="/login" />;
   }
-
   return (
     <div>
       <ToastContainer />
@@ -71,12 +71,14 @@ function App() {
             <Route path='/update-email/otp' element={user?.newEmail ? <Otp /> : <Navigate to="/login" />} />
 
             {/* company routes */}
-            <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
-              <Route path='dashboard' element={<CompanyDashboard />} />
-              <Route path='applicants' element={<JobApplicants />} />
-            </Route>
-            {/* <Route path='/company-dashboard' element={<CompanyProtectedRoute element={<CompanyDashboard />} />} />
-              <Route path='/company-applicants/:id' element={<CompanyProtectedRoute element={<JobApplicants />} />} /> */}
+            {user?.stage === "pending" ? <Route path='/company/dashboard' element={<WaitingPage />} /> : <>
+
+              <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
+                <Route path='dashboard' element={<CompanyDashboard />} />
+                <Route path='applicants' element={<JobApplicants />} />
+              </Route>
+            </>
+            }
 
             {/* user routes */}
             <Route path='user' element={<UserProtectedRoute element={<UserSidebar />} />}>
@@ -100,10 +102,11 @@ function App() {
             </Route>
           </Routes>
         </div>
-      </Router>
+      </Router >
 
-      {(user?.role === 'user') && <Footer />}
-    </div>
+      {(user?.role === 'user') && <Footer />
+      }
+    </div >
   );
 }
 

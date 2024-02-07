@@ -184,7 +184,8 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(companyRegister.fulfilled, (state) => {
+      .addCase(companyRegister.fulfilled, (state, {payload}) => {
+        state.user = payload
         state.loading = false;
         state.error = null;
       })

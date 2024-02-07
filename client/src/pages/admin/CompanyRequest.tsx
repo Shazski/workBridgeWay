@@ -11,9 +11,15 @@ import { AppDispatch } from '../../redux/store';
 import { toast } from "react-toastify"
 import { approveOrRejectCompany } from '../../redux/actions/admin/adminActions';
 import Pagination from '../../components/Pagination';
+import Modal from '../../components/user/Modal';
 const CompanyRequest = () => {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [sortParams] = useSearchParams()
+    const [rejectValue, setRejectValue] = useState<{email:string,stage:string}>({
+        email:"",
+        stage:""
+    })
+    const [isReasonModalOpen, setIsReasonModalOpen] = useState<boolean>(false)
     const dispatch = useDispatch<AppDispatch>()
     const sort = sortParams.get('sort') || "";
     const location = useLocation();
@@ -88,6 +94,14 @@ const CompanyRequest = () => {
     const getDataFromChild = (paginationData: { currentPage: number, recordsPerPage: number, }) => {
         handlePageChange(paginationData.currentPage);
     }
+    const handleReject = (email:string) => {
+        setIsReasonModalOpen(true)
+        const rejectData = {
+            email:email,
+            stage:"rejected"
+        }
+        setRejectValue(rejectData)
+    }
 
     return (
         <div className="flex flex-col h-full">
@@ -152,7 +166,7 @@ const CompanyRequest = () => {
                                                         <td className="whitespace-nowrap py-4"><h1 className=" text-blue-700 uppercase">{value?.stage}</h1></td>
                                                         <td className="whitespace-nowrap  py-4">
                                                             <button onClick={() => handleApproveOrReject(value.email, "approved")} className="text-lg border bg-blue-700 text-white py-2 px-2 rounded-lg"><BiSolidRightTopArrowCircle /></button>
-                                                            <button onClick={() => handleApproveOrReject(value.email, "rejected")} className="ms-3 text-lg border bg-red-600 text-white py-2 px-2 rounded-lg"><FaTrash /></button>
+                                                            <button onClick={() => handleReject(value.email)} className="ms-3 text-lg border bg-red-600 text-white py-2 px-2 rounded-lg"><FaTrash /></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -173,6 +187,10 @@ const CompanyRequest = () => {
                     </div>
                 </div>
             </div>
+            <Modal isVisible={isReasonModalOpen} onClose={() => setIsReasonModalOpen(false)}>
+                <input type="text" className='border py-3 px-2 w-full outline-none' placeholder='State your Reason for rejecting' />
+                <button onClick={() => handleApproveOrReject(rejectValue.email,rejectValue.stage)} className='px-4 py-2 text-red-600 font-semibold bg-gray-200 mt-3 rounded-md'>Reject</button>
+            </Modal>
         </div>
     );
 };

@@ -81,7 +81,7 @@ const UpdateLoginDetails = () => {
                         </div>
                         {err && <h1 className="text-red-600 font-semibold">{err}</h1>}
                         <div className="mt-4 md:text-end">
-                            <button type="submit" className="px-4  py-2 bg-lightgreen text-white font-semibold">Update Email</button>
+                            <button type="submit" className="px-4  py-2 bg-lightgreen text-white font-semibold rounded-md">Update Email</button>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ const UpdateLoginDetails = () => {
                             {passwordValidation && <p className="text-red-500 text-xs mt-1">{passwordValidation}</p>}
                         </div>
                         <div className="mt-4 md:text-end">
-                            <button type="submit" className="px-4  py-2 bg-lightgreen text-white font-semibold">Change Password</button>
+                            <button type="submit" className="px-4  py-2 bg-lightgreen text-white font-semibold rounded-md">Change Password</button>
                         </div>
                     </div>
                 </div>

@@ -53,9 +53,9 @@ const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConf
             {(user?.skills.length > 0) ? (
                 <div className="flex flex-wrap mt-4">
                     {user?.skills.map((value, index) => (
-                        <div key={index} className={`bg-gray-100 ${isAboutModalOpen || isSocialModalOpen || isSocialConfirmModalOpen ? "" : "relative"}  rounded-md text-lightgreen font-medium px-4 py-1 m-2`}>
+                        <div key={index} className={`bg-gray-100 ${isAboutModalOpen || isSocialModalOpen || isSocialConfirmModalOpen ? "" : "relative"}  rounded-md text-lightgreen px-4 py-1 m-2 font-semibold`}>
                             {value}
-                            <h1 onClick={() => handleConfirm(index)} className="text-xs cursor-pointer absolute top-0 left-1 text-red-600">x</h1>
+                            <h1 onClick={() => handleConfirm(index)} className="text-xs cursor-pointer absolute top-0 left-1 text-red-600 font-semibold">x</h1>
                         </div>
                     ))}
                 </div>

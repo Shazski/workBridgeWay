@@ -11,7 +11,6 @@ import { userSignUp } from '../../redux/actions/user/userActions'
 import {toast } from 'react-toastify'
 import GoogleAuthButton from '../../components/user/GoogleAuthButton'
 
-
 const SignUp: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { user, loading, error } = useSelector((state: IUserSelector) => state.user);

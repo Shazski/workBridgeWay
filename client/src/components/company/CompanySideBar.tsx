@@ -11,9 +11,11 @@ import { GoHome } from "react-icons/go";
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux"
 import { logoutUser } from "../../redux/actions/user/userActions";
+import CompanyNavbar from "./CompanyNavbar";
 const CompanySideBar = () => {
     const dispatch = useDispatch<AppDispatch>()
     return (
+        <>
         <div className="flex">
             <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
                 <div className='flex'>
@@ -98,9 +100,11 @@ const CompanySideBar = () => {
                 </div>
             </div>
             <div className="w-full">
+            <CompanyNavbar/>
                 <Outlet />
             </div>
         </div>
+        </>
     )
 }
 

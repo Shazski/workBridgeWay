@@ -14,4 +14,5 @@ const cookieConfig = {
   sameSite: false,
 };
 
+
 export { corsOptions, FRONTEND_BASE_URL, cookieConfig };
