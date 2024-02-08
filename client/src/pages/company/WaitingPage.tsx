@@ -33,8 +33,15 @@ const WaitingPage = () => {
       <div className='w-[600px] bg-white rounded-md p-2'>
         <div className='bg-white p-2 text-black' >
           {
-            !(user?.stage === "rejected") &&
+            (user?.stage === "pending") &&
             <h1>Your are Under review we will send you a mail after verification</h1>
+          }
+          {
+            (user?.stage === "reapplied") &&
+            <>
+              <h1>We Are Validating your Submition after Validating you will recieve a mail</h1>
+              <h1>Thank you!</h1>
+            </>
           }
           {
             user?.stage === "rejected" && <>

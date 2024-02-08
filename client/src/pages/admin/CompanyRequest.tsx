@@ -161,6 +161,8 @@ const CompanyRequest = () => {
                                             <th scope="col" className="ps-12 py-4">Company</th>
                                             <th scope="col" className="ps-2 py-4">Applied Date</th>
                                             <th scope="col" className=" py-4">linked In</th>
+                                            <th scope="col" className=" py-4">Phone</th>
+                                            <th scope="col" className=" py-4">Head Office</th>
                                             <th scope="col" className=" py-4">Status</th>
                                             <th scope="col" className=" py-4">Action</th>
                                         </tr>
@@ -174,6 +176,8 @@ const CompanyRequest = () => {
                                                         <td className="flex whitespace-nowrap py-4 font-semibold"> <span><img src={value?.companyLogo ?? ""} alt="" className="w-12 h-10 hidden md:flex rounded-full" /></span> <h1 className="mt-3 ms-2">{value.name}</h1></td>
                                                         <td className="whitespace-nowrap  py-4"><h1 className="text-gray-500 px-2 py-1 mt-1 md:w-20">{formatDate(String(value?.createdAt))}</h1></td>
                                                         <td className="whitespace-nowrap  py-4"><a href={`https://${value?.linkedIn}`} target="_blank" rel="noopener noreferrer" className='text-lightgreen text-sm'>{value?.linkedIn}</a></td>
+                                                        <td className="whitespace-nowrap  py-4"><h1 className=" text-blue-700 uppercase">{value?.phone}</h1></td>
+                                                        <td className="whitespace-nowrap  py-4"><h1 className=" text-blue-700 uppercase">{value?.headOffice || "Not Provided"}</h1></td>
                                                         <td className="whitespace-nowrap py-4"><h1 className=" text-blue-700 uppercase">{value?.stage}</h1></td>
                                                         <td className="whitespace-nowrap  py-4">
                                                             <button onClick={() => handleApproveOrReject(String(value.email), "approved")} className="text-lg border bg-blue-700 text-white py-2 px-2 rounded-lg"><BiSolidRightTopArrowCircle /></button>
