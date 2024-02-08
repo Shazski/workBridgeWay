@@ -15,7 +15,11 @@ export = (dependencies: IDependenciesData) => {
         if(!success) return next(ErrorResponse.internalError("Something went wrong"))
 
         //sent a mail for informing the request updation
-        sendRequestUpdationMail(credentials.email,credentials.stage)
+        if(credentials.rejectReason) {
+          sendRequestUpdationMail(credentials.email,credentials.stage,credentials.rejectReason)
+        } else {
+          sendRequestUpdationMail(credentials.email,credentials.stage)
+        }
         
         return res.status(201).json({success:true,  message:"Request updated successfully"});
     } catch (error) {

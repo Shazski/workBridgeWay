@@ -64,7 +64,7 @@ const CompanyRegister: FC = () => {
                     <h1 className="text-center text-red-600 font-semibold mt-5">{error}</h1>
                 }
                 <Formik
-                    initialValues={{ name: "", email: "", password: "", location: "", linkedIn: "", companyLogo: null, confirmPassword: "", phone: "", }}
+                    initialValues={{ name: "", email: "", password: "", headOffice: "", linkedIn: "", companyLogo: null, confirmPassword: "", phone: null, }}
                     validationSchema={validationSchemaCompanyRegister}
                     onSubmit={async (values, { resetForm }) => {
                         if (!isObject(values.companyLogo)) {
@@ -102,7 +102,7 @@ const CompanyRegister: FC = () => {
                                     <ErrorMessage name="email" component="div" className="text-red-600" />
                                 </div>
                                 <div>
-                                    <Field type="text" placeholder='Company Location' name="location" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
+                                    <Field type="text" placeholder='Company headOffice' name="headOffice" className='border outline-none ps-2 rounded-md h-12 w-64 mt-3' required />
                                     <ErrorMessage name="headOffice" component="div" className="text-red-600" />
                                 </div>
                                 <div>

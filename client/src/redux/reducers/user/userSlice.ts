@@ -12,11 +12,13 @@ import {
   logoutUser,
   removeSkill,
   removeUserSocialLinks,
+  updateCompanyDetails,
   updateUserAbout,
   updateUserSocialLinks,
   userLogin,
   userSignUp,
 } from "../../actions/user/userActions";
+import { ICompanyData } from "../../../interface/ICompanyData";
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -184,8 +186,8 @@ const userSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(companyRegister.fulfilled, (state, {payload}) => {
-        state.user = payload
+      .addCase(companyRegister.fulfilled, (state, { payload }) => {
+        state.user = payload;
         state.loading = false;
         state.error = null;
       })
@@ -205,7 +207,20 @@ const userSlice = createSlice({
       .addCase(userLogin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+      .addCase(updateCompanyDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateCompanyDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as ICompanyData;
+        state.error = null;
+      })
+      .addCase(updateCompanyDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
   },
 });
 export const { makeErrorDisable } = userSlice.actions;

@@ -58,7 +58,7 @@ export = (dependencies: DependenciesData) => {
           return next(
             ErrorResponse.unauthorized("email or password is incorrect")
           );
-        const token = generateToken(user._id);
+        const token = generateToken(company._id);
         delete user.password;
         company.role = "company"
         user.token = token

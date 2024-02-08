@@ -1,5 +1,5 @@
-import companyRepo from "./company"
+import company_repo from "./company"
 
 export {
-    companyRepo
+    company_repo
 }

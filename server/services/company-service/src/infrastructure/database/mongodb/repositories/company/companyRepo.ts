@@ -1,5 +1,7 @@
+import { credentials } from "amqplib";
 import { ICompany } from "../../../../../domain/entities/company.entity";
 import CompanySchema, { ICompanyData } from "../../schema/companySchema";
+import { ObjectId } from "mongoose";
 export const registerCompany = async (
   companyCredentials: ICompany
 ): Promise<ICompanyData | boolean> => {
@@ -11,7 +13,7 @@ export const registerCompany = async (
 
     return newCompany;
   } catch (error) {
-    console.log(error,"<<Something went wrong in register company repo >>");
+    console.log(error, "<<Something went wrong in register company repo >>");
     return false;
   }
 };
@@ -48,6 +50,7 @@ export const getAllCompanyData_repo = async (): Promise<
 export const updateRequest = async (credentials: {
   email: string;
   stage: string;
+  rejectReason?: string;
 }): Promise<ICompanyData | boolean> => {
   let companyData;
   try {
@@ -66,6 +69,7 @@ export const updateRequest = async (credentials: {
         {
           approved: false,
           stage: credentials.stage,
+          rejectReason: credentials.rejectReason,
         },
         { new: true }
       );
@@ -76,6 +80,30 @@ export const updateRequest = async (credentials: {
     return companyData;
   } catch (error) {
     console.log("Error getting all companies data from repo");
+    return false;
+  }
+};
+
+export const updateCompany_repo = async (
+  credentials: ICompanyData,
+  id: ObjectId
+): Promise<ICompanyData | boolean> => {
+  credentials.stage = "reapplied";
+  try {
+    const companyData = await CompanySchema.findByIdAndUpdate(
+      id,
+      {
+        ...credentials,
+        reRequested: true,
+      },
+      { new: true, upsert: true }
+    );
+
+    if (!companyData) return false;
+
+    return companyData;
+  } catch (error) {
+    console.log(error, "<< Something went wrong in update company repo >>");
     return false;
   }
 };

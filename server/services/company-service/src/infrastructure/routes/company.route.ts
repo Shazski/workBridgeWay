@@ -4,6 +4,8 @@ import companyController from "../../presentation/controller/companyController";
 
 export = (dependencies: IDependencies) => {
   const router = express.Router();
-  const {  } = companyController(dependencies);
+  const { updateCompany } = companyController(dependencies);
+
+  router.put("/update", updateCompany);
   return router;
 };

@@ -6,7 +6,7 @@ import {
   handleError,
 } from "../../../config/configurations";
 import { IUserLoginData } from "../../../interface/IuserLogin";
-import { AUTH_BASE_URL, USER_BASE_URL } from "../../../config/constants";
+import { AUTH_BASE_URL, COMPANY_BASE_URL, USER_BASE_URL } from "../../../config/constants";
 import { ICompanyData } from "../../../interface/ICompanyData";
 
 export const userSignUp = createAsyncThunk(
@@ -235,7 +235,7 @@ export const removeUserSocialLinks = createAsyncThunk(
 );
 export const companyRegister = createAsyncThunk(
   "user/companyRegister",
-  async (userCredentials: ICompanyData, { rejectWithValue }) => {
+  async (userCredentials: ICompanyData | null, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
         `${AUTH_BASE_URL}/company-register`,
@@ -258,6 +258,25 @@ export const userLogin = createAsyncThunk(
     try {
       const { data } = await axios.post(
         `${AUTH_BASE_URL}/login`,
+        userCredentials,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const updateCompanyDetails = createAsyncThunk(
+  "user/updateCompanyDetails",
+  async (
+    userCredentials: ICompanyData | null,
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.put(
+        `${COMPANY_BASE_URL}/update`,
         userCredentials,
         config
       );

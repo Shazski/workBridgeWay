@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer"
 import { MAILER_EMAIL, MAILER_PASSWORD } from "../../../config";
-const sendRequestUpdationMail = (email: string, stage: string) => {
+const sendRequestUpdationMail = (email: string, stage: string, rejectReason?:string) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -14,7 +14,8 @@ const sendRequestUpdationMail = (email: string, stage: string) => {
       to: email,
       subject: "Company request updation mail",
       html: `<h6> This mail is to share the information about your company registration request </h6>
-            <h1>You have been${stage} bt the admin </h1>
+            <h1>You have been${stage} by the admin </h1>
+            ${rejectReason && '<h1> You Have been rejected because of: rejectReason </h1>'}
             <h4>! Thank you for choosing Us</h4>`
     };
 

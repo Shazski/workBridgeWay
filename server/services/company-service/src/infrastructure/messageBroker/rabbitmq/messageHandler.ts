@@ -1,5 +1,5 @@
 import rabbitMQClient from './client'
-import { companyRepo } from '../../database/mongodb/repositories';
+import { company_repo } from '../../database/mongodb/repositories';
 export default class MessageHandler {
     static async handle(
         operation: string,
@@ -10,16 +10,16 @@ export default class MessageHandler {
         let response = {}
         switch (operation) {
             case 'registerCompany':
-                response = await companyRepo.registerCompany(data)
+                response = await company_repo.registerCompany(data)
                 break;
             case 'companyExists':
-                response = await companyRepo.findCompanyByEmail(data)
+                response = await company_repo.findCompanyByEmail(data)
                 break;
             case 'getAllCompany':
-                response = await companyRepo.getAllCompanyData_repo()
+                response = await company_repo.getAllCompanyData_repo()
                 break;
             case 'updateRequest':
-                response = await companyRepo.updateRequest(data)
+                response = await company_repo.updateRequest(data)
                 break;
             default:
                 response = 'Request-key notfound'

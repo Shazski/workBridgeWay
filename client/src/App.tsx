@@ -36,7 +36,6 @@ import WaitingPage from './pages/company/WaitingPage';
 function App() {
   const dispatch = useDispatch<AppDispatch>()
   const { user, error } = useSelector((state: any) => state?.user);
-
   useEffect(() => {
     if (error) {
       setTimeout(() => {
@@ -71,8 +70,7 @@ function App() {
             <Route path='/update-email/otp' element={user?.newEmail ? <Otp /> : <Navigate to="/login" />} />
 
             {/* company routes */}
-            {user?.stage === "pending" ? <Route path='/company/dashboard' element={<WaitingPage />} /> : <>
-
+            {user?.stage === "pending" || "rejected" ? <Route path='/company/dashboard' element={<CompanyProtectedRoute element={<WaitingPage />} />} /> : <>
               <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
                 <Route path='dashboard' element={<CompanyDashboard />} />
                 <Route path='applicants' element={<JobApplicants />} />

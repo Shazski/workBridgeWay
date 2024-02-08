@@ -15,9 +15,11 @@ const CompanySchema: Schema = new Schema(
     founded: { type: String },
     websiteLink: { type: String },
     stage: { type: String, default: "pending" },
+    rejectReason: { type: String },
     password: { type: String, required: true },
     description: { type: String },
     techStack: [{ type: String, default: [] }],
+    reRequested: { type: Boolean, default: false },
   },
   {
     timestamps: true,

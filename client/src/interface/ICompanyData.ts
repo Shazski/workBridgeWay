@@ -1,10 +1,15 @@
 export interface ICompanyData {
-    name: string,
-    email:string,
+    name?: string,
+    email?:string,
     password?:string,
-    linkedIn:string,
+    linkedIn?:string | undefined,
     companyLogo?:string | null
-    location?:string
     createdAt?:Date | null
     stage?:string | null
+    phone?:number | null | number
+    headOffice?:string | null
+    founded?: string | null;
+    websiteLink?: string | null;
+    description?: string | null;
+    techStack?: string[] | null;
 }

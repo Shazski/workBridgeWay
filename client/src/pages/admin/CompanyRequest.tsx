@@ -20,6 +20,7 @@ const CompanyRequest = () => {
         stage:""
     })
     const [isReasonModalOpen, setIsReasonModalOpen] = useState<boolean>(false)
+    const [rejectReason, setRejectReason] = useState<string>("")
     const dispatch = useDispatch<AppDispatch>()
     const sort = sortParams.get('sort') || "";
     const location = useLocation();
@@ -44,9 +45,7 @@ const CompanyRequest = () => {
             console.error("Error fetching data:", error);
         }
     }
-    useEffect(() => {
-        getAllRequest();
-    }, [sort]);
+    
 
     const filterData = () => {
         if (sort !== "") {
@@ -75,14 +74,16 @@ const CompanyRequest = () => {
         return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
     };
 
-    const handleApproveOrReject = async (email: string, stage: string) => {
+    const handleApproveOrReject = async (email: string, stage: string,) => {
         const credentials = {
             email: email,
-            stage: stage
+            stage: stage,
+            rejectReason:rejectReason || "Rejected"
         }
         await dispatch(approveOrRejectCompany(credentials))
         getAllRequest();
         toast.success(`${stage} successfully`)
+        setIsReasonModalOpen(false)
     }
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -102,6 +103,10 @@ const CompanyRequest = () => {
         }
         setRejectValue(rejectData)
     }
+
+    useEffect(() => {
+        getAllRequest();
+    }, [sort]);
 
     return (
         <div className="flex flex-col h-full">
@@ -127,6 +132,12 @@ const CompanyRequest = () => {
                         onClick={() => handleSortChange('rejected')}
                     >
                         Rejected
+                    </NavLink>
+                    <NavLink to={'?sort=reapplied'}
+                        className={`font-semibold ${isActive('reapplied') ? 'border-b-4 border-lightgreen' : ''}`}
+                        onClick={() => handleSortChange('reapplied')}
+                    >
+                        Re-Applied
                     </NavLink>
                 </div>
                 <div className="flex mt-10 justify-between">
@@ -165,8 +176,8 @@ const CompanyRequest = () => {
                                                         <td className="whitespace-nowrap  py-4"><a href={`https://${value?.linkedIn}`} target="_blank" rel="noopener noreferrer" className='text-lightgreen text-sm'>{value?.linkedIn}</a></td>
                                                         <td className="whitespace-nowrap py-4"><h1 className=" text-blue-700 uppercase">{value?.stage}</h1></td>
                                                         <td className="whitespace-nowrap  py-4">
-                                                            <button onClick={() => handleApproveOrReject(value.email, "approved")} className="text-lg border bg-blue-700 text-white py-2 px-2 rounded-lg"><BiSolidRightTopArrowCircle /></button>
-                                                            <button onClick={() => handleReject(value.email)} className="ms-3 text-lg border bg-red-600 text-white py-2 px-2 rounded-lg"><FaTrash /></button>
+                                                            <button onClick={() => handleApproveOrReject(String(value.email), "approved")} className="text-lg border bg-blue-700 text-white py-2 px-2 rounded-lg"><BiSolidRightTopArrowCircle /></button>
+                                                            <button onClick={() => handleReject(String(value?.email))} className="ms-3 text-lg border bg-red-600 text-white py-2 px-2 rounded-lg"><FaTrash /></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -188,7 +199,7 @@ const CompanyRequest = () => {
                 </div>
             </div>
             <Modal isVisible={isReasonModalOpen} onClose={() => setIsReasonModalOpen(false)}>
-                <input type="text" className='border py-3 px-2 w-full outline-none' placeholder='State your Reason for rejecting' />
+                <input onChange={(e) => setRejectReason(e.target.value)} type="text" className='border py-3 px-2 w-full outline-none' placeholder='State your Reason for rejecting' />
                 <button onClick={() => handleApproveOrReject(rejectValue.email,rejectValue.stage)} className='px-4 py-2 text-red-600 font-semibold bg-gray-200 mt-3 rounded-md'>Reject</button>
             </Modal>
         </div>
