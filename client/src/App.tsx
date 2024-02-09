@@ -32,6 +32,7 @@ import CompanyList from './pages/admin/CompanyList';
 import Complaints from './pages/admin/Complaints';
 import CompanySideBar from './components/company/CompanySideBar';
 import WaitingPage from './pages/company/WaitingPage';
+import PostJobSection from './components/company/PostJobSection';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -70,10 +71,11 @@ function App() {
             <Route path='/update-email/otp' element={user?.newEmail ? <Otp /> : <Navigate to="/login" />} />
 
             {/* company routes */}
-            {user?.stage === "pending" || "rejected" ? <Route path='/company/dashboard' element={<CompanyProtectedRoute element={<WaitingPage />} />} /> : <>
+            {(user?.stage === "pending") ? <Route path='/company/dashboard' element={<CompanyProtectedRoute element={<WaitingPage />} />} /> : <>
               <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
                 <Route path='dashboard' element={<CompanyDashboard />} />
                 <Route path='applicants' element={<JobApplicants />} />
+                <Route path='post-job' element={<PostJobSection />} />
               </Route>
             </>
             }

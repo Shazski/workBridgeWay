@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
-const Pagination = ({ length, sentToParent }) => {
-    const [currentPage, setCurrentPage] = useState<number>(1)
+const Pagination = ({ length, sentToParent, page }) => {
+    const [currentPage, setCurrentPage] = useState<number>(page)
     const recordsPerPage = 10;
     const npage = Math.ceil(length / recordsPerPage)
     const numbers = [...Array(npage + 1).keys()].slice(1)

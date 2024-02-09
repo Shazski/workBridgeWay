@@ -15,9 +15,9 @@ import Modal from '../../components/user/Modal';
 const CompanyRequest = () => {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [sortParams] = useSearchParams()
-    const [rejectValue, setRejectValue] = useState<{email:string,stage:string}>({
-        email:"",
-        stage:""
+    const [rejectValue, setRejectValue] = useState<{ email: string, stage: string }>({
+        email: "",
+        stage: ""
     })
     const [isReasonModalOpen, setIsReasonModalOpen] = useState<boolean>(false)
     const [rejectReason, setRejectReason] = useState<string>("")
@@ -27,14 +27,20 @@ const CompanyRequest = () => {
     const navigate = useNavigate();
     const [companyRequest, setCompanyRequest] = useState<ICompanyData[] | null>(null)
     const [searchTerm, setSearchTerm] = useState<string>("")
-
-    const isActive = (sortOption) => {
+    const stage = {
+        pending: "blue",
+        approved: "green",
+        rejected: "red",
+        reapplied: "yellow"
+    }
+    const isActive = (sortOption: string) => {
         const currentSort = new URLSearchParams(location.search).get('sort');
         return currentSort === sortOption;
     };
 
-    const handleSortChange = (sortOption) => {
+    const handleSortChange = (sortOption: string) => {
         navigate(`/admin-company-requests?sort=${sortOption}`);
+        setCurrentPage(1)
     };
 
     const getAllRequest = async () => {
@@ -45,7 +51,7 @@ const CompanyRequest = () => {
             console.error("Error fetching data:", error);
         }
     }
-    
+
 
     const filterData = () => {
         if (sort !== "") {
@@ -78,7 +84,7 @@ const CompanyRequest = () => {
         const credentials = {
             email: email,
             stage: stage,
-            rejectReason:rejectReason || "Rejected"
+            rejectReason: rejectReason || "Rejected"
         }
         await dispatch(approveOrRejectCompany(credentials))
         getAllRequest();
@@ -91,15 +97,15 @@ const CompanyRequest = () => {
 
     const lastIndex = currentPage * 10;
     const firstIndex = lastIndex - 10;
-    
+
     const getDataFromChild = (paginationData: { currentPage: number, recordsPerPage: number, }) => {
         handlePageChange(paginationData.currentPage);
     }
-    const handleReject = (email:string) => {
+    const handleReject = (email: string) => {
         setIsReasonModalOpen(true)
         const rejectData = {
-            email:email,
-            stage:"rejected"
+            email: email,
+            stage: "rejected"
         }
         setRejectValue(rejectData)
     }
@@ -176,9 +182,9 @@ const CompanyRequest = () => {
                                                         <td className="flex whitespace-nowrap py-4 font-semibold"> <span><img src={value?.companyLogo ?? ""} alt="" className="w-12 h-10 hidden md:flex rounded-full" /></span> <h1 className="mt-3 ms-2">{value.name}</h1></td>
                                                         <td className="whitespace-nowrap  py-4"><h1 className="text-gray-500 px-2 py-1 mt-1 md:w-20">{formatDate(String(value?.createdAt))}</h1></td>
                                                         <td className="whitespace-nowrap  py-4"><a href={`https://${value?.linkedIn}`} target="_blank" rel="noopener noreferrer" className='text-lightgreen text-sm'>{value?.linkedIn}</a></td>
-                                                        <td className="whitespace-nowrap  py-4"><h1 className=" text-blue-700 uppercase">{value?.phone}</h1></td>
-                                                        <td className="whitespace-nowrap  py-4"><h1 className=" text-blue-700 uppercase">{value?.headOffice || "Not Provided"}</h1></td>
-                                                        <td className="whitespace-nowrap py-4"><h1 className=" text-blue-700 uppercase">{value?.stage}</h1></td>
+                                                        <td className="whitespace-nowrap  py-4"><h1 className=" text-gray-900 uppercase">{value?.phone}</h1></td>
+                                                        <td className="whitespace-nowrap  py-4"><h1 className=" text-blue-gray-900">{value?.headOffice || "Not Provided"}</h1></td>
+                                                        <td className="whitespace-nowrap py-4"><h1 className={`text-${stage[value?.stage ?? 0]}-700 uppercase`}>{value?.stage}</h1></td>
                                                         <td className="whitespace-nowrap  py-4">
                                                             <button onClick={() => handleApproveOrReject(String(value.email), "approved")} className="text-lg border bg-blue-700 text-white py-2 px-2 rounded-lg"><BiSolidRightTopArrowCircle /></button>
                                                             <button onClick={() => handleReject(String(value?.email))} className="ms-3 text-lg border bg-red-600 text-white py-2 px-2 rounded-lg"><FaTrash /></button>
@@ -190,12 +196,11 @@ const CompanyRequest = () => {
                                         ) : (
 
                                             <h1 className="text-red-600 text-lg font-bold text-center mt-5 font-serif">No Results Found</h1>
-
                                         )
                                     }
                                 </table>
                                 <div className=' flex justify-end w-full'>
-                                    <Pagination length={filteredData?.length ?? 0} sentToParent={getDataFromChild} />
+                                    <Pagination length={filteredData?.length ?? 0} sentToParent={getDataFromChild} page = {currentPage} />
                                 </div>
                             </div>
                         </div>
@@ -204,7 +209,7 @@ const CompanyRequest = () => {
             </div>
             <Modal isVisible={isReasonModalOpen} onClose={() => setIsReasonModalOpen(false)}>
                 <input onChange={(e) => setRejectReason(e.target.value)} type="text" className='border py-3 px-2 w-full outline-none' placeholder='State your Reason for rejecting' />
-                <button onClick={() => handleApproveOrReject(rejectValue.email,rejectValue.stage)} className='px-4 py-2 text-red-600 font-semibold bg-gray-200 mt-3 rounded-md'>Reject</button>
+                <button onClick={() => handleApproveOrReject(rejectValue.email, rejectValue.stage)} className='px-4 py-2 text-red-600 font-semibold bg-gray-200 mt-3 rounded-md'>Reject</button>
             </Modal>
         </div>
     );
