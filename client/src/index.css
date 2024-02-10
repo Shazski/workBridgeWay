@@ -3,12 +3,16 @@
 @tailwind utilities;
 
 body {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 .scrollbar::-webkit-scrollbar {
-    display:none;
+  display: none;
 }
 .paginationactive {
-    @apply bg-lightgreen
+  @apply bg-lightgreen;
+}
+
+.show {
+  transform: translateX(-100);
 }

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const CompanyNavbar = () => {
     const { user } = useSelector((state: any) => state.user)
     return (
-        <div className="hidden md:flex w-full sticky top-0 z-50 bg-white justify-between h-20 border-b-2">
+        <div className="flex w-full sticky top-0 z-50 bg-white justify-between h-20 border-b-2">
             <div className="flex mt-1">
                 <div>
                     <img src={LOGO} alt="" className="w-32" />

@@ -8,102 +8,115 @@ import { FaPeopleArrows } from "react-icons/fa6";
 import { SlCalender } from "react-icons/sl";
 import { ImProfile } from "react-icons/im";
 import { GoHome } from "react-icons/go";
-import { AppDispatch } from "../../redux/store";
-import { useDispatch } from "react-redux"
+import { GiHamburgerMenu } from "react-icons/gi";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../../redux/actions/user/userActions";
 import CompanyNavbar from "./CompanyNavbar";
+import { useState } from "react";
 const CompanySideBar = () => {
     const dispatch = useDispatch<AppDispatch>()
+    const { user } = useSelector((state: RootState) => state.user)
+    const [toggle, setToggle] = useState<boolean>(false);
     return (
         <>
-        <div className="flex">
-            <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
-                <div className='flex'>
-                    <img src={LOGO} alt="" className='w-28' />
-                    <h1 className='mt-5 font-bold text-lightgreen hidden md:flex'>WorkBridgeWay</h1>
-                </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
+            <div className={`ms-5 flex lg:hidden sticky top-3 z-50 cursor-pointer mt-2`}>
+                <GiHamburgerMenu onClick={() => setToggle(!toggle)} className="text-2xl" />
+            </div>
+            <div className="flex">
+                <div className={`border-e-2 fixed  lg:sticky top-3 lg:translate-x-0 scrollbar transition-all duration-150 bg-white flex-col md:w-2/6 lg:w-2/6 xl:w-3/12 2xl:w-1/5 w-3/12 h-screen overflow-y-auto ${toggle ? 'translate-x-0 z-40 fixed ' : '-translate-x-96'}`}>
+                    <div className='md:flex hidden'>
+                        <img src={LOGO} alt="" className='w-28' />
+                        <h1 className='mt-5 font-bold text-lightgreen hidden md:flex'>WorkBridgeWay</h1>
+                        {
+                            toggle &&
+                            <h1 onClick={() => setToggle(false)} className='mt-5 ms-10 font-bold text-black hidden md:flex'>X</h1>
+                        }
+                    </div>
+                    <div className='mt-12 md:ms-3 flex gap-3'>
 
                     <NavLink to='/company/dashboard' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}> <div className="flex gap-3">
-                            <GoHome className="text-xl" />
-                            <h1>Dashboard</h1>
-                        </div> </NavLink>
-                </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
-
-                    <NavLink to='/company/messages' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}> <div className="flex gap-3">
-                            <FaRegMessage className="text-lg" />
-                            <h1>Messages</h1>
-                        </div> </NavLink>
-                </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
-
-                    <NavLink to='/company/profile' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}> <div className="flex gap-3">
-                            <ImProfile className="text-xl" />
-                            <h1>Profile</h1>
-                        </div> </NavLink>
-                </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
-
-                    <NavLink to='/company/applicants' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}> <div className="flex gap-3">
-                            <IoPeopleSharp className="text-xl" />
-                            <h1>Applicants</h1>
-                        </div> </NavLink>
-                </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
-
-                    <NavLink to='/company/jobList' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}> <div className="flex gap-3">
-                            <FaPeopleArrows className="text-xl" />
-                            <h1>Job Listing</h1>
-                        </div> </NavLink>
-                </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
-
-                    <NavLink to='/company/employees' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}> <div className="flex gap-3">
-                            <FaPeopleRoof className="text-xl" />
-                            <h1>Employees</h1>
-                        </div> </NavLink>
-                </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
-
-                    <NavLink to='/company/Schedule' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                    }}> <div className="flex gap-3">
-                            <SlCalender className="text-xl" />
-                            <h1>Schedules</h1>
-                        </div> </NavLink>
-                </div>
-                <div onClick={() => dispatch(logoutUser())} className="flex mt-auto ms-5 relative cursor-pointer">
-                    <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5" />
-                    <h1 className=" bg-gray-300 px-12 py-3 rounded-lg text-red-600 mt-0.5">Logout</h1>
-                </div>
-                <div className="flex profile mt-auto">
-                    <div>
-                        <img src={LOGO} alt="" className="w-32" />
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        }}> <div className="md:flex gap-x-3">
+                                <GoHome className="text-xl" />
+                                <h1 className="hidden md:flex">Dashboard</h1>
+                            </div> </NavLink>
                     </div>
-                    <div>
-                        <h1 className="font-semibold text-lg mt-2">Sharoon</h1>
-                        <h1 className="text-gray-500 ">Sharoon@gmail.com</h1>
+                    <div className='mt-3 md:ms-3 flex gap-3'>
+
+                        <NavLink to='/company/messages' className={({ isActive }) => {
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        }}> <div className="flex gap-3">
+                                <FaRegMessage className="text-lg" />
+                                <h1 className="hidden md:flex">Messages</h1>
+                            </div> </NavLink>
                     </div>
+                    <div className='mt-3 md:ms-3 flex gap-3'>
+
+                        <NavLink to='/company/profile' className={({ isActive }) => {
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        }}> <div className="flex gap-3">
+                                <ImProfile className="text-xl" />
+                                <h1 className="hidden md:flex">Profile</h1>
+                            </div> </NavLink>
+                    </div>
+                    <div className='mt-3 md:ms-3 flex gap-3'>
+
+                        <NavLink to='/company/applicants' className={({ isActive }) => {
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        }}> <div className="flex gap-3">
+                                <IoPeopleSharp className="text-xl" />
+                                <h1 className="hidden md:flex">Applicants</h1>
+                            </div> </NavLink>
+                    </div>
+                    <div className='mt-3 md:ms-3 flex gap-3'>
+
+                        <NavLink to='/company/jobList' className={({ isActive }) => {
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        }}> <div className="flex gap-3">
+                                <FaPeopleArrows className="text-xl" />
+                                <h1 className="hidden md:flex">Job Listing</h1>
+                            </div> </NavLink>
+                    </div>
+                    <div className='mt-3 md:ms-3 flex gap-3'>
+
+                        <NavLink to='/company/employees' className={({ isActive }) => {
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        }}> <div className="flex gap-3">
+                                <FaPeopleRoof className="text-xl" />
+                                <h1 className="hidden md:flex">Employees</h1>
+                            </div> </NavLink>
+                    </div>
+                    <div className='mt-3 md:ms-3 flex gap-3'>
+
+                        <NavLink to='/company/Schedule' className={({ isActive }) => {
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        }}> <div className="flex gap-3">
+                                <SlCalender className="text-xl" />
+                                <h1 className="hidden md:flex">Schedules</h1>
+                            </div> </NavLink>
+                    </div>
+                    <div onClick={() => dispatch(logoutUser())} className="flex ms-6 mt-12 md:ms-8 relative cursor-pointer">
+                        <div>
+                            <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
+                            <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>
+                        </div>
+                    </div>
+                    <div className="flex profile mt-auto">
+                        <div>
+                            <img src={LOGO} alt="" className="w-32" />
+                        </div>
+                        <div>
+                            <h1 className="font-semibold text-lg mt-2">{user?.name}</h1>
+                            <h1 className="text-gray-500 ">{user?.email}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full z-10">
+                    <CompanyNavbar />
+                    <Outlet />
                 </div>
             </div>
-            <div className="w-full">
-            <CompanyNavbar/>
-                <Outlet />
-            </div>
-        </div>
         </>
     )
 }

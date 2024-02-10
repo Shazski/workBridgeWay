@@ -3,8 +3,8 @@ import JobApplicantsTable from "./JobApplicantsTable";
 
 const JobApplicantsSection = () => {
     return (
-        <div className="mt-10 md:ms-12 w-full">
-            <div className="filter  md:flex justify-between">
+        <div className=" w-full">
+            <div className="filter  md:flex justify-around mt-6">
                 <div>
                 <h1 className="font-serif font-medium text-xl">Total Applicants: <span>19</span></h1>
                 </div>

@@ -3,7 +3,7 @@ import { IUserLoginData } from "../interface/IuserLogin"
 const useForm = (initialState: IUserLoginData) => {
     const [values, setValues] = useState<IUserLoginData>(initialState)
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.currentTarget
         setValues({
             ...values, [name]: value
