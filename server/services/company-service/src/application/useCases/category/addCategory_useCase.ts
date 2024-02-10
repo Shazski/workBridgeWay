@@ -17,5 +17,5 @@ export const addCategory_useCase = (dependencies: IDependencies) => {
         return false
     }
   };
-  return execute;
+  return {execute};
 };

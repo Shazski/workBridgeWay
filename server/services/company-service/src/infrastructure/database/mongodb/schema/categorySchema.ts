@@ -1,10 +1,10 @@
-import mongoose, { Schema, Document, ObjectId } from "mongoose";
+import mongoose, { Schema, ObjectId } from "mongoose";
 import { ICategory } from "./../../../../domain/entities/category.entity";
 
 const CategorySchema: Schema = new Schema(
   {
-    Category: { type: String },
-    Description: { type: String },
+    companyId: { type: Schema.Types.ObjectId },
+    category: [{ description: String, category: String }],
   },
   {
     timestamps: true,
@@ -12,7 +12,6 @@ const CategorySchema: Schema = new Schema(
 );
 
 export interface ICategoryData extends ICategory {
-  _id: ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }

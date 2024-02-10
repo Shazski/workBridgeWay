@@ -31,4 +31,5 @@ export = (dependecies: IDependencies) => {
       next(error);
     }
   };
+  return postJob
 };
