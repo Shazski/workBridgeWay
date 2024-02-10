@@ -1,5 +1,5 @@
-import { ICompanyData } from "../../infrastructure/database/mongodb/schema/companySchema";
-import { IDependencies } from "../interface/IDependencies";
+import { ICompanyData } from "../../../infrastructure/database/mongodb/schema/companySchema";
+import { IDependencies } from "../../interface/IDependencies";
 
 export const updateCompany_useCase = (dependencies: IDependencies) => {
   const {
