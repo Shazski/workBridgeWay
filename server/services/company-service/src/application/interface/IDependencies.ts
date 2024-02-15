@@ -18,10 +18,14 @@ interface categoryRepoData {
 
 interface jobRepoData {
   postJob: any;
+  getAllCompanyJobs: any;
+  updateJobStatus: any;
 }
 
 interface jobUseCaseData {
   postJob_useCase: any;
+  getCompanyJobs_useCase: any
+  updateJobStatus_useCase:any
 }
 
 interface categoryUseCaseData {
@@ -37,5 +41,5 @@ export interface IDependencies {
   category_repo: categoryRepoData;
   category_useCase: categoryUseCaseData;
   RabbitMqClient: typeof RabbitMQClient;
-  Client: any;
+  Client: {set:any, get:any, expire:any};
 }

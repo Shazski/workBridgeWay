@@ -13,8 +13,8 @@ export = (dependecies: IDependencies) => {
       const token = req.cookies["auth_jwt"];
       const companyId: string = getCompanyId(token);
 
-      if (token || companyId) {
-        return next(ErrorResponse.unauthorized("company Autherization failed"));
+      if (!token || !companyId) {
+        return next(ErrorResponse.unauthorized("Company Autherization failed"));
       }
       const jobData = postJob_useCase(dependecies).execute(
         credentials,

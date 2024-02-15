@@ -20,7 +20,9 @@ export interface IJobs extends Document {
       time: String | null;
     };
   }[];
-  category: String[] | null;
+  category: String | null;
+  expiry: Date | null;
+  status: String | null;
   fromSalary: Number | null;
   jobDescription: String | null;
   jobTitle: String | null;

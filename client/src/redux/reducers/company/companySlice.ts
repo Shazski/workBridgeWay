@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ICompanyData } from "../../../interface/ICompanyData";
-import { getCategory } from "../../actions/company/CompanyActions";
+import { ICompanyData, IJobData } from "../../../interface/ICompanyData";
+import { getCategory, getJobs } from "../../actions/company/CompanyActions";
 const companySlice = createSlice({
   name: "company",
   initialState: {
     company: null as ICompanyData | null,
     category: null as string[] | null,
+    jobs: null as IJobData[] | null,
     loading: false as boolean,
     error: null as string | null,
   },
@@ -29,7 +30,20 @@ const companySlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
         state.category = null;
-      });
+      })
+      .addCase(getJobs.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getJobs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.jobs = action.payload;
+        state.error = null;
+      })
+      .addCase(getJobs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.jobs = null;
+      })
   },
 });
 export const { pushCategory } = companySlice.actions;

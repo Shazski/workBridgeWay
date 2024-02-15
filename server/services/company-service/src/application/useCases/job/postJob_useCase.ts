@@ -7,7 +7,7 @@ export const postJob_useCase = (dependencies: IDependencies) => {
     job_repo: { postJob },
   } = dependencies;
 
-  const execute = async (credentials: IJob, companyId:ObjectId) => {
+  const execute = async (credentials: IJob, companyId: ObjectId) => {
     try {
       const job = await postJob(credentials, companyId);
 
@@ -20,5 +20,5 @@ export const postJob_useCase = (dependencies: IDependencies) => {
     }
   };
 
-  return execute;
+  return { execute };
 };

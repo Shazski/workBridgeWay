@@ -9,7 +9,10 @@ import {
 
 export const addCategory = createAsyncThunk(
   "user/addCategory",
-  async (categoryData:{category:string, description:string}, { rejectWithValue }) => {
+  async (
+    categoryData: { category: string; description: string },
+    { rejectWithValue }
+  ) => {
     try {
       const { data } = await axios.post(
         `${COMPANY_BASE_URL}/add-category`,
@@ -31,6 +34,55 @@ export const getCategory = createAsyncThunk(
         `${COMPANY_BASE_URL}/get-category`,
         config
       );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+
+export const postJob = createAsyncThunk(
+  "user/postJob",
+  async (jobData: any, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${COMPANY_BASE_URL}/post-job`,
+        jobData,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const updateJobStatus = createAsyncThunk(
+  "user/updateJobStatus",
+  async (
+    updateData: { status: boolean, id: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.post(
+        `${COMPANY_BASE_URL}/update-job-status`,
+        updateData,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+
+export const getJobs = createAsyncThunk(
+  "user/getJobs",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${COMPANY_BASE_URL}/get-jobs`, config);
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<MyApiError>;

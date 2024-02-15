@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, ObjectId } from "mongoose";
 import { IJobs } from "../../../../domain/entities/job.entity";
+import { boolean } from "joi";
 
 const JobsSchema: Schema = new Schema(
   {
@@ -7,7 +8,7 @@ const JobsSchema: Schema = new Schema(
       {
         applicantId: { type: Schema.Types.ObjectId },
         appliedDate: { type: Date },
-        aescription: { type: String },
+        description: { type: String },
         email: { type: String },
         hiringStage: { type: String },
         linkedIn: { type: String },
@@ -23,7 +24,9 @@ const JobsSchema: Schema = new Schema(
         },
       },
     ],
-    category: [{ type: String }],
+    category: { type: String },
+    expiry: { type: Date },
+    status: { type: Boolean, default: true },
     fromSalary: { type: Number },
     jobDescription: { type: String },
     jobTitle: { type: String },

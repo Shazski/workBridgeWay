@@ -1,29 +1,31 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { BiLeftArrowAlt } from "react-icons/bi";
-import Modal from "../user/Modal";
-import { GoDotFill } from "react-icons/go";
-import useForm from "../../hooks/useForm";
-import { AppDispatch, RootState } from "../../redux/store";
-import { getCategory, postJob } from "../../redux/actions/company/CompanyActions";
-const PostJobSection = () => {
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import useForm from '../../hooks/useForm';
+import { getCategory, getJobs } from '../../redux/actions/company/CompanyActions';
+import Modal from '../../components/user/Modal';
+
+const UpdateJobDetails = () => {
     const [isSkillModalOpen, setIsSkillModalOpen] = useState<boolean>(false);
     const [requiredSkills, setRequiredSkills] = useState<string[]>([]);
     const [error, setError] = useState<string>("");
     const [skill, setSkill] = useState<string>("");
+    const { id } = useParams()
+    const [formData, setFormData] = useState<any>("");
     const [responsibilities, setResponsibilities] = useState<string[]>([]);
     const [responsibility, setResponsibility] = useState<string>("")
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [responsibilityError, setResponsibilityError] = useState<string>("");
-    const { values, handleChange } = useForm({
-    })
+    const { values, handleChange } = useForm({})
     const dispatch = useDispatch<AppDispatch>()
-    const { category } = useSelector((state: RootState) => state.company)
+    const { category, jobs } = useSelector((state: RootState) => state.company)
     const scrollToBottom = () => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
+    const editJobData = jobs?.filter((value) => value._id === id)
     useEffect(() => {
         if (error) {
             setTimeout(() => {
@@ -35,12 +37,15 @@ const PostJobSection = () => {
                 setResponsibilityError("")
             }, 3000)
         }
+        dispatch(getJobs())
+        setFormData({
+            ...editJobData
+        })
 
-    }, [error, responsibilityError])
+    }, [error, responsibilityError, dispatch])
 
     useEffect(() => {
         dispatch(getCategory())
-        console.log(category, "category data")
     }, [dispatch])
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -89,7 +94,6 @@ const PostJobSection = () => {
         }
 
         console.log(jobData)
-        dispatch(postJob(jobData))
     }
     function getCurrentDate() {
         const today = new Date();
@@ -97,14 +101,12 @@ const PostJobSection = () => {
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-      }
+    }
 
     return (
-        <>
-            <div className="flex mt-4 border-b-2">
-                <BiLeftArrowAlt className="text-3xl ms-4" />
-                <h1 className="text-xl font-serif font-semibold ms-1 mb-3" >Post a Job</h1>
-            </div>
+        <div><div className="flex mt-4 border-b-2">
+            <h1 className="text-xl font-serif font-semibold ms-1 mb-3" >Edit Job</h1>
+        </div>
             <div className="ms-5">
 
                 <div className="border-b-2">
@@ -118,7 +120,7 @@ const PostJobSection = () => {
                             <h1 className="text-xs mb-5 text-gray-600">Job titles must be describe one position</h1>
                         </div>
                         <div>
-                            <input onChange={handleChange} type="text" name="jobTitle" className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g Software Engineer" required />
+                            <input onChange={handleChange} value={formData[0]?.jobTitle} type="text" name="jobTitle" className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g Software Engineer" required />
                             <h1 className="text-xs  text-gray-600 mt-1 ms-1">At least 30 characters</h1>
                         </div>
                     </div>
@@ -128,7 +130,7 @@ const PostJobSection = () => {
                             <h1 className="text-xs mb-5 text-gray-600">open for how many job hunters</h1>
                         </div>
                         <div>
-                            <input onChange={handleChange} type="number" name="vacancy" className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g 20" required />
+                            <input onChange={handleChange} type="number" name="vacancy" value={formData[0]?.vacancy} className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g 20" required />
                             <h1 className="text-xs  text-gray-600 mt-1 ms-1">slot openings</h1>
                         </div>
                     </div>
@@ -138,7 +140,7 @@ const PostJobSection = () => {
                             <h1 className="text-xs mb-5 text-gray-600">open for how many days</h1>
                         </div>
                         <div>
-                            <input onChange={handleChange}  type="date" min={getCurrentDate()} name="expiry" className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g 20" required />
+                            <input onChange={handleChange} type="date" value={formData[0]?.expiry} min={getCurrentDate()} name="expiry" className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g 20" required />
                             <h1 className="text-xs  text-gray-600 mt-1 ms-1">Job expiry date</h1>
                         </div>
                     </div>
@@ -150,21 +152,21 @@ const PostJobSection = () => {
                         </div>
                         <div className="ms-14">
                             <div className="pt-2">
-                                <input type="checkbox" name="typeOfEmployment" value="Full-Time" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Full-Time" checked={formData[0]?.typeOfEmployment === 'Full-Time' ? true : false} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Full-Time</label>
                             </div>
                             <div className="pt-2">
 
-                                <input type="checkbox" name="typeOfEmployment" value="Part-Time" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Part-Time" checked={formData[0]?.typeOfEmployment === 'Part-Time' ? true : false} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Part-Time</label>
                             </div>
                             <div className="pt-2">
 
-                                <input type="checkbox" name="typeOfEmployment" value="Remote" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Remote" checked={formData[0]?.typeOfEmployment === 'Remote' ? true : false} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Remote</label>
                             </div>
                             <div className="pt-2 mb-5">
-                                <input type="checkbox" name="typeOfEmployment" value="Internship" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Internship" checked={formData[0]?.typeOfEmployment === 'Internship' ? true : false} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Internship</label>
                             </div>
                         </div>
@@ -175,9 +177,9 @@ const PostJobSection = () => {
                             <h1 className="text-xs mb-5 text-gray-600">Please specify the estimated salary range for the role. *You can leave this blank</h1>
                         </div>
                         <div className="flex gap-x-6 ms-4 md:ms-0">
-                            <input type="number" name="fromSalary" className="border border-gray-600 rounded-md py-1 w-20 ps-3 placeholder:text-xs outline-none" placeholder="e.g:500000" onChange={handleChange} required />
+                            <input type="number" name="fromSalary" className="border border-gray-600 rounded-md py-1 w-20 ps-3 placeholder:text-xs outline-none" placeholder="e.g:500000" value={formData[0]?.fromSalary} onChange={handleChange} required />
                             <h1>to</h1>
-                            <input type="number" name="toSalary" className="border border-gray-600 rounded-md py-1 w-20  ps-3 placeholder:text-xs outline-none" placeholder="e.g:1500000" onChange={handleChange} required />
+                            <input type="number" name="toSalary" className="border border-gray-600 rounded-md py-1 w-20  ps-3 placeholder:text-xs outline-none" placeholder="e.g:1500000" onChange={handleChange} value={formData[0]?.toSalary} required />
                         </div>
                     </div>
                     <div className="border-b-2 grid grid-cols-2 h-full items-center">
@@ -254,7 +256,7 @@ const PostJobSection = () => {
                                 {
                                     responsibilities.map((value, idx) => (
                                         <div className="flex gap-x-1 h-full items-center">
-                                            <h1><GoDotFill /></h1>
+                                            {/* <h1><GoDotFill /></h1> */}
                                             <h1 className="font-semibold text-gray-600 font-sans" key={idx}>{value}</h1>
                                         </div>
                                     ))
@@ -277,9 +279,8 @@ const PostJobSection = () => {
                         <button className="bg-lightgreen rounded-md font-semibold text-white py-2 px-5 mt-2">Add</button>
                     </div>
                 </form>
-            </Modal>
-        </>
+            </Modal></div>
     )
 }
 
-export default PostJobSection
+export default UpdateJobDetails

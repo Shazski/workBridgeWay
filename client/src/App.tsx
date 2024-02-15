@@ -33,6 +33,8 @@ import Complaints from './pages/admin/Complaints';
 import CompanySideBar from './components/company/CompanySideBar';
 import WaitingPage from './pages/company/WaitingPage';
 import PostJobSection from './components/company/PostJobSection';
+import JobList from './pages/company/JobList';
+import UpdateJobDetails from './pages/company/updateJobDetails';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -76,6 +78,8 @@ function App() {
                 <Route path='dashboard' element={<CompanyDashboard />} />
                 <Route path='applicants' element={<JobApplicants />} />
                 <Route path='post-job' element={<PostJobSection />} />
+                <Route path='job-list' element={<JobList />} />
+                <Route path='edit-job/:id' element={<UpdateJobDetails />} />
               </Route>
             </>
             }
