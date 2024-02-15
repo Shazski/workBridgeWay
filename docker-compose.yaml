@@ -1,0 +1,18 @@
+version: '3'
+services:
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    container_name: rabbitmq_management
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USERNAME: admin 
+      RABBITMQ_DEFAULT_PASSWORD: password
+
+  redis:
+    image: 'redis/redis-stack:latest'
+    container_name: redistack
+    ports:
+     - "6379:6379"
+     - "8001:8001"     

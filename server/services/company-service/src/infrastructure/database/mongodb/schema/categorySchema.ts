@@ -3,8 +3,9 @@ import { ICategory } from "./../../../../domain/entities/category.entity";
 
 const CategorySchema: Schema = new Schema(
   {
-    companyId: { type: Schema.Types.ObjectId },
-    category: [{ description: String, category: String }],
+    companyId: { type: Schema.Types.ObjectId, required: true },
+    category: { type: String },
+    description: { type: String },
   },
   {
     timestamps: true,

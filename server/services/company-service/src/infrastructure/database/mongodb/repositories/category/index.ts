@@ -1,5 +1,6 @@
-import { addCategory } from "./categoryRepo";
+import { addCategory, getCategoryByCompany } from "./categoryRepo";
 
-export = {
-    addCategory
+export default {
+    addCategory,
+    getCategoryByCompany
 }

@@ -1,8 +1,11 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { BiLeftArrowAlt } from "react-icons/bi";
 import Modal from "../user/Modal";
 import { GoDotFill } from "react-icons/go";
 import useForm from "../../hooks/useForm";
+import { AppDispatch, RootState } from "../../redux/store";
+import { getCategory } from "../../redux/actions/company/CompanyActions";
 const PostJobSection = () => {
     const [isSkillModalOpen, setIsSkillModalOpen] = useState<boolean>(false);
     const [requiredSkills, setRequiredSkills] = useState<string[]>([]);
@@ -12,15 +15,15 @@ const PostJobSection = () => {
     const [responsibility, setResponsibility] = useState<string>("")
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [responsibilityError, setResponsibilityError] = useState<string>("");
-    const {values, handleChange } = useForm({
-
+    const { values, handleChange } = useForm({
     })
-    // const [jobData, setJobData] = useState<>();
-  const scrollToBottom = () => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth'});
-    }
-  };
+    const dispatch = useDispatch<AppDispatch>()
+    const { category } = useSelector((state: RootState) => state.company)
+    const scrollToBottom = () => {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
     useEffect(() => {
         if (error) {
             setTimeout(() => {
@@ -32,8 +35,13 @@ const PostJobSection = () => {
                 setResponsibilityError("")
             }, 3000)
         }
-        
-    }, [error,responsibilityError])
+
+    }, [error, responsibilityError])
+
+    useEffect(() => {
+        dispatch(getCategory())
+        console.log(category, "category data")
+    }, [dispatch])
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -43,7 +51,7 @@ const PostJobSection = () => {
         setRequiredSkills([...requiredSkills, skill])
         setSkill("")
         setError("")
-        
+
     }
 
     const handleDelete = (skill: string) => {
@@ -52,7 +60,7 @@ const PostJobSection = () => {
     }
 
     const handleResponsibility = () => {
-        if(responsibilities.includes(responsibility)) {
+        if (responsibilities.includes(responsibility)) {
             return setResponsibilityError("Already entered the responsibility")
         }
         setResponsibilities([
@@ -64,15 +72,13 @@ const PostJobSection = () => {
         scrollToBottom()
     }
 
-    const handleJobSubmit = (e:FormEvent<HTMLFormElement>) => {
+    const handleJobSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(values,"dssadsa")
+        console.log(values, "dssadsa")
 
-        if(requiredSkills.length > 0 || responsibilities.length > 0) {
+        if (requiredSkills.length > 0 || responsibilities.length > 0) {
             console.log("provide details ")
         }
-        console.log(requiredSkills,"dssadsa")
-        console.log(responsibilities,"dssadsa")
     }
 
     return (
@@ -117,16 +123,16 @@ const PostJobSection = () => {
                         <div className="ms-14">
                             <div className="pt-2">
                                 <input type="checkbox" name="typeOfEmployment" value="Full-Time" className="border rounded-md ps-3" onChange={handleChange} />
-                                <label className="text-sm text-gray-800 ms-1 "  htmlFor="">Full-Time</label>
+                                <label className="text-sm text-gray-800 ms-1 " htmlFor="">Full-Time</label>
                             </div>
                             <div className="pt-2">
 
-                                <input type="checkbox" name="typeOfEmployment" value="Part-Time" className="border rounded-md ps-3" onChange={handleChange}  />
+                                <input type="checkbox" name="typeOfEmployment" value="Part-Time" className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Part-Time</label>
                             </div>
                             <div className="pt-2">
 
-                                <input type="checkbox" name="typeOfEmployment" value="Remote" className="border rounded-md ps-3" onChange={handleChange}/>
+                                <input type="checkbox" name="typeOfEmployment" value="Remote" className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Remote</label>
                             </div>
                             <div className="pt-2 mb-5">
@@ -152,12 +158,28 @@ const PostJobSection = () => {
                             <h1 className="text-xs mb-5 text-gray-600">You can select multiple job categories</h1>
                         </div>
                         <div>
-                            <h1 className="text-sm font-semibold text-gray-700">Select Job Categories</h1>
-                            <select name="jobCategory" required className="border text-gray-500 border-gray-500 py-1 px-4 outline-none rounded-md" onChange={handleChange}>
-                                <option defaultChecked hidden>Select Job Categories</option>
-                                <option value="dsadsad">asdssadd</option>
-                                <option className="text-gray-900" value="asd">asd</option>
-                            </select>
+                            {category && category?.length > 0 ?
+                                <>
+                                    <h1 className="text-sm font-semibold text-gray-700">Select Job Categories</h1>
+                                    <select name="jobCategory" required className="border text-gray-500 border-gray-500 py-1 px-4 outline-none rounded-md" onChange={handleChange}>
+                                        <option defaultChecked hidden>Select Job Categories</option>
+                                        {
+
+                                            category?.map((category, idx) => (
+                                                <>
+                                                    <option key={idx} value={category}>{String(category)}</option>
+                                                </>
+                                            ))
+                                        }
+
+
+                                    </select>
+                                </>
+                                : <>
+                                    <h1 className="font-semibold">Add category to display category</h1>
+                                </>
+
+                            }
                         </div>
                     </div>
                     <div className="border-b-2 grid grid-cols-2 h-full items-center">
@@ -169,7 +191,7 @@ const PostJobSection = () => {
                             <button type="button" onClick={() => { setIsSkillModalOpen(true) }} className="border border-gray-400 text-lightgreen px-2 py-2 text-xs font-semibold rounded-md">+ Add Skills</button>
                             <div className="flex gap-x-4 flex-wrap">
                                 {
-                                    requiredSkills.map((skill,idx) => (
+                                    requiredSkills.map((skill, idx) => (
                                         <>
                                             <div key={idx} className="flex gap-x-1.5 border border-gray-300 px-6 py-1 mt-2 rounded-md relative">
                                                 <h1 className="text-lightgreen ">{skill}</h1>
@@ -204,7 +226,7 @@ const PostJobSection = () => {
                                 {
                                     responsibilities.map((value, idx) => (
                                         <div className="flex gap-x-1 h-full items-center">
-                                            <h1><GoDotFill/></h1>
+                                            <h1><GoDotFill /></h1>
                                             <h1 className="font-semibold text-gray-600 font-sans" key={idx}>{value}</h1>
                                         </div>
                                     ))
