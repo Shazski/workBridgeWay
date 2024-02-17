@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Dashboard from './pages/user/Dashboard';
 import UserSidebar from './components/user/UserSidebar';
 import { ToastContainer } from 'react-toastify';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useCallback, useEffect } from 'react';
 import Profile from './pages/user/Profile';
 import Applications from './pages/user/Applications';
 import Messages from './pages/user/Messages';
@@ -34,7 +34,9 @@ import CompanySideBar from './components/company/CompanySideBar';
 import WaitingPage from './pages/company/WaitingPage';
 import PostJobSection from './components/company/PostJobSection';
 import JobList from './pages/company/JobList';
-import UpdateJobDetails from './pages/company/updateJobDetails';
+import UpdateJobDetails from './pages/company/UpdateJobDetails';
+import Particles from 'react-tsparticles';
+import { loadSlim } from "tsparticles-slim";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
@@ -56,6 +58,25 @@ function App() {
   const AdminProtectedRoute = ({ element }: { element: ReactNode }) => {
     return user?.role === "admin" ? element : <Navigate to="/login" />;
   }
+
+  const particlesInit = useCallback(async (engine: any) => {
+    console.log(engine);
+
+    // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    // await loadFull(engine);
+    await loadSlim(engine);
+  }, []);
+
+  const particlesLoaded = useCallback(async (container: any | undefined) => {
+    return new Promise<void>((resolve) => {
+      console.log(container);
+      // Additional initialization logic can go here
+      resolve(container);
+    });
+  }, []);
+
   return (
     <div>
       <ToastContainer />
@@ -110,6 +131,80 @@ function App() {
 
       {(user?.role === 'user') && <Footer />
       }
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={{
+          background: {
+            color: {
+              value: "ffff"
+            },
+          },
+          fpsLimit: 240,
+          interactivity: {
+            events: {
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+              resize: true,
+            },
+            modes: {
+              push: {
+                quantity: 5,
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4,
+              },
+            },
+          },
+          particles: {
+            color: {
+              value: "#20DC49",
+            },
+            links: {
+              color: "#20DC49",
+              distance: 150,
+              enable: true,
+              opacity: 0.7,
+              width: 0.8,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: false,
+              speed: 6,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 80,
+            },
+            opacity: {
+              value: 1.7,
+            },
+            shape: {
+              type: "star",
+            },
+            size: {
+              value: { min: 1, max: 5 },
+            },
+          },
+          detectRetina: true,
+        }}
+        className='particles' />
     </div >
   );
 }
