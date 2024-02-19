@@ -1,7 +1,13 @@
-import { postJob, getAllCompanyJobs, updateJobStatus } from "./jobRepo";
-
-export = {
+import {
   postJob,
   getAllCompanyJobs,
   updateJobStatus,
+  getJobById,
+} from "./jobRepo";
+
+export default {
+  postJob,
+  getAllCompanyJobs,
+  updateJobStatus,
+  getJobById,
 };

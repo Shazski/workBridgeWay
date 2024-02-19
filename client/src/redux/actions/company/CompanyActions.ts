@@ -90,3 +90,15 @@ export const getJobs = createAsyncThunk(
     }
   }
 );
+export const getJobById = createAsyncThunk(
+  "user/getJobsById",
+  async (id:any,{ rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${COMPANY_BASE_URL}/get-job/${id}`, config);
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);

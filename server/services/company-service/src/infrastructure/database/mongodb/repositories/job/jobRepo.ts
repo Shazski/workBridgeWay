@@ -42,7 +42,6 @@ export const updateJobStatus = async (updateData: {
     const jobData = job as IJobsData;
 
     return jobData;
-    
   } catch (error) {
     console.log(error, "<< Something went wrong in update job status repo >>");
     return false;
@@ -66,6 +65,18 @@ export const getAllCompanyJobs = async (
     return jobs as IJob[];
   } catch (error) {
     console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
+    return false;
+  }
+};
+export const getJobById = async (id: ObjectId): Promise<IJob | boolean> => {
+  try {
+    const job: IJob | null = await JobSchema.findOne({ _id: id });
+
+    if (!job) return false;
+
+    return job as IJob;
+  } catch (error) {
+    console.log(error, "<< Something went wrong in getJobById >>");
     return false;
   }
 };

@@ -138,10 +138,10 @@ function App() {
         options={{
           background: {
             color: {
-              value: "ffff"
+              value: ""
             },
           },
-          fpsLimit: 240,
+          fpsLimit: 960,
           interactivity: {
             events: {
               onClick: {
@@ -156,7 +156,7 @@ function App() {
             },
             modes: {
               push: {
-                quantity: 5,
+                quantity: 1,
               },
               repulse: {
                 distance: 200,
@@ -182,7 +182,7 @@ function App() {
                 default: "bounce",
               },
               random: false,
-              speed: 6,
+              speed: 4,
               straight: false,
             },
             number: {
@@ -190,13 +190,13 @@ function App() {
                 enable: true,
                 area: 800,
               },
-              value: 80,
+              value: 15,
             },
             opacity: {
               value: 1.7,
             },
             shape: {
-              type: "star",
+              type: "circle",
             },
             size: {
               value: { min: 1, max: 5 },

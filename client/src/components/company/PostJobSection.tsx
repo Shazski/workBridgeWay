@@ -6,10 +6,13 @@ import { GoDotFill } from "react-icons/go";
 import useForm from "../../hooks/useForm";
 import { AppDispatch, RootState } from "../../redux/store";
 import { getCategory, postJob } from "../../redux/actions/company/CompanyActions";
+import { useNavigate } from "react-router-dom"; 
 const PostJobSection = () => {
     const [isSkillModalOpen, setIsSkillModalOpen] = useState<boolean>(false);
     const [requiredSkills, setRequiredSkills] = useState<string[]>([]);
     const [error, setError] = useState<string>("");
+    const navigate = useNavigate()
+    const [salaryError, setSalaryError] = useState<string>("");
     const [skill, setSkill] = useState<string>("");
     const [responsibilities, setResponsibilities] = useState<string[]>([]);
     const [responsibility, setResponsibility] = useState<string>("")
@@ -28,6 +31,11 @@ const PostJobSection = () => {
         if (error) {
             setTimeout(() => {
                 setError("")
+            }, 5000)
+        }
+        if (salaryError) {
+            setTimeout(() => {
+                setSalaryError("")
             }, 5000)
         }
         if (responsibilityError) {
@@ -72,14 +80,18 @@ const PostJobSection = () => {
         scrollToBottom()
     }
 
-    const handleJobSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleJobSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(values, "dssadsa")
-        console.log(requiredSkills, "dssadsa")
-        console.log(responsibilities, "dssadsa")
-
         if (!(requiredSkills.length > 0) || !(responsibilities.length > 0)) {
             return console.log("provide details ")
+        }
+
+        if (values?.fromSalary === undefined || values?.toSalary === undefined) {
+            return console.log("provide details ");
+        }
+    
+        if (Number(values.fromSalary) >= Number(values.toSalary)) {
+            return setSalaryError("Salary range is invalid");
         }
 
         const jobData = {
@@ -88,8 +100,14 @@ const PostJobSection = () => {
             responsibilities
         }
 
-        console.log(jobData)
-        dispatch(postJob(jobData))
+        await dispatch(postJob(jobData))
+        navigate('/company/job-list')
+
+
+    }
+    const handleDeleteResponsibility = (responsibility: string) => {
+        const filterData = responsibilities.filter((value) => value !== responsibility)
+        setResponsibilities([...filterData])
     }
     function getCurrentDate() {
         const today = new Date();
@@ -97,7 +115,7 @@ const PostJobSection = () => {
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-      }
+    }
 
     return (
         <>
@@ -138,7 +156,7 @@ const PostJobSection = () => {
                             <h1 className="text-xs mb-5 text-gray-600">open for how many days</h1>
                         </div>
                         <div>
-                            <input onChange={handleChange}  type="date" min={getCurrentDate()} name="expiry" className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g 20" required />
+                            <input onChange={handleChange} type="date" min={getCurrentDate()} name="expiry" className="border rounded-md py-1  ps-3 placeholder:text-sm outline-none" placeholder="e.g 20" required />
                             <h1 className="text-xs  text-gray-600 mt-1 ms-1">Job expiry date</h1>
                         </div>
                     </div>
@@ -178,6 +196,9 @@ const PostJobSection = () => {
                             <input type="number" name="fromSalary" className="border border-gray-600 rounded-md py-1 w-20 ps-3 placeholder:text-xs outline-none" placeholder="e.g:500000" onChange={handleChange} required />
                             <h1>to</h1>
                             <input type="number" name="toSalary" className="border border-gray-600 rounded-md py-1 w-20  ps-3 placeholder:text-xs outline-none" placeholder="e.g:1500000" onChange={handleChange} required />
+                            {salaryError && <>
+                                <h1 className="text-red-600 font-semibold">{salaryError}</h1>
+                            </>}
                         </div>
                     </div>
                     <div className="border-b-2 grid grid-cols-2 h-full items-center">
@@ -256,6 +277,7 @@ const PostJobSection = () => {
                                         <div className="flex gap-x-1 h-full items-center">
                                             <h1><GoDotFill /></h1>
                                             <h1 className="font-semibold text-gray-600 font-sans" key={idx}>{value}</h1>
+                                            <h1 onClick={() => handleDeleteResponsibility(value)} className="text-xs bg-red-600 px-0.5 text-white hover:cursor-pointer font-bold">X</h1>
                                         </div>
                                     ))
                                 }

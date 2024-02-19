@@ -9,4 +9,6 @@ export interface IUserLoginData {
   dob?: string | number | readonly string[] | undefined | Date;
   socialMedia?: string;
   link?: string;
+  toSalary?: number;
+  fromSalary?: number ;
 }

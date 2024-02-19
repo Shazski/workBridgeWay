@@ -14,18 +14,20 @@ const JobListTable = () => {
     const [refetch, setRefetch] = useState<boolean>(false);
     const [currentJob, setCurrentJob] = useState<number | null>(null)
     const { jobs } = useSelector((state: RootState) => state.company)
+
     const updateStatus = (status: boolean, jobId: string) => {
         const updateData = {
             status,
             id: jobId
         }
         dispatch(updateJobStatus(updateData))
-        setRefetch(true)
+        setRefetch(!refetch)
         setIsOption(false)
     }
+    
     useEffect(() => {
         dispatch(getJobs())
-    }, [dispatch, refetch, jobs])
+    }, [dispatch, refetch])
 
     return (
         <div className="mt-12 flex-grow">
