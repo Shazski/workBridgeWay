@@ -3,13 +3,11 @@ import { ICategory } from "../../../../../domain/entities/category.entity";
 import CategorySchema, { ICategoryData } from "../../schema/categorySchema";
 
 export const addCategory = async (
-  credentials: ICategory,
-  companyId: ObjectId
+  credentials: ICategory
 ): Promise<ICategoryData | boolean> => {
   try {
     const category = await CategorySchema.create({
       ...credentials,
-      companyId,
     });
     if (!category) return false;
 
@@ -26,18 +24,18 @@ export const getCategoryByCompany = async (
   companyId: ObjectId
 ): Promise<string[] | boolean> => {
   try {
-    const category: (String | null)[] = await CategorySchema.distinct(
-      "category",
-      {
-        companyId: companyId,
-      }
-    );
-    console.log(category, "category data");
-    if (!category) return false;
+    const categories = await CategorySchema.find().select('category');
 
-    return category as string[];
+    const categoryStrings = categories
+      .filter((category) => category !== null)
+      .map((category) => category?.category as string);
+
+    console.log(categoryStrings, "category data");
+    if (!categoryStrings) return false;
+
+    return categoryStrings;
   } catch (error) {
-    console.log(error, "<< Something went wrong in  getcategory repo >>");
+    console.log(error, "<< Something went wrong in getcategory repo >>");
     return false;
   }
 };

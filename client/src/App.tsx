@@ -5,6 +5,7 @@ import Home from './pages/user/Home';
 import Footer from './components/user/Footer';
 import FindJobs from './pages/user/FindJobs';
 import JobDescription from './pages/user/JobDescription';
+import { Toaster } from 'react-hot-toast';
 import CompanyRegister from './pages/company/CompanyRegister';
 // import CompanySideBar from './components/company/CompanySideBar';
 // import CompanyNavbar from './components/company/CompanyNavbar';
@@ -16,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Dashboard from './pages/user/Dashboard';
 import UserSidebar from './components/user/UserSidebar';
 import { ToastContainer } from 'react-toastify';
-import { ReactNode, useCallback, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import Profile from './pages/user/Profile';
 import Applications from './pages/user/Applications';
 import Messages from './pages/user/Messages';
@@ -35,9 +36,6 @@ import WaitingPage from './pages/company/WaitingPage';
 import PostJobSection from './components/company/PostJobSection';
 import JobList from './pages/company/JobList';
 import UpdateJobDetails from './pages/company/UpdateJobDetails';
-import Particles from 'react-tsparticles';
-import { loadSlim } from "tsparticles-slim";
-
 function App() {
   const dispatch = useDispatch<AppDispatch>()
   const { user, error } = useSelector((state: any) => state?.user);
@@ -59,26 +57,9 @@ function App() {
     return user?.role === "admin" ? element : <Navigate to="/login" />;
   }
 
-  const particlesInit = useCallback(async (engine: any) => {
-    console.log(engine);
-
-    // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
-    // await loadFull(engine);
-    await loadSlim(engine);
-  }, []);
-
-  const particlesLoaded = useCallback(async (container: any | undefined) => {
-    return new Promise<void>((resolve) => {
-      console.log(container);
-      // Additional initialization logic can go here
-      resolve(container);
-    });
-  }, []);
-
   return (
     <div>
+      <Toaster position='top-center'/>
       <ToastContainer />
       <Router>
         <div>
@@ -129,82 +110,7 @@ function App() {
         </div>
       </Router >
 
-      {(user?.role === 'user') && <Footer />
-      }
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={{
-          background: {
-            color: {
-              value: ""
-            },
-          },
-          fpsLimit: 960,
-          interactivity: {
-            events: {
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              onHover: {
-                enable: true,
-                mode: "repulse",
-              },
-              resize: true,
-            },
-            modes: {
-              push: {
-                quantity: 1,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              value: "#20DC49",
-            },
-            links: {
-              color: "#20DC49",
-              distance: 150,
-              enable: true,
-              opacity: 0.7,
-              width: 0.8,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 4,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 15,
-            },
-            opacity: {
-              value: 1.7,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 5 },
-            },
-          },
-          detectRetina: true,
-        }}
-        className='particles' />
+      {(user?.role === 'user') && <Footer />}
     </div >
   );
 }

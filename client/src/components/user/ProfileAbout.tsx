@@ -3,7 +3,7 @@ import ProfileSkills from "../../components/user/ProfileSkills"
 import { AppDispatch } from "../../redux/store";
 import { FaRegEdit } from "react-icons/fa";
 import { useDispatch } from "react-redux"
-import Modal from "./Modal";
+import Modal from "../Modal";
 import { removeUserSocialLinks, updateUserAbout, updateUserSocialLinks } from "../../redux/actions/user/userActions";
 import { toast } from "react-toastify";
 import useForm from "../../hooks/useForm";

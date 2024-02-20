@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { BiLeftArrowAlt } from "react-icons/bi";
-import Modal from "../user/Modal";
+import Modal from "../Modal";
 import { GoDotFill } from "react-icons/go";
 import useForm from "../../hooks/useForm";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -168,21 +168,21 @@ const PostJobSection = () => {
                         </div>
                         <div className="ms-14">
                             <div className="pt-2">
-                                <input type="checkbox" name="typeOfEmployment" value="Full-Time" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Full-Time" checked={values!.typeOfEmployment === "Full-Time"} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Full-Time</label>
                             </div>
                             <div className="pt-2">
 
-                                <input type="checkbox" name="typeOfEmployment" value="Part-Time" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Part-Time" checked={values!.typeOfEmployment === "Part-Time"} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Part-Time</label>
                             </div>
                             <div className="pt-2">
 
-                                <input type="checkbox" name="typeOfEmployment" value="Remote" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Remote" checked={values!.typeOfEmployment === "Remote"} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Remote</label>
                             </div>
                             <div className="pt-2 mb-5">
-                                <input type="checkbox" name="typeOfEmployment" value="Internship" className="border rounded-md ps-3" onChange={handleChange} />
+                                <input type="checkbox" name="typeOfEmployment" value="Internship" checked={values!.typeOfEmployment === "Internship"} className="border rounded-md ps-3" onChange={handleChange} />
                                 <label className="text-sm text-gray-800 ms-1 " htmlFor="">Internship</label>
                             </div>
                         </div>

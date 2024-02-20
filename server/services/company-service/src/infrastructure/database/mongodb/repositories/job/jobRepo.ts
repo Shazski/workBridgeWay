@@ -80,3 +80,22 @@ export const getJobById = async (id: ObjectId): Promise<IJob | boolean> => {
     return false;
   }
 };
+export const editJob = async (jobDetails: IJob): Promise<IJob | boolean> => {
+  const { _id, ...restValue } = jobDetails;
+  console.log(jobDetails, "editjob details");
+  try {
+    const job: IJob | null = await JobSchema.findOneAndUpdate(
+      { _id: _id },
+      {
+        ...restValue,
+      }
+    );
+
+    if (!job) return false;
+    await Client.del("jobs");
+    return job as IJob;
+  } catch (error) {
+    console.log(error, "<< Something went wrong in edit job details >>");
+    return false;
+  }
+};

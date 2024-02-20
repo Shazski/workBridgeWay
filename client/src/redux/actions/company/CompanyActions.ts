@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit/react";
 import axios, { AxiosError } from "axios";
-import { COMPANY_BASE_URL } from "../../../config/constants";
+import { ADMIN_BASE_URL, COMPANY_BASE_URL } from "../../../config/constants";
 import {
   MyApiError,
   config,
   handleError,
 } from "../../../config/configurations";
+import { IJobData } from "../../../interface/ICompanyData";
 
 export const addCategory = createAsyncThunk(
   "user/addCategory",
@@ -15,7 +16,7 @@ export const addCategory = createAsyncThunk(
   ) => {
     try {
       const { data } = await axios.post(
-        `${COMPANY_BASE_URL}/add-category`,
+        `${ADMIN_BASE_URL}/add-category`,
         categoryData,
         config
       );
@@ -31,9 +32,10 @@ export const getCategory = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `${COMPANY_BASE_URL}/get-category`,
+        `${ADMIN_BASE_URL}/get-categories`,
         config
       );
+      console.log(data,"categorydata")
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<MyApiError>;
@@ -60,10 +62,7 @@ export const postJob = createAsyncThunk(
 );
 export const updateJobStatus = createAsyncThunk(
   "user/updateJobStatus",
-  async (
-    updateData: { status: boolean, id: string },
-    { rejectWithValue }
-  ) => {
+  async (updateData: { status: boolean; id: string }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
         `${COMPANY_BASE_URL}/update-job-status`,
@@ -92,9 +91,28 @@ export const getJobs = createAsyncThunk(
 );
 export const getJobById = createAsyncThunk(
   "user/getJobsById",
-  async (id:any,{ rejectWithValue }) => {
+  async (id: any, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${COMPANY_BASE_URL}/get-job/${id}`, config);
+      const { data } = await axios.get(
+        `${COMPANY_BASE_URL}/get-job/${id}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);
+export const editJobDetails = createAsyncThunk(
+  "user/editJobDetails",
+  async (jobDetails: IJobData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${COMPANY_BASE_URL}/edit-job`,
+        jobDetails,
+        config
+      );
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<MyApiError>;

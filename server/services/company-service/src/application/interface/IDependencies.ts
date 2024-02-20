@@ -1,3 +1,4 @@
+import { Client } from "../../infrastructure/database/redis/client";
 import RabbitMQClient from "../../infrastructure/messageBroker/rabbitmq/client";
 
 interface useCaseData {
@@ -11,16 +12,12 @@ interface companyRepoData {
   updateCompany_repo: any;
 }
 
-interface categoryRepoData {
-  addCategory: any;
-  getCategoryByCompany: any;
-}
-
 interface jobRepoData {
   postJob: any;
   getAllCompanyJobs: any;
   updateJobStatus: any;
   getJobById: any;
+  editJob: any;
 }
 
 interface jobUseCaseData {
@@ -28,20 +25,16 @@ interface jobUseCaseData {
   getCompanyJobs_useCase: any;
   updateJobStatus_useCase: any;
   getJobById_useCase: any;
+  editJobDetails_useCase:any;
 }
 
-interface categoryUseCaseData {
-  addCategory_useCase: any;
-  getCategoryByCompany: any;
-}
+
 
 export interface IDependencies {
   company_useCase: useCaseData;
-  job_useCase: jobUseCaseData;
   company_repo: companyRepoData;
+  job_useCase: jobUseCaseData;
   job_repo: jobRepoData;
-  category_repo: categoryRepoData;
-  category_useCase: categoryUseCaseData;
   RabbitMqClient: typeof RabbitMQClient;
-  Client: { set: any; get: any; expire: any };
+  Client: typeof Client;
 }

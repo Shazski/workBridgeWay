@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { IDependencies } from "../../../application/interface/IDependencies";
-import { getCompanyId } from "../../../utils/jwt/verifyJwt";
-import ErrorResponse from "../../../utils/error/errorResponse";
+import { IDependenciesData } from "../../../application/interfaces/IDependenciesData";
+import { ErrorResponse } from "../../../utils";
 import { ICategoryData } from "../../../infrastructure/database/mongodb/schema/categorySchema";
 
-export default (dependencies: IDependencies) => {
+
+export default (dependencies: IDependenciesData) => {
   const {
     category_useCase: { getCategoryByCompany },
   } = dependencies;
@@ -14,16 +14,9 @@ export default (dependencies: IDependencies) => {
     next: NextFunction
   ) => {
     try {
-      const token = req.cookies["auth_jwt"];
-      const companyId: string = getCompanyId(token);
-
-      if (!token || !companyId) {
-        return next(ErrorResponse.unauthorized("company Autherization failed"));
-      }
-
       const category: ICategoryData[] | null = await getCategoryByCompany(
         dependencies
-      ).execute(companyId);
+      ).execute();
 
       if (!category)
         return next(

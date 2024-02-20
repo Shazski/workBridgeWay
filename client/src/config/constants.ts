@@ -1,12 +1,21 @@
+import { CSSProperties } from "react";
 import storage from "redux-persist/lib/storage";
 
 export const persistConfig = {
-    key:"root",
-    version:1,
-    storage
-}
+  key: "root",
+  version: 1,
+  storage,
+};
 
-export const AUTH_BASE_URL = 'http://localhost:3000/api/v1/auth'
-export const USER_BASE_URL = 'http://localhost:3001/api/v1/user'
-export const ADMIN_BASE_URL = 'http://localhost:3001/api/v1/admin'
-export const COMPANY_BASE_URL = 'http://localhost:3002/api/v1/company'
+export const override: CSSProperties = {
+  display: "grid",
+  placeItems:"center",
+  margin: "0 auto",
+  borderColor: "red",
+  height:'500px'
+};
+
+export const AUTH_BASE_URL = "http://localhost:3000/api/v1/auth";
+export const USER_BASE_URL = "http://localhost:3001/api/v1/user";
+export const ADMIN_BASE_URL = "http://localhost:3001/api/v1/admin";
+export const COMPANY_BASE_URL = "http://localhost:3002/api/v1/company";

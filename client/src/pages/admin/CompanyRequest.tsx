@@ -11,7 +11,7 @@ import { AppDispatch } from '../../redux/store';
 import { toast } from "react-toastify"
 import { approveOrRejectCompany } from '../../redux/actions/admin/adminActions';
 import Pagination from '../../components/Pagination';
-import Modal from '../../components/user/Modal';
+import Modal from '../../components/Modal';
 const CompanyRequest = () => {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [sortParams] = useSearchParams()

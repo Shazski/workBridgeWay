@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { IDependencies } from "../../../application/interface/IDependencies";
-import ErrorResponse from "../../../utils/error/errorResponse";
-import { getCompanyId } from "../../../utils/jwt/verifyJwt";
+import { ErrorResponse } from "../../../utils";
+import { IDependenciesData } from "../../../application/interfaces/IDependenciesData";
 
-export = (dependencies: IDependencies) => {
+export = (dependencies: IDependenciesData) => {
   const {
     category_useCase: { addCategory_useCase },
   } = dependencies;
@@ -14,15 +13,9 @@ export = (dependencies: IDependencies) => {
   ) => {
     const credentials = req.body;
     try {
-      const token = req.cookies["auth_jwt"];
-      const companyId: string = getCompanyId(token);
 
-      if (!token || !companyId) {
-        return next(ErrorResponse.unauthorized("Company Autherization Failed"));
-      }
       const category = await addCategory_useCase(dependencies).execute(
-        credentials,
-        companyId
+        credentials
       );
       if (!category)
         return next(ErrorResponse.notFound("Failed to add category"));

@@ -1,24 +1,24 @@
-import { FormEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { GoDotFill } from "react-icons/go";
-import useForm from '../../hooks/useForm';
-import { getCategory, getJobById } from '../../redux/actions/company/CompanyActions';
-import Modal from '../../components/user/Modal';
+import { editJobDetails, getCategory, getJobById } from '../../redux/actions/company/CompanyActions';
+import Modal from '../../components/Modal';
 import { format, parseISO } from 'date-fns';
 import { popResponsibilities, popSkills, pushResponsibilities, pushSkill } from '../../redux/reducers/company/companySlice';
+import toast from 'react-hot-toast';
 
 const UpdateJobDetails = () => {
     const [isSkillModalOpen, setIsSkillModalOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [skill, setSkill] = useState<string>("");
     const { id } = useParams()
+    const [salaryError, setSalaryError] = useState<string>("");
     const [formData, setFormData] = useState<any>("");
     const [responsibility, setResponsibility] = useState<string>("")
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [responsibilityError, setResponsibilityError] = useState<string>("");
-    const { handleChange } = useForm({})
     const dispatch = useDispatch<AppDispatch>()
     const { category, editJob } = useSelector((state: RootState) => state.company)
     const scrollToBottom = () => {
@@ -79,20 +79,30 @@ const UpdateJobDetails = () => {
         scrollToBottom()
     }
 
-    // const handleJobSubmit = (e: FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault()
-    //     if (!(requiredSkills.length > 0) || !(responsibilities.length > 0)) {
-    //         return console.log("provide details ")
-    //     }
+    const handleEditJobSubmit = async(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (Number(formData?.fromSalary) >= Number(formData?.toSalary)) {
+            return setSalaryError("Salary range is invalid");
+        }
+        delete formData?.createdAt
+        delete formData?.updatedAt
+        delete formData?.applicants
+        delete formData?.status
+        delete formData?.__v
 
-    //     const jobData = {
-    //         ...values,
-    //         requiredSkills,
-    //         responsibilities
-    //     }
-
-    //     console.log(jobData)
-    // }
+       const res = await dispatch(editJobDetails(formData))
+       if(res.payload) {
+        toast.promise(
+            dispatch(editJobDetails(formData)),
+             {
+               loading: 'Saving...',
+               success: <b>Job Updated !</b>,
+               error: <b>Job Update failed</b>,
+             }
+           );
+       }
+        console.log(formData, "formdata")
+    }
     function getCurrentDate() {
         const today = new Date();
         const year = today.getFullYear();
@@ -100,6 +110,21 @@ const UpdateJobDetails = () => {
         const day = String(today.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.currentTarget
+        setFormData({
+            ...formData,
+            [name]: value
+        })
+    }
+    useEffect(() => {
+        if (salaryError) {
+            setTimeout(() => {
+                setSalaryError("")
+            }, 5000)
+        }
+    }, [salaryError])
 
     return (
         <div><div className="flex mt-4 border-b-2">
@@ -111,7 +136,7 @@ const UpdateJobDetails = () => {
                     <h1 className="font-semibold mt-3 text-sm text-blue-gray-800">Basic information</h1>
                     <h1 className="text-xs mb-3 text-gray-600">This information will be displayed publicaly</h1>
                 </div>
-                <form action="" >
+                <form action="" onSubmit={handleEditJobSubmit}>
                     <div className="border-b-2 grid grid-cols-2 h-full items-center">
                         <div className="mb-4">
                             <h1 className="font-semibold mt-3 text-sm text-blue-gray-800">Job Title</h1>
@@ -178,6 +203,7 @@ const UpdateJobDetails = () => {
                             <input type="number" name="fromSalary" className="border border-gray-600 rounded-md py-1 w-20 ps-3 placeholder:text-xs outline-none" placeholder="e.g:500000" value={formData?.fromSalary} onChange={handleChange} required />
                             <h1>to</h1>
                             <input type="number" name="toSalary" className="border border-gray-600 rounded-md py-1 w-20  ps-3 placeholder:text-xs outline-none" placeholder="e.g:1500000" onChange={handleChange} value={formData?.toSalary} required />
+                            {salaryError && <h1 className='text-red-600 font-semibold'>{salaryError}</h1>}
                         </div>
                     </div>
                     <div className="border-b-2 grid grid-cols-2 h-full items-center">
@@ -210,8 +236,8 @@ const UpdateJobDetails = () => {
                                     formData.requiredSkills && formData?.requiredSkills.map((skill, idx) => (
                                         <>
                                             <div key={idx} className="flex gap-x-1.5 border border-gray-300 px-6 py-1 mt-2 rounded-md relative">
-                                                <h1 className="text-lightgreen ">{skill}</h1>
-                                                <h1 onClick={() => handleDelete(skill)} className="text-lightgreen cursor-pointer text-sm font-semibold absolute right-1 top-0">X</h1>
+                                                <h1 className="text-lightgreen ">{skill.toLowerCase()}</h1>
+                                                <h1 onClick={() => handleDelete(skill)} className="text-white rounded-full px-1  bg-red-600 cursor-pointer text-xs mt-0.5 font-semibold absolute right-1 top-0">x</h1>
                                             </div>
                                         </>
                                     ))
@@ -242,9 +268,9 @@ const UpdateJobDetails = () => {
                                 {
                                     formData?.responsibilities && formData?.responsibilities.map((value, idx) => (
                                         <div className="flex gap-x-1 h-full items-center">
-                                            <h1><GoDotFill /></h1>
-                                            <h1 className="font-semibold text-gray-600 font-sans" key={idx}>{value}</h1>
-                                            <h1 onClick={() => dispatch(popResponsibilities(value))} className="text-xs bg-red-600 px-0.5 text-white hover:cursor-pointer font-bold">X</h1>
+                                            <h1 className='text-xs'><GoDotFill /></h1>
+                                            <h1 className=" text-gray-800 font-sans" key={idx}>{value.toLowerCase()}</h1>
+                                            <h1 onClick={() => dispatch(popResponsibilities(value))} className="text-xs bg-red-600 px-1 rounded-full text-white hover:cursor-pointer font-bold">x</h1>
                                         </div>
                                     ))
                                 }

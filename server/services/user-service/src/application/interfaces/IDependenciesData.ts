@@ -28,9 +28,21 @@ interface adminUseCaseData {
   updateCompanyRequest_useCase: any
 }
 
+interface categoryUseCaseData {
+  addCategory_useCase: any;
+  getCategoryByCompany: any;
+}
+
+interface categoryRepoData {
+  addCategory: any;
+  getCategoryByCompany: any;
+}
+
 export interface IDependenciesData {
   user_useCase: useCaseData;
-  admin_useCase:adminUseCaseData
+  admin_useCase:adminUseCaseData;
+  category_useCase: categoryUseCaseData;
+  categoryRepo:categoryRepoData;
   userRepo: userRepoData;
   RabbitMqClient:typeof RabbitMqClient
 }

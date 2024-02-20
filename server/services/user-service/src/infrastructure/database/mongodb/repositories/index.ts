@@ -1,3 +1,3 @@
 import userRepo from "./user";
-
-export { userRepo };
+import categoryRepo from "./category";
+export { userRepo, categoryRepo };

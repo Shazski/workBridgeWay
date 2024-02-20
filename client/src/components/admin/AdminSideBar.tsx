@@ -6,11 +6,44 @@ import { MdCorporateFare } from "react-icons/md";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import LOGO from "../../assets/images/Logo.png"
 import { IoExitOutline } from "react-icons/io5"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../../redux/actions/user/userActions";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useEffect, useState } from "react";
+import { MdCategory } from "react-icons/md";
+import { addCategory, getCategory } from "../../redux/actions/company/CompanyActions";
+import { pushCategory } from "../../redux/reducers/company/companySlice";
+import Modal from "../Modal";
 const AdminSideBar = () => {
     const dispatch = useDispatch<AppDispatch>()
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+    const [categoryString, setCategoryString] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const { category } = useSelector((state: RootState) => state.company)
+    const handleSubmit = async () => {
+        const categoryData = {
+            category: categoryString,
+            description
+        }
+        if (category?.includes(categoryString.toLowerCase())) {
+            return setError("Category is already added")
+        }
+        const res = await dispatch(addCategory(categoryData))
+        dispatch(pushCategory(res?.payload?.category))
+        setCategoryString('')
+        setDescription('')
+        setIsModalOpen(false)
+    }
+
+    useEffect(() => {
+        if (error) {
+            setTimeout(() => {
+                setError('')
+            }, 5000)
+        }
+        dispatch(getCategory())
+    }, [error, dispatch])
     return (
         <div className="flex">
             <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
@@ -25,7 +58,7 @@ const AdminSideBar = () => {
                     }}> <div className="inline-flex gap-3">
                             <GoHome className="text-xl" /> <h1 className="hidden md:flex">
                                 Dashboard
-                                </h1>
+                            </h1>
                         </div> </NavLink>
                 </div>
                 <div className='mt-3 md:ms-3 flex gap-3'>
@@ -35,7 +68,7 @@ const AdminSideBar = () => {
                     }}> <div className="flex gap-3">
                             <FiGitPullRequest className="text-xl" />
                             <h1 className="hidden md:flex">
-                            Company request
+                                Company request
                             </h1>
                         </div>
                     </NavLink>
@@ -47,7 +80,7 @@ const AdminSideBar = () => {
                     }}> <div className="flex gap-3">
                             <MdCorporateFare className="text-xl" />
                             <h1 className="hidden md:flex">
-                            All companies
+                                All companies
                             </h1>
                         </div>
                     </NavLink>
@@ -71,15 +104,26 @@ const AdminSideBar = () => {
                         <div className="flex gap-3">
                             <MdOutlineReportGmailerrorred className="text-xl" />
                             <h1 className="hidden md:flex">
-                            All Complaints
+                                All Complaints
                             </h1>
                         </div>
                     </NavLink>
                 </div>
+                <div className='mt-3 md:ms-3 flex gap-3'>
+
+                    <button onClick={() => setIsModalOpen(true)}>
+                        <div className="flex gap-3 ms-6 text-gray-600">
+                            <MdCategory className="text-xl" />
+                            <h1 className="hidden md:flex">
+                                Add Category
+                            </h1>
+                        </div>
+                    </button>
+                </div>
                 <div onClick={() => dispatch(logoutUser())} className="flex mt-60 md:ms-8 relative cursor-pointer">
                     <div>
-                    <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
-                    <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>
+                        <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
+                        <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>
                     </div>
                 </div>
                 <div className="flex profile mt-auto">
@@ -93,8 +137,20 @@ const AdminSideBar = () => {
                 </div>
             </div>
             <div className="w-full">
-            <Outlet/>
+                <Outlet />
             </div>
+            <Modal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <div className="flex flex-col">
+                    {error && <h1 className="text-red-600 font-semibold">{error}</h1>}
+                    <div className="w-full">
+                        <input name="category" className="border rounded-md py-2 px-4 w-full outline-none" value={categoryString} onChange={(e) => setCategoryString(e.target.value)} placeholder="eg:Sales" />
+                        <input name="description" className="border rounded-md py-2 mt-2 px-4 w-full outline-none" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="eg:This is for sales category" />
+                    </div>
+                    <div className="grid place-content-center">
+                        <button onClick={handleSubmit} type="button" className="bg-black w-20 mt-3 text-white font-semibold px-3 py-1 rounded-md">ADD</button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 }

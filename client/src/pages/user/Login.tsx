@@ -1,4 +1,4 @@
-import { FC, useState, FormEvent } from 'react'
+import { FC, useState, FormEvent, useCallback } from 'react'
 import Navbar from "../../components/user/LoginNavbar"
 import LOGINPAGEIMAGE from "../../assets/images/LoginPageImage.png"
 import CLOSEEYE from "../../assets/images/close-eye.jpg"
@@ -10,6 +10,8 @@ import { IUserLoginData } from '../../interface/IuserLogin'
 import GoogleAuthButton from '../../components/user/GoogleAuthButton'
 import { AppDispatch } from '../../redux/store'
 import { userLogin } from '../../redux/actions/user/userActions'
+import Particles from 'react-tsparticles'
+import { loadSlim } from 'tsparticles-slim'
 const Login: FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const { values, handleChange } = useForm({} as IUserLoginData)
@@ -19,8 +21,94 @@ const Login: FC = () => {
         e.preventDefault()
         dispatch(userLogin(values))
     }
+    const particlesInit = useCallback(async (engine: any) => {
+        console.log(engine);
+        await loadSlim(engine);
+      }, []);
+    
+      const particlesLoaded = useCallback(async (container: any | undefined) => {
+        return new Promise<void>((resolve) => {
+          console.log(container);
+          // Additional initialization logic can go here
+          resolve(container);
+        });
+      }, []);
     return (
         <div className='flex justify-center' >
+            <Particles
+        id="tsparticles"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={{
+          background: {
+            color: {
+              value: ""
+            },
+          },
+          fpsLimit: 960,
+          interactivity: {
+            events: {
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+              resize: true,
+            },
+            modes: {
+              push: {
+                quantity: 1,
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4,
+              },
+            },
+          },
+          particles: {
+            color: {
+              value: "#20DC49",
+            },
+            links: {
+              color: "#20DC49",
+              distance: 150,
+              enable: true,
+              opacity: 0.7,
+              width: 0.8,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: {
+                default: "bounce",
+              },
+              random: false,
+              speed: 4,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 15,
+            },
+            opacity: {
+              value: 1.7,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              value: { min: 1, max: 5 },
+            },
+          },
+          detectRetina: true,
+        }}
+        className='particles' />
             <div className='md:w-4/6 w-11/12 flex flex-col items-center'>
                 <Navbar />
                 <div className='text-center'>

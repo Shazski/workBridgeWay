@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, updateCompanyDetails } from '../../redux/actions/user/userActions';
 import { AppDispatch } from '../../redux/store';
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import Modal from '../../components/user/Modal';
+import Modal from '../../components/Modal';
 import { ICompanyData } from '../../interface/ICompanyData';
 
 const WaitingPage = () => {

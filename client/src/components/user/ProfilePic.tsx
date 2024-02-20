@@ -4,14 +4,14 @@ import { CiImageOn } from "react-icons/ci";
 import { useRef, useState, useEffect } from "react";
 import { AppDispatch } from "../../redux/store";
 import { editUser } from "../../redux/actions/user/userActions";
-import { toast } from "react-toastify"
+import { toast } from "react-hot-toast"
 import { IUserLoginData } from "../../interface/IuserLogin";
 const ProfilePic = () => {
     const [userData, setUserData] = useState<IUserLoginData>({ email: "", phone: "", userName: "", profilePic: null, dob: "" })
     const profileRef = useRef<HTMLInputElement | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [droppedImage, setDroppedImage] = useState<string | null>(null);
-    const { user, error } = useSelector((state: any) => state.user);
+    const { user, error, loading } = useSelector((state: any) => state.user);
     const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         const newUserData = {
@@ -77,18 +77,21 @@ const ProfilePic = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (profileRef.current?.value) {
-            console.log("is it here cpomigng")
+            toast.loading("Updating...")
             const profilePic = await imageUpload(userData.profilePic)
+            toast.remove()
             userData.profilePic = profilePic
         } else {
             delete userData.profilePic
         }
-       const res = await dispatch(editUser(userData))
-       if(res.payload._id) {
-           toast.success("personal details updated")
-       } else {
-        toast.error("something went wrong")
-       }
+        toast.promise(
+            dispatch(editUser(userData)),
+            {
+                loading: 'Updating...',
+                success: <b>User Details Updated!</b>,
+                error: <b>Something went wrong</b>,
+            }
+        )
     }
 
     return (

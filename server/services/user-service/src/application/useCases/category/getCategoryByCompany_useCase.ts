@@ -1,9 +1,9 @@
 import { ObjectId } from "mongoose";
-import { IDependencies } from "../../interface/IDependencies";
+import { IDependenciesData } from "../../interfaces/IDependenciesData"; 
 
-export const getCategoryByCompany = (dependencies: IDependencies) => {
+export const getCategoryByCompany = (dependencies: IDependenciesData) => {
   const {
-    category_repo: { getCategoryByCompany },
+    categoryRepo: { getCategoryByCompany },
   } = dependencies;
   const execute = async (companyId: ObjectId) => {
     try {

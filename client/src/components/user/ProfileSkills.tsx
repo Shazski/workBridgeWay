@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react"
 import { FaRegEdit } from "react-icons/fa";
-import Modal from "./Modal";
+import Modal from "../Modal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { addSkill, removeSkill } from "../../redux/actions/user/userActions";

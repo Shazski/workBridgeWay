@@ -1,6 +1,7 @@
 import { ObjectId } from "mongoose";
 
 export interface IJob {
+  _id:ObjectId | null;
   category: String[] | null;
   fromSalary: Number | null;
   jobDescription: String | null;

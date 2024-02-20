@@ -7,19 +7,17 @@ export = (dependencies: IDependencies) => {
   const {
     updateCompany,
     postJob,
-    addCategory,
-    getCategoryByCompany,
     getJobs,
     updateJobStatus,
     getJobById,
+    editJob
   } = companyController(dependencies);
 
   router.put("/update", updateCompany);
   router.post("/post-job", postJob);
-  router.post("/add-category", addCategory);
-  router.get("/get-category", getCategoryByCompany);
   router.get("/get-jobs", getJobs);
   router.post("/update-job-status", updateJobStatus);
   router.get("/get-job/:id", getJobById);
+  router.post("/edit-job", editJob);
   return router;
 };

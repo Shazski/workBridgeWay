@@ -42,14 +42,6 @@ export = (dependencies: DependenciesData) => {
         const company = await findCompanyByEmail_useCase(dependencies).execute(
           userCredentials
         );
-
-        // if (!company?.approved) {
-        //   return next(
-        //     ErrorResponse.unauthorized(
-        //       `You are not approved by admin if approved you will recieve a mail`
-        //     )
-        //   );
-        // }
         const passwordMatchCompany: boolean = bcrypt.compareSync(
           userCredentials.password,
           company.password

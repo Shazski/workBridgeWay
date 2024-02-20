@@ -11,4 +11,5 @@ export interface IUserLoginData {
   link?: string;
   toSalary?: number;
   fromSalary?: number ;
+  typeOfEmployment?:string;
 }

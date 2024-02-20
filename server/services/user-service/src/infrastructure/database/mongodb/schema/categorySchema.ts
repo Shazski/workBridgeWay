@@ -1,9 +1,8 @@
 import mongoose, { Schema, ObjectId } from "mongoose";
-import { ICategory } from "./../../../../domain/entities/category.entity";
+import { ICategory } from "../../../../domain/entities/category.entity"; 
 
 const CategorySchema: Schema = new Schema(
   {
-    companyId: { type: Schema.Types.ObjectId, required: true },
     category: { type: String },
     description: { type: String },
   },
