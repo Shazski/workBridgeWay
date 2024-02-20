@@ -10,7 +10,7 @@ export default withMT( {
   theme: {
     extend: {
       colors:{
-        'lightgreen':'#20DC49'
+        'lightgreen':'#197195'
       }
     },
   },

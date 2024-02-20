@@ -1,5 +1,5 @@
 import rabbitMQClient from './client'
-import { company_repo } from '../../database/mongodb/repositories';
+import { company_repo, job_repo } from '../../database/mongodb/repositories';
 export default class MessageHandler {
     static async handle(
         operation: string,
@@ -20,6 +20,9 @@ export default class MessageHandler {
                 break;
             case 'updateRequest':
                 response = await company_repo.updateRequest(data)
+                break;
+            case 'getAllJobs':
+                response = await job_repo.getAlljobs(data)
                 break;
             default:
                 response = 'Request-key notfound'

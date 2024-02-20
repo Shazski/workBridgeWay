@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import VERIFIED from '../../assets/images/verified.png'
-import { toast } from "react-toastify"
+import { toast } from "react-hot-toast"
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { validatePassword } from "../../validations/ValidationSchema";
 import { changeUserEmail, changeUserPassowrd } from "../../redux/actions/user/userActions";
@@ -15,7 +15,6 @@ const UpdateLoginDetails = () => {
     const [newEmail, setNewEmail] = useState<string>("");
     const [password, setPassword] = useState<{ oldPassword: string, newPassword: string, email?: string }>({ oldPassword: "", newPassword: "", email: "", });
     const [passwordValidation, setPasswordValidation] = useState<string | null>(null);
-
     useEffect(() => {
         if (err !== "") {
             setTimeout(() => {

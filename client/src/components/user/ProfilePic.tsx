@@ -11,7 +11,7 @@ const ProfilePic = () => {
     const profileRef = useRef<HTMLInputElement | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [droppedImage, setDroppedImage] = useState<string | null>(null);
-    const { user, error, loading } = useSelector((state: any) => state.user);
+    const { user, error } = useSelector((state: any) => state.user);
     const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         const newUserData = {

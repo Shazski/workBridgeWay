@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux"
 import { ICompanyData } from '../../interface/ICompanyData';
 import { AppDispatch } from '../../redux/store';
-import { toast } from "react-toastify"
+import { toast } from "react-hot-toast"
 import { approveOrRejectCompany } from '../../redux/actions/admin/adminActions';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
@@ -115,7 +115,7 @@ const CompanyRequest = () => {
     }, [sort]);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full poppins">
             <div className="mt-16">
                 <h1 className="text-4xl font-bold font-serif text-center">Hello Admin</h1>
             </div>
@@ -208,7 +208,7 @@ const CompanyRequest = () => {
                 </div>
             </div>
             <Modal isVisible={isReasonModalOpen} onClose={() => setIsReasonModalOpen(false)}>
-                <input onChange={(e) => setRejectReason(e.target.value)} type="text" className='border py-3 px-2 w-full outline-none' placeholder='State your Reason for rejecting' />
+                <input onChange={(e) => setRejectReason(e.target.value)} type="text" className='border py-3 px-2 w-full outline-none' placeholder='State your Reason for rejecting' required/>
                 <button onClick={() => handleApproveOrReject(rejectValue.email, rejectValue.stage)} className='px-4 py-2 text-red-600 font-semibold bg-gray-200 mt-3 rounded-md'>Reject</button>
             </Modal>
         </div>

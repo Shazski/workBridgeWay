@@ -51,20 +51,20 @@ const AdminSideBar = () => {
                     <img src={LOGO} alt="" className='w-24' />
                     <h1 className='mt-5 font-bold text-lightgreen hidden md:flex '>WorkBridgeWay</h1>
                 </div>
-                <div className='mt-12 md:ms-3 inline-flex gap-3'>
+                <div className='mt-12 md:ms-5 inline-flex gap-3'>
 
                     <NavLink to='/admin/dashboard' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}> <div className="inline-flex gap-3">
                             <GoHome className="text-xl" /> <h1 className="hidden md:flex">
                                 Dashboard
                             </h1>
                         </div> </NavLink>
                 </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
+                <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <NavLink to='/admin/company-requests' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}> <div className="flex gap-3">
                             <FiGitPullRequest className="text-xl" />
                             <h1 className="hidden md:flex">
@@ -73,10 +73,10 @@ const AdminSideBar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
+                <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <NavLink to='/admin/companies' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}> <div className="flex gap-3">
                             <MdCorporateFare className="text-xl" />
                             <h1 className="hidden md:flex">
@@ -85,10 +85,10 @@ const AdminSideBar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
+                <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <NavLink to='/admin/all-users' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}>
                         <div className="flex gap-3">
                             <FaUsers className="text-xl" />
@@ -96,10 +96,10 @@ const AdminSideBar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
+                <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <NavLink to='/admin/company-complaints' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                     }}>
                         <div className="flex gap-3">
                             <MdOutlineReportGmailerrorred className="text-xl" />
@@ -109,7 +109,7 @@ const AdminSideBar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 md:ms-3 flex gap-3'>
+                <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <button onClick={() => setIsModalOpen(true)}>
                         <div className="flex gap-3 ms-6 text-gray-600">

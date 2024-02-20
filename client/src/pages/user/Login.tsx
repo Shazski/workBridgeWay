@@ -129,17 +129,17 @@ const Login: FC = () => {
                 <div className='text-center pt-12'>
                     <form onSubmit={handleSubmit}>
                         <div>
-                            <input type="text" placeholder='Email' name="email" onChange={handleChange} className='border ps-2 outlin rounded-md h-12 w-64' required />
+                            <input type="text" placeholder='Email' name="email" onChange={handleChange} className='border ps-2 outline-lightgreen shadow-md shadow-lightgreen rounded-md h-12 w-64' required />
                         </div>
                         <div className='flex justify-center relative'>
-                            <input name="password" type={showPassword ? "text" : "password"} onChange={handleChange} placeholder='Password' className='border  ps-2 rounded-md h-12 w-64 mt-5' required />
+                            <input name="password" type={showPassword ? "text" : "password"} onChange={handleChange} placeholder='Password' className='border shadow-md shadow-lightgreen outline-lightgreen ps-2 rounded-md h-12 w-64 mt-5' required />
                             <img className='absolute hover:cursor-pointer top-6 right-1/4 w-6 h-8 pt-2 lg:right-auto ms-56 lg:left-auto' src={showPassword ? OPENEYE : CLOSEEYE} alt="" onClick={() => setShowPassword(!showPassword)} />
                         </div>
                         <div className=''>
                             <h2 className='text-red-600 hover:cursor-pointer pt-2 text-center'>Reset password</h2>
                         </div>
                         <div>
-                            <button className='border px-24 py-2.5 rounded-md border-gray-400 mt-5 text-gray-400 hover:text-lightgreen hover:border-lightgreen hover:scale-105 hover:font-semibold'>
+                            <button className='border px-24 py-2.5 rounded-md border-gray-400 mt-5 font-bold bg-lightgreen text-white shadow-2xl shadow-lightgreen  hover:scale-95 hover:font-semibold'>
                                 Login
                             </button>
                         </div>

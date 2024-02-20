@@ -10,6 +10,7 @@ interface useCaseData {
   updateUserAbout_useCase: any;
   addUserSocialLinks_useCase: any;
   removeUserSocialLinks_useCase: any;
+  getAllJobs_useCase:any;
 }
 
 export interface userRepoData {

@@ -18,25 +18,25 @@ const UserSidebar = () => {
     };
     return (
         <div className="flex">
-            <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
+            <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/6 h-screen overflow-y-auto'>
                 <div className='flex'>
                     <NavLink to="/"><img src={LOGO} alt="" className='w-24' /></NavLink>
                     <h1 className='mt-5 font-bold text-lightgreen hidden md:flex '>WorkBridgeWay</h1>
                 </div>
-                <div className='mt-12 ms-3  inline-flex gap-3'>
+                <div className='mt-12  md:ms-7  inline-flex gap-3'>
 
                     <NavLink to='/user/dashboard' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`
                     }}> <div className="inline-flex gap-3">
                             <GoHome className="text-xl" /> <h1 className="hidden md:flex">
                                 Dashboard
                             </h1>
                         </div> </NavLink>
                 </div>
-                <div className='mt-3 ms-3 flex gap-3'>
+                <div className='mt-3  md:ms-7  flex gap-3'>
 
                     <NavLink to='/user/messages' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`
                     }}> <div className="flex gap-3">
                             <FiGitPullRequest className="text-xl" />
                             <h1 className="hidden md:flex">
@@ -45,10 +45,10 @@ const UserSidebar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 ms-3 flex gap-3'>
+                <div className='mt-3 md:ms-7 flex gap-3'>
 
                     <NavLink to='/user/applications' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`
                     }}> <div className="flex gap-3">
                             <MdCorporateFare className="text-xl" />
                             <h1 className="hidden md:flex">
@@ -57,10 +57,9 @@ const UserSidebar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 ms-3 flex gap-3'>
-
+                <div className='mt-3 md:ms-7 flex gap-3'>
                     <NavLink to='/user/profile' className={({ isActive }) => {
-                        return `px-6 py-3 w-16 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                        return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`
                     }}>
                         <div className="flex gap-3">
                             <TbMessageReport className="text-xl" />
@@ -70,11 +69,11 @@ const UserSidebar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 ms-3 flex gap-3'>
+                <div className='mt-3 md:ms-7 flex gap-3'>
 
                 <NavLink
                     to="/user/settings/edit-profile"
-                    className={`px-6 py-3 w-16 md:w-52 ${isSettingsActive() ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`}
+                    className={`px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isSettingsActive() ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`}
                 >
                         <div className="flex gap-3">
                             <CiSettings className="text-xl" />

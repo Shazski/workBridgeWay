@@ -8,8 +8,7 @@ import SignUpNavbar from '../../components/user/SignUpNavbar'
 // import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage, isObject } from "formik"
 import { validationSchemaCompanyRegister } from '../../validations/ValidationSchema'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-hot-toast';
 import { AppDispatch } from "../../redux/store"
 import { companyRegister } from "../../redux/actions/user/userActions"
 import { NavLink, useNavigate } from "react-router-dom"
@@ -135,12 +134,11 @@ const CompanyRegister: FC = () => {
 
                     )}
                 </Formik>
-            <div className='flex justify-center gap-x-2 mt-2'>
-                <h1 className="font-semibold">Sign In?</h1>
-                <NavLink to={'/login'} className="text-center text-lightgreen font-bold">Sign In</NavLink>
+                <div className='flex justify-center gap-x-2 mt-2'>
+                    <h1 className="font-semibold">Sign In?</h1>
+                    <NavLink to={'/login'} className="text-center text-lightgreen font-bold">Sign In</NavLink>
+                </div>
             </div>
-            </div>
-            <ToastContainer />
         </div>
     )
 }

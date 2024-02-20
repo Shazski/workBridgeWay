@@ -2,7 +2,7 @@ import { useState, ChangeEvent, KeyboardEvent, useRef, useEffect } from 'react'
 import CountdownTimer from './CountDownTimer';
 import { AppDispatch } from '../../redux/store';
 import { useSelector, useDispatch } from "react-redux"
-import { toast } from "react-toastify"
+import { toast } from "react-hot-toast"
 import { changeUserEmail, userSignUp } from '../../redux/actions/user/userActions';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IUserLoginData } from '../../interface/IuserLogin';

@@ -59,7 +59,7 @@ function App() {
 
   return (
     <div>
-      <Toaster position='top-center'/>
+      <Toaster position='top-center' />
       <ToastContainer />
       <Router>
         <div>
@@ -75,7 +75,7 @@ function App() {
             <Route path='/update-email/otp' element={user?.newEmail ? <Otp /> : <Navigate to="/login" />} />
 
             {/* company routes */}
-            {(user?.stage === "pending") ? <Route path='/company/dashboard' element={<CompanyProtectedRoute element={<WaitingPage />} />} /> : <>
+            {(user?.stage === "pending" || user?.stage === "rejected" || user?.stage === "reapplied") ? <Route path='/company/dashboard' element={<CompanyProtectedRoute element={<WaitingPage />} />} /> : <>
               <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
                 <Route path='dashboard' element={<CompanyDashboard />} />
                 <Route path='applicants' element={<JobApplicants />} />

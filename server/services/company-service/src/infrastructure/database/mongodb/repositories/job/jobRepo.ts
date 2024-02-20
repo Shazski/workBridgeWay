@@ -99,3 +99,43 @@ export const editJob = async (jobDetails: IJob): Promise<IJob | boolean> => {
     return false;
   }
 };
+
+export const getAlljobs = async (data: {
+  page: number;
+  filters: {
+    categories: string[];
+    fromSalary: string[];
+    typeOfEmployment: string[];
+  };
+  search: string;
+}): Promise<IJob[] | boolean> => {
+  const page: number = data.page || 1;
+  const filters: {
+    categories: string[];
+    fromSalary: string[];
+    typeOfEmployment: string[];
+  } = data.filters;
+  const search: string = data.search;
+  const skip = Number(page - 1) * 10;
+  console.log(data, "data in company service");
+  try {
+    const jobs: IJob[] = await JobSchema.find({
+      $or: [
+        { category: { $in: filters.categories } }, // Filter by categories
+        { fromSalary: { $gte: filters.fromSalary || 0 } }, // Filter by salary ranges
+        { typeOfEmployment: { $in: filters.typeOfEmployment } }, // Filter by employment types
+      ],
+      jobTitle: { $regex: search, $options: "i" } 
+    },
+      
+    )
+      .limit(10)
+      .skip(skip);
+    if (!jobs) return false;
+
+    return jobs as IJob[];
+  } catch (error) {
+    console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
+    return false;
+  }
+};

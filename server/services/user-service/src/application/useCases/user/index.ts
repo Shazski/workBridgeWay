@@ -7,6 +7,7 @@ import { removeUserSkill_useCase } from "./removeUserSkill_useCase";
 import { updateUserAbout_useCase } from "./updateUserAbout_useCase";
 import { addUserSocialLinks_useCase } from "./addUserSocialLinks_useCase";
 import { removeUserSocialLinks_useCase } from "./removeUserSocialLinks_useCase";
+import { getAllJobs_useCase } from './getAllJobs_useCase';
 export = {
     editUser_useCase,
     findUserByEmail_useCase,
@@ -17,5 +18,6 @@ export = {
     updateUserAbout_useCase,
     addUserSocialLinks_useCase,
     removeUserSocialLinks_useCase,
+    getAllJobs_useCase,
 }
 

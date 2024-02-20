@@ -7,6 +7,7 @@ import removeUserSkill_controller from "./removeUserSkill_controller"
 import updateUserAbout_controller from "./updateUserAbout_controller"
 import addUserSocialLinks_controller from "./addUserSocialLinks_controller"
 import removeUserSocialLinks_controller from "./removeUserSocialLinks_controller"
+import getAllJobs_controller from "./getAllJobs_controller"
 export = (dependencies: IDependenciesData) => {
     return {
         editUser:editUser_controller(dependencies),
@@ -16,6 +17,7 @@ export = (dependencies: IDependenciesData) => {
         removeSkill:removeUserSkill_controller(dependencies),
         updateUserAbout:updateUserAbout_controller(dependencies),
         addUserSocialLinks: addUserSocialLinks_controller(dependencies),
-        removeUserSocialLinks:removeUserSocialLinks_controller(dependencies)
+        removeUserSocialLinks:removeUserSocialLinks_controller(dependencies),
+        getAllJobs:getAllJobs_controller(dependencies),
     }
 }

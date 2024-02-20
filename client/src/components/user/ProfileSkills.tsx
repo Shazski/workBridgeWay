@@ -4,7 +4,7 @@ import Modal from "../Modal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { addSkill, removeSkill } from "../../redux/actions/user/userActions";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConfirmModalOpen }: { user: { skills: string[], email: string }, isAboutModalOpen: boolean, isSocialModalOpen: boolean, isSocialConfirmModalOpen:boolean }) => {
     const dispatch = useDispatch<AppDispatch>()
     const [skills, setSkills] = useState<string>("")

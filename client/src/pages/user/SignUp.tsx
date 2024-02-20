@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
 import { IUserSelector } from '../../interface/IuserSlice'
 import { userSignUp } from '../../redux/actions/user/userActions'
-import {toast } from 'react-toastify'
+import {toast } from 'react-hot-toast'
 import GoogleAuthButton from '../../components/user/GoogleAuthButton'
 
 const SignUp: FC = () => {

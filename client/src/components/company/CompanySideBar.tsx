@@ -36,7 +36,7 @@ const CompanySideBar = () => {
                     <div className='mt-12 md:ms-3 flex gap-3'>
 
                     <NavLink to='/company/dashboard' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="md:flex gap-x-3">
                                 <GoHome className="text-xl" />
                                 <h1 className="hidden md:flex">Dashboard</h1>
@@ -45,7 +45,7 @@ const CompanySideBar = () => {
                     <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/company/messages' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="flex gap-3">
                                 <FaRegMessage className="text-lg" />
                                 <h1 className="hidden md:flex">Messages</h1>
@@ -54,7 +54,7 @@ const CompanySideBar = () => {
                     <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/company/profile' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="flex gap-3">
                                 <ImProfile className="text-xl" />
                                 <h1 className="hidden md:flex">Profile</h1>
@@ -63,7 +63,7 @@ const CompanySideBar = () => {
                     <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/company/applicants' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="flex gap-3">
                                 <IoPeopleSharp className="text-xl" />
                                 <h1 className="hidden md:flex">Applicants</h1>
@@ -72,7 +72,7 @@ const CompanySideBar = () => {
                     <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/company/job-list' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="flex gap-3">
                                 <FaPeopleArrows className="text-xl" />
                                 <h1 className="hidden md:flex">Job Listing</h1>
@@ -81,7 +81,7 @@ const CompanySideBar = () => {
                     <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/company/employees' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="flex gap-3">
                                 <FaPeopleRoof className="text-xl" />
                                 <h1 className="hidden md:flex">Employees</h1>
@@ -90,7 +90,7 @@ const CompanySideBar = () => {
                     <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/company/Schedule' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
+                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="flex gap-3">
                                 <SlCalender className="text-xl" />
                                 <h1 className="hidden md:flex">Schedules</h1>

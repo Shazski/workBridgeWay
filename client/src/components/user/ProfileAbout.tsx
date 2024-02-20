@@ -5,7 +5,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { useDispatch } from "react-redux"
 import Modal from "../Modal";
 import { removeUserSocialLinks, updateUserAbout, updateUserSocialLinks } from "../../redux/actions/user/userActions";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import useForm from "../../hooks/useForm";
 const ProfileAbout = ({ user }) => {
     const dispatch = useDispatch<AppDispatch>()

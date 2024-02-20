@@ -3,7 +3,7 @@ import LOGO from "../../assets/images/Logo.png"
 import PROFILE from "../../assets/images/defaultProfile.jpg"
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { toast } from 'react-toastify'
+import { toast } from 'react-hot-toast'
 import { logoutUser } from '../../redux/actions/user/userActions'
 import { AppDispatch } from '../../redux/store'
 const Navbar: FC = () => {
