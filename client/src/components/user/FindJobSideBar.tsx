@@ -2,168 +2,235 @@ import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState, useEffect } from "react"
 import FindJobSection from "./FindJobSection";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategory } from "../../redux/actions/company/CompanyActions";
+import { AppDispatch, RootState } from "../../redux/store";
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 const FindJobSideBar = () => {
-    const [showType, setShowType] = useState<boolean>(true)
-    const [showCat, setShowCat] = useState<boolean>(true)
-    const [showLevel, setShowLevel] = useState<boolean>(true)
-    const [showSalary, setShowSalary] = useState<boolean>(true)
-    const [filterValue, setFilterValue] = useState<string[]>([])
 
-    const handleCheckBoxChange = (value: string) => {
-        setFilterValue((prev: string[]) => {
-            if (prev.includes(value)) {
-                return prev.filter((item: string) => item !== value)
-            } else {
-                return [...prev, value]
-            }
-        })
+  const { category } = useSelector((state: RootState) => state.company)
+
+  const [showType, setShowType] = useState<boolean>(true)
+  const [showCat, setShowCat] = useState<boolean>(true)
+  const [showSalary, setShowSalary] = useState<boolean>(true)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  const [page, setPage] = useState<number>(1);
+
+  const [categories, setCategories] = useState<string[]>([]);
+  const [typeOfEmployment, setTypeOfEmployment] = useState<string[]>([]);
+  const [salary, setSalary] = useState<string[]>([]);
+  const [fromSalary, setFromSalary] = useState<number>(0);
+  const [toSalary, setToSalary] = useState<number>(0);
+  const [salaryRange, setSalaryRange] = useState<number[] | number>([]);
+
+
+  const handleCheckBoxChange = (param: string, value: string) => {
+    const params = new URLSearchParams(window.location.search);
+    if (param === "typeOfEmployment" && value) {
+      let type = params.get('typeOfEmployment')
+      if (!type) {
+        params.append('typeOfEmployment', value)
+        setTypeOfEmployment([value])
+      } else {
+        let temp = type.split(",");
+        if (temp.length > 0) {
+          if (temp.includes(value)) {
+            temp = temp.filter(item => item !== value)
+          } else {
+            temp.push(value)
+          }
+          if (temp.length > 0) {
+            params.set("typeOfEmployment", temp.join(","))
+            setTypeOfEmployment(temp)
+          } else {
+            params.delete("typeOfEmployment")
+            setTypeOfEmployment([])
+          }
+        }
+      }
     }
+    if (param === "category" && value) {
+      let cat = params.get('category')
+      if (!cat) {
+        params.append('category', value)
+        setCategories([value])
+      } else {
+        let temp = cat.split(",");
+        if (temp.length > 0) {
+          if (temp.includes(value)) {
+            temp = temp.filter(item => item !== value)
+          } else {
+            temp.push(value)
+          }
+          if (temp.length > 0) {
+            params.set("category", temp.join(","))
+            setCategories(temp)
+          } else {
+            params.delete("category")
+            setCategories([])
+          }
+        }
+      }
+    }
+    if (param === "fromSalary" && value) {
+      let fromSalary = params.get('fromSalary')
+      if (!fromSalary) {
+        params.append('fromSalary', value)
+        setFromSalary(Number(value))
+      } else {
+        params.set('fromSalary',value)
+        setFromSalary(Number(value))
+      }
+    }
+    if (param === "toSalary" && value) {
+      let toSalary = params.get('toSalary')
+      if (!toSalary) {
+        params.append('toSalary', value)
+        setFromSalary(Number(value))
+      } else {
+        params.set('toSalary',value)
+        setToSalary(Number(value))
 
-    useEffect(() => {
-        console.log(filterValue)
-    }, [filterValue]);
+      }
+    }
+    if (param === "page" && value) {
+      let page = params.get('page')
+      if (!page) {
+        params.append('page', value)
+        setPage(Number(value))
+      } else {
+        params.set('page',value)
+        setPage(Number(value))
 
-    return (
-        <div className="flex mt-12">
-            <div>
-                <div>
-                    <div className="flex gap-3 ">
-                        <h1 className="font-bold">Type of Employment</h1>
-                        {
-                            showType ?
-                                <IoIosArrowDown className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowType(!showType)} />
-                                :
-                                <IoIosArrowUp className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowType(!showType)} />
-                        }
-                    </div>
-                    <div className={`mt-3 ${showType ? "" : "hidden"}text-gray-500`}>
-                        <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
-                            <input type="checkbox" value="fulltime" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('fulltime')} />
-                            <label htmlFor="">Full-time <span>(3)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
-                            <input type="checkbox" value="parttime" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('parttime')} />
-                            <label htmlFor="">Part-time <span>(43)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
-                            <input type="checkbox" value="remote" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('remote')} />
-                            <label htmlFor="">Remote <span>(33)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
-                            <input type="checkbox" value="internship" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('internship')} />
-                            <label htmlFor="">Internship <span>(16)</span> </label>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div className="flex gap-3 mt-12">
-                        <h1 className="font-bold">Categories</h1>
-                        {
-                            showCat ?
-                                <IoIosArrowDown className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowCat(!showCat)} />
-                                :
-                                <IoIosArrowUp className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowCat(!showCat)} />
-                        }
-                    </div>
-                    <div className={`mt-3 ${showCat ? "" : "hidden"} text-gray-500`}>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="design" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('design')} />
-                            <label htmlFor="">Design<span>(3)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="sales" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('sales')} />
-                            <label htmlFor="">Sales <span>(43)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="marketing" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('marketing')} />
-                            <label htmlFor="">Marketing <span>(33)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="business" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('business')} />
-                            <label htmlFor="">Business <span>(16)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="hr" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('hr')} />
-                            <label htmlFor="">HR <span>(16)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="finance" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('finance')} />
-                            <label htmlFor="">Finance <span>(26)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="engineering" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('engineering')} />
-                            <label htmlFor="">Engineering <span>(12)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
-                            <input type="checkbox" value="technology" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('technology')} />
-                            <label htmlFor="">Technology <span>(6)</span> </label>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div className="flex gap-3 mt-12">
-                        <h1 className="font-bold">Job Level</h1>
-                        {
-                            showLevel ?
-                                <IoIosArrowDown className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowLevel(!showLevel)} />
-                                :
-                                <IoIosArrowUp className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowLevel(!showLevel)} />
-                        }
-                    </div>
-                    <div className={`mt-3 ${showLevel ? "" : "hidden"} text-gray-500`}>
-                        <div className={`flex gap-3 mt-3 ${showLevel ? "" : "hidden"}`}>
-                            <input type="checkbox" value="entrylevel" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('entrylevel')} />
-                            <label htmlFor="">Entry Level <span>(3)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showLevel ? "" : "hidden"}`}>
-                            <input type="checkbox" value="midlevel" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('midlevel')} />
-                            <label htmlFor="">Mid Level<span>(43)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showLevel ? "" : "hidden"}`}>
-                            <input type="checkbox" value="seniorlevel" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('seniorlevel')} />
-                            <label htmlFor="">Senior Level<span>(33)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showLevel ? "" : "hidden"}`}>
-                            <input type="checkbox" value="director" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('director')} />
-                            <label htmlFor="">Director<span>(16)</span> </label>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div className="flex gap-3 mt-12">
-                        <h1 className="font-bold">Salary Range</h1>
-                        {
-                            showSalary ?
-                                <IoIosArrowDown className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowSalary(!showSalary)} />
-                                :
-                                <IoIosArrowUp className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowSalary(!showSalary)} />
-                        }
-                    </div>
-                    <div className={`mt-3 ${showSalary ? "" : "hidden"} text-gray-500`}>
-                        <div className={`flex gap-3 mt-3 ${showSalary ? "" : "hidden"}`}>
-                            <input type="checkbox" value="100000" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('100000')} />
-                            <label htmlFor="">1 LPA & Below<span>(3)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showSalary ? "" : "hidden"}`}>
-                            <input type="checkbox" value="200000" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('200000')} />
-                            <label htmlFor="">2 LPA & Above <span>(43)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showSalary ? "" : "hidden"}`}>
-                            <input type="checkbox" value="500000" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('500000')} />
-                            <label htmlFor="">5 LPA & Above <span>(33)</span> </label>
-                        </div>
-                        <div className={`flex gap-3 mt-3 ${showSalary ? "" : "hidden"}`}>
-                            <input type="checkbox" value="1000000" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('1000000')} />
-                            <label htmlFor="">10 LPA & Above <span>(16)</span> </label>
-                        </div>
-                    </div>
-                </div>
+      }
+    }
+    setSearchParams(params)
+  }
+
+  useEffect(() => {
+    dispatch(getCategory())
+    const typeParam = searchParams.get("typeOfEmployment");
+    const catParam = searchParams.get("category");
+    const fromSalary = searchParams.get('fromSalary')
+    const toSalary = searchParams.get('toSalary')
+    const page = searchParams.get('page')
+
+    setTypeOfEmployment(typeParam ? typeParam.split(",") : []);
+    setCategories(catParam ? catParam.split(",") : []);
+    setFromSalary(Number(fromSalary))
+    setToSalary(Number(toSalary))
+    setSalaryRange([Number(fromSalary),Number(toSalary)])
+    setPage(Number(page))
+  }, [])
+
+  const handleRangeChange = (value:number | number[]) => {
+    setSalaryRange(value)
+    setFromSalary(value[0])
+    setToSalary(value[1])
+    handleCheckBoxChange('fromSalary',value[0])
+    handleCheckBoxChange('toSalary',value[1])
+  }
+
+  const handleChildData = ({currentPage}) => {
+    setPage(currentPage)
+    handleCheckBoxChange('page',currentPage)
+  }
+
+  return (
+    <div className="flex mt-12">
+      <div>
+        <div>
+          <div className="flex gap-3 ">
+            <h1 className="font-bold">Type of Employment</h1>
+            {
+              showType ?
+                <IoIosArrowDown className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowType(!showType)} />
+                :
+                <IoIosArrowUp className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowType(!showType)} />
+            }
+          </div>
+          <div className={`mt-3 ${showType ? "" : "hidden"}text-gray-500`}>
+            <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
+              <input checked={typeOfEmployment.includes('Full-Time')} type="checkbox" value="Full-Time" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Full-Time')} />
+              <label htmlFor="">Full-time <span>(3)</span> </label>
             </div>
-            <div>
-                <FindJobSection/>
+            <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
+              <input checked={typeOfEmployment.includes('Part-Time')} type="checkbox" value="Part-Time" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Part-Time')} />
+              <label htmlFor="">Part-time <span>(43)</span> </label>
             </div>
+            <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
+              <input checked={typeOfEmployment.includes('Remote')} type="checkbox" value="Remote" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Remote')} />
+              <label htmlFor="">Remote <span>(33)</span> </label>
+            </div>
+            <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
+              <input checked={typeOfEmployment.includes('Internship')} type="checkbox" value="Internship" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Internship')} />
+              <label htmlFor="">Internship <span>(16)</span> </label>
+            </div>
+          </div>
         </div>
-    )
+        <div>
+          <div className="flex gap-3 mt-12">
+            <h1 className="font-bold">Categories</h1>
+            {
+              showCat ?
+                <IoIosArrowDown className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowCat(!showCat)} />
+                :
+                <IoIosArrowUp className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowCat(!showCat)} />
+            }
+          </div>
+          <div className={`mt-3 ${showCat ? "" : "hidden"} text-gray-500`}>
+            {
+              category && category.map((cat, idx) => (
+                <div key={idx}>
+                  <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
+                    <input checked={categories && categories.includes(cat)} type="checkbox" value={cat} name="category" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('category', cat)} />
+                    <label htmlFor="">{cat}<span>(3)</span> </label>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div>
+          <div className="flex gap-3 mt-12">
+            <h1 className="font-bold">Salary Range</h1>
+            {
+              showSalary ?
+                <IoIosArrowDown className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowSalary(!showSalary)} />
+                :
+                <IoIosArrowUp className="font-semibold mt-1 hover:cursor-pointer" onClick={() => setShowSalary(!showSalary)} />
+            }
+          </div>
+          <div className={`mt-3 ${showSalary ? "" : "hidden"} text-gray-500`}>
+            <div className={`flex gap-3 mt-3 ${showSalary ? "" : "hidden"}`}>
+              <Slider value={salaryRange} range min={100000} max={1000000} onChange={(e) => handleRangeChange(e)} step={50000} included={true} />
+              <div>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div className="font-semibold text-lightgreen">
+                {fromSalary}
+                <h1>LPA</h1>
+              </div>
+              <div className="font-semibold text-lightgreen">
+                {toSalary} 
+                <h1>LPA</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <FindJobSection getDataFromChild={handleChildData} page={page} />
+      </div>
+    </div>
+  )
 }
 
 export default FindJobSideBar

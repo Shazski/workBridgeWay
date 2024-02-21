@@ -38,7 +38,7 @@ const JobListTable = () => {
                         <div className="overflow-x-auto">
                             {
                                 loading ? <PropagateLoader   
-                                    color={'#20DC49'}
+                                    color={'#197195'}
                                     loading={loading}
                                     cssOverride={override}
                                     size={20}

@@ -1,5 +1,6 @@
+import Pagination from "../Pagination"
 import FindJobCard from "./FindJobCard"
-const FindJobSection = () => {
+const FindJobSection = ({getDataFromChild,page}) => {
     return (
         <div className="lg:ms-32 sm:ms-3 w-full">
             <div>
@@ -11,6 +12,11 @@ const FindJobSection = () => {
                 <FindJobCard/>
                 <FindJobCard/>
                 <FindJobCard/>
+            </div>
+            <div className="w-full flex justify-end">
+                <div>
+            <Pagination length={20} sentToParent={getDataFromChild} page={page}/>
+                </div>
             </div>
         </div>
     )

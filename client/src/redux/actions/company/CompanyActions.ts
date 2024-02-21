@@ -35,7 +35,6 @@ export const getCategory = createAsyncThunk(
         `${ADMIN_BASE_URL}/get-categories`,
         config
       );
-      console.log(data,"categorydata")
       return data;
     } catch (error) {
       const axiosError = error as AxiosError<MyApiError>;

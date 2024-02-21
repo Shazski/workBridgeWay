@@ -1,37 +1,46 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependenciesData } from "../../../application/interfaces/IDependenciesData";
 import { ErrorResponse } from "../../../utils";
-import { IJob } from "../../../application/interfaces/IJob"; 
+import { IJob } from "../../../application/interfaces/IJob";
 export = (dependencies: IDependenciesData) => {
+ const {
+  user_useCase: { getAllJobs_useCase },
+ } = dependencies;
+ const getAllJobs_controller = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+ ) => {
   const {
-    user_useCase: { getAllJobs_useCase },
-  } = dependencies;
-  const getAllJobs_controller = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const page = req.query.page || 1;
-    const filters = req.query.filter || "";
-    const search = req.query.search || ""
-    const data = {
-        page,
-        filters,
-        search
-    }
-    console.log(data,"my data in controller get all jobs")
-    try {
-      const jobs: IJob[] = await getAllJobs_useCase(dependencies).execute(
-        data
-      );
-      if (!jobs)
-        return next(ErrorResponse.internalError("failed to fetch jobs"));
+   page,
+   category,
+   typeOfEmployment,
+   search,
+   fromSalary,
+   toSalary,
+  }: any = req.query;
+  let filter: any = {};
+  if (category) {
+     filter.category = { $in: category.split(",") };
+  }
+     if (typeOfEmployment)
+   filter.typeOfEmployment = { $in: typeOfEmployment.split(",") };
+  if (toSalary) filter.toSalary = { $gte: toSalary };
+  if (fromSalary) filter.fromSalary = { $gte: fromSalary };
+  if (search) filter.jobTitle = { $regex: new RegExp(search, "i") };
+  if(page) {
+    filter.page = Number(page) || 1;
+  }
 
-      res.status(201).json(jobs);
-    } catch (error) {
-      console.log("<<Something went wrong in getAllJobs_controller>>");
-      next(error);
-    }
-  };
-  return getAllJobs_controller;
+  try {
+   const jobs: IJob[] = await getAllJobs_useCase(dependencies).execute(filter);
+   if (!jobs) return next(ErrorResponse.internalError("failed to fetch jobs"));
+
+   res.status(200).json(jobs);
+  } catch (error) {
+   console.log("<<Something went wrong in getAllJobs_controller>>");
+   next(error);
+  }
+ };
+ return getAllJobs_controller;
 };

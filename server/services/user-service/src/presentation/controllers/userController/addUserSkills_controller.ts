@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IDependenciesData } from "../../../application/interfaces/IDependenciesData";
 import { ErrorResponse } from "../../../utils";
 
-export = (dependencies: IDependenciesData) => {
+export default (dependencies: IDependenciesData) => {
     const {user_useCase:{addUserSkills_useCase}} = dependencies
     const addUserSkills = async (req: Request, res:Response, next:NextFunction) => {
         const userCredentials = req.body
