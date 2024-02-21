@@ -103,22 +103,30 @@ export const editJob = async (jobDetails: IJob): Promise<IJob | boolean> => {
 export const getAlljobs = async (data: {
  page?: number;
  category?: string[];
- fromSalary?: string[];
+ fromSalary?: number;
+ toSalary?: number;
  typeOfEmployment?: string[];
  search?: number;
 }): Promise<IJob[] | boolean> => {
  const skip = Number(data.page! - 1) * 10;
- console.log(data, "data in company service");
  delete data.page;
+
  try {
-  const jobs: IJob[] = await JobSchema.find({
-   ...data,
-  })
-   .limit(10)
-   .skip(skip);
+  let filter: any = { ...data };
+  if (data.fromSalary !== undefined) {
+   filter.fromSalary = { $gte: Number(data.fromSalary) };
+  }
+
+  if (data.toSalary !== undefined) {
+   filter.toSalary = { $lte: Number(data.toSalary) };
+  }
+
+  const jobs: IJob[] = await JobSchema.find(filter).limit(10).skip(skip);
+  const count = await JobSchema.find(filter).countDocuments();
+
   if (!jobs) return false;
 
-  return jobs as IJob[];
+  return [jobs, count] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
   return false;

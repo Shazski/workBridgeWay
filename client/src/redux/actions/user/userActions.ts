@@ -287,3 +287,21 @@ export const updateCompanyDetails = createAsyncThunk(
     }
   }
 );
+export const getAllJobs = createAsyncThunk(
+  "user/getAllJobs",
+  async (
+    searchParams: any,
+    { rejectWithValue }
+  ) => {
+    try {
+      const { data } = await axios.get(
+        `${USER_BASE_URL}/get-all-jobs?${searchParams}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      const axiosError = error as AxiosError<MyApiError>;
+      return handleError(axiosError, rejectWithValue);
+    }
+  }
+);

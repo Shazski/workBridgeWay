@@ -8,6 +8,7 @@ import { getCategory } from "../../redux/actions/company/CompanyActions";
 import { AppDispatch, RootState } from "../../redux/store";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { getAllJobs } from "../../redux/actions/user/userActions";
 const FindJobSideBar = () => {
 
   const { category } = useSelector((state: RootState) => state.company)
@@ -24,7 +25,6 @@ const FindJobSideBar = () => {
 
   const [categories, setCategories] = useState<string[]>([]);
   const [typeOfEmployment, setTypeOfEmployment] = useState<string[]>([]);
-  const [salary, setSalary] = useState<string[]>([]);
   const [fromSalary, setFromSalary] = useState<number>(0);
   const [toSalary, setToSalary] = useState<number>(0);
   const [salaryRange, setSalaryRange] = useState<number[] | number>([]);
@@ -141,6 +141,10 @@ const FindJobSideBar = () => {
     setPage(currentPage)
     handleCheckBoxChange('page',currentPage)
   }
+
+  useEffect(() => {
+    dispatch(getAllJobs(searchParams))
+  },[searchParams])
 
   return (
     <div className="flex mt-12">

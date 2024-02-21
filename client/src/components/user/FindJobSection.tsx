@@ -1,21 +1,30 @@
+import { RootState } from "../../redux/store";
 import Pagination from "../Pagination"
 import FindJobCard from "./FindJobCard"
-const FindJobSection = ({getDataFromChild,page}) => {
+import { useSelector } from 'react-redux';
+const FindJobSection = ({ getDataFromChild, page }) => {
+    const { jobs, jobsCount } = useSelector((state: RootState) => state.user)
+    console.log(typeof(jobs),"dsadsa")
+    console.log(jobsCount,"count")
     return (
         <div className="lg:ms-32 sm:ms-3 w-full">
             <div>
                 <h2 className="font-semibold text-xl font-serif">All Jobs</h2>
-                <h1 className="text-sm text-gray-500">Showing <span>73</span> results</h1>
+                <h1 className="text-sm text-gray-500">Showing <span>{jobs.length}</span> results</h1>
             </div>
-            <div>
-                <FindJobCard/>
-                <FindJobCard/>
-                <FindJobCard/>
-                <FindJobCard/>
+            <div className="h-96 overflow-y-auto md:w-[600px]">
+                {jobs && jobs.map((job) => (
+                    <>
+                        <FindJobCard jobs={job} />
+                    </>
+                ))
+
+                }
+
             </div>
             <div className="w-full flex justify-end">
                 <div>
-            <Pagination length={20} sentToParent={getDataFromChild} page={page}/>
+                    <Pagination length={Number(jobsCount)} sentToParent={getDataFromChild} page={page} />
                 </div>
             </div>
         </div>

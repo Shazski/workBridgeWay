@@ -1,6 +1,6 @@
 import JobCategogyBtn from './JobCategogyBtn'
 import LOGO from '../../assets/images/Logo.png'
-const FindJobCard = ({ showCatTag = true, showApplied = true }: { showCatTag?: boolean, showApplied?: boolean }) => {
+const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatTag?: boolean, showApplied?: boolean, jobs?:any }) => {
     return (
         <div className="border md:flex md:h-28 w-full md:w-full mt-8 md:justify-center">
             <div className="md:mt-4">

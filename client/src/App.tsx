@@ -7,8 +7,6 @@ import FindJobs from './pages/user/FindJobs';
 import JobDescription from './pages/user/JobDescription';
 import { Toaster } from 'react-hot-toast';
 import CompanyRegister from './pages/company/CompanyRegister';
-// import CompanySideBar from './components/company/CompanySideBar';
-// import CompanyNavbar from './components/company/CompanyNavbar';
 import CompanyDashboard from './pages/company/ComapnyDashboard';
 import JobApplicants from './pages/company/JobApplicants';
 import Otp from './pages/user/Otp';

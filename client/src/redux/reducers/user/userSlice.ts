@@ -8,6 +8,7 @@ import {
   changeUserPassowrd,
   companyRegister,
   editUser,
+  getAllJobs,
   googleAuth,
   logoutUser,
   removeSkill,
@@ -18,13 +19,15 @@ import {
   userLogin,
   userSignUp,
 } from "../../actions/user/userActions";
-import { ICompanyData } from "../../../interface/ICompanyData";
+import { ICompanyData, IJobData } from "../../../interface/ICompanyData";
 const userSlice = createSlice({
   name: "user",
   initialState: {
     user: null as any | null,
     error: null as string | null,
     loading: false as boolean,
+    jobs: null as any | null,
+    jobsCount : null as number | null
   },
   reducers: {
     makeErrorDisable: (state) => {
@@ -218,6 +221,21 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(updateCompanyDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getAllJobs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllJobs.fulfilled, (state, action) => {
+        console.log(action.payload,"payload data")
+        state.loading = false;
+        state.jobs = action.payload[0] as IJobData[];
+        state.jobsCount = action.payload[1] as number;
+        state.error = null;
+      })
+      .addCase(getAllJobs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

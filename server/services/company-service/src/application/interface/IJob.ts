@@ -12,4 +12,5 @@ export interface IJob {
   typeOfEmployment: String | null;
   vacancy: Number | null;
   companyId: ObjectId | null;
+  count?: number | null;
 }
