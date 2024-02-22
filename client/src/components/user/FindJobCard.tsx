@@ -1,7 +1,10 @@
 import JobCategogyBtn from './JobCategogyBtn'
-const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatTag?: boolean, showApplied?: boolean, jobs?:any }) => {
+import { useNavigate } from 'react-router-dom'
+const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatTag?: boolean, showApplied?: boolean, jobs?: any }) => {
+    
+    const navigate = useNavigate()
     return (
-        <div className="border md:flex md:h-28 w-full md:w-full mt-8 md:justify-center">
+        <div onClick={() => navigate(`/jobs/${jobs._id}`)} className="border md:flex md:h-28 w-full md:w-full mt-8 md:justify-center">
             <div className="md:mt-4">
                 <img src={jobs?.companyId?.companyLogo} alt="" className="w-32 " />
             </div>

@@ -29,16 +29,16 @@ export const updateJobStatus = async (
   id: ObjectId;
  },
  page: number,
- search:string
+ search: string
 ): Promise<IJobsData | boolean> => {
  try {
   await Client.flushall()
-  .then(() => {
-    console.log('All keys cleared successfully.');
-  })
-  .catch((err) => {
-    console.error('Error clearing all keys:', err);
-  })
+   .then(() => {
+    console.log("All keys cleared successfully.");
+   })
+   .catch((err) => {
+    console.error("Error clearing all keys:", err);
+   });
   const job = await JobSchema.findOneAndUpdate(
    {
     _id: updateData.id,
@@ -92,8 +92,8 @@ export const getAllCompanyJobs = async (
    .skip(skip);
 
   if (!jobs) return false;
-  if(jobs.length > 0) {
-    await Client.set(`jobs${page}${search}`, JSON.stringify(jobs));
+  if (jobs.length > 0) {
+   await Client.set(`jobs${page}${search}`, JSON.stringify(jobs));
   }
   return jobs as IJob[];
  } catch (error) {
@@ -233,6 +233,22 @@ export const getAlljobs = async (data: {
   ] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
+  return false;
+ }
+};
+
+export const getJobDetailsById = async (
+ id: ObjectId
+): Promise<IJobsData | boolean> => {
+ try {
+  const job = await JobSchema.findById(id).populate('companyId');
+
+  if (!job) return false;
+  const jobData = job as IJobsData;
+
+  return jobData;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in getJobDetailsById  repo >>");
   return false;
  }
 };

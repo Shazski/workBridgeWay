@@ -13,6 +13,7 @@ export = (dependencies: IDependenciesData) => {
     addUserSocialLinks,
     removeUserSocialLinks,
     getAllJobs,
+    getJobDetailsById
   } = userController(dependencies);
   const router = express.Router();
   
@@ -25,5 +26,6 @@ export = (dependencies: IDependenciesData) => {
   router.post("/add-socialLinks", addUserSocialLinks);
   router.post("/remove-socialLinks", removeUserSocialLinks);
   router.get('/get-all-jobs',getAllJobs);
+  router.get('/get-job-details/:id',getJobDetailsById);
   return router;
 };

@@ -4,7 +4,8 @@ import {
   updateJobStatus,
   getJobById,
   editJob,
-  getAlljobs
+  getAlljobs,
+  getJobDetailsById
 } from "./jobRepo";
 
 export default {
@@ -13,5 +14,6 @@ export default {
   updateJobStatus,
   getJobById,
   editJob,
-  getAlljobs
+  getAlljobs,
+  getJobDetailsById
 };

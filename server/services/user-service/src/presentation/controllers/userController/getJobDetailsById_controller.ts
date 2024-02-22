@@ -4,21 +4,15 @@ import { ErrorResponse, errorHandler } from "../../../utils";
 
 export = (dependencies: IDependenciesData) => {
  const {
-  user_useCase: { editUser_useCase },
+  user_useCase: { getJobDescription_useCase },
  } = dependencies;
  const editUser = async (req: Request, res: Response, next: NextFunction) => {
-  //find user and edit user details with body data..
-  const userCredentials = req.body;
+  const id = req.params.id;
   try {
-   //Update user according to the data updated by user..
-   const updatedUser = await editUser_useCase(dependencies).execute(
-    userCredentials
-   );
+   const job = await getJobDescription_useCase(dependencies).execute(id);
 
-   if (!updatedUser)
-    return next(ErrorResponse.conflict("Phone number is already taken"));
-   const user = updatedUser;
-   res.status(201).json(user);
+   if (!job) return next(ErrorResponse.badRequest("Job Id is invalid"));
+   res.status(200).json(job);
   } catch (error) {
    next(error);
   }

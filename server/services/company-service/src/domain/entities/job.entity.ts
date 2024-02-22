@@ -2,7 +2,7 @@ import { Document, ObjectId } from "mongoose";
 
 export interface IJobs extends Document {
   _id: ObjectId;
-  applicants: {
+  applicants?: {
     applicantId: ObjectId | null;
     appliedDate: Date | null;
     description: String | null;

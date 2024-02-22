@@ -24,6 +24,9 @@ export default class MessageHandler {
             case 'getAllJobs':
                 response = await job_repo.getAlljobs(data)
                 break;
+            case 'getJobById':
+                response = await job_repo.getJobDetailsById(data)
+                break;
             default:
                 response = 'Request-key notfound'
                 break;
