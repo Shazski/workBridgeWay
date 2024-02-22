@@ -26,7 +26,7 @@ export default class Producer {
                 })
             })
         } catch (err) {
-            throw new Error("Error inside Auth producer")
+            throw new Error("Error inside user service producer")
         }
     }
 

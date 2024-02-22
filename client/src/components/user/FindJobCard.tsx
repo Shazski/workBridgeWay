@@ -1,19 +1,18 @@
 import JobCategogyBtn from './JobCategogyBtn'
-import LOGO from '../../assets/images/Logo.png'
 const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatTag?: boolean, showApplied?: boolean, jobs?:any }) => {
     return (
         <div className="border md:flex md:h-28 w-full md:w-full mt-8 md:justify-center">
             <div className="md:mt-4">
-                <img src={LOGO} alt="" className="w-32 " />
+                <img src={jobs?.companyId?.companyLogo} alt="" className="w-32 " />
             </div>
             <div className={`md:mt-4 ms-2 ${showCatTag ? "" : "md:mt-7"}`}>
-                <h1 className={`font-semibold`}>Social Media Assistant</h1>
-                <h3 className="text-gray-500 text-sm">Nomad . Paris, France</h3>
+                <h1 className={`font-semibold`}>{jobs?.jobTitle?.toLowerCase()}</h1>
+                <h3 className="text-gray-500 text-sm">HeadOffice . {jobs?.companyId?.headOffice} </h3>
                 <div className="flex gap-3 md:mt-3">
                     {
                         showCatTag ? <>
 
-                            <JobCategogyBtn />
+                            <JobCategogyBtn category={jobs?.category} />
                         </> : <>
                         </>
                     }

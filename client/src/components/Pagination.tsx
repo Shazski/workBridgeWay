@@ -29,7 +29,11 @@ const Pagination = ({ length, sentToParent, page }) => {
 
     useEffect(() => {
         const pageNumber = searchparams.get("page")
-        setCurrentPage(Number(pageNumber))
+        if(pageNumber) {
+            setCurrentPage(Number(pageNumber))
+        } else {
+            setCurrentPage(1)
+        }
     },[])
     return (
         <div  className="flex justify-between mt-5 ms-2">

@@ -27,7 +27,9 @@ export = (dependencies: IDependenciesData) => {
    filter.typeOfEmployment = { $in: typeOfEmployment.split(",") };
   if (toSalary) filter.toSalary = toSalary
   if (fromSalary) filter.fromSalary = fromSalary 
-  if (search) filter.jobTitle = { $regex: new RegExp(search, "i") };
+  if (search !== undefined) {
+    filter.jobTitle = { $regex: search, $options: 'i' };
+  }
   if(page) {
     filter.page = Number(page) || 1;
   }

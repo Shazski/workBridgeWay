@@ -38,7 +38,7 @@ const JobsSchema: Schema = new Schema(
       type: String,
       enum: ["Full-Time", "Part-Time", "Remote", "Internship"],
     },
-    companyId: { type: Schema.Types.ObjectId },
+    companyId: { type: Schema.Types.ObjectId, ref:'Company' },
   },
   {
     timestamps: true,

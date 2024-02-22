@@ -1,8 +1,14 @@
+import { useEffect, useState } from "react"
 import FindJobCard from "../../components/user/FindJobCard"
 import JobDescriptionSection from "../../components/user/JobDescriptionSection"
 import Navbar from "../../components/user/Navbar"
+import { IJobData } from "../../interface/ICompanyData"
 
 const JobDescription = () => {
+    const [jobData, setJobData] = useState<IJobData>({})
+    useEffect(() => {
+        
+    })
     return (
         <div>
             <div>

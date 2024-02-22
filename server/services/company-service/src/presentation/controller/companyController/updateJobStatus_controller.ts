@@ -13,9 +13,11 @@ export default (dependencies: IDependencies) => {
     next: NextFunction
   ) => {
     const updateData = req.body;
+    const page = req.query.page || 1
+    const search = req.query.search || ""
     try {
       const updatedJob = await updateJobStatus_useCase(dependencies).execute(
-        updateData
+        updateData,page,search
       );
       if (!updatedJob)
         return next(ErrorResponse.badRequest("status is not updated"));

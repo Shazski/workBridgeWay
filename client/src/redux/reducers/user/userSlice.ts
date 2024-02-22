@@ -27,7 +27,7 @@ const userSlice = createSlice({
     error: null as string | null,
     loading: false as boolean,
     jobs: null as any | null,
-    jobsCount : null as number | null
+    jobsCount : null as any | null
   },
   reducers: {
     makeErrorDisable: (state) => {
@@ -232,7 +232,7 @@ const userSlice = createSlice({
         console.log(action.payload,"payload data")
         state.loading = false;
         state.jobs = action.payload[0] as IJobData[];
-        state.jobsCount = action.payload[1] as number;
+        state.jobsCount = action.payload[1] as any;
         state.error = null;
       })
       .addCase(getAllJobs.rejected, (state, action) => {

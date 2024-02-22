@@ -12,6 +12,7 @@ import { getAllJobs } from "../../redux/actions/user/userActions";
 const FindJobSideBar = () => {
 
   const { category } = useSelector((state: RootState) => state.company)
+  const { jobsCount } = useSelector((state: RootState) => state.user)
 
   const [showType, setShowType] = useState<boolean>(true)
   const [showCat, setShowCat] = useState<boolean>(true)
@@ -22,7 +23,6 @@ const FindJobSideBar = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const [page, setPage] = useState<number>(1);
-
   const [categories, setCategories] = useState<string[]>([]);
   const [typeOfEmployment, setTypeOfEmployment] = useState<string[]>([]);
   const [fromSalary, setFromSalary] = useState<number>(0);
@@ -84,7 +84,7 @@ const FindJobSideBar = () => {
         params.append('fromSalary', value)
         setFromSalary(Number(value))
       } else {
-        params.set('fromSalary',value)
+        params.set('fromSalary', value)
         setFromSalary(Number(value))
       }
     }
@@ -94,7 +94,7 @@ const FindJobSideBar = () => {
         params.append('toSalary', value)
         setFromSalary(Number(value))
       } else {
-        params.set('toSalary',value)
+        params.set('toSalary', value)
         setToSalary(Number(value))
 
       }
@@ -105,7 +105,7 @@ const FindJobSideBar = () => {
         params.append('page', value)
         setPage(Number(value))
       } else {
-        params.set('page',value)
+        params.set('page', value)
         setPage(Number(value))
 
       }
@@ -125,26 +125,26 @@ const FindJobSideBar = () => {
     setCategories(catParam ? catParam.split(",") : []);
     setFromSalary(Number(fromSalary))
     setToSalary(Number(toSalary))
-    setSalaryRange([Number(fromSalary),Number(toSalary)])
+    setSalaryRange([Number(fromSalary), Number(toSalary)])
     setPage(Number(page))
   }, [])
 
-  const handleRangeChange = (value:number | number[]) => {
+  const handleRangeChange = (value: number | number[]) => {
     setSalaryRange(value)
     setFromSalary(value[0])
     setToSalary(value[1])
-    handleCheckBoxChange('fromSalary',value[0])
-    handleCheckBoxChange('toSalary',value[1])
+    handleCheckBoxChange('fromSalary', value[0])
+    handleCheckBoxChange('toSalary', value[1])
   }
 
-  const handleChildData = ({currentPage}) => {
+  const handleChildData = ({ currentPage }) => {
     setPage(currentPage)
-    handleCheckBoxChange('page',currentPage)
+    handleCheckBoxChange('page', currentPage)
   }
 
   useEffect(() => {
     dispatch(getAllJobs(searchParams))
-  },[searchParams])
+  }, [searchParams])
 
   return (
     <div className="flex mt-12">
@@ -162,19 +162,19 @@ const FindJobSideBar = () => {
           <div className={`mt-3 ${showType ? "" : "hidden"}text-gray-500`}>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Full-Time')} type="checkbox" value="Full-Time" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Full-Time')} />
-              <label htmlFor="">Full-time <span>(3)</span> </label>
+              <label htmlFor="">Full-time <span>(<span>{jobsCount.fullTime}</span>)</span> </label>
             </div>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Part-Time')} type="checkbox" value="Part-Time" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Part-Time')} />
-              <label htmlFor="">Part-time <span>(43)</span> </label>
+              <label htmlFor="">Part-time <span>(<span>{jobsCount.partTime}</span>)</span> </label>
             </div>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Remote')} type="checkbox" value="Remote" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Remote')} />
-              <label htmlFor="">Remote <span>(33)</span> </label>
+              <label htmlFor="">Remote <span>(<span>{jobsCount.remote}</span>)</span> </label>
             </div>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Internship')} type="checkbox" value="Internship" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Internship')} />
-              <label htmlFor="">Internship <span>(16)</span> </label>
+              <label htmlFor="">Internship <span>(<span>{jobsCount.internship}</span>)</span> </label>
             </div>
           </div>
         </div>
@@ -194,7 +194,7 @@ const FindJobSideBar = () => {
                 <div key={idx}>
                   <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
                     <input checked={categories && categories.includes(cat)} type="checkbox" value={cat} name="category" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('category', cat)} />
-                    <label htmlFor="">{cat}<span>(3)</span> </label>
+                    <label htmlFor="">{cat}<span>(<span>{jobsCount[cat]}</span>)</span> </label>
                   </div>
                 </div>
               ))
@@ -223,7 +223,7 @@ const FindJobSideBar = () => {
                 <h1>LPA</h1>
               </div>
               <div className="font-semibold text-lightgreen">
-                {toSalary} 
+                {toSalary}
                 <h1>LPA</h1>
               </div>
             </div>

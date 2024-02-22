@@ -23,11 +23,22 @@ export const postJob = async (
   return false;
  }
 };
-export const updateJobStatus = async (updateData: {
- status: boolean;
- id: ObjectId;
-}): Promise<IJobsData | boolean> => {
+export const updateJobStatus = async (
+ updateData: {
+  status: boolean;
+  id: ObjectId;
+ },
+ page: number,
+ search:string
+): Promise<IJobsData | boolean> => {
  try {
+  await Client.flushall()
+  .then(() => {
+    console.log('All keys cleared successfully.');
+  })
+  .catch((err) => {
+    console.error('Error clearing all keys:', err);
+  })
   const job = await JobSchema.findOneAndUpdate(
    {
     _id: updateData.id,
@@ -38,7 +49,6 @@ export const updateJobStatus = async (updateData: {
 
   if (!job) return false;
 
-  await Client.del("jobs");
   const jobData = job as IJobsData;
 
   return jobData;
@@ -49,19 +59,42 @@ export const updateJobStatus = async (updateData: {
 };
 
 export const getAllCompanyJobs = async (
- companyId: ObjectId
+ companyId: ObjectId,
+ page: number,
+ search: string
 ): Promise<IJob[] | boolean> => {
+ const skip = Number(page - 1) * 10;
+
+ if (search !== "") {
+ }
+
  try {
-  const cachedJob = await Client.get("jobs");
+  const cachedJob = await Client.get(`jobs${page}${search}`);
   if (cachedJob) {
-   await Client.expire("jobs", 10);
+   await Client.expire(`jobs${page}${search}`, 10);
    return JSON.parse(cachedJob);
   }
-  const jobs: IJob[] = await JobSchema.find({ companyId: companyId });
+  const jobs: IJob[] = await JobSchema.find({
+   $or: [
+    {
+     jobTitle: { $regex: `${search}`, $options: "i" },
+    },
+    {
+     category: { $regex: search, $options: "i" },
+    },
+    {
+     typeOfEmployment: { $regex: search, $options: "i" },
+    },
+   ],
+   companyId: companyId,
+  })
+   .limit(10)
+   .skip(skip);
 
   if (!jobs) return false;
-
-  await Client.set("jobs", JSON.stringify(jobs));
+  if(jobs.length > 0) {
+    await Client.set(`jobs${page}${search}`, JSON.stringify(jobs));
+  }
   return jobs as IJob[];
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
@@ -110,23 +143,94 @@ export const getAlljobs = async (data: {
 }): Promise<IJob[] | boolean> => {
  const skip = Number(data.page! - 1) * 10;
  delete data.page;
-
  try {
   let filter: any = { ...data };
   if (data.fromSalary !== undefined) {
    filter.fromSalary = { $gte: Number(data.fromSalary) };
   }
-
   if (data.toSalary !== undefined) {
    filter.toSalary = { $lte: Number(data.toSalary) };
   }
 
-  const jobs: IJob[] = await JobSchema.find(filter).limit(10).skip(skip);
-  const count = await JobSchema.find(filter).countDocuments();
+  const jobs: IJob[] = await JobSchema.find({ status: true, ...filter })
+   .populate("companyId")
+   .limit(10)
+   .skip(skip);
+
+  //get counts of all filters
+  const count = await JobSchema.find({
+   status: true,
+   ...filter,
+  }).countDocuments();
+  const fullTime = await JobSchema.find({
+   status: true,
+   typeOfEmployment: "Full-Time",
+  }).countDocuments();
+  const partTime = await JobSchema.find({
+   status: true,
+   typeOfEmployment: "Part-Time",
+  }).countDocuments();
+  const remote = await JobSchema.find({
+   status: true,
+   typeOfEmployment: "Remote",
+  }).countDocuments();
+  const internship = await JobSchema.find({
+   status: true,
+   typeOfEmployment: "Internship",
+  }).countDocuments();
+  const sales = await JobSchema.find({
+   status: true,
+   category: "sales",
+  }).countDocuments();
+  const engineering = await JobSchema.find({
+   status: true,
+   category: "engineering",
+  }).countDocuments();
+  const marketing = await JobSchema.find({
+   status: true,
+   category: "marketing",
+  }).countDocuments();
+  const design = await JobSchema.find({
+   status: true,
+   category: "design",
+  }).countDocuments();
+  const finance = await JobSchema.find({
+   status: true,
+   category: "finance",
+  }).countDocuments();
+  const technology = await JobSchema.find({
+   status: true,
+   category: "technology",
+  }).countDocuments();
+  const business = await JobSchema.find({
+   status: true,
+   category: "business",
+  }).countDocuments();
+  const hr = await JobSchema.find({
+   status: true,
+   category: "hr",
+  }).countDocuments();
 
   if (!jobs) return false;
 
-  return [jobs, count] as any;
+  return [
+   jobs,
+   {
+    count,
+    fullTime,
+    partTime,
+    remote,
+    internship,
+    sales,
+    engineering,
+    marketing,
+    design,
+    finance,
+    technology,
+    business,
+    hr,
+   },
+  ] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
   return false;

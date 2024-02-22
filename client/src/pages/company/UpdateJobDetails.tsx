@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { GoDotFill } from "react-icons/go";
@@ -10,22 +10,34 @@ import { popResponsibilities, popSkills, pushResponsibilities, pushSkill } from 
 import toast from 'react-hot-toast';
 
 const UpdateJobDetails = () => {
+
+
     const [isSkillModalOpen, setIsSkillModalOpen] = useState<boolean>(false);
+
     const [error, setError] = useState<string>("");
-    const [skill, setSkill] = useState<string>("");
-    const { id } = useParams()
-    const [salaryError, setSalaryError] = useState<string>("");
-    const [formData, setFormData] = useState<any>("");
-    const [responsibility, setResponsibility] = useState<string>("")
-    const bottomRef = useRef<HTMLDivElement | null>(null);
     const [responsibilityError, setResponsibilityError] = useState<string>("");
+    const [salaryError, setSalaryError] = useState<string>("");
+
+    const { id } = useParams()
+
+    const [formData, setFormData] = useState<any>("");
+
+    const [skill, setSkill] = useState<string>("");
+    const [responsibility, setResponsibility] = useState<string>("")
+
+    const bottomRef = useRef<HTMLDivElement | null>(null);
+
     const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
+
     const { category, editJob } = useSelector((state: RootState) => state.company)
+
     const scrollToBottom = () => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
+
     useEffect(() => {
         dispatch(getJobById(id))
         dispatch(getCategory())
@@ -79,7 +91,7 @@ const UpdateJobDetails = () => {
         scrollToBottom()
     }
 
-    const handleEditJobSubmit = async(e: FormEvent<HTMLFormElement>) => {
+    const handleEditJobSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (Number(formData?.fromSalary) >= Number(formData?.toSalary)) {
             return setSalaryError("Salary range is invalid");
@@ -90,18 +102,15 @@ const UpdateJobDetails = () => {
         delete formData?.status
         delete formData?.__v
 
-       const res = await dispatch(editJobDetails(formData))
-       if(res.payload) {
         toast.promise(
             dispatch(editJobDetails(formData)),
-             {
-               loading: 'Saving...',
-               success: <b>Job Updated !</b>,
-               error: <b>Job Update failed</b>,
-             }
-           );
-       }
-        console.log(formData, "formdata")
+            {
+                loading: 'Saving...',
+                success: <b>Job Updated !</b>,
+                error: <b>Job Update failed</b>,
+            }
+        );
+        navigate('/company/job-list')
     }
     function getCurrentDate() {
         const today = new Date();

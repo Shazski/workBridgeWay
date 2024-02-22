@@ -9,15 +9,17 @@ export default (dependencies: IDependencies) => {
   } = dependencies;
 
   const getJob = async (req: Request, res: Response, next: NextFunction) => {
+    const page = req.query.page || 1
+    const search = req.query.search || ""
     try {
       const token = req.cookies["auth_jwt"];
       const companyId: string = getCompanyId(token);
 
-      if (!token || !companyId) {
+      if (!token || companyId === "") {
         return next(ErrorResponse.unauthorized("Company Autherization failed"));
       }
       const jobs = await getCompanyJobs_useCase(dependencies).execute(
-        companyId
+        companyId,page,search
       );
 
       if (!jobs) return next(ErrorResponse.badRequest("Jobs not found"));

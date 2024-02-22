@@ -7,9 +7,6 @@ export const updateCompany_useCase = (dependencies: IDependencies) => {
   } = dependencies;
 
   const execute = async (credentials: ICompanyData, id: string) => {
-    console.log(
-      "incoming call on usecase  update companydasdsadsad....................."
-    );
     try {
       return await updateCompany_repo(credentials, id);
     } catch (error) {

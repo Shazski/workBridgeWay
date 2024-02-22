@@ -1,10 +1,18 @@
 
-const JobCategogyBtn = () => {
+const JobCategogyBtn = ({category}:{category:string}) => {
+    const color = {
+        engineering:'blue-600',
+        design:'orange-600',
+        sales:'green-600',
+        marketing:'red-600',
+        finance:'yellow-600',
+        technology:'violet-600',
+        hr:'lightgreen-600',
+        business:'teal-600'
+    }
     return (
             <>
-                <h4 className="border text-sm text-lightgreen bg-green-100  px-2 py-1 rounded-xl">FullTime</h4>
-                <h4 className="border text-sm text-yellow-400 border-yellow-500 px-2 py-1 rounded-xl ">Marketing</h4>
-                <h4 className="border text-sm text-lightgreen border-lightgreen  px-2 py-1 rounded-xl">Design</h4>
+                <h4 className={`border text-teal-60000 text-sm text-${color[category]} border-gray-400  px-2 py-1 rounded-xl`}>{category}</h4>
             </>
     )
 }
