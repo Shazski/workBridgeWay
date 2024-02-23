@@ -41,7 +41,7 @@ const JobListTable = () => {
 
   useEffect(() => {
     dispatch(getJobs({page,search}))
-  }, [dispatch, refetch, page,search])
+  }, [refetch, page,search])
 
   return (
     <div className="mt-4 flex-grow">

@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { corsOptions } from "../utils";
-import { errorHandler } from "../utils";
+import {errorHandler} from "work-bridge-way-common"
 import { routes } from "../infrastructure/routes";
 import { dependencies } from "../utils/index" 
 import cookieParser from "cookie-parser";

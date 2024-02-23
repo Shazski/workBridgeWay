@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependenciesData } from "../../../application/interfaces/IDependenciesData";
-import { ErrorResponse } from "../../../utils";
+import { ErrorResponse } from "work-bridge-way-common";
 
 export default (dependencies: IDependenciesData) => {
     const {user_useCase:{addUserSkills_useCase}} = dependencies

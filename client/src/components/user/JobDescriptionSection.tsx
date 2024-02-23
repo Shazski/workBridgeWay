@@ -1,10 +1,6 @@
 import { CiCircleCheck } from "react-icons/ci";
 import { format, parseISO } from "date-fns"
 const JobDescriptionSection = ({ job }) => {
-  const formatDate = (dateString: string) => {
-    const options = { day: 'numeric', month: 'short', year: 'numeric' } as const;
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
-  };
   return (
     <div>
       <div className="flex ms-4 md:ms-0 justify-center mt-16">
@@ -41,7 +37,7 @@ const JobDescriptionSection = ({ job }) => {
             </div>
             <div className="flex justify-between mt-5">
               <h1 className="text-gray-500">Salary</h1>
-              <h1 className="font-medium">{job.fromSalary} LPA - {job.toSalary} LPA</h1>
+              <h1 className="font-medium">{job.fromSalary} Rs - {job.toSalary} Rs</h1>
             </div>
           </div>
           <div className="mt-6">

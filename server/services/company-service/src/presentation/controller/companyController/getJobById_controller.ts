@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interface/IDependencies";
-import ErrorResponse from "../../../utils/error/errorResponse";
+import { ErrorResponse } from "work-bridge-way-common";
 import { IJobsData } from "../../../infrastructure/database/mongodb/schema/jobSchema";
 
 export default (dependencies: IDependencies) => {

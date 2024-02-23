@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependenciesData } from "../../../application/interfaces/IDependenciesData";
-import { ErrorResponse, sendOtp } from "../../../utils";
+import { ErrorResponse } from "work-bridge-way-common";
 
 export = (dependencies: IDependenciesData) => {
   const {

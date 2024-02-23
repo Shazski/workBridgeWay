@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
-import { generateToken } from "../../../utils";
+import { generateToken } from "work-bridge-way-common";
 import { cookieConfig } from "../../../utils/constants/constant";
 import sentGoogleAuthPasswordMail from "../../../utils/externalServices/nodemailer/sentGoogleAuthPassword";
+import { JWT_SECRET } from "../../../config";
 
 export = (dependencies: DependenciesData) => {
   const {
@@ -20,7 +21,7 @@ export = (dependencies: DependenciesData) => {
         userCredentials
       );
       if (userExists) {
-        const token = generateToken(userExists._id);
+        const token = generateToken(userExists._id, JWT_SECRET!);
         res.cookie("auth_jwt", token, cookieConfig);
         const user = userExists;
         user.token = token
@@ -33,7 +34,7 @@ export = (dependencies: DependenciesData) => {
         );
         if(user)
         await sentGoogleAuthPasswordMail(user.email, strongPassword);
-        const token = generateToken(user._id);
+        const token = generateToken(user._id, JWT_SECRET!);
         res.cookie("auth_jwt", token, cookieConfig);
         user.token =  token;
         res.status(201).json(user);

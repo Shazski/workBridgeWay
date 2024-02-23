@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import logger from "morgan";
-import { corsOptions, dependencies, errorHandler } from "../utils";
+import { corsOptions, dependencies } from "../utils";
+import { errorHandler } from "work-bridge-way-common";
 import { ENV } from "../config";
 import routes from "../infrastructure/routes";
 import cookieParser from "cookie-parser"

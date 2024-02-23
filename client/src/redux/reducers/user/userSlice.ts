@@ -33,6 +33,10 @@ const userSlice = createSlice({
     makeErrorDisable: (state) => {
       state.error = "";
     },
+    makeUserNull: (state) => {
+      console.log("user made null")
+      state.user = null;
+    }
   },
 
   extraReducers(builder) {
@@ -68,7 +72,6 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        localStorage.removeItem("persist:root");
         state.loading = false;
         state.user = null;
         state.error = null;
@@ -241,7 +244,7 @@ const userSlice = createSlice({
       })
   },
 });
-export const { makeErrorDisable } = userSlice.actions;
+export const { makeErrorDisable,makeUserNull } = userSlice.actions;
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
 
 export default persistedUserReducer;

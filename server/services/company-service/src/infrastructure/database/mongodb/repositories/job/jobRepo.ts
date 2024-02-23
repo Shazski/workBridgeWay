@@ -241,7 +241,7 @@ export const getJobDetailsById = async (
  id: ObjectId
 ): Promise<IJobsData | boolean> => {
  try {
-  const job = await JobSchema.findById(id).populate('companyId');
+  const job = await JobSchema.findById(id).populate('companyId').select("-password");
 
   if (!job) return false;
   const jobData = job as IJobsData;

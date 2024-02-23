@@ -1,5 +1,3 @@
 import userController from "./userController";
 
-export {
-    userController
-}
+export { userController };

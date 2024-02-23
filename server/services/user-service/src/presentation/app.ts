@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { ENV } from "../config";
 import cors from "cors";
 import { corsOptions } from "../utils";
-import { errorHandler } from "../utils";
+import { errorHandler } from "work-bridge-way-common";
 import routes from "../infrastructure/routes";
 import dependencies from "../utils/config/dependencies";
 import helmet from "helmet";

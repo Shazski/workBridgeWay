@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/user/Login';
 import SignUp from './pages/user/SignUp';
 import Home from './pages/user/Home';
@@ -21,7 +21,7 @@ import Applications from './pages/user/Applications';
 import Messages from './pages/user/Messages';
 import Settings from './pages/user/Settings';
 import ProfilePic from './components/user/ProfilePic';
-import { AppDispatch } from './redux/store';
+import { AppDispatch, RootState } from './redux/store';
 import { makeErrorDisable } from './redux/reducers/user/userSlice';
 import UpdateLoginDetails from './components/user/UpdateLoginDetails';
 import CompanyRequest from './pages/admin/CompanyRequest';
@@ -34,9 +34,11 @@ import WaitingPage from './pages/company/WaitingPage';
 import PostJobSection from './components/company/PostJobSection';
 import JobList from './pages/company/JobList';
 import UpdateJobDetails from './pages/company/UpdateJobDetails';
+import { useNavigate } from "react-router-dom"
 function App() {
+  const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
-  const { user, error } = useSelector((state: any) => state?.user);
+  const navigate = useNavigate()
   useEffect(() => {
     if (error) {
       setTimeout(() => {
@@ -44,6 +46,13 @@ function App() {
       }, 10000);
     }
   }, [error, dispatch])
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login')
+    }
+  }, [user])
+
 
   const UserProtectedRoute = ({ element }: { element: ReactNode }) => {
     return user?.role === "user" ? element : <Navigate to="/login" />;
@@ -59,7 +68,7 @@ function App() {
     <div>
       <Toaster position='top-center' />
       <ToastContainer />
-      <Router>
+  
         <div>
           <Routes>
             {/* common routes */}
@@ -106,7 +115,6 @@ function App() {
             </Route>
           </Routes>
         </div>
-      </Router >
 
       {(user?.role === 'user') && <Footer />}
     </div >

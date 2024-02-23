@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interface/IDependencies";
-import { getCompanyId } from "../../../utils/jwt/verifyJwt";
-import ErrorResponse from "../../../utils/error/errorResponse";
+import { getUserById, ErrorResponse } from "work-bridge-way-common";
+import { JWT_SECRET } from "../../../config";
 
 export = (dependecies: IDependencies) => {
   const {
@@ -11,7 +11,7 @@ export = (dependecies: IDependencies) => {
     const credentials = req.body;
     try {
       const token = req.cookies["auth_jwt"];
-      const companyId: string = getCompanyId(token);
+      const companyId: string | boolean= getUserById(token, JWT_SECRET!);
 
       if (!token || !companyId) {
         return next(ErrorResponse.unauthorized("Company Autherization failed"));

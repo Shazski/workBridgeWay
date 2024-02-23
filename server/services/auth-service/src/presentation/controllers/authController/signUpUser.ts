@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { ErrorResponse } from "../../../utils";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
-import { generateToken } from "../../../utils";
+import {ErrorResponse, generateToken } from "work-bridge-way-common";
 import { cookieConfig } from "../../../utils/constants/constant";
+import { JWT_SECRET } from "../../../config";
 export = (dependencies: DependenciesData): any => {
   const {
     user_useCase: {
@@ -66,10 +66,8 @@ export = (dependencies: DependenciesData): any => {
           userCredentials.email,
           userCredentials.otp
         );
-        console.log(isOtpVerified, "verified or not");
         if (!isOtpVerified) {
           const { confirmPassword, ...restValues } = userCredentials;
-          // return next(ErrorResponse.unauthorized("Otp is Invalid try another"));
           return res.status(401).json({
             user: restValues,
             success: false,
@@ -97,7 +95,7 @@ export = (dependencies: DependenciesData): any => {
             message: "Something Went wrong try again in create user",
           });
 
-        const token = generateToken(user._id);
+        const token = generateToken(user._id, JWT_SECRET!);
         res.cookie("user_auth", token, cookieConfig);
         user.token = token
         res.status(201).json(user);

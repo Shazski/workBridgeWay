@@ -41,6 +41,7 @@
     "nodemailer": "^6.9.8",
     "nodemon": "^3.0.3",
     "rimraf": "^5.0.5",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "work-bridge-way-common": "^1.0.13"
   }
 }

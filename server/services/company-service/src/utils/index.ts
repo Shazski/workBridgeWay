@@ -1,9 +1,3 @@
-import { corsOptions,cookieConfig } from "./constants/constant"; 
-import errorHandler from "./error/errorHandler";
+import { corsOptions, cookieConfig } from "./constants/constant";
 import { dependencies } from "./config/dependencies";
-export {
-    corsOptions,
-    cookieConfig,
-    errorHandler,
-    dependencies
-}
+export { corsOptions, cookieConfig, dependencies };

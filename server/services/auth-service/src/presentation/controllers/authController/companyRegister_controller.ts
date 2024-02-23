@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express"
 import {DependenciesData} from "../../../application/interfaces/IDependencies"
 import { ICompanyData } from "../../../application/interfaces/ICompanyLogin"
-import { ErrorResponse, generateToken } from "../../../utils"
+import { ErrorResponse, generateToken } from "work-bridge-way-common"
 import { cookieConfig } from "../../../utils/constants/constant"
+import { JWT_SECRET } from "../../../config"
 export = (dependencies:DependenciesData) => {
     const {user_useCase:{findUserByEmail_useCase, signUpUser_useCase, registerCompany_useCase}} = dependencies
     const registerCompany =  async(req:Request, res:Response, next:NextFunction) =>{
@@ -27,7 +28,7 @@ export = (dependencies:DependenciesData) => {
             if(!company) {
                 return next(ErrorResponse.conflict("LinkedIn profile is already registered"))
             }
-            const token = generateToken(company._id)
+            const token = generateToken(company._id, JWT_SECRET!)
             company.role = "company"
             console.log(company,"data")
             res.cookie("auth_jwt",token,cookieConfig).status(201).json(company)

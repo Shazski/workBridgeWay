@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ErrorResponse } from "../../../utils";
+import { ErrorResponse } from "work-bridge-way-common";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
 
 export = (dependencies: DependenciesData) => {
