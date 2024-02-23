@@ -8,17 +8,21 @@ import { getJobs, updateJobStatus } from '../../redux/actions/company/CompanyAct
 import { override } from '../../config/constants';
 import SearchBar from '../SearchBar';
 const JobListTable = () => {
+
   const formatDate = (dateString: string) => {
     const options = { day: 'numeric', month: 'short', year: 'numeric' } as const;
     return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
   };
+  
+  const { jobs, loading,companyJobCount } = useSelector((state: RootState) => state.company)
+
   const dispatch = useDispatch<AppDispatch>()
+
   const [search, setSearch] = useState<string>("")
   const [page, setPage] = useState<number>(1)
   const [isOption, setIsOption] = useState<boolean>(false);
   const [refetch, setRefetch] = useState<boolean>(false);
   const [currentJob, setCurrentJob] = useState<number | null>(null)
-  const { jobs, loading } = useSelector((state: RootState) => state.company)
   const updateStatus = (status: boolean, jobId: string) => {
     setRefetch(!refetch)
     const updateData = {
@@ -41,7 +45,7 @@ const JobListTable = () => {
 
   useEffect(() => {
     dispatch(getJobs({page,search}))
-  }, [refetch, page,search])
+  }, [dispatch, refetch, page,search])
 
   return (
     <div className="mt-4 flex-grow">
@@ -105,7 +109,7 @@ const JobListTable = () => {
               }
             </div>
             <div>
-              <Pagination length={14} page={page} sentToParent={handleChildData} />
+              <Pagination length={companyJobCount} page={page} sentToParent={handleChildData} />
             </div>
           </div>
         </div>

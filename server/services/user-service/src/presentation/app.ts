@@ -7,10 +7,12 @@ import routes from "../infrastructure/routes";
 import dependencies from "../utils/config/dependencies";
 import helmet from "helmet";
 import logger from "morgan";
+import cookieParser from "cookie-parser"
 const app = express();
 
 app.use(helmet());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 if (ENV === "dev") app.use(logger("dev"));

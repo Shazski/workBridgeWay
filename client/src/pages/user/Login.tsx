@@ -152,7 +152,7 @@ const Login: FC = () => {
                 </div>
                 <div>
                     <img className=' absolute top-96 xl:left-16 lg:left-8   md:left-2 left-2 -mt-2
-                    -ml-2 z-10 w-[25rem]' src={BLURIMAGE} alt="" />
+                    -ml-2 z-10 w-[22rem]' src={BLURIMAGE} alt="" />
                 </div>
             </div>
         </div>

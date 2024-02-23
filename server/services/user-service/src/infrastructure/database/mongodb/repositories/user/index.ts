@@ -7,6 +7,7 @@ import {
   updateUserAbout_repo,
   addUserSocialLinks_repo,
   removeUserSocialLinks_repo,
+  getAllUsers
 } from "./userRepo";
 
 export = {
@@ -17,5 +18,6 @@ export = {
   removeUserSkills_repo,
   updateUserAbout_repo,
   addUserSocialLinks_repo,
-  removeUserSocialLinks_repo
+  removeUserSocialLinks_repo,
+  getAllUsers
 };

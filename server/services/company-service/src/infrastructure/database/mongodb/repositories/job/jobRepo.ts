@@ -62,7 +62,7 @@ export const getAllCompanyJobs = async (
  companyId: ObjectId,
  page: number,
  search: string
-): Promise<IJob[] | boolean> => {
+): Promise<any> => {
  const skip = Number(page - 1) * 10;
 
  if (search !== "") {
@@ -90,12 +90,26 @@ export const getAllCompanyJobs = async (
   })
    .limit(10)
    .skip(skip);
+  const count: number = await JobSchema.find({
+   $or: [
+    {
+     jobTitle: { $regex: `${search}`, $options: "i" },
+    },
+    {
+     category: { $regex: search, $options: "i" },
+    },
+    {
+     typeOfEmployment: { $regex: search, $options: "i" },
+    },
+   ],
+   companyId: companyId,
+  }).countDocuments();
 
   if (!jobs) return false;
   if (jobs.length > 0) {
-   await Client.set(`jobs${page}${search}`, JSON.stringify(jobs));
+   await Client.set(`jobs${page}${search}`, JSON.stringify([jobs,count]));
   }
-  return jobs as IJob[];
+  return [jobs, count] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
   return false;
@@ -241,7 +255,9 @@ export const getJobDetailsById = async (
  id: ObjectId
 ): Promise<IJobsData | boolean> => {
  try {
-  const job = await JobSchema.findById(id).populate('companyId').select("-password");
+  const job = await JobSchema.findById(id)
+   .populate("companyId")
+   .select("-password");
 
   if (!job) return false;
   const jobData = job as IJobsData;

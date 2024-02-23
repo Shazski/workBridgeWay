@@ -26,9 +26,7 @@ export const handleError = async (
   if (error.response && error.response.data.message) {
     if (error.response.data?.autherisationFailed) {
       localStorage.removeItem("persist:root");
-      toast((t) => (
-        <TokenInvalid handleClose = {t} />
-      ));
+      toast((t) => <TokenInvalid handleClose={t} />, { duration: 3000, });
       return
     }
     return rejectWithValue(error.response.data.message);

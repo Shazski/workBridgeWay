@@ -16,6 +16,7 @@ export const updateCompanyRequest_useCase = (
       if (!success) return false;
 
       return true;
+      
     } catch (error) {
       console.log(
         error,
