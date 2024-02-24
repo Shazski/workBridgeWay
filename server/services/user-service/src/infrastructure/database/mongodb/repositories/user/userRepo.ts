@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { IUser } from "../../../../../domain/entities/user.entity";
 import UserSchema, { IUserData } from "../../schema/userSchema";
 import bcrypt from "bcrypt";
@@ -203,10 +204,10 @@ export const getAllUsers = async (
   const users: any = await UserSchema.find({
    $or: [
     {
-      email: { $regex: `${search}`, $options: "i" },
+     email: { $regex: `${search}`, $options: "i" },
     },
     {
-      userName: { $regex: `${search}`, $options: "i" },
+     userName: { $regex: `${search}`, $options: "i" },
     },
    ],
    role: "user",
@@ -214,20 +215,45 @@ export const getAllUsers = async (
    .limit(10)
    .skip(skip);
   const count: number = await UserSchema.find({
-    $or: [
-      {
-        email: { $regex: `${search}`, $options: "i" },
-      },
-      {
-        userName: { $regex: `${search}`, $options: "i" },
-      },
-     ],
-     role: "user",
+   $or: [
+    {
+     email: { $regex: `${search}`, $options: "i" },
+    },
+    {
+     userName: { $regex: `${search}`, $options: "i" },
+    },
+   ],
+   role: "user",
   }).countDocuments();
   if (!users) return false;
   return [users, count] as any;
  } catch (error) {
   console.log(error, "< Something went wrong on get all users repo >");
+  return false;
+ }
+};
+
+export const blockOrUnblockUser = async (
+ id: ObjectId,
+ status: boolean
+): Promise<boolean> => {
+ try {
+  const updatedUser = await UserSchema.findByIdAndUpdate(
+   id,
+   {
+    status: status,
+   },
+   { new: true }
+  );
+  if (!updatedUser) {
+   return false;
+  }
+  return true;
+ } catch (error) {
+  console.log(
+   error,
+   " << Something went wrong in blockorunblock user repo >> "
+  );
   return false;
  }
 };

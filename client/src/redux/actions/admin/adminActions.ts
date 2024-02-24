@@ -41,3 +41,19 @@ export const getAllUsers = createAsyncThunk(
   }
  }
 );
+export const updateUserStatus = createAsyncThunk(
+ "company/updateUserStatus",
+ async (updateData: { id: string; status: boolean }, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.put(
+    `${ADMIN_BASE_URL}/update-user-status`,
+    updateData,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

@@ -23,13 +23,15 @@ export interface userRepoData {
   updateUserAbout_repo: any
   addUserSocialLinks_repo: any
   removeUserSocialLinks_repo: any
-  getAllUsers: any
+  getAllUsers: any;
+  blockOrUnblockUser:any;
 }
 
 interface adminUseCaseData {
   getAllCompany_useCase:any
   updateCompanyRequest_useCase: any
-  getAllUsers_useCase:any
+  getAllUsers_useCase:any;
+  blockOrUnblockUser_useCase: any;
 }
 
 interface categoryUseCaseData {
