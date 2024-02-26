@@ -21,6 +21,14 @@ export = (dependencies: DependenciesData) => {
         userCredentials
       );
       if (userExists) {
+
+        if(userExists.status === false) {
+          return res.status(401).json({
+            success: false,
+            userBlocked: true,
+            message: "you have been blocked",
+           });
+        }
         const token = generateToken(userExists._id, JWT_SECRET!);
         res.cookie("auth_jwt", token, cookieConfig);
         const user = userExists;

@@ -26,6 +26,7 @@ const AllUsers = () => {
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const updateStatus = (status: boolean, userId: string) => {
+    console.log(status, userId, "in update case status and id for managing id")
     const updateData = {
       id: userId,
       status
@@ -33,7 +34,7 @@ const AllUsers = () => {
     dispatch(updateStatusById(userId))
     dispatch(updateUserStatus(updateData))
     setIsOption(false)
-    toast.success(`user  ${status ? "blocked" : "unblocked"}  successfully`)
+    toast.success(`user  ${!status ? "blocked" : "unblocked"}  successfully`)
   }
 
   const handleChildData = ({ currentPage }) => {
@@ -68,9 +69,9 @@ const AllUsers = () => {
           <SearchBar sentSearchStringToParent={handleSearchData} />
         </div>
         <div className="flex flex-col">
-          <div className="sm:mx-6 lg:mx-8 flex-grow">
-            <div className="inline-block min-w-full py-2  ">
-              <div className="overflow-x-auto md:h-[500px] scrollbar">
+          <div className="sm:mx-6 lg:mx-8 overflow-x-auto scrollbar flex-grow">
+            <div className="overflow-x-auto inline-block min-w-full py-2  ">
+              <div className="overflow-x-auto md:h-[500px]  scrollbar">
                 {
                   loading ? <PropagateLoader
                     color={'#197195'}
@@ -101,14 +102,14 @@ const AllUsers = () => {
                                 <td className="flex whitespace-nowrap py-4 font-semibold"><h1 className="mt-3">{user?.email}</h1></td>
                                 <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{`${user?.userName}`}</h1></td>
                                 <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{`${user?.phone}`}</h1></td>
-                                <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{`${user?.dob}`}</h1></td>
+                                <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{`${user?.dob || "Not provided"}`}</h1></td>
                                 <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{user?.createdAt && format(parseISO(String(user?.createdAt)), "dd-MM-yyyy")}</h1></td>
-                                <td className="whitespace-nowrap px-6 py-4">{user?.status ? <h1 className="border rounded-xl border-green-500 text-green-800 ps-3 py-1 mt-1 md:w-16">Active</h1> : <h1 className="border rounded-xl border-red-500 text-red-800 px-2 py-1 mt-1 md:w-16">Blocked</h1>}</td>
+                                <td className="whitespace-nowrap px-6 py-4">{user?.status ? <h1 className="border rounded-xl border-green-500 text-green-800 px-3 py-1 mt-1 md:w-16">Active</h1> : <h1 className="border rounded-xl border-red-500 text-red-800 px-2 py-1 mt-1 md:w-16">Blocked</h1>}</td>
                                 <div className='relative'>
                                   <td onClick={() => { setIsOption(!isOption), setCurrentJob(idx) }} className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-900 font-semibold text-3xl hover:scale-110 w-16 -z-10 cursor-pointer">...</h1></td>
                                   {isOption && idx === currentJob ?
                                     <div className='bg-gray-200   rounded-md top-3.5 absolute flex'>
-                                      <h1 onClick={() => { setBlockDetails(user.status ? false : true, String(user?._id), String(user.userName)), setIsModalOpen(true) }} className={`px-4 py-2 w-16 rounded-lg cursor-pointer ${user?.status ? 'text-red-600' : 'text-green-600 w-20'}`}>{user?.status ? "Block" : "Unblock"}</h1>
+                                      <h1 onClick={() => { setBlockDetails(user.status ? true : false, String(user?._id), String(user.userName)), setIsModalOpen(true) }} className={`px-4 py-2 w-16 rounded-lg cursor-pointer ${user?.status ? 'text-red-600' : 'text-green-600 w-20'}`}>{user?.status ? "Block" : "Unblock"}</h1>
                                     </div> : ""
                                   }
                                 </div>
@@ -132,7 +133,7 @@ const AllUsers = () => {
         </div>
       </div>
       <Modal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h1 className="uppercase font-semibold text-center poppins">Do you want to {userStatus ? "unblock" : "block"}  the User <span className='text-red-700'>{userName}</span></h1>
+        <h1 className="uppercase font-semibold text-center poppins">Do you want to {!userStatus ? "unblock" : "block"}  the User <span className='text-red-700'>{userName}</span></h1>
         <div className="flex gap-x-2 justify-center mt-5">
           <button onClick={() => { updateStatus(userStatus ? false : true, String(userId)), setIsModalOpen(false) }} className="bg-red-600 text-white font-semibold px-3 mt-2 py-1 rounded-md">Yes</button>
           <button onClick={() => { setIsModalOpen(false), setIsOption(false) }} className="bg-blue-600 text-white font-semibold px-4 mt-2 py-1  rounded-md">No</button>

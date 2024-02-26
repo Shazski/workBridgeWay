@@ -35,8 +35,10 @@ const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConf
       email: user?.email,
       skill: user?.skills[removeIndex]
     }
-    await dispatch(removeSkill(userObj))
-    toast.success("Skill removed successfully")
+   const res =  await dispatch(removeSkill(userObj))
+   if(res.payload) {
+     toast.success("Skill removed successfully")
+   }
   }
 
   const handleConfirm = (index: number) => {

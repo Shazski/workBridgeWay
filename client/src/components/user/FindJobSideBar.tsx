@@ -10,9 +10,8 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { getAllJobs } from "../../redux/actions/user/userActions";
 const FindJobSideBar = () => {
-
-  const { category } = useSelector((state: RootState) => state.company)
-  const { jobsCount } = useSelector((state: RootState) => state.user)
+  const { category } = useSelector((state: RootState) => state?.company)
+  const { jobsCount } = useSelector((state: RootState) => state?.user)
 
   const [showType, setShowType] = useState<boolean>(true)
   const [showCat, setShowCat] = useState<boolean>(true)
@@ -39,7 +38,7 @@ const FindJobSideBar = () => {
         setTypeOfEmployment([value])
       } else {
         let temp = type.split(",");
-        if (temp.length > 0) {
+        if (temp?.length > 0) {
           if (temp.includes(value)) {
             temp = temp.filter(item => item !== value)
           } else {
@@ -62,13 +61,13 @@ const FindJobSideBar = () => {
         setCategories([value])
       } else {
         let temp = cat.split(",");
-        if (temp.length > 0) {
+        if (temp?.length > 0) {
           if (temp.includes(value)) {
             temp = temp.filter(item => item !== value)
           } else {
             temp.push(value)
           }
-          if (temp.length > 0) {
+          if (temp?.length > 0) {
             params.set("category", temp.join(","))
             setCategories(temp)
           } else {
@@ -162,19 +161,19 @@ const FindJobSideBar = () => {
           <div className={`mt-3 ${showType ? "" : "hidden"}text-gray-500`}>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Full-Time')} type="checkbox" value="Full-Time" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Full-Time')} />
-              <label htmlFor="">Full-time <span>(<span>{jobsCount.fullTime}</span>)</span> </label>
+              <label htmlFor="">Full-time <span>(<span>{jobsCount?.fullTime}</span>)</span> </label>
             </div>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Part-Time')} type="checkbox" value="Part-Time" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Part-Time')} />
-              <label htmlFor="">Part-time <span>(<span>{jobsCount.partTime}</span>)</span> </label>
+              <label htmlFor="">Part-time <span>(<span>{jobsCount?.partTime}</span>)</span> </label>
             </div>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Remote')} type="checkbox" value="Remote" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Remote')} />
-              <label htmlFor="">Remote <span>(<span>{jobsCount.remote}</span>)</span> </label>
+              <label htmlFor="">Remote <span>(<span>{jobsCount?.remote}</span>)</span> </label>
             </div>
             <div className={`flex gap-3 mt-3 ${showType ? "" : "hidden"}`}>
               <input checked={typeOfEmployment.includes('Internship')} type="checkbox" value="Internship" name="type" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('typeOfEmployment', 'Internship')} />
-              <label htmlFor="">Internship <span>(<span>{jobsCount.internship}</span>)</span> </label>
+              <label htmlFor="">Internship <span>(<span>{jobsCount?.internship}</span>)</span> </label>
             </div>
           </div>
         </div>

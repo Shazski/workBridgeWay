@@ -1,10 +1,12 @@
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import TokenInvalid from "../components/TokenInvalid";
+import UserBlocked from './../components/UserBlocked';
 
 export interface MyApiError {
   message: string;
   autherisationFailed: boolean;
+  userBlocked:boolean
 }
 
 export const config = {
@@ -27,6 +29,11 @@ export const handleError = async (
     if (error.response.data?.autherisationFailed) {
       localStorage.removeItem("persist:root");
       toast((t) => <TokenInvalid handleClose={t} />, { duration: 3000, });
+      return
+    }
+    if (error.response.data?.userBlocked) {
+      localStorage.removeItem("persist:root");
+      toast((t) => <UserBlocked handleClose={t} />, { duration: 3000, });
       return
     }
     return rejectWithValue(error.response.data.message);
