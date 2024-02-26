@@ -7,29 +7,29 @@ import { Link } from 'react-router-dom';
 import { getJobs, updateJobStatus } from '../../redux/actions/company/CompanyActions';
 import { override } from '../../config/constants';
 import SearchBar from '../SearchBar';
+import { updateLiveAndClose } from '../../redux/reducers/company/companySlice';
 const JobListTable = () => {
 
   const formatDate = (dateString: string) => {
     const options = { day: 'numeric', month: 'short', year: 'numeric' } as const;
     return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
   };
-  
-  const { jobs, loading,companyJobCount } = useSelector((state: RootState) => state.company)
+
+  const { jobs, loading, companyJobCount } = useSelector((state: RootState) => state.company)
 
   const dispatch = useDispatch<AppDispatch>()
 
   const [search, setSearch] = useState<string>("")
   const [page, setPage] = useState<number>(1)
   const [isOption, setIsOption] = useState<boolean>(false);
-  const [refetch, setRefetch] = useState<boolean>(false);
   const [currentJob, setCurrentJob] = useState<number | null>(null)
   const updateStatus = (status: boolean, jobId: string) => {
-    setRefetch(!refetch)
     const updateData = {
       status,
       id: jobId
     }
     dispatch(updateJobStatus({ updateData, page, search }))
+    dispatch(updateLiveAndClose(jobId))
     setIsOption(false)
   }
 
@@ -40,17 +40,17 @@ const JobListTable = () => {
 
   const handleSearchData = (value) => {
     setSearch(value)
-    
+
   }
 
   useEffect(() => {
-    dispatch(getJobs({page,search}))
-  }, [dispatch, refetch, page,search])
+    dispatch(getJobs({ page, search }))
+  }, [dispatch, page, search])
 
   return (
     <div className="mt-4 flex-grow">
       <div className='flex flex-wrap justify-end'>
-        <SearchBar  sentSearchStringToParent={handleSearchData}/>
+        <SearchBar sentSearchStringToParent={handleSearchData} />
       </div>
       <div className="flex flex-col overflow-x-auto">
         <div className="sm:mx-6 lg:mx-8 overflow-x-auto flex-grow">

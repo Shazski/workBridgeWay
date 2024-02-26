@@ -213,7 +213,7 @@ const FindJobSideBar = () => {
           </div>
           <div className={`mt-3 ${showSalary ? "" : "hidden"} text-gray-500`}>
             <div className={`flex gap-3 mt-3 ${showSalary ? "" : "hidden"}`}>
-              <Slider value={salaryRange} range min={100000} max={1000000} onChange={(e) => handleRangeChange(e)} step={50000} included={true} />
+              <Slider value={salaryRange} range min={1} max={100} onChange={(e) => handleRangeChange(e)} step={1} included={true} />
               <div>
               </div>
             </div>

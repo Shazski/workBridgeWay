@@ -24,6 +24,7 @@ const UpdateJobDetails = () => {
 
     const [skill, setSkill] = useState<string>("");
     const [responsibility, setResponsibility] = useState<string>("")
+    // const [categoryData, setCategoryData] = useState<string>("");
 
     const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -222,13 +223,13 @@ const UpdateJobDetails = () => {
                         </div>
                         <div>
                             <h1 className="text-sm font-semibold text-gray-700">Select Job Categories</h1>
-                            <select name="category" required className="border text-gray-500 border-gray-500 py-1 px-4 outline-none rounded-md" onChange={handleChange}>
+                            <select name="category"  required className="border text-gray-500 border-gray-500 py-1 px-4 outline-none rounded-md" onChange={handleChange}>
                                 {
                                     category?.map((category, idx) => (
                                         <>
-                                            <option selected={formData.category === category} key={idx} value={category}>{String(category)}</option>
+                                            <option selected={category.includes(formData.category) ? true : false} key={idx} value={category}>{category}</option>
                                         </>
-                                    ))
+                                    )) 
                                 }
                             </select>
                         </div>
@@ -301,7 +302,8 @@ const UpdateJobDetails = () => {
                         <button className="bg-lightgreen rounded-md font-semibold text-white py-2 px-5 mt-2">Add</button>
                     </div>
                 </form>
-            </Modal></div >
+            </Modal>
+            </div >
     )
 }
 

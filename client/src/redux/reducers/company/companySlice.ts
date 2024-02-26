@@ -36,6 +36,11 @@ const companySlice = createSlice({
     (value) => action?.payload !== value
    );
   },
+  updateLiveAndClose: (state, action) => {
+   state.jobs?.map((job) =>
+    job._id === action.payload ? (job.status = !job.status) : ""
+   );
+  },
  },
 
  extraReducers(builder) {
@@ -88,5 +93,6 @@ export const {
  pushResponsibilities,
  popSkills,
  popResponsibilities,
+ updateLiveAndClose
 } = companySlice.actions;
 export default companySlice.reducer;

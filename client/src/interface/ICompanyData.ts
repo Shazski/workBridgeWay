@@ -19,7 +19,6 @@ export interface IJobData {
   category?: string | null;
   fromSalary?: number | null;
   expiry?: Date | null;
-  status?:boolean | null;
   applicants?: []
   jobDescription?: string | null;
   jobTitle?: string | null;
@@ -29,5 +28,6 @@ export interface IJobData {
   typeOfEmployment?: string | null;
   vacancy?: number | null;
   companyId?: string | null;
-  createdAt?:Date | null
+  createdAt?:Date | null;
+  status?:boolean | null;
 }

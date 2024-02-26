@@ -9,6 +9,8 @@ import { getAllUsers, updateUserStatus } from '../../redux/actions/admin/adminAc
 import { format, parseISO } from 'date-fns';
 import SearchBar from '../../components/SearchBar';
 import { updateStatusById } from '../../redux/reducers/admin/adminSlice';
+import Modal from '../../components/Modal';
+import toast from 'react-hot-toast';
 
 const AllUsers = () => {
   const { loading, usersCount, usersDetails } = useSelector((state: RootState) => state.admin)
@@ -17,17 +19,21 @@ const AllUsers = () => {
 
   const [search, setSearch] = useState<string>("")
   const [page, setPage] = useState<number>(1)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOption, setIsOption] = useState<boolean>(false);
   const [currentJob, setCurrentJob] = useState<number | null>(null)
+  const [userStatus, setUserStatus] = useState<boolean | null>(null);
+  const [userId, setUserId] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
   const updateStatus = (status: boolean, userId: string) => {
     const updateData = {
       id: userId,
       status
     }
-    console.log("called update status")
     dispatch(updateStatusById(userId))
     dispatch(updateUserStatus(updateData))
     setIsOption(false)
+    toast.success(`user  ${status ? "blocked" : "unblocked"}  successfully`)
   }
 
   const handleChildData = ({ currentPage }) => {
@@ -40,10 +46,17 @@ const AllUsers = () => {
 
   }
 
+
   useEffect(() => {
     dispatch(getAllUsers({ search, page }))
-    console.log(usersDetails,"usersDetailsss")
+    console.log(usersDetails, "usersDetailsss")
   }, [dispatch, page, search])
+
+  const setBlockDetails = (status: boolean, id: string, user: string) => {
+    setUserId(id)
+    setUserStatus(status)
+    setUserName(user)
+  }
 
   return (
     <>
@@ -69,7 +82,7 @@ const AllUsers = () => {
                   /> : <>
                     <table className="min-w-full text-left text-sm font-light w-full">
                       <thead
-                        className="border-b bg-white z-40 dark:border-neutral-500 dark:bg-neutral-600 sticky top-0 w-full">
+                        className={`border-b bg-white z-40 dark:border-neutral-500 dark:bg-neutral-600 ${isModalOpen ? "" : "sticky"} top-0 w-full`}>
                         <tr className='w-full'>
                           <th scope="col" className="px-6 py-4">Email</th>
                           <th scope="col" className="px-6 py-4">User Name</th>
@@ -95,7 +108,7 @@ const AllUsers = () => {
                                   <td onClick={() => { setIsOption(!isOption), setCurrentJob(idx) }} className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-900 font-semibold text-3xl hover:scale-110 w-16 -z-10 cursor-pointer">...</h1></td>
                                   {isOption && idx === currentJob ?
                                     <div className='bg-gray-200   rounded-md top-3.5 absolute flex'>
-                                      <h1 onClick={() => updateStatus(user.status ? false : true, String(user?._id))} className={`px-4 py-2 w-16 rounded-lg cursor-pointer ${user?.status ? 'text-red-600' : 'text-green-600 w-20'}`}>{user?.status ? "Block" : "Unblock"}</h1>
+                                      <h1 onClick={() => { setBlockDetails(user.status ? false : true, String(user?._id), String(user.userName)), setIsModalOpen(true) }} className={`px-4 py-2 w-16 rounded-lg cursor-pointer ${user?.status ? 'text-red-600' : 'text-green-600 w-20'}`}>{user?.status ? "Block" : "Unblock"}</h1>
                                     </div> : ""
                                   }
                                 </div>
@@ -118,6 +131,13 @@ const AllUsers = () => {
           </div>
         </div>
       </div>
+      <Modal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h1 className="uppercase font-semibold text-center poppins">Do you want to {userStatus ? "unblock" : "block"}  the User <span className='text-red-700'>{userName}</span></h1>
+        <div className="flex gap-x-2 justify-center mt-5">
+          <button onClick={() => { updateStatus(userStatus ? false : true, String(userId)), setIsModalOpen(false) }} className="bg-red-600 text-white font-semibold px-3 mt-2 py-1 rounded-md">Yes</button>
+          <button onClick={() => { setIsModalOpen(false), setIsOption(false) }} className="bg-blue-600 text-white font-semibold px-4 mt-2 py-1  rounded-md">No</button>
+        </div>
+      </Modal>
     </>
   )
 }
