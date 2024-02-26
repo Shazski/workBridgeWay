@@ -84,14 +84,13 @@ const ProfilePic = () => {
         } else {
             delete userData.profilePic
         }
-        toast.promise(
-            dispatch(editUser(userData)),
-            {
-                loading: 'Updating...',
-                success: <b>User Details Updated!</b>,
-                error: <b>Something went wrong</b>,
-            }
-        )
+       const res = await dispatch(editUser(userData))
+
+      if( res.payload._id) {
+        toast.success("Profile updated successfully!")
+      } else {
+        toast.error("profile not updated")
+      }
     }
 
     return (

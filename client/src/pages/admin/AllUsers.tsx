@@ -8,6 +8,7 @@ import Pagination from '../../components/Pagination';
 import { getAllUsers, updateUserStatus } from '../../redux/actions/admin/adminActions';
 import { format, parseISO } from 'date-fns';
 import SearchBar from '../../components/SearchBar';
+import { updateStatusById } from '../../redux/reducers/admin/adminSlice';
 
 const AllUsers = () => {
   const { loading, usersCount, usersDetails } = useSelector((state: RootState) => state.admin)
@@ -17,15 +18,14 @@ const AllUsers = () => {
   const [search, setSearch] = useState<string>("")
   const [page, setPage] = useState<number>(1)
   const [isOption, setIsOption] = useState<boolean>(false);
-  const [refetch, setRefetch] = useState<boolean>(false);
   const [currentJob, setCurrentJob] = useState<number | null>(null)
   const updateStatus = (status: boolean, userId: string) => {
-    setRefetch(!refetch)
     const updateData = {
       id: userId,
       status
     }
     console.log("called update status")
+    dispatch(updateStatusById(userId))
     dispatch(updateUserStatus(updateData))
     setIsOption(false)
   }
@@ -43,7 +43,8 @@ const AllUsers = () => {
   useEffect(() => {
     dispatch(getAllUsers({ search, page }))
     console.log(usersDetails,"usersDetailsss")
-  }, [dispatch, refetch, page, search])
+  }, [dispatch, page, search])
+
   return (
     <>
       <div className='mt-8 flex justify-center me-20'>

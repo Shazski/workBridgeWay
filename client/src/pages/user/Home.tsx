@@ -23,7 +23,7 @@ const Home: FC = () => {
         <CategorySection />
       </div>
       <div className='mt-12 flex justify-center md:h-80'>
-        <img src={CTAIMG} alt="" />
+        <img src={CTAIMG} className='filter text-red-600 bg-lightgreen' alt="" />
       </div>
       <div>
         <FeaturedJobs />

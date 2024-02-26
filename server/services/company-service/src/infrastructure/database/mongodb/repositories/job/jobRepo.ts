@@ -107,7 +107,7 @@ export const getAllCompanyJobs = async (
 
   if (!jobs) return false;
   if (jobs.length > 0) {
-   await Client.set(`jobs${page}${search}`, JSON.stringify([jobs,count]));
+   await Client.set(`jobs${page}${search}`, JSON.stringify([jobs, count]));
   }
   return [jobs, count] as any;
  } catch (error) {
@@ -129,7 +129,13 @@ export const getJobById = async (id: ObjectId): Promise<IJob | boolean> => {
 };
 export const editJob = async (jobDetails: IJob): Promise<IJob | boolean> => {
  const { _id, ...restValue } = jobDetails;
- console.log(jobDetails, "editjob details");
+ await Client.flushall((err, succeeded) => {
+  if (err) {
+   console.error("Error clearing Redis database:", err);
+  } else {
+   console.log("Successfully cleared Redis database", succeeded);
+  }
+ });
  try {
   const job: IJob | null = await JobSchema.findOneAndUpdate(
    { _id: _id },
@@ -139,7 +145,7 @@ export const editJob = async (jobDetails: IJob): Promise<IJob | boolean> => {
   );
 
   if (!job) return false;
-  await Client.del("jobs");
+
   return job as IJob;
  } catch (error) {
   console.log(error, "<< Something went wrong in edit job details >>");

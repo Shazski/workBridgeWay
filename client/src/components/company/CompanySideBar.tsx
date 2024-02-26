@@ -1,5 +1,5 @@
 import LOGO from "../../assets/images/Logo.png"
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { IoExitOutline } from "react-icons/io5";
 import { FaRegMessage } from "react-icons/fa6";
 import { IoPeopleSharp } from "react-icons/io5";
@@ -15,16 +15,20 @@ import { logoutUser } from "../../redux/actions/user/userActions";
 import CompanyNavbar from "./CompanyNavbar";
 import { useState } from "react";
 const CompanySideBar = () => {
+
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.user)
+
     const [toggle, setToggle] = useState<boolean>(false);
+
     return (
         <>
             <div className={`ms-5 flex lg:hidden sticky top-3 z-50 cursor-pointer mt-2`}>
                 <GiHamburgerMenu onClick={() => setToggle(!toggle)} className="text-2xl" />
             </div>
             <div className="flex">
-                <div className={`border-e-2 fixed  lg:sticky top-3 lg:translate-x-0 scrollbar transition-all duration-150 bg-white flex-col md:w-2/6 lg:w-2/6 xl:w-3/12 2xl:w-1/5 w-3/12 h-screen overflow-y-auto ${toggle ? 'translate-x-0 z-40 fixed ' : '-translate-x-96'}`}>
+                <div className={`border-e-2 fixed  lg:sticky top-3 lg:translate-x-0 scrollbar transition-all duration-300 bg-white flex-col md:w-2/6 lg:w-2/6 xl:w-3/12 2xl:w-1/5 w-3/12 h-screen overflow-y-auto ${toggle ? 'translate-x-0 z-40 fixed ' : '-translate-x-96'}`}>
                     <div className='md:flex hidden'>
                         <img src={LOGO} alt="" className='w-28' />
                         <h1 className='mt-5 font-bold text-lightgreen hidden md:flex'>WorkBridgeWay</h1>
@@ -35,7 +39,7 @@ const CompanySideBar = () => {
                     </div>
                     <div className='mt-12 md:ms-3 flex gap-3'>
 
-                    <NavLink to='/company/dashboard' className={({ isActive }) => {
+                        <NavLink to='/company/dashboard' className={({ isActive }) => {
                             return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
                         }}> <div className="md:flex gap-x-3">
                                 <GoHome className="text-xl" />
@@ -96,7 +100,7 @@ const CompanySideBar = () => {
                                 <h1 className="hidden md:flex">Schedules</h1>
                             </div> </NavLink>
                     </div>
-                    <div onClick={() => dispatch(logoutUser())} className="flex ms-6 mt-12 md:ms-8 relative cursor-pointer">
+                    <div onClick={() => { navigate('/login'), dispatch(logoutUser()) }} className="flex ms-6 mt-12 md:ms-8 relative cursor-pointer">
                         <div>
                             <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
                             <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>

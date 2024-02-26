@@ -96,7 +96,7 @@ export = (dependencies: DependenciesData): any => {
           });
 
         const token = generateToken(user._id, JWT_SECRET!);
-        res.cookie("user_auth", token, cookieConfig);
+        res.cookie("auth_jwt", token, cookieConfig);
         user.token = token
         res.status(201).json(user);
       } catch (error) {

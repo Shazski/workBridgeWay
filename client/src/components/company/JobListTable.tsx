@@ -52,10 +52,10 @@ const JobListTable = () => {
       <div className='flex flex-wrap justify-end'>
         <SearchBar  sentSearchStringToParent={handleSearchData}/>
       </div>
-      <div className="flex flex-col">
-        <div className="sm:mx-6 lg:mx-8 flex-grow">
-          <div className="inline-block min-w-full py-2  ">
-            <div className="overflow-x-auto md:h-[500px] scrollbar">
+      <div className="flex flex-col overflow-x-auto">
+        <div className="sm:mx-6 lg:mx-8 overflow-x-auto flex-grow">
+          <div className="inline-block overflow-x-auto min-w-full py-2  ">
+            <div className="overflow-x-auto md:h-[500px] duration-500 scrollbar">
               {
                 loading ? <PropagateLoader
                   color={'#197195'}

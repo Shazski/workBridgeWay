@@ -124,14 +124,12 @@ const CompanyRegister: FC = () => {
                                 <ErrorMessage name="confirmPassword" component="div" className="text-red-600" />
                             </div>
                             <div className='flex flex-col items-center'>
-                                <div>
-                                    <button type="submit" className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-lightgreen hover:scale-95 hover:font-semibold bg-lightgreen'>
-                                        {loading ? "Loading..." : "Register"}
-                                    </button>
-                                </div>
+                                <button type="submit" className='border font-bold px-24 py-2.5 rounded-md border-gray-400 mt-5 text-white hover:white hover:border-lightgreen hover:scale-95 hover:font-semibold bg-lightgreen'>
+                                    {loading ? "Loading..." : "Register"}
+                                </button>
                             </div>
-                        </Form>
 
+                        </Form>
                     )}
                 </Formik>
                 <div className='flex justify-center gap-x-2 mt-2'>

@@ -10,7 +10,13 @@ const adminSlice = createSlice({
   error: null as string | null,
   usersCount: null as number | null,
  },
- reducers: {},
+ reducers: {
+  updateStatusById: (state, action) => {
+   state.usersDetails?.map((user) =>
+    user._id === action.payload ? (user.status = !user.status) : ""
+   );
+  },
+ },
 
  extraReducers: (builder) => {
   builder
@@ -30,5 +36,5 @@ const adminSlice = createSlice({
    });
  },
 });
-
+export const { updateStatusById } = adminSlice.actions;
 export default adminSlice.reducer;
