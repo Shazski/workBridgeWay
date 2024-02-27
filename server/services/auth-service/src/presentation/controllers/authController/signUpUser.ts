@@ -95,7 +95,7 @@ export = (dependencies: DependenciesData): any => {
             message: "Something Went wrong try again in create user",
           });
 
-        const token = generateToken(user._id, JWT_SECRET!);
+        const token = generateToken(user._id, "user",JWT_SECRET!);
         res.cookie("auth_jwt", token, cookieConfig);
         user.token = token
         res.status(201).json(user);

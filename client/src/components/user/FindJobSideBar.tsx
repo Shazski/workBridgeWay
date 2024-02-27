@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../redux/actions/company/CompanyActions";
 import { AppDispatch, RootState } from "../../redux/store";
+import { MdOutlineDeleteSweep } from "react-icons/md";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { getAllJobs } from "../../redux/actions/user/userActions";
@@ -145,6 +146,25 @@ const FindJobSideBar = () => {
     dispatch(getAllJobs(searchParams))
   }, [searchParams])
 
+  const clearFilters = () => {
+    const params = new URLSearchParams();
+
+    params.delete("category");
+    params.delete("price");
+    params.delete("search");
+    params.delete("sort");
+    params.delete("page");
+
+    setSearchParams(params);
+
+    setToSalary(0);
+    setFromSalary(0);
+    setTypeOfEmployment([]);
+    setCategories([]);
+    setPage(1);
+  };
+  
+
   return (
     <div className="flex mt-12">
       <div>
@@ -227,6 +247,10 @@ const FindJobSideBar = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div onClick={clearFilters} className="flex justify-center border py-2 px-2  bg-gray-300 mt-4 rounded-lg text-lightgreen font-semibold">
+          <button className="">Clear filter </button>
+          <span><MdOutlineDeleteSweep className="text-2xl"/></span>
         </div>
       </div>
       <div>

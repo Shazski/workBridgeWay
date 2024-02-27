@@ -16,6 +16,7 @@ import {
   updateCompanyDetails,
   updateUserAbout,
   updateUserSocialLinks,
+  uploadResume,
   userLogin,
   userSignUp,
 } from "../../actions/user/userActions";
@@ -232,7 +233,6 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(getAllJobs.fulfilled, (state, action) => {
-        console.log(action.payload,"payload data")
         state.loading = false;
         state.jobs = action.payload[0] as IJobData[];
         state.jobsCount = action.payload[1] as any;
@@ -241,6 +241,20 @@ const userSlice = createSlice({
       .addCase(getAllJobs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(uploadResume.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(uploadResume.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(uploadResume.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.user = null
       })
   },
 });

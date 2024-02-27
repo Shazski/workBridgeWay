@@ -18,6 +18,15 @@ app.use(cors(corsOptions));
 if (ENV === "dev") app.use(logger("dev"));
 app.use("/api/v1", routes(dependencies));
 
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+
 app.use((req: Request, res: Response, next: NextFunction) => {
   res
     .status(404)

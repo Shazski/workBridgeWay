@@ -9,6 +9,7 @@ import addUserSocialLinks_controller from "./addUserSocialLinks_controller"
 import removeUserSocialLinks_controller from "./removeUserSocialLinks_controller"
 import getAllJobs_controller from "./getAllJobs_controller"
 import getJobDetailsById_controller from "./getJobDetailsById_controller"
+import uploadResume_controller from "./uploadResume_controller"
 export = (dependencies: IDependenciesData) => {
     return {
         editUser:editUser_controller(dependencies),
@@ -20,6 +21,7 @@ export = (dependencies: IDependenciesData) => {
         addUserSocialLinks: addUserSocialLinks_controller(dependencies),
         removeUserSocialLinks:removeUserSocialLinks_controller(dependencies),
         getAllJobs:getAllJobs_controller(dependencies),
-        getJobDetailsById:getJobDetailsById_controller(dependencies)
+        getJobDetailsById:getJobDetailsById_controller(dependencies),
+        uploadResume:uploadResume_controller(dependencies)
     }
 }

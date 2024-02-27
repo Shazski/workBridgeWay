@@ -257,3 +257,27 @@ export const blockOrUnblockUser = async (
   return false;
  }
 };
+export const uploadResume = async (
+ id: ObjectId,
+ resume: string
+): Promise<any> => {
+ try {
+  const updatedUser = await UserSchema.findByIdAndUpdate(
+   id,
+   {
+    resume: resume,
+   },
+   { new: true }
+  );
+  if (!updatedUser) {
+   return false;
+  }
+  return updatedUser;
+ } catch (error) {
+  console.log(
+   error,
+   " << Something went wrong in update resume user repo >> "
+  );
+  return false;
+ }
+};

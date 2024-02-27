@@ -81,7 +81,7 @@ const ProfileAbout = ({ user }) => {
     return (
         <>
             <div className="lg:flex ms-5 mt-4 gap-x-4">
-                <div className="border w-full lg:w-7/12">
+                <div className="border w-full lg:w-7/12 shadow-2xl">
                     <div className="flex justify-between">
                         <h1 className="font-semibold text-gray-600 mt-3 ms-2">About Me</h1>
                         <FaRegEdit className='cursor-pointer text-lightgreen my-1 mx-2' onClick={() => setIsAboutModalOpen(true)} />
@@ -94,7 +94,7 @@ const ProfileAbout = ({ user }) => {
                         )
                     }
                 </div>
-                <div className="w-6/12 lg:w-2/6  border  lg:h-60 mt-2 lg:mt-0">
+                <div className="w-6/12 lg:w-2/6  border shadow-2xl  lg:h-60 mt-2 lg:mt-0">
                     <div className='m-2 '>
                         <div className="flex flex-wrap justify-between">
                             <h1 className='font-semibold text-blue-gray-600 mt-0.5'>Social Links</h1>

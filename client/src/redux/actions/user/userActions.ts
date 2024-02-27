@@ -4,6 +4,7 @@ import {
  MyApiError,
  config,
  handleError,
+ multiConfig,
 } from "../../../config/configurations";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 import {
@@ -293,6 +294,28 @@ export const getAllJobs = createAsyncThunk(
    const { data } = await axios.get(
     `${USER_BASE_URL}/get-all-jobs?${searchParams}`,
     config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+
+export const uploadResume = createAsyncThunk(
+ "user/uploadResume",
+ async (pdfFile: any, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.post(
+    `${USER_BASE_URL}/upload-resume`,
+    pdfFile,
+    {
+      headers: {
+        'Content-Type': 'application/pdf',
+      },
+      withCredentials: true,
+    }
    );
    return data;
   } catch (error) {

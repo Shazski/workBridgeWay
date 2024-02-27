@@ -9,6 +9,7 @@ import {
  removeUserSocialLinks_repo,
  getAllUsers,
  blockOrUnblockUser,
+ uploadResume,
 } from "./userRepo";
 
 export = {
@@ -22,4 +23,5 @@ export = {
  removeUserSocialLinks_repo,
  getAllUsers,
  blockOrUnblockUser,
+ uploadResume,
 };

@@ -1,8 +1,7 @@
 import express from "express";
 import { IDependencies } from "../../application/interface/IDependencies";
 import companyController from "../../presentation/controller/companyController";
-import { verifyToken } from "work-bridge-way-common";
-import { JWT_SECRET } from "../../config";
+import { verifyCompanyToken } from "work-bridge-way-common";
 
 export = (dependencies: IDependencies) => {
   const router = express.Router();
@@ -15,11 +14,11 @@ export = (dependencies: IDependencies) => {
     editJob
   } = companyController(dependencies);
 
-  router.put("/update", verifyToken,updateCompany);
-  router.post("/post-job",verifyToken, postJob);
-  router.get("/get-jobs",verifyToken,getJobs);
-  router.post("/update-job-status",verifyToken, updateJobStatus);
-  router.get("/get-job/:id",verifyToken, getJobById);
-  router.post("/edit-job",verifyToken, editJob);
+  router.put("/update", verifyCompanyToken,updateCompany);
+  router.post("/post-job",verifyCompanyToken, postJob);
+  router.get("/get-jobs",verifyCompanyToken,getJobs);
+  router.post("/update-job-status",verifyCompanyToken, updateJobStatus);
+  router.get("/get-job/:id",verifyCompanyToken, getJobById);
+  router.post("/edit-job",verifyCompanyToken, editJob);
   return router;
 };

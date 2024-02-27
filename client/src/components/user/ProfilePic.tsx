@@ -96,7 +96,7 @@ const ProfilePic = () => {
     return (
         <>
             <form action="" onSubmit={handleSubmit}>
-                <div className="md:flex gap-12 w-full border-b-2">
+                <div className="md:flex gap-12 w-full border-b-2 ">
                     <div className="ms-6 mt-5 w-3/6 md:w-2/6">
                         <h1 className="font-semibold text-sm text-gray-800">Profile Photo</h1>
                         <h1 className="text-xs text-gray-600">This image will be shown publicly as your profile picture, it will help recruiters recognize you!</h1>

@@ -6,12 +6,19 @@ import UserBlocked from './../components/UserBlocked';
 export interface MyApiError {
   message: string;
   autherisationFailed: boolean;
-  userBlocked:boolean
+  userBlocked: boolean
 }
 
 export const config = {
   headers: {
     "Content-Type": "application/json",
+  },
+  withCredentials: true,
+  credentials: "include",
+};
+export const multiConfig = {
+  headers: {
+    "Content-Type": "multipart/form-data",
   },
   withCredentials: true,
   credentials: "include",

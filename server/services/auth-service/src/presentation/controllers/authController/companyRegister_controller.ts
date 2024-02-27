@@ -28,7 +28,7 @@ export = (dependencies:DependenciesData) => {
             if(!company) {
                 return next(ErrorResponse.conflict("LinkedIn profile is already registered"))
             }
-            const token = generateToken(company._id, JWT_SECRET!)
+            const token = generateToken(company._id, "company",JWT_SECRET!)
             company.role = "company"
             console.log(company,"data")
             res.cookie("auth_jwt",token,cookieConfig).status(201).json(company)

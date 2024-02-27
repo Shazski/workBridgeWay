@@ -29,6 +29,7 @@
     "@types/nodemailer": "^6.4.14",
     "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.0.1",
     "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -38,10 +39,14 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.8",
     "nodemon": "^3.0.3",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3",
-    "work-bridge-way-common": "^1.0.22"
+    "work-bridge-way-common": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/multer": "^1.4.11"
   }
 }

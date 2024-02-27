@@ -28,8 +28,12 @@ export = (dependencies: DependenciesData) => {
     if (!passwordMatch) {
      return next(ErrorResponse.unauthorized("Incorrect password or email"));
     }
-
-    const token = generateToken(user._id, JWT_SECRET!);
+    let token: string
+    if(user.role === "user") {
+       token = generateToken(user._id, "user",JWT_SECRET!);
+    } else {
+       token = generateToken(user._id, "admin",JWT_SECRET!);
+    }
     delete user.password;
     user.token = token;
     return res.cookie("auth_jwt", token, cookieConfig).status(200).json(user);
@@ -45,11 +49,11 @@ export = (dependencies: DependenciesData) => {
      return next(ErrorResponse.unauthorized("email or password is incorrect"));
     let token;
     if (JWT_SECRET) {
-     token = generateToken(company._id, JWT_SECRET);
+     token = generateToken(company._id, "company",JWT_SECRET);
     }
-    delete user.password;
+    delete company.password;
     company.role = "company";
-    user.token = token;
+    company.token = token;
     res.cookie("auth_jwt", token, cookieConfig).status(200).json(company);
    } else {
     console.log("else case worked");

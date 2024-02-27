@@ -8,7 +8,7 @@ const UserBlocked = ({ handleClose }) => {
   return (
     <div className='backdrop:blur-sm w-96 h-32 justify-start flex flex-col items-center font-semibold poppins'>
       <div className="me-24">
-        <h1 className='text-red-600 text-xl'>User Blocked</h1>
+        <h1 className='text-red-600 text-xl'>User Blocked!</h1>
         <h1 className="">You have been blocked by Admin</h1>
       </div>
       <div className="me-24 mt-3">

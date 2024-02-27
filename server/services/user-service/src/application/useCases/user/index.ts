@@ -9,6 +9,7 @@ import { addUserSocialLinks_useCase } from "./addUserSocialLinks_useCase";
 import { removeUserSocialLinks_useCase } from "./removeUserSocialLinks_useCase";
 import { getAllJobs_useCase } from './getAllJobs_useCase';
 import { getJobDescription_useCase } from './getJobDescription_useCase';
+import { addResume_useCase } from './addResume_useCase';
 export = {
     editUser_useCase,
     findUserByEmail_useCase,
@@ -20,6 +21,7 @@ export = {
     addUserSocialLinks_useCase,
     removeUserSocialLinks_useCase,
     getAllJobs_useCase,
-    getJobDescription_useCase
+    getJobDescription_useCase,
+    addResume_useCase,
 }
 
