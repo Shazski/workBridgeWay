@@ -2,7 +2,7 @@ import { ICompany } from "../../../../../domain/entities/company.entity";
 import CompanySchema, { ICompanyData } from "../../schema/companySchema";
 import { ObjectId } from "mongoose";
 
-export const registerCompany = async (
+export const registerCompany:any = async (
   companyCredentials: ICompany
 ): Promise<ICompanyData | boolean> => {
   try {

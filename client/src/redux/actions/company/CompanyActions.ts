@@ -32,6 +32,7 @@ export const getCategory = createAsyncThunk(
  async (_, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(`${ADMIN_BASE_URL}/get-categories`, config);
+   console.log(data,'category data')
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;
@@ -117,6 +118,21 @@ export const editJobDetails = createAsyncThunk(
    const { data } = await axios.post(
     `${COMPANY_BASE_URL}/edit-job`,
     jobDetails,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const getAllApplicants = createAsyncThunk(
+ "user/getAllApplicants",
+ async (_, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${COMPANY_BASE_URL}/get-all-applicants`,
     config
    );
    return data;

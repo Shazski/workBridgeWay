@@ -7,15 +7,13 @@ const JobsSchema: Schema = new Schema(
     applicants: [
       {
         applicantId: { type: Schema.Types.ObjectId },
-        appliedDate: { type: Date },
-        description: { type: String },
-        email: { type: String },
+        appliedDate: { type: Date,default: new Date() },
         hiringStage: { type: String },
         linkedIn: { type: String },
         name: { type: String },
-        number: { type: Number },
-        portfolio: { type: String },
-        prevJob: { type: String },
+        phone: { type: Number },
+        portfolioURL: { type: String },
+        previousJob: { type: String },
         resume: { type: String },
         schedule: {
           date: { type: Date },

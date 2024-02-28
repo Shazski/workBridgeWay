@@ -3,7 +3,7 @@ import { IUser } from "../../../../../domain/entities/user.entity";
 import UserSchema, { IUserData } from "../../schema/userSchema";
 import bcrypt from "bcrypt";
 
-export const findUserByEmail_repo = async (
+export const findUserByEmail_repo: any = async (
  userCredentials: IUser
 ): Promise<boolean | IUserData> => {
  try {
@@ -67,7 +67,6 @@ export const editUser_repo = async (
    );
   }
   if (!updatedUser) return false;
-
   return updatedUser;
  } catch (error: any) {
   if (error?.code === 11000) {
@@ -91,7 +90,7 @@ export const addUserSkills_repo = async (userCredentials: {
     },
    },
    { new: true }
-  );
+  ).select("-password");
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -113,7 +112,7 @@ export const removeUserSkills_repo = async (userCredentials: {
     },
    },
    { new: true }
-  );
+  ).select("-password");
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -135,7 +134,7 @@ export const updateUserAbout_repo = async (userCredentials: {
     },
    },
    { new: true }
-  );
+  ).select("-password");
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -160,7 +159,7 @@ export const addUserSocialLinks_repo = async (userCredentials: {
     },
    },
    { new: true }
-  );
+  ).select("-password");
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -185,7 +184,7 @@ export const removeUserSocialLinks_repo = async (userCredentials: {
     },
    },
    { new: true }
-  );
+  ).select("-password");
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -213,7 +212,8 @@ export const getAllUsers = async (
    role: "user",
   })
    .limit(10)
-   .skip(skip);
+   .skip(skip)
+   .select("-password");
   const count: number = await UserSchema.find({
    $or: [
     {
@@ -268,16 +268,13 @@ export const uploadResume = async (
     resume: resume,
    },
    { new: true }
-  );
+  ).select("-password");
   if (!updatedUser) {
    return false;
   }
   return updatedUser;
  } catch (error) {
-  console.log(
-   error,
-   " << Something went wrong in update resume user repo >> "
-  );
+  console.log(error, " << Something went wrong in update resume user repo >> ");
   return false;
  }
 };

@@ -15,4 +15,8 @@ export interface IUserLoginData {
  _id?: string | null;
  status?: boolean | null;
  createdAt?: Date | null;
+ resume?:string | null;
+ linkedIn?:string | null;
+ portfolioURL?:string | null;
+ previousJob?:string | null;
 }

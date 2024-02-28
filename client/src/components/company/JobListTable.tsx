@@ -49,14 +49,18 @@ const JobListTable = () => {
 
   return (
     <div className="mt-4 flex-grow">
-      <div className='flex flex-wrap justify-end'>
-        <SearchBar sentSearchStringToParent={handleSearchData} />
-      </div>
+      {
+        jobs && jobs.length > 0 && <>
+          <div className='flex flex-wrap justify-end'>
+            <SearchBar sentSearchStringToParent={handleSearchData} />
+          </div>
+        </>
+      }
       <div className="flex flex-col overflow-x-auto">
         <div className="sm:mx-6 lg:mx-8 overflow-x-auto flex-grow">
           <div className="inline-block overflow-x-auto min-w-full py-2  ">
             <div className="overflow-x-auto md:h-[500px] duration-500 scrollbar">
-              {
+              {jobs && jobs?.length > 0 ?
                 loading ? <PropagateLoader
                   color={'#197195'}
                   loading={loading}
@@ -105,6 +109,10 @@ const JobListTable = () => {
 
                     </tbody>
                   </table>
+                </> : <>
+                  <div className='flex justify-center items-center h-full'>
+                    <h1 className='text-red-600 text-3xl font-serif font-semibold'>No Data Found</h1>
+                  </div>
                 </>
               }
             </div>

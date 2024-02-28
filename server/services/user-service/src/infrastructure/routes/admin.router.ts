@@ -15,7 +15,7 @@ export = (dependencies: IDependenciesData) => {
  router.get("/get-requests",verifyAdminToken, getAllCompany);
  router.post("/approve-or-reject-request", verifyAdminToken, updateRequest);
  router.post("/add-category", verifyAdminToken, addCategory);
- router.get("/get-categories", verifyAdminToken, getCategory);
+ router.get("/get-categories", getCategory);
  router.get("/get-all-users", verifyAdminToken, getAllUsers);
  router.put("/update-user-status", verifyAdminToken, blockOrUnblockUser);
  return router;

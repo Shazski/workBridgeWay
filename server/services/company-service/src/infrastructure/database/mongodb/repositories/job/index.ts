@@ -5,7 +5,9 @@ import {
   getJobById,
   editJob,
   getAlljobs,
-  getJobDetailsById
+  getJobDetailsById,
+  applyForJob,
+  findUserInApplicants
 } from "./jobRepo";
 
 export default {
@@ -15,5 +17,7 @@ export default {
   getJobById,
   editJob,
   getAlljobs,
-  getJobDetailsById
+  getJobDetailsById,
+  applyForJob,
+  findUserInApplicants
 };

@@ -18,7 +18,8 @@ export = (dependencies: IDependenciesData) => {
   removeUserSocialLinks,
   getAllJobs,
   getJobDetailsById,
-  uploadResume
+  uploadResume,
+  applyForJob
  } = userController(dependencies);
  const router = express.Router();
 
@@ -31,7 +32,8 @@ export = (dependencies: IDependenciesData) => {
  router.post("/add-socialLinks", verifyUserToken,checkUserBlockOrNot, addUserSocialLinks);
  router.post("/remove-socialLinks", verifyUserToken,checkUserBlockOrNot, removeUserSocialLinks);
  router.get("/get-all-jobs", verifyUserToken,checkUserBlockOrNot, getAllJobs);
- router.get("/get-job-details/:id", verifyUserToken,checkUserBlockOrNot, getJobDetailsById);
+ router.get("/get-job-details/:id", getJobDetailsById);
  router.post('/upload-resume',upload.single('pdfFile') ,verifyUserToken, uploadResume)
+ router.post('/apply-for-job',verifyUserToken,checkUserBlockOrNot,applyForJob)
  return router;
 };

@@ -67,7 +67,7 @@ const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConf
 
   return (
     <div className="flex gap-x-4">
-      <div className="border w-full lg:w-7/12 shadow-2xl ms-5 mt-4">
+      <div className="border w-full lg:w-7/12 shadow-md ms-5 mt-4">
         <div className="flex justify-between">
           <h1 className="font-semibold text-gray-600 mt-3 ms-2">Skills</h1>
           <FaRegEdit className='cursor-pointer text-lightgreen my-1 mx-2' onClick={() => setIsSkillModalOpen(true)} />
@@ -107,15 +107,16 @@ const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConf
         </Modal>
 
       </div>
-      <div className="mb-4 mt-2">
-        <form action="" onSubmit={handleFileUploads}>
+      <div className="mb-4 mt-2 bg-white shadow-md">
+        <form action="" onSubmit={handleFileUploads} className="px-16 py-2">
           <input required accept="application/pdf" type="file" onChange={handleFileUpload} />
           <button className="border px-4 py-2 bg-lightgreen rounded-md font-semibold text-white">Add</button>
         </form>
         {
-          user?.resume && <>
-            <iframe src={user?.resume} />
-          </>
+          user?.resume &&
+          <div className="bg-white">
+            <iframe src={user?.resume} className="px-4 py-2"/>
+          </div>
         }
       </div>
     </div>

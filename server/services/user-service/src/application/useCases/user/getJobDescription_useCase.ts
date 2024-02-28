@@ -8,7 +8,9 @@ export const getJobDescription_useCase = (dependencies: IDependenciesData) => {
   } = dependencies;
   const execute = async (id:ObjectId) => {
     try {
-      return await RabbitMqClient.Requester(id, rabbitmqConfig.rabbitMq.queues.company_queue,"getJobById")
+      const jobData = await RabbitMqClient.Requester(id, rabbitmqConfig.rabbitMq.queues.company_queue,"getJobById")
+      if(!jobData) return false
+      return jobData
     } catch (error) {
       console.log("<<Something went wrong in getJobDescription_useCase>>");
       return false

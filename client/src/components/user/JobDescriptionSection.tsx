@@ -22,14 +22,14 @@ const JobDescriptionSection = ({ job }) => {
         <div className="ms-12 md:ms-52">
           <div>
             <h1 className="font-serif  text-xl">About this role</h1>
-            <h1 className="mt-5"><span className="font-medium">5 applied</span> of 10 capacity</h1>
+            <h1 className="mt-5"><span className="font-medium">{job?.applicants?.length || 0} applied</span> of {job?.vacancy} capacity</h1>
             <div className="flex justify-between mt-5">
               <h1 className="text-gray-500">Apply Before</h1>
-              <h1 className="font-medium">{job?.expiry && format(parseISO(job?.expiry), 'yyyy-MM-dd')}</h1>
+              <h1 className="font-medium">{job?.expiry && format(parseISO(job?.expiry), 'dd-MM-yyyy')}</h1>
             </div>
             <div className="flex justify-between mt-5">
               <h1 className="text-gray-500">Job Posted On</h1>
-              <h1 className="font-medium">{job?.createdAt && format(parseISO(job?.createdAt), 'yyyy-MM-dd')}</h1>
+              <h1 className="font-medium">{job?.createdAt && format(parseISO(job?.createdAt), 'dd-MM-yyyy')}</h1>
             </div>
             <div className="flex justify-between mt-5">
               <h1 className="text-gray-500">Job Type</h1>

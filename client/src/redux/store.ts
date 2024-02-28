@@ -2,13 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import persistedUserReducer from "./reducers/user/userSlice";
 import { combineReducers } from "@reduxjs/toolkit";
 import persistStore from "redux-persist/es/persistStore"; 
-import profileSlice from "./reducers/user/profileSlice";
+import jobSlice from "./reducers/user/JobSlice";
 import adminSlice from "./reducers/admin/adminSlice";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import companySlice from "./reducers/company/companySlice";
 const reducer = combineReducers({
     user: persistedUserReducer,
-    profile:profileSlice,
+    job:jobSlice,
     company:companySlice,
     admin:adminSlice
 })

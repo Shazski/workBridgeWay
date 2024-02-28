@@ -4,7 +4,7 @@ import FindJobCard from "./FindJobCard"
 import { useSelector } from 'react-redux';
 const FindJobSection = ({ getDataFromChild, page }) => {
     
-    const { jobs, jobsCount } = useSelector((state: RootState) => state.user)
+    const { jobs, jobsCount } = useSelector((state: RootState) => state.job)
     return (
         <div className="lg:ms-32 sm:ms-3 w-full">
             <div>

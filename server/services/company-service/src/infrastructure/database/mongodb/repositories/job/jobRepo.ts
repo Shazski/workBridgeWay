@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 import { IJob } from "../../../../../application/interface/IJob";
 import JobSchema, { IJobsData } from "../../schema/jobSchema";
 import { Client } from "../../../redis/client";
@@ -271,6 +271,41 @@ export const getJobDetailsById = async (
   return jobData;
  } catch (error) {
   console.log(error, "<< Something went wrong in getJobDetailsById  repo >>");
+  return false;
+ }
+};
+export const applyForJob = async (applicantCredentials: any): Promise<any> => {
+ const { jobId, ...restValues } = applicantCredentials;
+ try {
+  const applied = await JobSchema.findByIdAndUpdate(jobId, {
+   $push: { applicants: restValues },
+  });
+
+  if (!applied) return false;
+
+  return applied as any;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in getJobDetailsById  repo >>");
+  return false;
+ }
+};
+export const findUserInApplicants = async (applicationData: {
+  applicantId: string;
+ jobId: string;
+}): Promise<any> => {
+ try {
+  const { applicantId, jobId } = applicationData;
+  console.log(applicantId, jobId, "application and job id")
+  const userExists = await JobSchema.aggregate([
+   { $match: { _id: new mongoose.Types.ObjectId(jobId) } },
+   { $unwind: "$applicants" },
+   { $match: { "applicants.applicantId": new mongoose.Types.ObjectId(applicantId) } },
+  ]);
+  if (userExists.length === 0) return false;
+
+  return userExists as any;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in getJobDetailsById repo >>");
   return false;
  }
 };

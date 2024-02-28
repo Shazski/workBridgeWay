@@ -88,7 +88,7 @@ const UpdateLoginDetails = () => {
                             </div>
                             <h1 className="text-gray-600 text-xs">Your email address is verified</h1>
                             <label className="text-gray-600 font-medium font-sans mt-3" htmlFor="">Update Email</label>
-                            <input required type="email" className="border border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleEmailChange} value={newEmail} placeholder="Enter your new email" name="email" />
+                            <input required type="email" className="border hover:border-lightgreen border-gray-400 ms-4 md:ms-0 outline-none ps-4 py-3 w-44 md:w-[420px] rounded-md" onChange={handleEmailChange} value={newEmail} placeholder="Enter your new email" name="email" />
                         </div>
                         {err && <h1 className="text-red-600 font-semibold">{err}</h1>}
                         <div className="mt-4 md:text-end">
@@ -107,16 +107,16 @@ const UpdateLoginDetails = () => {
                         {error && <h1 className="text-red-600 font-semibold">{error}</h1>}
                         <div className="md:flex flex-col mt-2">
                             <label className="text-gray-600 font-medium font-sans" htmlFor="">Old Password</label>
-                            <PasswordField placeHolder="Enter your old password" name="oldPassword" handleChange={handlePasswordChange} style="border border-gray-400 ms-4 md:ms-0 outline-none md:ps-4 py-3 w-44 md:w-[420px] rounded-md" />
+                            <PasswordField placeHolder="Enter your old password" name="oldPassword" handleChange={handlePasswordChange} style="border border-gray-400 ms-4 md:ms-0 outline-none md:ps-4 py-3 w-44 md:w-[420px] rounded-md hover:border-lightgreen" />
                         </div>
                         <div className="md:flex flex-col mt-2">
                             <label className="text-gray-600 font-medium font-sans" htmlFor="">New Password</label>
-                            <PasswordField placeHolder="Enter your new password" name="newPassword" handleChange={handlePasswordChange} style="border border-gray-400 ms-4 md:ms-0 outline-none md:ps-4 py-3 w-44 md:w-[420px] rounded-md" />
+                            <PasswordField placeHolder="Enter your new password" name="newPassword" handleChange={handlePasswordChange} style="border border-gray-400 ms-4 md:ms-0 outline-none md:ps-4 py-3 w-44 md:w-[420px] rounded-md hover:border-lightgreen" />
                             {passwordValidation && <p className="text-red-500 text-xs mt-1">{passwordValidation}</p>}
                         </div>
                         <div className="md:flex flex-col mt-2">
                             <label className="text-gray-600 font-medium font-sans" htmlFor="">Confirm Password</label>
-                            <PasswordField placeHolder="Confirm your Password" name="confirmPassword" handleChange={handlePasswordChange} style="border border-gray-400 ms-4 md:ms-0 outline-none md:ps-4 py-3 w-44 md:w-[420px] rounded-md" />
+                            <PasswordField placeHolder="Confirm your Password" name="confirmPassword" handleChange={handlePasswordChange} style="border border-gray-400 ms-4 md:ms-0 outline-none md:ps-4 py-3 w-44 md:w-[420px] rounded-md hover:border-lightgreen" />
                             {passwordValidation && <p className="text-red-500 text-xs mt-1">{confirmPasswordValidation}</p>}
                         </div>
                         <div className="mt-4 md:text-end mb-4">

@@ -18,6 +18,7 @@ interface jobRepoData {
   updateJobStatus: any;
   getJobById: any;
   editJob: any;
+  findUserInApplicants:any;
 }
 
 interface jobUseCaseData {

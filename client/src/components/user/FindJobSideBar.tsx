@@ -12,7 +12,7 @@ import 'rc-slider/assets/index.css';
 import { getAllJobs } from "../../redux/actions/user/userActions";
 const FindJobSideBar = () => {
   const { category } = useSelector((state: RootState) => state?.company)
-  const { jobsCount } = useSelector((state: RootState) => state?.user)
+  const { jobsCount } = useSelector((state: RootState) => state?.job)
 
   const [showType, setShowType] = useState<boolean>(true)
   const [showCat, setShowCat] = useState<boolean>(true)
@@ -107,14 +107,12 @@ const FindJobSideBar = () => {
       } else {
         params.set('page', value)
         setPage(Number(value))
-
       }
     }
     setSearchParams(params)
   }
 
   useEffect(() => {
-    dispatch(getCategory())
     const typeParam = searchParams.get("typeOfEmployment");
     const catParam = searchParams.get("category");
     const fromSalary = searchParams.get('fromSalary')
@@ -145,6 +143,10 @@ const FindJobSideBar = () => {
   useEffect(() => {
     dispatch(getAllJobs(searchParams))
   }, [searchParams])
+
+  useEffect(() => {
+    dispatch(getCategory())
+  }, [])
 
   const clearFilters = () => {
     const params = new URLSearchParams();
@@ -209,11 +211,11 @@ const FindJobSideBar = () => {
           </div>
           <div className={`mt-3 ${showCat ? "" : "hidden"} text-gray-500`}>
             {
-              category && category.map((cat, idx) => (
+              category && category?.map((cat, idx) => (
                 <div key={idx}>
                   <div className={`flex gap-3 mt-3 ${showCat ? "" : "hidden"}`}>
                     <input checked={categories && categories.includes(cat)} type="checkbox" value={cat} name="category" className="w-4 hover:cursor-pointer" onChange={() => handleCheckBoxChange('category', cat)} />
-                    <label htmlFor="">{cat}<span>(<span>{jobsCount[cat]}</span>)</span> </label>
+                    <label htmlFor="">{cat}<span>(<span>{ jobsCount && jobsCount[cat]}</span>)</span> </label>
                   </div>
                 </div>
               ))

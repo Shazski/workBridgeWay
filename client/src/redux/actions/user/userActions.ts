@@ -4,7 +4,6 @@ import {
  MyApiError,
  config,
  handleError,
- multiConfig,
 } from "../../../config/configurations";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 import {
@@ -316,6 +315,22 @@ export const uploadResume = createAsyncThunk(
       },
       withCredentials: true,
     }
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const applyForJob = createAsyncThunk(
+ "user/applyForJob",
+ async (applicantCredentials: any, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.post(
+    `${USER_BASE_URL}/apply-for-job`,
+    applicantCredentials,
+    config
    );
    return data;
   } catch (error) {
