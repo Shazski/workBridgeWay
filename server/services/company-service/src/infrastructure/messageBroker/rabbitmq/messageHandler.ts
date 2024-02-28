@@ -33,6 +33,9 @@ export default class MessageHandler {
             case 'checkUserInApplicants':
                 response = await job_repo.findUserInApplicants(data)
                 break;
+            case 'getUserApplications':
+                response = await job_repo.getUserApplications(data)
+                break;
             default:
                 response = 'Request-key notfound'
                 break;

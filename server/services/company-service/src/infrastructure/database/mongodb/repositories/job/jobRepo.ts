@@ -290,20 +290,40 @@ export const applyForJob = async (applicantCredentials: any): Promise<any> => {
  }
 };
 export const findUserInApplicants = async (applicationData: {
-  applicantId: string;
+ applicantId: string;
  jobId: string;
 }): Promise<any> => {
  try {
   const { applicantId, jobId } = applicationData;
-  console.log(applicantId, jobId, "application and job id")
+  console.log(applicantId, jobId, "application and job id");
   const userExists = await JobSchema.aggregate([
    { $match: { _id: new mongoose.Types.ObjectId(jobId) } },
    { $unwind: "$applicants" },
-   { $match: { "applicants.applicantId": new mongoose.Types.ObjectId(applicantId) } },
+   {
+    $match: {
+     "applicants.applicantId": new mongoose.Types.ObjectId(applicantId),
+    },
+   },
   ]);
   if (userExists.length === 0) return false;
 
   return userExists as any;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in getJobDetailsById repo >>");
+  return false;
+ }
+};
+export const getUserApplications = async (userId: string): Promise<any> => {
+ try {
+  const applicants = await JobSchema.aggregate([
+   { $unwind: "$applicants" },
+   {
+    $match: { "applicants.applicantId": new mongoose.Types.ObjectId(userId) },
+   },
+  ]);
+  if (applicants.length === 0 || !applicants) return false;
+
+  return applicants as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getJobDetailsById repo >>");
   return false;

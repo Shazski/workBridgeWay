@@ -11,6 +11,7 @@ import getAllJobs_controller from "./getAllJobs_controller"
 import getJobDetailsById_controller from "./getJobDetailsById_controller"
 import uploadResume_controller from "./uploadResume_controller"
 import applyForJob_controller from "./applyForJob_controller"
+import getUserApplications_controller from "./getUserApplications_controller"
 export = (dependencies: IDependenciesData) => {
     return {
         editUser:editUser_controller(dependencies),
@@ -25,5 +26,6 @@ export = (dependencies: IDependenciesData) => {
         getJobDetailsById:getJobDetailsById_controller(dependencies),
         uploadResume:uploadResume_controller(dependencies),
         applyForJob:applyForJob_controller(dependencies),
+        getUserApplications:getUserApplications_controller(dependencies),
     }
 }

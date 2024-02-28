@@ -86,6 +86,7 @@ function App() {
               <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
                 <Route path='dashboard' element={<CompanyDashboard />} />
                 <Route path='applicants' element={<JobApplicants />} />
+                <Route path='applicants/:id' element={<JobApplicants />} />
                 <Route path='post-job' element={<PostJobSection />} />
                 <Route path='job-list' element={<JobList />} />
                 <Route path='edit-job/:id' element={<UpdateJobDetails />} />

@@ -19,7 +19,8 @@ export = (dependencies: IDependenciesData) => {
   getAllJobs,
   getJobDetailsById,
   uploadResume,
-  applyForJob
+  applyForJob,
+  getUserApplications
  } = userController(dependencies);
  const router = express.Router();
 
@@ -35,5 +36,6 @@ export = (dependencies: IDependenciesData) => {
  router.get("/get-job-details/:id", getJobDetailsById);
  router.post('/upload-resume',upload.single('pdfFile') ,verifyUserToken, uploadResume)
  router.post('/apply-for-job',verifyUserToken,checkUserBlockOrNot,applyForJob)
+ router.get('/get-user-applications',verifyUserToken,checkUserBlockOrNot,getUserApplications)
  return router;
 };

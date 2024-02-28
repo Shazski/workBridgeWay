@@ -339,3 +339,18 @@ export const applyForJob = createAsyncThunk(
   }
  }
 );
+export const getUserApplications = createAsyncThunk(
+ "user/getUserApplications",
+ async (_, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${USER_BASE_URL}/get-user-applications`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

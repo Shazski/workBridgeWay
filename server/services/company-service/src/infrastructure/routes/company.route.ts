@@ -11,7 +11,8 @@ export = (dependencies: IDependencies) => {
     getJobs,
     updateJobStatus,
     getJobById,
-    editJob
+    editJob,
+    // getAllApplicants
   } = companyController(dependencies);
 
   router.put("/update", verifyCompanyToken,updateCompany);
@@ -20,5 +21,6 @@ export = (dependencies: IDependencies) => {
   router.post("/update-job-status",verifyCompanyToken, updateJobStatus);
   router.get("/get-job/:id",verifyCompanyToken, getJobById);
   router.post("/edit-job",verifyCompanyToken, editJob);
+  // router.get("/get-all-applicants",verifyCompanyToken, getAllApplicants);
   return router;
 };

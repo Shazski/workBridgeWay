@@ -15,6 +15,7 @@ interface useCaseData {
  addResume_useCase: any;
  applyForJobUseCase:any;
  findUserInApplicants_useCase:any;
+ getUserApplications_useCase:any;
 }
 
 export interface userRepoData {
