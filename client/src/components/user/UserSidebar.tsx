@@ -47,7 +47,7 @@ const UserSidebar = () => {
                 </div>
                 <div className='mt-3 md:ms-7 flex gap-3'>
 
-                    <NavLink to='/user/applications' className={({ isActive }) => {
+                    <NavLink to='/user/applications?status=all' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`
                     }}> <div className="flex gap-3">
                             <MdCorporateFare className="text-xl" />

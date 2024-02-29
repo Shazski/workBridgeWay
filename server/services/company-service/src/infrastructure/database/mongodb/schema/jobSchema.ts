@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document, ObjectId } from "mongoose";
 import { IJobs } from "../../../../domain/entities/job.entity";
-import { boolean } from "joi";
 
 const JobsSchema: Schema = new Schema(
   {

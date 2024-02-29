@@ -9,7 +9,8 @@ const jobSlice = createSlice({
   loading: false as boolean,
   jobs: null as any | null,
   jobsCount: null as any | null,
-  userAppliedJobs: null as any | null
+  userAppliedJobs: null as any | null,
+  userAppliedJobsCount: null as number | null
  },
  reducers: {},
 
@@ -35,7 +36,8 @@ const jobSlice = createSlice({
    })
    .addCase(getUserApplications.fulfilled, (state, action) => {
     state.loading = false;
-    state.userAppliedJobs = action.payload as any
+    state.userAppliedJobs = action.payload[0] as any
+    state.userAppliedJobsCount = action.payload[1] as number
     state.error = null;
    })
    .addCase(getUserApplications.rejected, (state, action) => {

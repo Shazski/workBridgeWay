@@ -313,19 +313,93 @@ export const findUserInApplicants = async (applicationData: {
   return false;
  }
 };
-export const getUserApplications = async (userId: string): Promise<any> => {
+export const getUserApplications = async (data: {
+ userId: string;
+ page: number;
+ status: string;
+}): Promise<any> => {
+ const { userId, page, status } = data;
+ const skip = Number((page || 1) - 1) * 10;
  try {
-  const applicants = await JobSchema.aggregate([
+  const aggregationPipeline: any[] = [
    { $unwind: "$applicants" },
    {
-    $match: { "applicants.applicantId": new mongoose.Types.ObjectId(userId) },
+    $match: {
+     "applicants.applicantId": new mongoose.Types.ObjectId(userId),
+    },
    },
-  ]);
-  if (applicants.length === 0 || !applicants) return false;
+   {
+    $lookup: {
+     from: "companies",
+     localField: "companyId",
+     foreignField: "_id",
+     as: "companyDetails",
+    },
+   },
+   {
+    $unwind: "$companyDetails",
+   },
+   {
+    $project: {
+     companyName: "$companyDetails.name",
+     companyLogo: "$companyDetails.companyLogo",
+     headOffice: "$companyDetails.headOffice",
+     appliedDate: "$applicants.appliedDate",
+     jobTitle: 1,
+     hiringStage: "$applicants.hiringStage",
+    },
+   },
+   { $limit: 10 },
+   { $skip: skip },
+  ];
 
-  return applicants as any;
+  if (status !== "" && status !== "all") {
+   aggregationPipeline.splice(2, 0, {
+    $match: { "applicants.hiringStage": status },
+   });
+  }
+  const applicants = await JobSchema.aggregate(aggregationPipeline);
+  const countPipe: any[] = [
+   { $unwind: "$applicants" },
+   {
+    $match: {
+     "applicants.applicantId": new mongoose.Types.ObjectId(userId),
+    },
+   },
+   {
+    $lookup: {
+     from: "companies",
+     localField: "companyId",
+     foreignField: "_id",
+     as: "companyDetails",
+    },
+   },
+   {
+    $unwind: "$companyDetails",
+   },
+   {
+    $project: {
+     companyName: "$companyDetails.name",
+     companyLogo: "$companyDetails.companyLogo",
+     headOffice: "$companyDetails.headOffice",
+     appliedDate: "$applicants.appliedDate",
+     jobTitle: 1,
+     hiringStage: "$applicants.hiringStage",
+    },
+   },
+  ];
+
+  if (status !== "" && status !== "all") {
+   countPipe.splice(2, 0, {
+    $match: { "applicants.hiringStage": status },
+   });
+  }
+  const count = await JobSchema.aggregate(countPipe);
+
+  if (!applicants) return false;
+  return [applicants, Number(count.length)] as any;
  } catch (error) {
-  console.log(error, "<< Something went wrong in getJobDetailsById repo >>");
+  console.log(error, "<< Something went wrong in getUserApplications repo >>");
   return false;
  }
 };

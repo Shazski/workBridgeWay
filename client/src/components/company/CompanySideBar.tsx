@@ -1,5 +1,5 @@
 import LOGO from "../../assets/images/Logo.png"
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 import { IoExitOutline } from "react-icons/io5";
 import { FaRegMessage } from "react-icons/fa6";
 import { IoPeopleSharp } from "react-icons/io5";
@@ -16,7 +16,6 @@ import CompanyNavbar from "./CompanyNavbar";
 import { useState } from "react";
 const CompanySideBar = () => {
 
-    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.user)
 
@@ -100,7 +99,7 @@ const CompanySideBar = () => {
                                 <h1 className="hidden md:flex">Schedules</h1>
                             </div> </NavLink>
                     </div>
-                    <div onClick={() => { navigate('/login'), dispatch(logoutUser()) }} className="flex ms-6 mt-12 md:ms-8 relative cursor-pointer">
+                    <div onClick={() => {  dispatch(logoutUser()) }} className="flex ms-6 mt-12 md:ms-8 relative cursor-pointer">
                         <div>
                             <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
                             <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>
@@ -108,7 +107,7 @@ const CompanySideBar = () => {
                     </div>
                     <div className="flex profile mt-auto">
                         <div>
-                            <img src={LOGO} alt="" className="w-32" />
+                            <img src={user?.companyLogo} alt="" className="w-32" />
                         </div>
                         <div>
                             <h1 className="font-semibold text-lg mt-2">{user?.name}</h1>

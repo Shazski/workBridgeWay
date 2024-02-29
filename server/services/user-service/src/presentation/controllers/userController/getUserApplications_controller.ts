@@ -14,20 +14,25 @@ export = (dependencies: IDependenciesData) => {
  ) => {
   const token = req.cookies?.auth_jwt;
   const userId = getUserById(token, JWT_SECRET!);
-
+  const page = req.query.page || 1;
+  const status = req.query.status || "";
   if (!token || !userId) {
    return next(ErrorResponse.unauthorized("Not authorized"));
   }
   try {
+   const data = {
+    userId,
+    page,
+    status
+   };
    const applications = await getUserApplications_useCase(dependencies).execute(
-    userId
+    data
    );
 
    if (!applications)
     return next(ErrorResponse.badRequest("User Id is invalid"));
 
    res.status(200).json(applications);
-   
   } catch (error) {
    next(error);
   }

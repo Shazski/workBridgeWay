@@ -44,7 +44,7 @@ const Pagination = ({ length, sentToParent, page }) => {
                         <h1 key={i} onClick={() => handleClick(n)} className={` ${currentPage === n ? 'paginationactive text-white font-semibold' : ""} cursor-pointer rounded-md px-4 py-1 `}>{n}</h1>
                     ))
                 }
-                <MdOutlineKeyboardArrowRight className={`text-2xl mt-1 cursor-pointer ${currentPage === npage ? 'hidden':''}`} onClick={handleNext} />
+                <MdOutlineKeyboardArrowRight className={`text-2xl mt-1 cursor-pointer ${currentPage === npage  ? 'hidden':''}`} onClick={handleNext} />
             </div>
         </div>
     )

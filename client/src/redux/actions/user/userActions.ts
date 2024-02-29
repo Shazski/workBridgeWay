@@ -310,10 +310,10 @@ export const uploadResume = createAsyncThunk(
     `${USER_BASE_URL}/upload-resume`,
     pdfFile,
     {
-      headers: {
-        'Content-Type': 'application/pdf',
-      },
-      withCredentials: true,
+     headers: {
+      "Content-Type": "application/pdf",
+     },
+     withCredentials: true,
     }
    );
    return data;
@@ -341,10 +341,13 @@ export const applyForJob = createAsyncThunk(
 );
 export const getUserApplications = createAsyncThunk(
  "user/getUserApplications",
- async (_, { rejectWithValue }) => {
+ async (
+  { page, getStatus }: { page: number; getStatus: string },
+  { rejectWithValue }
+ ) => {
   try {
    const { data } = await axios.get(
-    `${USER_BASE_URL}/get-user-applications`,
+    `${USER_BASE_URL}/get-user-applications?page=${page}&status=${getStatus}`,
     config
    );
    return data;

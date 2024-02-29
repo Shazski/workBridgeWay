@@ -35,6 +35,7 @@ import PostJobSection from './components/company/PostJobSection';
 import JobList from './pages/company/JobList';
 import UpdateJobDetails from './pages/company/UpdateJobDetails';
 import { useNavigate } from "react-router-dom"
+import CompanyJobApplicants from './pages/company/CompanyJobApplicants';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -86,7 +87,7 @@ function App() {
               <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
                 <Route path='dashboard' element={<CompanyDashboard />} />
                 <Route path='applicants' element={<JobApplicants />} />
-                <Route path='applicants/:id' element={<JobApplicants />} />
+                <Route path='applicants/:id' element={<CompanyJobApplicants />} />
                 <Route path='post-job' element={<PostJobSection />} />
                 <Route path='job-list' element={<JobList />} />
                 <Route path='edit-job/:id' element={<UpdateJobDetails />} />

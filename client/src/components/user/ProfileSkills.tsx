@@ -108,7 +108,7 @@ const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConf
 
       </div>
       <div className="mb-4 mt-2 bg-white shadow-md">
-        <form action="" onSubmit={handleFileUploads} className="px-16 py-2">
+        <form action="" onSubmit={handleFileUploads} className="px-4 py-2 flex">
           <input required accept="application/pdf" type="file" onChange={handleFileUpload} />
           <button className="border px-4 py-2 bg-lightgreen rounded-md font-semibold text-white">Add</button>
         </form>
