@@ -83,7 +83,7 @@ export const updateJobStatus = createAsyncThunk(
 
 export const getJobs = createAsyncThunk(
  "user/getJobs",
- async ({page,search}:{page:number,search:string}, { rejectWithValue }) => {
+ async ({page,search = ""}:{page:number,search?:string}, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${COMPANY_BASE_URL}/get-jobs?page=${page}&search=${search}`,

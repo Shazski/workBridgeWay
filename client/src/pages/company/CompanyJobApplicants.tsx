@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import CompanyJobApplicantionTable from '../../components/company/CompanyJobApplicantionTable'
 import SearchBar from './../../components/SearchBar';
 
