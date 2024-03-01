@@ -84,7 +84,7 @@ const CompanyJobApplicantionTable = ({ search }: { search: string }) => {
                                                             <td className="whitespace-nowrap px-6 py-4"><h1 className={`mt-3 border-2 py-1 px-3 md:w-24 rounded-2xl uppercase font-bold  border-${statusColor[applicant?.hiringStage]}-600 text-${statusColor[applicant?.hiringStage]}-600`}>{applicant?.hiringStage}</h1></td>
                                                             <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">{applicant?.appliedDate && format(applicant?.appliedDate, "dd-MM-yyyy")}</h1></td>
                                                             <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{jobApplicants[0]?.jobTitle}</h1></td>
-                                                            <td className="whitespace-nowrap px-6 py-4"><Link to={`/company/applicants/${applicant?._id}`} className="text-lightgreen border-lightgreen border bg-gray-200 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</Link></td>
+                                                            <td className="whitespace-nowrap px-6 py-4"><Link to={`/company/applicants/${jobApplicants[0]?._id}/${applicant?._id}`} className="text-lightgreen border-lightgreen border bg-gray-200 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</Link></td>
                                                         </tr>
                                                     </tbody>
                                                 </>
