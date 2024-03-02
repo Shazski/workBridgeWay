@@ -103,7 +103,7 @@ const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatT
 		} else {
 			toast.success("job applied successfully")
 			setIsModalOpen(false)
-			navigate('/user/applications')
+			navigate('/user/applications?status=all')
 		}
 	}
 
@@ -169,7 +169,7 @@ const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatT
 						<div className='font-bold font-serif mt-4 text-xl'>Links</div>
 						<div className='mt-4 flex flex-col gap-y-2'>
 							<label className='poppins text-gray-700' htmlFor="">LinkedIn URL</label>
-							<input required type="text" name='linkedInUrl' className='border px-2 py-2 outline-none hover:border-lightgreen rounded-md' placeholder="Link to your LinkedIn URL" onChange={handleChange} />
+							<input required type="text" name='linkedIn' className='border px-2 py-2 outline-none hover:border-lightgreen rounded-md' placeholder="Link to your LinkedIn URL" onChange={handleChange} />
 						</div>
 						<div className='mt-4 flex flex-col gap-y-2'>
 							<label className='poppins text-gray-700' htmlFor="">Portfolio URL <span className='text-black font-semibold'>(Optional)</span></label>

@@ -5,7 +5,7 @@ import getJobs_controller from "./getJobs_controller";
 import updateJobStatus_controller from "./updateJobStatus_controller";
 import getJobById_controller from "./getJobById_controller";
 import editJobDetails_controller from "./editJobDetails_controller";
-// import getAllApplicants_controller from "./getAllApplicants_controller";
+import getApplicantDetails_controller from "./getApplicantDetails_controller";
 export = (dependencies: IDependencies) => {
   return {
     updateCompany: updateCompany_controller(dependencies),
@@ -14,6 +14,6 @@ export = (dependencies: IDependencies) => {
     updateJobStatus: updateJobStatus_controller(dependencies),
     getJobById: getJobById_controller(dependencies),
     editJob:editJobDetails_controller(dependencies),
-    // getAllApplicants:getAllApplicants_controller(dependencies),
+    getApplicantDetails:getApplicantDetails_controller(dependencies),
   };
 };

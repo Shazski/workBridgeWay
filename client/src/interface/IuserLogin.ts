@@ -19,4 +19,6 @@ export interface IUserLoginData {
  linkedIn?:string | null;
  portfolioURL?:string | null;
  previousJob?:string | null;
+ about?:string | null;
+ skills?: string[] | null
 }

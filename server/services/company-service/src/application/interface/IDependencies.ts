@@ -3,7 +3,7 @@ import RabbitMQClient from "../../infrastructure/messageBroker/rabbitmq/client";
 
 interface useCaseData {
   updateCompany_useCase: any;
-  // getAllApplicants_useCase:any;
+  getApplicantDetails_useCase:any;
 }
 interface companyRepoData {
   registerCompany: any;
@@ -29,6 +29,7 @@ interface jobUseCaseData {
   updateJobStatus_useCase: any;
   getJobById_useCase: any;
   editJobDetails_useCase:any;
+  updateApplicantJobStatus_useCase:any;
 }
 
 

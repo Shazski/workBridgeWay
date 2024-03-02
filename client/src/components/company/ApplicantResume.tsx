@@ -1,7 +1,16 @@
+import { useSelector } from "react-redux"
+import { RootState } from "../../redux/store"
+import { useParams } from "react-router-dom"
+
 const ApplicantResume = () => {
+  const { editJob } = useSelector((state: RootState) => state.company)
+  let resumeUrl
+  const { userId } = useParams()
+  resumeUrl = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+
   return (
     <div>
-      <iframe src="http://res.cloudinary.com/dvjggxcc1/image/upload/v1709110160/viicpz32a9qdvhaoagdm.pdf" height={"500"} width={"734"}></iframe>
+      <iframe src={resumeUrl?.resume} height={"500"} width={"100%"}></iframe>
     </div>
   )
 }

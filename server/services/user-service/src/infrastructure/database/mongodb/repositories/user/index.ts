@@ -10,6 +10,7 @@ import {
  getAllUsers,
  blockOrUnblockUser,
  uploadResume,
+ findUserById_repo,
 } from "./userRepo";
 
 export = {
@@ -24,4 +25,5 @@ export = {
  getAllUsers,
  blockOrUnblockUser,
  uploadResume,
+ findUserById_repo,
 };

@@ -278,3 +278,17 @@ export const uploadResume = async (
   return false;
  }
 };
+
+export const findUserById_repo: any = async (
+ userId: ObjectId
+): Promise<boolean | IUserData> => {
+ try {
+  const userData: IUserData | null = await UserSchema.findById(userId);
+
+  if (!userData) return false;
+  return userData as IUserData;
+ } catch (error) {
+  console.log(error, "< Something went wrong on FindUserByEmail_repo >");
+  return false;
+ }
+};

@@ -57,7 +57,7 @@ const ApplicantsTable = () => {
                     <NavLink to={'?status=inreview'}
                         className={`font-semibold text-gray-600  ${isActive('inreview') ? 'border-b-4 rounded-sm shadow-lg border-orange-600' : 'hover:border-b-4 hover:rounded-sm border-orange-600'}`}
                     >
-                        Inreview
+                        In-Review
                     </NavLink>
                     <NavLink to={'?status=shortlist'}
                         className={`font-semibold text-gray-600  ${isActive('shortlist') ? 'border-b-4 rounded-sm shadow-lg border-cyan-600' : 'hover:border-b-4 hover:rounded-sm border-cyan-600'}`}

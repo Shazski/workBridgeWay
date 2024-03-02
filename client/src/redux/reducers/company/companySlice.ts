@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICompanyData, IJobData } from "../../../interface/ICompanyData";
 import {
+  getApplicantsDetails,
  getCategory,
  getJobById,
  getJobs,
 } from "../../actions/company/CompanyActions";
+import { IUserLoginData } from "../../../interface/IuserLogin";
 const companySlice = createSlice({
  name: "company",
  initialState: {
@@ -15,6 +17,7 @@ const companySlice = createSlice({
   loading: false as boolean,
   error: null as string | null,
   companyJobCount: null as number | null,
+  applicantData : null as IUserLoginData | null
  },
  reducers: {
   pushCategory: (state, action) => {
@@ -84,7 +87,20 @@ const companySlice = createSlice({
     state.loading = false;
     state.error = action.payload as string;
     state.editJob = null;
-   });
+   })
+   .addCase(getApplicantsDetails.pending, (state) => {
+    state.loading = true;
+   })
+   .addCase(getApplicantsDetails.fulfilled, (state, action) => {
+    state.loading = false;
+    state.applicantData = action.payload;
+    state.error = null;
+   })
+   .addCase(getApplicantsDetails.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+    state.editJob = null;
+   })
  },
 });
 export const {

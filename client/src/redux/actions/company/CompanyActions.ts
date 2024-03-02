@@ -104,6 +104,7 @@ export const getJobById = createAsyncThunk(
     `${COMPANY_BASE_URL}/get-job/${id}`,
     config
    );
+  //  console.log(data,"action data")
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;
@@ -127,12 +128,12 @@ export const editJobDetails = createAsyncThunk(
   }
  }
 );
-export const getAllApplicants = createAsyncThunk(
- "user/getAllApplicants",
- async (_, { rejectWithValue }) => {
+export const getApplicantsDetails = createAsyncThunk(
+ "user/getApplicantsDetails",
+ async ({userId}:{userId:string}, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
-    `${COMPANY_BASE_URL}/get-all-applicants`,
+    `${COMPANY_BASE_URL}/get-applicant-details?userId=${userId}`,
     config
    );
    return data;
