@@ -8,7 +8,8 @@ import {
   getJobDetailsById,
   applyForJob,
   findUserInApplicants,
-  getUserApplications
+  getUserApplications,
+  updateApplicantStatus
 } from "./jobRepo";
 
 export default {
@@ -21,5 +22,6 @@ export default {
   getJobDetailsById,
   applyForJob,
   findUserInApplicants,
-  getUserApplications
+  getUserApplications,
+  updateApplicantStatus,
 };

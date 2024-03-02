@@ -3,7 +3,7 @@ import { IDependencies } from "../../interface/IDependencies";
 
 export const updateJobStatus_useCase = (dependencies: IDependencies) => {
  const {
-  job_repo: { updateJobStatus },
+  job_repo: { updateApplicantStatus },
  } = dependencies;
  const execute = async (
   updateData: { status: boolean; id: ObjectId },
@@ -11,11 +11,11 @@ export const updateJobStatus_useCase = (dependencies: IDependencies) => {
   search: string
  ) => {
   try {
-   return await updateJobStatus(updateData, page, search);
+   return await updateApplicantStatus(updateData, page, search);
   } catch (error) {
    console.log(
     error,
-    " << Something went wrong in updatejobStatus usecase >> "
+    " << Something went wrong in updateApplicantStatus usecase >> "
    );
   }
  };

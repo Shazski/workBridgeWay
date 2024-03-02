@@ -406,3 +406,27 @@ export const getUserApplications = async (data: {
   return false;
  }
 };
+
+export const updateApplicantStatus = async (
+ userId: ObjectId,
+ jobId: ObjectId,
+ stage: string
+): Promise<any> => {
+ try {
+  const updatedStatus: any = await JobSchema.updateOne(
+   { _id: jobId, "applicants.applicantId": userId },
+   {
+    $set: {
+     "applicants.$.hiringStage": stage,
+    },
+   }
+  );
+
+  if (!updatedStatus) return false;
+
+  return updatedStatus;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in getJobById >>");
+  return false;
+ }
+};

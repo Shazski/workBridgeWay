@@ -32,7 +32,7 @@ export const getCategory = createAsyncThunk(
  async (_, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(`${ADMIN_BASE_URL}/get-categories`, config);
-   console.log(data,'category data')
+   console.log(data, "category data");
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;
@@ -63,8 +63,12 @@ export const updateJobStatus = createAsyncThunk(
   {
    updateData,
    page,
-   search
-  }: { updateData: { status: boolean; id: string }; page: number, search:string },
+   search,
+  }: {
+   updateData: { status: boolean; id: string };
+   page: number;
+   search: string;
+  },
   { rejectWithValue }
  ) => {
   try {
@@ -83,7 +87,10 @@ export const updateJobStatus = createAsyncThunk(
 
 export const getJobs = createAsyncThunk(
  "user/getJobs",
- async ({page,search = ""}:{page:number,search?:string}, { rejectWithValue }) => {
+ async (
+  { page, search = "" }: { page: number; search?: string },
+  { rejectWithValue }
+ ) => {
   try {
    const { data } = await axios.get(
     `${COMPANY_BASE_URL}/get-jobs?page=${page}&search=${search}`,
@@ -104,7 +111,6 @@ export const getJobById = createAsyncThunk(
     `${COMPANY_BASE_URL}/get-job/${id}`,
     config
    );
-  //  console.log(data,"action data")
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;
@@ -130,10 +136,29 @@ export const editJobDetails = createAsyncThunk(
 );
 export const getApplicantsDetails = createAsyncThunk(
  "user/getApplicantsDetails",
- async ({userId}:{userId:string}, { rejectWithValue }) => {
+ async ({ userId }: { userId: string }, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${COMPANY_BASE_URL}/get-applicant-details?userId=${userId}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const updateApplicantStatus = createAsyncThunk(
+ "user/updateApplicantStatus",
+ async (
+  updateData: { applicantId: string; jobId: string; status: string },
+  { rejectWithValue }
+ ) => {
+  try {
+   const { data } = await axios.patch(
+    `${COMPANY_BASE_URL}/update-applicant-status?applicantId=${updateData.applicantId}&jobId=${updateData.jobId}`,
+    { stage: updateData.status },
     config
    );
    return data;
