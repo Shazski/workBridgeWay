@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { getJobs, updateApplicantStatus } from "../../redux/actions/company/CompanyActions";
+import { getJobs} from "../../redux/actions/company/CompanyActions";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 

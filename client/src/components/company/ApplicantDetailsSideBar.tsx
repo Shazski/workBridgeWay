@@ -68,7 +68,7 @@ const ApplicantDetailsSideBar = () => {
               <div className={`${linkedInUrl?.hiringStage == "pending" || "inreview" || "shortlist" || "interview" || "accepted" ? "bg-blue-600" : "bg-gray-400 "} w-14 h-2 mt-2 ms-3`}></div>
               <div className={`${linkedInUrl?.hiringStage == "inreview" || "shortlist" || "interview" || "accepted" ? "bg-blue-600" : "bg-gray-400 "} w-14 h-2 mt-2`}></div>
               <div className={`${linkedInUrl?.hiringStage === "shortlist" || "interview" || "accepted" ? "bg-blue-600" : "bg-gray-400 "} w-14 h-2 mt-2`}></div>
-              <div className={`${linkedInUrl?.hiringStage === "interview" || "accepted" ? "bg-blue-600" : "bg-gray-400 "} w-14 h-2 mt-2`}></div>
+              <div className={`${linkedInUrl?.hiringStage === ("interview") || ("accepted") ? "bg-blue-600" : "bg-gray-400 "}  w-14 h-2 mt-2`}></div>
               <div className={`${linkedInUrl?.hiringStage === "accepted" ? "bg-blue-600" : "bg-gray-400 "} w-14 h-2 mt-2 mb-4 me-3`}></div>
             </div>
           </div>

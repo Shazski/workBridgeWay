@@ -16,7 +16,7 @@ const CompanyJobApplicantionTable = ({ search }: { search: string }) => {
   const { id } = useParams()
 
   useEffect(() => {
-    console.log(id,"params id")
+    console.log(id, "params id")
     dispatch(getJobById(id))
   }, [dispatch, page, id])
 
@@ -52,13 +52,16 @@ const CompanyJobApplicantionTable = ({ search }: { search: string }) => {
     setFilteredData(filteredApplicants)
   }, [editJob])
 
-  const handleUpdateStatus = (userId,jobId, status) => {
+  const handleUpdateStatus = (userId, jobId, status) => {
     const updateData = {
-      applicantId:userId,
-      jobId:jobId,
-      status:status
+      applicantId: userId,
+      jobId: jobId,
+      status: status
     }
-    dispatch(updateApplicantStatus(updateData))
+    const jobStatus: any = editJob?.applicants!.find((val: any) => val.applicantId === userId)
+    if (jobStatus?.hiringStage === "pending") {
+      dispatch(updateApplicantStatus(updateData))
+    }
   }
 
   return (
@@ -89,7 +92,7 @@ const CompanyJobApplicantionTable = ({ search }: { search: string }) => {
                             <td className="whitespace-nowrap px-6 py-4"><h1 className={`mt-3 border-2 text-${statusColor[applicant?.hiringStage]}-600 py-1 px-3 md:w-24 rounded-2xl uppercase font-bold  border-${statusColor[applicant?.hiringStage]}-600 `}>{applicant?.hiringStage}</h1></td>
                             <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">{applicant?.appliedDate && format(applicant?.appliedDate, "dd-MM-yyyy")}</h1></td>
                             <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{editJob?.jobTitle}</h1></td>
-                            <td onClick={() => handleUpdateStatus(applicant?.applicantId,editJob?._id,"inreview")} className="whitespace-nowrap px-6 py-4"><Link to={`/company/applicants/${editJob?._id}/${applicant?.applicantId}/profile`} className="text-lightgreen border-lightgreen border bg-gray-200 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</Link></td>
+                            <td onClick={() => handleUpdateStatus(applicant?.applicantId, editJob?._id, "inreview")} className="whitespace-nowrap px-6 py-4"><Link to={`/company/applicants/${editJob?._id}/${applicant?.applicantId}/profile`} className="text-lightgreen border-lightgreen border bg-gray-200 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Application</Link></td>
                           </tr>
                         })
                       }
