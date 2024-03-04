@@ -16,6 +16,7 @@ interface useCaseData {
  applyForJobUseCase:any;
  findUserInApplicants_useCase:any;
  getUserApplications_useCase:any;
+ setUserPreferredCategory_useCase:any;
 }
 
 export interface userRepoData {
@@ -30,6 +31,7 @@ export interface userRepoData {
  getAllUsers: any;
  blockOrUnblockUser: any;
  uploadResume: any;
+ setUserPreferredCategory:any
 }
 
 interface adminUseCaseData {

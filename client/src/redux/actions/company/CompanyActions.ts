@@ -32,7 +32,6 @@ export const getCategory = createAsyncThunk(
  async (_, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(`${ADMIN_BASE_URL}/get-categories`, config);
-   console.log(data, "category data");
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;

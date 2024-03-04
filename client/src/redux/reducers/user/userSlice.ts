@@ -12,6 +12,7 @@ import {
   logoutUser,
   removeSkill,
   removeUserSocialLinks,
+  setUserpreferredCategory,
   updateCompanyDetails,
   updateUserAbout,
   updateUserSocialLinks,
@@ -235,6 +236,20 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(uploadResume.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.user = null
+      })
+      .addCase(setUserpreferredCategory.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(setUserpreferredCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload as IUserLoginData;
+        state.error = null;
+      })
+      .addCase(setUserpreferredCategory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
         state.user = null

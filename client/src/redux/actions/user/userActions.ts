@@ -357,3 +357,20 @@ export const getUserApplications = createAsyncThunk(
   }
  }
 );
+export const setUserpreferredCategory = createAsyncThunk(
+ "user/setUserpreferredCategory",
+ async (category: string, { rejectWithValue }) => {
+  try {
+   console.log("call camed or not checked verified===>>>");
+   const { data } = await axios.post(
+    `${USER_BASE_URL}/set-preferred-category`,
+    { category: category },
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

@@ -23,6 +23,8 @@ const UsersSchema: Schema = new Schema(
   ],
   dob: { type: String },
   status: { type: Boolean, default: true },
+  preferredCategory: { type: String },
+  profileScore: { type: Number, default: 0 },
   userName: { type: String, required: true },
   chatStatus: { type: String, enum: ["online", "offline"] },
   jobStatus: { type: String },

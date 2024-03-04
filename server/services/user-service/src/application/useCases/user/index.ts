@@ -13,6 +13,7 @@ import { addResume_useCase } from './addResume_useCase';
 import { applyForJobUseCase } from './applyForJob_useCase';
 import { findUserInApplicants_useCase } from './findUserInApplicants_useCase';
 import { getUserApplications_useCase } from './getUserApplication_useCase';
+import { setUserPreferredCategory_useCase } from './setUserPreferredCategory_useCase';
 export = {
     editUser_useCase,
     findUserByEmail_useCase,
@@ -29,5 +30,6 @@ export = {
     applyForJobUseCase,
     findUserInApplicants_useCase,
     getUserApplications_useCase,
+    setUserPreferredCategory_useCase,
 }
 

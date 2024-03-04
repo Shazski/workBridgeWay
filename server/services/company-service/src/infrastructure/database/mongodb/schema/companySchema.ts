@@ -15,6 +15,7 @@ const CompanySchema: Schema = new Schema(
     founded: { type: String },
     websiteLink: { type: String },
     stage: { type: String, default: "pending" },
+    creditScore: { type: Number, default: 100 },
     rejectReason: { type: String },
     password: { type: String, required: true },
     description: { type: String },

@@ -56,15 +56,28 @@ export const editUser_repo = async (
      $set: { email: userCredentials.email },
     },
     { new: true }
-   );
+   ).select("-password");
   } else {
-   updatedUser = await UserSchema.findOneAndUpdate(
-    { email: userCredentials.email },
-    {
-     $set: { ...userCredentials },
-    },
-    { new: true }
-   );
+   const userData = await UserSchema.findOne({ email: userCredentials.email });
+
+   if (!userData?.dob && userCredentials?.dob) {
+    updatedUser = await UserSchema.findOneAndUpdate(
+     { email: userCredentials.email },
+     {
+      $set: { ...userCredentials },
+      $inc: { profileScore: 10 },
+     },
+     { new: true }
+    ).select("-password");
+   } else {
+    updatedUser = await UserSchema.findOneAndUpdate(
+     { email: userCredentials.email },
+     {
+      $set: { ...userCredentials },
+     },
+     { new: true }
+    ).select("-password");
+   }
   }
   if (!updatedUser) return false;
   return updatedUser;
@@ -82,15 +95,32 @@ export const addUserSkills_repo = async (userCredentials: {
  email: string;
 }): Promise<IUser | boolean> => {
  try {
-  const updatedUser = await UserSchema.findOneAndUpdate(
-   { email: userCredentials.email },
-   {
-    $addToSet: {
-     skills: userCredentials.skill,
+  const userData: IUser | null = await UserSchema.findOne({
+   email: userCredentials.email,
+  });
+  let updatedUser;
+  if (userData?.skills && userData?.skills?.length == 2) {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $addToSet: {
+      skills: userCredentials.skill,
+     },
+     $inc: { profileScore: 20 },
     },
-   },
-   { new: true }
-  ).select("-password");
+    { new: true }
+   ).select("-password");
+  } else {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $addToSet: {
+      skills: userCredentials.skill,
+     },
+    },
+    { new: true }
+   ).select("-password");
+  }
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -104,17 +134,33 @@ export const removeUserSkills_repo = async (userCredentials: {
  email: string;
 }): Promise<IUser | boolean> => {
  try {
-  const updatedUser = await UserSchema.findOneAndUpdate(
-   { email: userCredentials.email },
-   {
-    $pull: {
-     skills: userCredentials.skill,
+  const userData: IUser | null = await UserSchema.findOne({
+   email: userCredentials.email,
+  });
+  let updatedUser;
+  if (userData?.skills && userData?.skills?.length == 3) {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $pull: {
+      skills: userCredentials.skill,
+     },
+     $inc: { profileScore: -20 },
     },
-   },
-   { new: true }
-  ).select("-password");
+    { new: true }
+   ).select("-password");
+  } else {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $pull: {
+      skills: userCredentials.skill,
+     },
+    },
+    { new: true }
+   ).select("-password");
+  }
   if (!updatedUser) return false;
-
   return updatedUser;
  } catch (error) {
   console.log("<Something went wrong in remove user skill repo>");
@@ -126,15 +172,32 @@ export const updateUserAbout_repo = async (userCredentials: {
  email: string;
 }): Promise<IUser | boolean> => {
  try {
-  const updatedUser = await UserSchema.findOneAndUpdate(
-   { email: userCredentials.email },
-   {
-    $set: {
-     about: userCredentials.about,
+  const userData: IUser | null = await UserSchema.findOne({
+   email: userCredentials.email,
+  });
+  let updatedUser;
+  if (userData?.about?.length) {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $set: {
+      about: userCredentials.about,
+     },
     },
-   },
-   { new: true }
-  ).select("-password");
+    { new: true }
+   ).select("-password");
+  } else {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $set: {
+      about: userCredentials.about,
+     },
+     $inc: { profileScore: 10 },
+    },
+    { new: true }
+   ).select("-password");
+  }
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -262,13 +325,26 @@ export const uploadResume = async (
  resume: string
 ): Promise<any> => {
  try {
-  const updatedUser = await UserSchema.findByIdAndUpdate(
-   id,
-   {
-    resume: resume,
-   },
-   { new: true }
-  ).select("-password");
+  const userData = await UserSchema.findById(id);
+  let updatedUser;
+  if (!userData?.resume) {
+   updatedUser = await UserSchema.findByIdAndUpdate(
+    id,
+    {
+     resume: resume,
+     $inc: { profileScore: 20 },
+    },
+    { new: true }
+   ).select("-password");
+  } else {
+   updatedUser = await UserSchema.findByIdAndUpdate(
+    id,
+    {
+     resume: resume,
+    },
+    { new: true }
+   ).select("-password");
+  }
   if (!updatedUser) {
    return false;
   }
@@ -289,6 +365,43 @@ export const findUserById_repo: any = async (
   return userData as IUserData;
  } catch (error) {
   console.log(error, "< Something went wrong on FindUserByEmail_repo >");
+  return false;
+ }
+};
+export const setUserPreferredCategory: any = async (
+ userId: ObjectId,
+ category: string
+): Promise<boolean | IUser> => {
+ try {
+  const userData: IUser | null = await UserSchema.findById(userId);
+
+  let updatedUser: IUser | null;
+  if (!userData?.preferredCategory?.length) {
+   updatedUser = await UserSchema.findByIdAndUpdate(
+    userId,
+    {
+     preferredCategory: category,
+     $inc: { profileScore: 10 },
+    },
+    { new: true }
+   ).select("-password");
+  } else {
+   updatedUser = await UserSchema.findByIdAndUpdate(
+    userId,
+    {
+     preferredCategory: category,
+    },
+    { new: true }
+   ).select("-password");
+  }
+
+  if (!updatedUser) return false;
+  return updatedUser as IUserData;
+ } catch (error) {
+  console.log(
+   error,
+   "< Something went wrong on setUserPreferredCategory repo >"
+  );
   return false;
  }
 };

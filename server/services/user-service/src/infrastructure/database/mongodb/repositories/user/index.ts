@@ -11,6 +11,7 @@ import {
  blockOrUnblockUser,
  uploadResume,
  findUserById_repo,
+ setUserPreferredCategory,
 } from "./userRepo";
 
 export = {
@@ -26,4 +27,5 @@ export = {
  blockOrUnblockUser,
  uploadResume,
  findUserById_repo,
+ setUserPreferredCategory
 };
