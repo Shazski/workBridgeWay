@@ -60,10 +60,10 @@ export const updateJobStatus = async (
 
 export const getAllCompanyJobs = async (
  companyId: ObjectId,
- page: number,
- search: string
+ page?: number,
+ search?: string
 ): Promise<any> => {
- const skip = Number(page - 1) * 10;
+ const skip = Number((page! - 1) ?? 1) * 10 || 0;
 
  if (search !== "") {
  }
@@ -105,11 +105,39 @@ export const getAllCompanyJobs = async (
    companyId: companyId,
   }).countDocuments();
 
+  const totalPendingApplicantsCount: any = await JobSchema.aggregate([
+    {
+      $match: {
+        companyId: new mongoose.Types.ObjectId(String(companyId)),
+      },
+    },
+    {
+      $unwind: '$applicants', 
+    },
+    {
+      $match: {
+        'applicants.hiringStage': 'pending',
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalPendingApplicants: { $sum: 1 }, 
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        totalPendingApplicants: 1,
+      },
+    },
+  ])
+
   if (!jobs) return false;
   if (jobs.length > 0) {
-   await Client.set(`jobs${page}${search}`, JSON.stringify([jobs, count]));
+   await Client.set(`jobs${page}${search}`, JSON.stringify([jobs, count,totalPendingApplicantsCount[0]?.totalPendingApplicants]));
   }
-  return [jobs, count] as any;
+  return [jobs, count, totalPendingApplicantsCount[0]?.totalPendingApplicants] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
   return false;
@@ -441,8 +469,11 @@ export const getUserPreferredJobs = async (userCredentials: {
     { category: userCredentials.preferredCategory },
     { requiredSkills: { $in: userCredentials.skills } },
    ],
+  }).populate({
+   path: "companyId",
+   select: "companyLogo name headOffice",
   });
-  
+
   if (!preferredJobs) return false;
 
   return preferredJobs as IJobsData[];

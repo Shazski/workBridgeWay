@@ -12,7 +12,7 @@ const JobCategogyBtn = ({category}:{category:string}) => {
     }
     return (
             <>
-                <h4 className={`border text-teal-60000 text-sm text-${color[category]} border-gray-400  px-2 py-1 rounded-xl`}>{category}</h4>
+                <h4 className={`border text-teal-60000 text-sm text-${color[category]} border-${color[category]}  px-2 py-1 rounded-xl`}>{category}</h4>
             </>
     )
 }

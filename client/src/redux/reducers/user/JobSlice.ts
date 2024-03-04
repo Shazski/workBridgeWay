@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllJobs, getUserApplications } from "../../actions/user/userActions";
+import { getAllJobs, getUserApplications, getUserpreferredJob } from "../../actions/user/userActions";
 import { IJobData } from "../../../interface/ICompanyData";
 
 const jobSlice = createSlice({
@@ -10,6 +10,7 @@ const jobSlice = createSlice({
   jobs: null as any | null,
   jobsCount: null as any | null,
   userAppliedJobs: null as any | null,
+  userPreferredJobs: null as IJobData[] | null,
   userAppliedJobsCount: null as number | null
  },
  reducers: {},
@@ -41,6 +42,20 @@ const jobSlice = createSlice({
     state.error = null;
    })
    .addCase(getUserApplications.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+   })
+   .addCase(getUserpreferredJob.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+   })
+   .addCase(getUserpreferredJob.fulfilled, (state, action) => {
+    console.log(action.payload,"payloadData")
+    state.loading = false;
+    state.userPreferredJobs = action.payload as IJobData[]
+    state.error = null;
+   })
+   .addCase(getUserpreferredJob.rejected, (state, action) => {
     state.loading = false;
     state.error = action.payload as string;
    })

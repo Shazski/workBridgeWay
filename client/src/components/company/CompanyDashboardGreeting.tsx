@@ -1,11 +1,20 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DataBox from "./DataBox";
 import { RootState } from "../../redux/store";
+import { AppDispatch } from "../../redux/store"
+import { useEffect, useState } from "react";
+import { getJobs } from "../../redux/actions/company/CompanyActions";
 const CompanyDashboardGreeting = () => {
     const time: Date = new Date()
+    const [page, _] = useState<number>(1);
     const greeting: number = time.getHours()
-
+    const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.user)
+    const { pendingApplicantsCount } = useSelector((state: RootState) => state.company)
+
+    useEffect(() => {
+        dispatch(getJobs({ page }))
+    },[])
 
     return (
         <div>
@@ -15,7 +24,7 @@ const CompanyDashboardGreeting = () => {
                 </div>
             </div>
             <div className="flex flex-col 2xl:flex-row justify-center items-center">
-                <DataBox color="bg-lightgreen" data="76" message="New Candidates to review" />
+                <DataBox color="bg-lightgreen" data={pendingApplicantsCount} message="New Candidates to review" />
                 <DataBox color="bg-teal-400" data="3" message="Schedule for today" />
                 <DataBox color="bg-blue-400" data="24" message="Messages received" />
             </div>

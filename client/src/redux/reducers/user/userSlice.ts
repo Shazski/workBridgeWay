@@ -245,6 +245,7 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(setUserpreferredCategory.fulfilled, (state, action) => {
+        console.log("🚀 ~ .addCase ~ action:", action.payload)
         state.loading = false;
         state.user = action.payload as IUserLoginData;
         state.error = null;

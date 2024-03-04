@@ -17,7 +17,8 @@ const companySlice = createSlice({
   loading: false as boolean,
   error: null as string | null,
   companyJobCount: null as number | null,
-  applicantData : null as IUserLoginData | null
+  applicantData : null as IUserLoginData | null,
+  pendingApplicantsCount: null as any | null
  },
  reducers: {
   pushCategory: (state, action) => {
@@ -68,6 +69,8 @@ const companySlice = createSlice({
     state.loading = false;
     state.jobs = action.payload[0];
     state.companyJobCount = action.payload[1];
+    state.pendingApplicantsCount = action.payload[2];
+    console.log(action.payload,"payload in get job data")
     state.error = null;
    })
    .addCase(getJobs.rejected, (state, action) => {

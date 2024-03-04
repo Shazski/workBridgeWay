@@ -1,6 +1,7 @@
 import CompanyDashboardGreeting from "../../components/company/CompanyDashboardGreeting"
 import JobUpdates from "../../components/company/JobUpdates"
 const ComapnyDashboard = () => {
+    
     return (
         <>
             <div>

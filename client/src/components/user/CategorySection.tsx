@@ -32,19 +32,18 @@ const CategorySection = () => {
                 {
                     category && category?.map((cat, idx) => (
                         <>
-                            <div key={idx} onClick={() => navigate(`/jobs?category=${cat}`)} className="border w-64 h-44 mt-10  hover:bg-lightgreen text-lightgreen hover:scale-105 hover:cursor-pointer hover:text-white">
-                                <MdDesignServices className="text-4xl m-5" />
-                                <h1 className="font-serif text-lg ps-5">{cat}</h1>
-                                <div className="flex">
-                                    <h4 className="text-sm text-gray-500 ps-5 mt-4">{jobsCount && jobsCount[cat]} Jobs available </h4>
-                                    <FaArrowRight className="ms-5 mt-5" />
+                            <div key={idx} onClick={() => navigate(`/jobs?category=${cat}`)} className="border w-64 h-44 mt-10 group hover:bg-lightgreen text-lightgreen hover:scale-105 transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-white">
+                                <MdDesignServices className="text-4xl m-5  " />
+                                <h1 className="font-serif text-lg ps-5 group-hover:translate-x-2 transition-all duration-300 ease-in">{cat}</h1>
+                                <div className="flex group-hover:translate-x-2 duration-300">
+                                    <h4 className="text-sm ps-5 mt-4">{jobsCount && jobsCount[cat]} Jobs available </h4>
+                                    <FaArrowRight className="ms-5 mt-5 group-hover:scale-150  transition-all duration-300 ease-in" />
                                 </div>
                             </div>
                         </>
                     ))
                 }
             </div>
-
             <div className="md:flex gap-14 hidden">
 
             </div>
