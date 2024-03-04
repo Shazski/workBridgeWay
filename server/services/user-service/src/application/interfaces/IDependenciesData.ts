@@ -13,10 +13,12 @@ interface useCaseData {
  getAllJobs_useCase: any;
  getJobDescription_useCase: any;
  addResume_useCase: any;
- applyForJobUseCase:any;
- findUserInApplicants_useCase:any;
- getUserApplications_useCase:any;
- setUserPreferredCategory_useCase:any;
+ applyForJobUseCase: any;
+ findUserInApplicants_useCase: any;
+ getUserApplications_useCase: any;
+ setUserPreferredCategory_useCase: any;
+ findUserById_useCase:any;
+ getPreferredJobs_useCase:any;
 }
 
 export interface userRepoData {
@@ -31,7 +33,8 @@ export interface userRepoData {
  getAllUsers: any;
  blockOrUnblockUser: any;
  uploadResume: any;
- setUserPreferredCategory:any
+ setUserPreferredCategory: any;
+ findUserById_repo: any;
 }
 
 interface adminUseCaseData {

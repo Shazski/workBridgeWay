@@ -9,7 +9,8 @@ import {
   applyForJob,
   findUserInApplicants,
   getUserApplications,
-  updateApplicantStatus
+  updateApplicantStatus,
+  getUserPreferredJobs
 } from "./jobRepo";
 
 export default {
@@ -24,4 +25,5 @@ export default {
   findUserInApplicants,
   getUserApplications,
   updateApplicantStatus,
+  getUserPreferredJobs
 };

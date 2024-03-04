@@ -29,7 +29,7 @@ const ApplicantsTable = () => {
     const status = {
         pending: "blue",
         inreview: "orange",
-        shortlist: "cyan",
+        shortlisted: "cyan",
         interview: "yellow",
         rejected: "red",
         accepted: "green"
@@ -86,15 +86,14 @@ const ApplicantsTable = () => {
                             {
 
                                 userAppliedJobs?.length > 0 && !loading ?
-                                    <table className="min-w-full text-left text-sm font-light">
+                                    <table className="min-w-full border-2 text-left text-sm font-light">
                                         <thead
-                                            className="border-b  bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600 sticky top-0 w-full">
+                                            className="border-b  bg-white font-medium dark:border-neutral-500 dark:bg-neutral-600 sticky -top-1 w-full">
                                             <tr>
                                                 <th scope="col" className="px-6 py-4">Company Name</th>
                                                 <th scope="col" className="px-6 py-4">Roles</th>
                                                 <th scope="col" className="px-6 py-4">Date Applied</th>
                                                 <th scope="col" className="px-6 py-4">Status</th>
-                                                <th scope="col" className="px-6 py-4">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -103,14 +102,13 @@ const ApplicantsTable = () => {
                                                     <>
                                                         <tr key={idx}
                                                             className="border-b bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
-                                                            <div className='flex'>
+                                                            <div className='flex ms-4'>
                                                                 <td className="flex whitespace-nowrap py-4 font-semibold"><img src={job.companyLogo} className=" w-12 rounded-full h-12" /></td>
                                                                 <td className="flex whitespace-nowrap py-4 font-semibold"><h1 className="mt-3">{job?.companyName}</h1></td>
                                                             </div>
-                                                            <td className="whitespace-nowrap px-6 py-4"><h1 className="mt-3">{job?.jobTitle}</h1></td>
-                                                            <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">{job?.appliedDate && format(job?.appliedDate, "dd-MM-yyyy")}</h1></td>
-                                                            <td className="whitespace-nowrap px-6 py-4"><h1 className={`border-2 border-${status[job?.hiringStage]}-600 text-${status[job?.hiringStage]}-600 px-3 md:w-24 py-2 rounded-2xl uppercase font-bold   `}>{job?.hiringStage}</h1></td>
-                                                            <td className="whitespace-nowrap px-6 py-4"><Link to={`/company/applicants/${job?._id}`} className="text-lightgreen border-lightgreen border bg-gray-200 px-4 py-2 rounded-md md:w-32 cursor-pointer">See Applicants</Link></td>
+                                                            <td className="whitespace-nowrap px-3 py-4"><h1 className="mt-3">{job?.jobTitle}</h1></td>
+                                                            <td className="whitespace-nowrap  px-3 py-4"><h1 className="text-gray-500">{job?.appliedDate && format(job?.appliedDate, "dd-MM-yyyy")}</h1></td>
+                                                            <td className="whitespace-nowrap   px-3 py-4"><h1 className={`border-2 w-min px-3 border-${status[job?.hiringStage]}-600 text-${status[job?.hiringStage]}-600  py-2 rounded-2xl uppercase font-bold   `}>{job?.hiringStage}</h1></td>
                                                         </tr>
                                                     </>
 

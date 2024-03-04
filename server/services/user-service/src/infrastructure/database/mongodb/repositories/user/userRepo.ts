@@ -214,15 +214,31 @@ export const addUserSocialLinks_repo = async (userCredentials: {
  };
 }): Promise<IUser | boolean> => {
  try {
-  const updatedUser = await UserSchema.findOneAndUpdate(
-   { email: userCredentials.email },
-   {
-    $push: {
-     socialLinks: userCredentials.socialLinks,
+  let updatedUser;
+  const userData = await UserSchema.findOne({ email: userCredentials.email });
+
+  if (userData?.socialLinks && userData?.socialLinks?.length === 1) {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $push: {
+      socialLinks: userCredentials.socialLinks,
+     },
+     $inc: { profileScore: 20 },
     },
-   },
-   { new: true }
-  ).select("-password");
+    { new: true }
+   ).select("-password");
+  } else {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $push: {
+      socialLinks: userCredentials.socialLinks,
+     },
+    },
+    { new: true }
+   ).select("-password");
+  }
   if (!updatedUser) return false;
 
   return updatedUser;
@@ -239,15 +255,30 @@ export const removeUserSocialLinks_repo = async (userCredentials: {
  email: string;
 }): Promise<IUser | boolean> => {
  try {
-  const updatedUser = await UserSchema.findOneAndUpdate(
-   { email: userCredentials.email },
-   {
-    $pull: {
-     socialLinks: userCredentials.socialLinks,
+  let updatedUser;
+  const userData = await UserSchema.findOne({ email: userCredentials.email });
+  if (userData?.socialLinks && userData?.socialLinks?.length === 2) {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $pull: {
+      socialLinks: userCredentials.socialLinks,
+     },
+     $inc: { profileScore: -20 },
     },
-   },
-   { new: true }
-  ).select("-password");
+    { new: true }
+   ).select("-password");
+  } else {
+   updatedUser = await UserSchema.findOneAndUpdate(
+    { email: userCredentials.email },
+    {
+     $pull: {
+      socialLinks: userCredentials.socialLinks,
+     },
+    },
+    { new: true }
+   ).select("-password");
+  }
   if (!updatedUser) return false;
 
   return updatedUser;

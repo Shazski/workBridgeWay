@@ -22,6 +22,7 @@ export = (dependencies: IDependenciesData) => {
   applyForJob,
   getUserApplications,
   setUserPreferredCategory,
+  getPreferredJobs
  } = userController(dependencies);
  const router = express.Router();
 
@@ -88,6 +89,12 @@ export = (dependencies: IDependenciesData) => {
   verifyUserToken,
   checkUserBlockOrNot,
   setUserPreferredCategory
+ );
+ router.get(
+  "/get-preferred-jobs",
+  verifyUserToken,
+  checkUserBlockOrNot,
+  getPreferredJobs
  );
  return router;
 };

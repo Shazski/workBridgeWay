@@ -430,3 +430,27 @@ export const updateApplicantStatus = async (
   return false;
  }
 };
+
+export const getUserPreferredJobs = async (userCredentials: {
+ preferredCategory: string;
+ skills: string[];
+}): Promise<IJobsData[] | boolean> => {
+ try {
+  const preferredJobs: IJobsData[] | null = await JobSchema.find({
+   $and: [
+    { category: userCredentials.preferredCategory },
+    { requiredSkills: { $in: userCredentials.skills } },
+   ],
+  });
+  
+  if (!preferredJobs) return false;
+
+  return preferredJobs as IJobsData[];
+ } catch (error) {
+  console.log(
+   error,
+   "<< Something went wrong in get User Preferred jobs repo >>"
+  );
+  return false;
+ }
+};

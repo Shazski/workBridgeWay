@@ -14,6 +14,8 @@ import { applyForJobUseCase } from './applyForJob_useCase';
 import { findUserInApplicants_useCase } from './findUserInApplicants_useCase';
 import { getUserApplications_useCase } from './getUserApplication_useCase';
 import { setUserPreferredCategory_useCase } from './setUserPreferredCategory_useCase';
+import { findUserById_useCase } from './findUserById_useCase';
+import { getPreferredJobs_useCase } from './getPreferredJobs_useCase';
 export = {
     editUser_useCase,
     findUserByEmail_useCase,
@@ -31,5 +33,7 @@ export = {
     findUserInApplicants_useCase,
     getUserApplications_useCase,
     setUserPreferredCategory_useCase,
+    findUserById_useCase,
+    getPreferredJobs_useCase,
 }
 

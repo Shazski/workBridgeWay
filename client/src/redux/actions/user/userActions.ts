@@ -361,12 +361,27 @@ export const setUserpreferredCategory = createAsyncThunk(
  "user/setUserpreferredCategory",
  async (category: string, { rejectWithValue }) => {
   try {
-   console.log("call camed or not checked verified===>>>");
    const { data } = await axios.post(
     `${USER_BASE_URL}/set-preferred-category`,
     { category: category },
     config
    );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const getUserpreferredJob = createAsyncThunk(
+ "user/getUserpreferredJob",
+ async (_, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${USER_BASE_URL}/get-preferred-jobs`,
+    config
+   );
+   console.log("🚀 ~ data:", data)
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;

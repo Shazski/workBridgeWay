@@ -4,7 +4,7 @@ import HomeTopSection from '../../components/user/HomeTopSection'
 import COMPANYIMG from "../../assets/images/companyimg.png"
 import CTAIMG from "../../assets/images/CTA.png"
 import CategorySection from '../../components/user/CategorySection'
-import FeaturedJobs from '../../components/user/FeaturedJobs'
+import PreferredJobs from '../../components/user/PreferredJobs'
 import LatestJobs from '../../components/user/LatestJobs'
 const Home: FC = () => {
 
@@ -26,7 +26,7 @@ const Home: FC = () => {
         <img src={CTAIMG} className='filter text-red-600 bg-lightgreen' alt="" />
       </div>
       <div>
-        <FeaturedJobs />
+        <PreferredJobs />
       </div>
       <div className='bg-blue-50'>
         <LatestJobs />

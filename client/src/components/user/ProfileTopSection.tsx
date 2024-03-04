@@ -62,7 +62,7 @@ const ProfileTopSection = ({ user }) => {
                         <h1 className='text-blue-gray-700 text-sm lg:ms-5'>{user?.phone}</h1>
                         <div className="flex gap-x-1">
                             <MdOutlineCategory className='mt-1 lg:mt-4 text-gray-800' />
-                            <h1 className='text-blue-gray-400 text-sm mt-1  lg:mt-4'>preferred Category</h1>
+                            <h1 className='text-blue-gray-400 text-sm mt-1  lg:mt-4'>Preferred Category</h1>
                             <button onClick={() => setIsModalOpen(true)} className='mt-4 text-sm px-3 py-0.5 bg-lightgreen text-white font-semibold rounded-md'>{user?.preferredCategory ? "Edit" : "Choose"}</button>
                         </div>
                         <h1 className='text-blue-gray-700 text-sm lg:ms-5'>{user?.preferredCategory || "Not Provided"}</h1>

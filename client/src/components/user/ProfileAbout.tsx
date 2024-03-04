@@ -96,8 +96,8 @@ const ProfileAbout = ({ user }) => {
                 </div>
                 <div className="w-6/12 lg:w-2/6  border shadow-md  lg:h-60 mt-2 lg:mt-0">
                     <div className='m-2 '>
-                        <div className="flex flex-wrap justify-between">
-                            <h1 className='font-semibold text-blue-gray-600 mt-0.5'>Social Links</h1>
+                        <div className="flex flex-wrap  justify-between">
+                            <h1 className='font-semibold  text-blue-gray-600 mt-0.5'>Social Links</h1>
                             <div className='border h-7  border-gray-300'>
                                 <FaRegEdit className='cursor-pointer text-lightgreen my-1 mx-2' onClick={() => setIsSocialModalOpen(true)} />
                             </div>
@@ -130,32 +130,34 @@ const ProfileAbout = ({ user }) => {
                                 </div>
                             </Modal>
                         </div>
-                        {
-                            user?.socialLinks.length > 0 ? (
-                                <>
-                                    {user?.socialLinks.map((value: { socialMedia: string, link: string }, index: number) => (
-                                        <div key={index}>
-                                            <div className='flex justify-between gap-x-1'>
-                                                <h1 className='text-blue-gray-400 text-sm lg:mt-6'>{value?.socialMedia}</h1>
-                                                <h1 onClick={() => {setRemoveValue(value),setIsConfirmModalOpen(true)} } className="text-xs text-red-600 mt-6 me-5 cursor-pointer font-semibold">X</h1>
+                        <div className="overflow-y-scroll h-48 scrollbar">
+                            {
+                                user?.socialLinks.length > 0 ? (
+                                    <>
+                                        {user?.socialLinks.map((value: { socialMedia: string, link: string }, index: number) => (
+                                            <div key={index}>
+                                                <div className='flex justify-between gap-x-1'>
+                                                    <h1 className='text-blue-gray-400 text-sm lg:mt-6'>{value?.socialMedia}</h1>
+                                                    <h1 onClick={() => { setRemoveValue(value), setIsConfirmModalOpen(true) }} className="text-xs text-red-600 mt-6 me-5 cursor-pointer font-semibold">X</h1>
+                                                </div>
+                                                <a href={`https://${value?.link}`} target="_blank" rel="noopener noreferrer" className='text-lightgreen text-sm'>{value?.link}</a>
                                             </div>
-                                            <a href={`https://${value?.link}`} target="_blank" rel="noopener noreferrer" className='text-lightgreen text-sm'>{value?.link}</a>
+                                        ))}
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="flex justify-center items-center h-36">
+                                            <h1 className="text-center text-gray-500 items-center">Provide Your Social Links</h1>
                                         </div>
-                                    ))}
-                                </>
-                            ) : (
-                                <>
-                                    <div className="flex justify-center items-center h-36">
-                                        <h1 className="text-center text-gray-500 items-center">Provide Your Social Links</h1>
-                                    </div>
-                                </>
-                            )
-                        }
+                                    </>
+                                )
+                            }
+                        </div>
 
                     </div>
                 </div>
             </div>
-            <ProfileSkills user={user} isAboutModalOpen={isAboutModalOpen} isSocialModalOpen={isSocialModalOpen} isSocialConfirmModalOpen = {isConfirmModalOpen}/>
+            <ProfileSkills user={user} isAboutModalOpen={isAboutModalOpen} isSocialModalOpen={isSocialModalOpen} isSocialConfirmModalOpen={isConfirmModalOpen} />
         </>
     )
 }
