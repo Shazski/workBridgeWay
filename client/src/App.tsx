@@ -96,7 +96,7 @@ function App() {
               <Route path='applicants/:id/:userId' element={<ApplicantDetails />} >
                 <Route path='profile' element={<ApplicantPersonalInfo />} />
                 <Route path='resume' element={<ApplicantResume />} />
-                <Route path='hiring-stage' element={<ApplicantHiringStage/>} />
+                <Route path='hiring-stage' element={<ApplicantHiringStage />} />
                 <Route path='interview-schedule' element={<ApplicantInterviewSchedule />} />
               </Route>
               <Route path='post-job' element={<PostJobSection />} />

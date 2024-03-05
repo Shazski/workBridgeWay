@@ -4,33 +4,31 @@ import { MdEmail } from "react-icons/md";
 import { IoIosPhonePortrait } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const ApplicantDetailsSideBar = () => {
   const { applicantData, editJob } = useSelector((state: RootState) => state.company)
   const { userId } = useParams()
-  const linkedInUrl: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+  const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
 
+  const navigate = useNavigate()
 
   const getDateDifference = (appliedDate: string): number => {
     const providedDateObject = new Date(appliedDate);
-
     if (isNaN(providedDateObject.getTime())) {
       console.error('Invalid date provided');
       return 0;
     }
 
     const today = new Date();
-
     const timeDifference: number = providedDateObject.getTime() - today.getTime();
-
     const daysDifference = Math.ceil(Math.abs(timeDifference / (1000 * 60 * 60 * 24)));
-
     return daysDifference;
   };
+  console.log(editJob,"applicant data")
   return (
     <>
       <div className="mt-4 flex gap-x-3">
-        <IoMdArrowRoundBack className="text-3xl " />
+        <IoMdArrowRoundBack className="text-3xl cursor-pointer" onClick={() => navigate(`/company/applicants/${editJob?._id}`)} />
         <h1 className="font-serif font-semibold text-lg text-blue-gray-900">Applicant Details</h1>
       </div>
       <div className="border rounded-md mt-4">
@@ -40,14 +38,14 @@ const ApplicantDetailsSideBar = () => {
           </div>
           <div>
             <h1 className="font-serif font-semibold text-lg mt-3 text-blue-gray-900">{applicantData?.userName}</h1>
-            <h1 className="text-gray-600 text-sm">{applicantData?.previousJob}</h1>
+            <h1 className="text-gray-600 text-sm">{ApplicantData?.previousJob}</h1>
           </div>
         </div>
 
         <div className="bg-blue-gray-50 mt-4 mb-4 mx-4 rounded-md">
           <div className="flex justify-between border-b-2 mx-3 border-gray-300">
             <h1 className="text-xs py-2">Applied Job</h1>
-            <h1 className="text-xs text-gray-600 py-2">{getDateDifference(linkedInUrl?.appliedDate)} Days ago</h1>
+            <h1 className="text-xs text-gray-600 py-2">{getDateDifference(ApplicantData?.appliedDate)} Days ago</h1>
           </div>
           <div>
             <h1 className="poppins text-sm font-semibold text-md text-blue-gray-900 mx-3 mt-2">{editJob?.jobTitle}</h1>
@@ -61,14 +59,14 @@ const ApplicantDetailsSideBar = () => {
         <div className="bg-blue-gray-50 mt-4 mb-4 rounded-md mx-4">
           <div className="flex justify-between mx-3  border-gray-300">
             <h1 className="text-sm py-2">Stage</h1>
-            <h1 className="text-sm text-blue-400 font-semibold py-2">. {linkedInUrl && linkedInUrl?.hiringStage || "stage"}</h1>
+            <h1 className="text-sm text-blue-400 font-semibold py-2">. {ApplicantData && ApplicantData?.hiringStage || "stage"}</h1>
           </div>
           <div>
             <div className="flex gap-x-1">
-              <div className={`${linkedInUrl?.hiringStage == "inreview" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "accepted" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "rejected" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "shortlisted" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "interview" ? "bg-blue-600" : "bg-gray-400 "}`}`}`}`} w-14 h-2 mt-2 ms-5`}></div>
-              <div className={`${linkedInUrl?.hiringStage === "shortlisted" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "interview" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "accepted" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "rejected" ? "bg-blue-600" : "bg-gray-400 "}`}`}`} w-14 h-2 mt-2`}></div>
-              <div className={`${linkedInUrl?.hiringStage === "interview" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "accepted" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "rejected" ? "bg-blue-600" : "bg-gray-400 "}`}`}  w-14 h-2 mt-2`}></div>
-              <div className={`${linkedInUrl?.hiringStage === "accepted" ? "bg-blue-600" : `${linkedInUrl?.hiringStage === "rejected" ? "bg-blue-600" : "bg-gray-400 "}`} w-14 h-2 mt-2 mb-4`}></div>
+              <div className={`${ApplicantData?.hiringStage == "inreview" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "accepted" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "rejected" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "shortlisted" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "interview" ? "bg-blue-600" : "bg-gray-400 "}`}`}`}`} w-14 h-2 mt-2 ms-5`}></div>
+              <div className={`${ApplicantData?.hiringStage === "shortlisted" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "interview" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "accepted" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "rejected" ? "bg-blue-600" : "bg-gray-400 "}`}`}`} w-14 h-2 mt-2`}></div>
+              <div className={`${ApplicantData?.hiringStage === "interview" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "accepted" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "rejected" ? "bg-blue-600" : "bg-gray-400 "}`}`}  w-14 h-2 mt-2`}></div>
+              <div className={`${ApplicantData?.hiringStage === "accepted" ? "bg-blue-600" : `${ApplicantData?.hiringStage === "rejected" ? "bg-blue-600" : "bg-gray-400 "}`} w-14 h-2 mt-2 mb-4`}></div>
             </div>
           </div>
         </div>

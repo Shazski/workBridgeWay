@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom"
 const ApplicantPersonalInfo = () => {
   const { applicantData, editJob } = useSelector((state: RootState) => state.company)
   const { userId } = useParams()
-  const linkedInUrl: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+  const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
   return (
     <div className='mt-4'>
       <h1 className='font-semibold text-blue-gray-800 ms-3'>Personal Info</h1>
@@ -21,7 +21,7 @@ const ApplicantPersonalInfo = () => {
         </div>
         <div>
           <h1 className="text-sm text-gray-600 mt-4 poppins">Linked In</h1>
-          <a href="https://asdasdsajkda" target="_blank" className="text-sm text-lightgreen ">{linkedInUrl?.linkedIn || "Not provided"}</a>
+          <a href={`https://${ApplicantData?.linkedIn}`} target="_blank" className="text-sm text-lightgreen ">{ApplicantData?.linkedIn || "Not provided"}</a>
         </div>
       </div>
       <h1 className='font-semibold text-blue-gray-800 ms-3 mt-4'>Proffesional Info</h1>
@@ -34,7 +34,7 @@ const ApplicantPersonalInfo = () => {
       <div className='ms-3 grid grid-cols-2'>
         <div>
           <h1 className="text-sm text-gray-600 mt-4 poppins">Current Job</h1>
-          <h1 className="text-sm text-black mt-1 font-medium">{applicantData?.previousJob || "Not Provided"}</h1>
+          <h1 className="text-sm text-black mt-1 font-medium">{ApplicantData?.previousJob || "Not Provided"}</h1>
         </div>
         <div className="mb-5">
           <h1 className="text-sm text-gray-600 mt-4 poppins">Skill set</h1>

@@ -40,6 +40,19 @@ const companySlice = createSlice({
     (value) => action?.payload !== value
    );
   },
+   changeStatus :(state, action: { payload:any }) => {
+    const updatedApplicants: any = (state.editJob?.applicants || []).map((applicant: any) => {
+      if (applicant.applicantId === action.payload.applicantId && state.editJob?._id === action.payload.jobId) {
+        return {
+          ...applicant,
+          hiringStage: action.payload.status,
+        };
+      }
+      return applicant;
+    });
+  
+    state.editJob!.applicants = updatedApplicants;
+  },
   updateLiveAndClose: (state, action) => {
    state.jobs?.map((job) =>
     job._id === action.payload ? (job.status = !job.status) : ""
@@ -112,6 +125,7 @@ export const {
  pushResponsibilities,
  popSkills,
  popResponsibilities,
- updateLiveAndClose
+ updateLiveAndClose,
+ changeStatus
 } = companySlice.actions;
 export default companySlice.reducer;
