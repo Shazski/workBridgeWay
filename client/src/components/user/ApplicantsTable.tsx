@@ -59,10 +59,10 @@ const ApplicantsTable = () => {
                     >
                         In-Review
                     </NavLink>
-                    <NavLink to={'?status=shortlist'}
-                        className={`font-semibold text-gray-600  ${isActive('shortlist') ? 'border-b-4 rounded-sm shadow-lg border-cyan-600' : 'hover:border-b-4 hover:rounded-sm border-cyan-600'}`}
+                    <NavLink to={'?status=shortlisted'}
+                        className={`font-semibold text-gray-600  ${isActive('shortlisted') ? 'border-b-4 rounded-sm shadow-lg border-cyan-600' : 'hover:border-b-4 hover:rounded-sm border-cyan-600'}`}
                     >
-                        Shortlist
+                        Shortlisted
                     </NavLink>
                     <NavLink to={'?status=interview'}
                         className={`font-semibold text-gray-600  ${isActive('interview') ? 'border-b-4 rounded-sm shadow-lg border-yellow-600' : 'hover:border-b-4 hover:rounded-sm border-yellow-600'}`}

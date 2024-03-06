@@ -11,17 +11,17 @@ const Notifications = () => {
     const fetchData = async () => {
       try {
         const payload = await onMessageListener();
-        console.log(payload)
+        console.log(payload,"payload data")
         if (payload.notification) {
           setNotification({
             title: payload.notification.title || "",
             body: payload.notification.body || "",
           });
           toast.success(
-            `${payload?.notification.title}: ${payload?.notification?.body}`,
+            "notification",
             {
-              duration:60000,
-              position:"top-right"
+              duration: 60000,
+              position: "top-right"
             }
           )
         }
