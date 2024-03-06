@@ -16,6 +16,7 @@ import { getUserApplications_useCase } from './getUserApplication_useCase';
 import { setUserPreferredCategory_useCase } from './setUserPreferredCategory_useCase';
 import { findUserById_useCase } from './findUserById_useCase';
 import { getPreferredJobs_useCase } from './getPreferredJobs_useCase';
+import { setUserFmcToken_useCase } from './setUserFmcToken_useCase';
 export = {
     editUser_useCase,
     findUserByEmail_useCase,
@@ -35,5 +36,6 @@ export = {
     setUserPreferredCategory_useCase,
     findUserById_useCase,
     getPreferredJobs_useCase,
+    setUserFmcToken_useCase,
 }
 

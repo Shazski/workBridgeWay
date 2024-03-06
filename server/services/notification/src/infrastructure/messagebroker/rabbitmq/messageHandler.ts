@@ -10,7 +10,8 @@ export default class MessageHandler {
   let response = {};
   switch (operation) {
    case "sendNotifications":
-    response = sendChatNotification();
+    const { fmcToken, title, body } = data;
+    response = sendChatNotification(fmcToken, title, body);
     break;
    default:
     response = "Request-key notfound";

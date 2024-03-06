@@ -1,12 +1,15 @@
 import { firebase } from ".";
-import { fcmToken } from "./getFcmTokenById";
 
-export const sendChatNotification = async () => {
+export const sendChatNotification = async (
+ fmcToken: string,
+ title: string,
+ body: string
+) => {
  let message = {
-  token: fcmToken.toString(),
+  token: fmcToken.toString(),
   notification: {
-   title: "hello sharoon",
-   body: "common dude lets have fun",
+   title: title,
+   body: body,
   },
  };
 

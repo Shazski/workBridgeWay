@@ -12,6 +12,7 @@ import RabbitMQClient from "./infrastructure/messageBroker/rabbitmq/client";
     connect();
     //rabbitmq connection
     RabbitMQClient?.initialize();
+
     app.listen(PORT, () => {
       console.log(`company service connected to ${PORT}`);
     });

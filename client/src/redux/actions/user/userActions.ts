@@ -381,7 +381,23 @@ export const getUserpreferredJob = createAsyncThunk(
     `${USER_BASE_URL}/get-preferred-jobs`,
     config
    );
-   console.log("🚀 ~ data:", data)
+   console.log("🚀 ~ data:", data);
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const setUserfmcToken = createAsyncThunk(
+ "user/setUserfmcToken",
+ async (fmcToken:string, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.post(
+    `${USER_BASE_URL}/set-fmcToken`,
+    { fmcToken: fmcToken },
+    config
+   );
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;

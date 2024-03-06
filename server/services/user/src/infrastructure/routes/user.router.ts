@@ -22,7 +22,8 @@ export = (dependencies: IDependenciesData) => {
   applyForJob,
   getUserApplications,
   setUserPreferredCategory,
-  getPreferredJobs
+  getPreferredJobs,
+  setUserFmcToken
  } = userController(dependencies);
  const router = express.Router();
 
@@ -95,6 +96,12 @@ export = (dependencies: IDependenciesData) => {
   verifyUserToken,
   checkUserBlockOrNot,
   getPreferredJobs
+ );
+ router.post(
+  "/set-fmcToken",
+  verifyUserToken,
+  checkUserBlockOrNot,
+  setUserFmcToken
  );
  return router;
 };

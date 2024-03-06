@@ -11,13 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendChatNotification = void 0;
 const _1 = require(".");
-const getFcmTokenById_1 = require("./getFcmTokenById");
-const sendChatNotification = () => __awaiter(void 0, void 0, void 0, function* () {
+const sendChatNotification = (fmcToken, title, body) => __awaiter(void 0, void 0, void 0, function* () {
     let message = {
-        token: getFcmTokenById_1.fcmToken.toString(),
+        token: fmcToken.toString(),
         notification: {
-            title: "hello sharoon",
-            body: "common dude lets have fun",
+            title: title,
+            body: body,
         },
     };
     try {

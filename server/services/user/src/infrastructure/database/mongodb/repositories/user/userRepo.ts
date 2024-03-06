@@ -436,3 +436,20 @@ export const setUserPreferredCategory: any = async (
   return false;
  }
 };
+
+export const setUserFmcToken: any = async (
+  userId: ObjectId,
+  fmcToken:string
+ ): Promise<boolean | IUserData> => {
+  try {
+   const userData: IUserData | null = await UserSchema.findByIdAndUpdate(userId, {
+    fmcToken:fmcToken
+   });
+ 
+   if (!userData) return false;
+   return userData as IUserData;
+  } catch (error) {
+   console.log(error, "< Something went wrong on setUserFmcToken repo >");
+   return false;
+  }
+ };

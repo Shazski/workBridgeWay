@@ -19,6 +19,7 @@ interface useCaseData {
  setUserPreferredCategory_useCase: any;
  findUserById_useCase:any;
  getPreferredJobs_useCase:any;
+ setUserFmcToken_useCase:any;
 }
 
 export interface userRepoData {
@@ -35,6 +36,7 @@ export interface userRepoData {
  uploadResume: any;
  setUserPreferredCategory: any;
  findUserById_repo: any;
+ setUserFmcToken:any;
 }
 
 interface adminUseCaseData {

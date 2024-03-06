@@ -12,6 +12,7 @@ import {
  uploadResume,
  findUserById_repo,
  setUserPreferredCategory,
+ setUserFmcToken
 } from "./userRepo";
 
 export = {
@@ -27,5 +28,6 @@ export = {
  blockOrUnblockUser,
  uploadResume,
  findUserById_repo,
- setUserPreferredCategory
+ setUserPreferredCategory,
+ setUserFmcToken
 };

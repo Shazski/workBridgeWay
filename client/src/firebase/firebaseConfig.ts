@@ -18,29 +18,34 @@ export const messaging = getMessaging(app)
 
 
 export const requestPermission = () => {
- console.log("Requesting for User Permission....");
- Notification.requestPermission().then((Permission) => {
-  if (Permission === "granted") {
-   console.log("Notification User Permission Granded");
-   return getToken(messaging, {
-    vapidKey:
-     "BFX0R3EBMEdWrgAIOM0rALOgYfVj38K4IhcSPLOXJxOstGFsSI87I-lBQWyNWvk-6hgIPjvzTDBJSoQT37IGqbY",
-   })
-    .then((currentToken) => {
-     if (currentToken) {
-      console.log("Client Token:", currentToken);
-     } else {
-      console.log("Failed to generate  the app registration token");
-     }
-    })
-    .catch((err) => {
-     console.log("An error occured when requesting to receive the token", err);
-    });
-  } else {
-   console.log("User Permission Dnied");
-  }
- });
+  console.log("Requesting for User Permission....");
+  return Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      console.log("Notification User Permission Granted");
+      return getToken(messaging, {
+        vapidKey:
+          "BFX0R3EBMEdWrgAIOM0rALOgYfVj38K4IhcSPLOXJxOstGFsSI87I-lBQWyNWvk-6hgIPjvzTDBJSoQT37IGqbY",
+      })
+        .then((currentToken) => {
+          if (currentToken) {
+            console.log(currentToken, "client FMC Token");
+            return currentToken;
+          } else {
+            console.log("Failed to generate the app registration token");
+            return null;
+          }
+        })
+        .catch((err) => {
+          console.log("An error occurred when requesting to receive the token", err);
+          return null;
+        });
+    } else {
+      console.log("User Permission Denied");
+      return null;
+    }
+  });
 };
+
 
 requestPermission();
 
