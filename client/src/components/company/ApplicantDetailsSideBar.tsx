@@ -24,7 +24,7 @@ const ApplicantDetailsSideBar = () => {
     const daysDifference = Math.ceil(Math.abs(timeDifference / (1000 * 60 * 60 * 24)));
     return daysDifference;
   };
-  console.log(editJob,"applicant data")
+
   return (
     <>
       <div className="mt-4 flex gap-x-3">

@@ -25,6 +25,7 @@ interface jobRepoData {
   findAllExpiredJobs:any;
   updateJobExpiryStatus:any;
   scheduleInterviewForUser:any;
+  cancelInterviewForUser:any;
 }
 
 interface jobUseCaseData {
@@ -35,6 +36,7 @@ interface jobUseCaseData {
   editJobDetails_useCase:any;
   updateApplicantJobStatus_useCase:any;
   scheduleInterview_useCase:any;
+  cancelInterviewForUser_useCase:any;
 }
 
 

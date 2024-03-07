@@ -27,7 +27,7 @@ export interface IJobData {
   toSalary?: number | null;
   typeOfEmployment?: string | null;
   vacancy?: number | null;
-  companyId?: string | null;
+  companyId?: string | null | {name:string, companyLogo:string,headOffice:string,_id:string};
   createdAt?:Date | null;
   status?:boolean | null;
 }

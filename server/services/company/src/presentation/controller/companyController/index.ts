@@ -8,6 +8,7 @@ import editJobDetails_controller from "./editJobDetails_controller";
 import getApplicantDetails_controller from "./getApplicantDetails_controller";
 import updateApplicantStatus_controller from "./updateApplicantStatus_controller";
 import scheduleInterviewForUser_controller from "./scheduleInterviewForUser_controller";
+import cancelInterviewForUser_controller from "./cancelInterviewForUser_controller";
 export = (dependencies: IDependencies) => {
   return {
     updateCompany: updateCompany_controller(dependencies),
@@ -18,6 +19,7 @@ export = (dependencies: IDependencies) => {
     editJob:editJobDetails_controller(dependencies),
     getApplicantDetails:getApplicantDetails_controller(dependencies),
     uppdateApplicantStatus:updateApplicantStatus_controller(dependencies),
-    scheduleInterviewForUser:scheduleInterviewForUser_controller(dependencies)
+    scheduleInterviewForUser:scheduleInterviewForUser_controller(dependencies),
+    cancelInterviewForUser:cancelInterviewForUser_controller(dependencies),
   };
 };

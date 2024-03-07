@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { requestPermission, onMessageListener } from './../firebase/firebaseConfig';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../redux/store';
 import { setUserfmcToken } from '../redux/actions/user/userActions';
 
 const Notifications = () => {
   const [notification, setNotification] = useState<{ title: string; body: string }>({ title: "", body: "" });
-
+  const { user } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fmcToken = await requestPermission();
-        if (fmcToken) {
+        if (fmcToken && user?.role === "user") {
           dispatch(setUserfmcToken(fmcToken));
         }
 
@@ -38,7 +38,6 @@ const Notifications = () => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, [dispatch]);
 

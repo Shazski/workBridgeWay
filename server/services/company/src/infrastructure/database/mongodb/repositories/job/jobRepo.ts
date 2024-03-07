@@ -156,7 +156,10 @@ export const getAllCompanyJobs = async (
 };
 export const getJobById = async (id: ObjectId): Promise<IJob | boolean> => {
  try {
-  const job: IJob | null = await JobSchema.findOne({ _id: id });
+  const job: IJob | null = await JobSchema.findOne({ _id: id }).populate({
+   path: "companyId",
+   select: "companyLogo name headOffice _id",
+  });
 
   if (!job) return false;
 
@@ -540,7 +543,6 @@ export const scheduleInterviewForUser = async (
  }
 ): Promise<any> => {
  try {
-  console.log(scheduleData, jobId, userId, "update want data===>>>>");
   const updatedJobs = await JobSchema.findOneAndUpdate(
    { _id: jobId, "applicants.applicantId": userId },
    {
@@ -548,7 +550,6 @@ export const scheduleInterviewForUser = async (
    },
    { new: true }
   );
-  console.log(updatedJobs, "job data in job repoData");
   if (!updatedJobs) return false;
 
   return updatedJobs as any;
@@ -556,6 +557,30 @@ export const scheduleInterviewForUser = async (
   console.log(
    error,
    "<< Something went wrong in scheduleInterviewForUser  repo >>"
+  );
+  return false;
+ }
+};
+export const cancelInterviewForUser = async (
+ jobId: ObjectId,
+ userId: ObjectId,
+ scheduleId: ObjectId
+): Promise<any> => {
+ try {
+  const updatedJobs = await JobSchema.findOneAndUpdate(
+   { _id: jobId, "applicants.applicantId": userId },
+   {
+    $pull: { "applicants.$.schedule._id": scheduleId },
+   },
+   { new: true }
+  );
+  if (!updatedJobs) return false;
+
+  return updatedJobs as any;
+ } catch (error) {
+  console.log(
+   error,
+   "<< Something went wrong in cancelInterviewForUser  repo >>"
   );
   return false;
  }

@@ -195,3 +195,26 @@ export const scheduleInterviewForUser = createAsyncThunk(
   }
  }
 );
+export const cancelInterviewForUser = createAsyncThunk(
+ "user/cancelInterviewForUser",
+ async (
+  InterviewData: {
+   userId: string;
+   jobId: string;
+   scheduleId: string;
+  },
+  { rejectWithValue }
+ ) => {
+  try {
+   const { data } = await axios.patch(
+    `${COMPANY_BASE_URL}/cancel-interview?userId=${InterviewData.userId}&jobId=${InterviewData.jobId}`,
+    { scheduleId: InterviewData.scheduleId },
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
