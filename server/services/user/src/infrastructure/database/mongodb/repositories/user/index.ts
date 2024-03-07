@@ -15,7 +15,7 @@ import {
  setUserFmcToken
 } from "./userRepo";
 
-export = {
+export default {
  findUserByEmail_repo,
  SignUpUser_repo,
  editUser_repo,

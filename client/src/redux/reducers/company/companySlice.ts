@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICompanyData, IJobData } from "../../../interface/ICompanyData";
 import {
-  getApplicantsDetails,
+ cancelInterviewForUser,
+ getApplicantsDetails,
  getCategory,
  getJobById,
  getJobs,
+ scheduleInterviewForUser,
 } from "../../actions/company/CompanyActions";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 const companySlice = createSlice({
@@ -17,8 +19,8 @@ const companySlice = createSlice({
   loading: false as boolean,
   error: null as string | null,
   companyJobCount: null as number | null,
-  applicantData : null as IUserLoginData | null,
-  pendingApplicantsCount: null as any | null
+  applicantData: null as IUserLoginData | null,
+  pendingApplicantsCount: null as any | null,
  },
  reducers: {
   pushCategory: (state, action) => {
@@ -40,18 +42,23 @@ const companySlice = createSlice({
     (value) => action?.payload !== value
    );
   },
-   changeStatus :(state, action: { payload:any }) => {
-    const updatedApplicants: any = (state.editJob?.applicants || []).map((applicant: any) => {
-      if (applicant.applicantId === action.payload.applicantId && state.editJob?._id === action.payload.jobId) {
-        return {
-          ...applicant,
-          hiringStage: action.payload.status,
-        };
-      }
-      return applicant;
-    });
-  
-    state.editJob!.applicants = updatedApplicants;
+  changeStatus: (state, action: { payload: any }) => {
+   const updatedApplicants: any = (state.editJob?.applicants || []).map(
+    (applicant: any) => {
+     if (
+      applicant.applicantId === action.payload.applicantId &&
+      state.editJob?._id === action.payload.jobId
+     ) {
+      return {
+       ...applicant,
+       hiringStage: action.payload.status,
+      };
+     }
+     return applicant;
+    }
+   );
+
+   state.editJob!.applicants = updatedApplicants;
   },
   updateLiveAndClose: (state, action) => {
    state.jobs?.map((job) =>
@@ -83,7 +90,7 @@ const companySlice = createSlice({
     state.jobs = action.payload[0];
     state.companyJobCount = action.payload[1];
     state.pendingApplicantsCount = action.payload[2];
-    console.log(action.payload,"payload in get job data")
+    console.log(action.payload, "payload in get job data");
     state.error = null;
    })
    .addCase(getJobs.rejected, (state, action) => {
@@ -117,6 +124,32 @@ const companySlice = createSlice({
     state.error = action.payload as string;
     state.editJob = null;
    })
+   .addCase(cancelInterviewForUser.pending, (state) => {
+    state.loading = true;
+   })
+   .addCase(cancelInterviewForUser.fulfilled, (state, action) => {
+    state.loading = false;
+    state.editJob = action.payload;
+    state.error = null;
+   })
+   .addCase(cancelInterviewForUser.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+    state.editJob = null;
+   })
+   .addCase(scheduleInterviewForUser.pending, (state) => {
+    state.loading = true;
+   })
+   .addCase(scheduleInterviewForUser.fulfilled, (state, action) => {
+    state.loading = false;
+    state.editJob = action.payload;
+    state.error = null;
+   })
+   .addCase(scheduleInterviewForUser.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+    state.editJob = null;
+   })
  },
 });
 export const {
@@ -126,6 +159,6 @@ export const {
  popSkills,
  popResponsibilities,
  updateLiveAndClose,
- changeStatus
+ changeStatus,
 } = companySlice.actions;
 export default companySlice.reducer;

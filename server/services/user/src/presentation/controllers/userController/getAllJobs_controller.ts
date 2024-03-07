@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { IDependenciesData } from "../../../application/interfaces/IDependenciesData";
 import { ErrorResponse } from "work-bridge-way-common";
 import { IJob } from "../../../application/interfaces/IJob";
-export = (dependencies: IDependenciesData) => {
+
+export default (dependencies: IDependenciesData) => {
  const {
   user_useCase: { getAllJobs_useCase },
  } = dependencies;
@@ -21,17 +22,17 @@ export = (dependencies: IDependenciesData) => {
   }: any = req.query;
   let filter: any = {};
   if (category) {
-     filter.category = { $in: category.split(",") };
+   filter.category = { $in: category.split(",") };
   }
-     if (typeOfEmployment)
+  if (typeOfEmployment)
    filter.typeOfEmployment = { $in: typeOfEmployment.split(",") };
-  if (toSalary) filter.toSalary = toSalary
-  if (fromSalary) filter.fromSalary = fromSalary 
+  if (toSalary) filter.toSalary = toSalary;
+  if (fromSalary) filter.fromSalary = fromSalary;
   if (search !== undefined) {
-    filter.jobTitle = { $regex: search, $options: 'i' };
+   filter.jobTitle = { $regex: search, $options: "i" };
   }
-  if(page) {
-    filter.page = Number(page) || 1;
+  if (page) {
+   filter.page = Number(page) || 1;
   }
 
   try {

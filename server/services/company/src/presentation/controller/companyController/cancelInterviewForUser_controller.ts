@@ -11,6 +11,7 @@ export default (dependencies: IDependencies) => {
   res: Response,
   next: NextFunction
  ) => {
+  console.log(req.body,"bodydata")
   const { scheduleId } = req.body;
   const jobId = req.query.jobId;
   const userId = req.query.userId;

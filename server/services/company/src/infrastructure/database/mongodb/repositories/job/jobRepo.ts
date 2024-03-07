@@ -549,7 +549,10 @@ export const scheduleInterviewForUser = async (
     $addToSet: { "applicants.$.schedule": scheduleData },
    },
    { new: true }
-  );
+  ).populate({
+   path: "companyId",
+   select: "companyLogo name headOffice _id",
+  });
   if (!updatedJobs) return false;
 
   return updatedJobs as any;
@@ -570,10 +573,13 @@ export const cancelInterviewForUser = async (
   const updatedJobs = await JobSchema.findOneAndUpdate(
    { _id: jobId, "applicants.applicantId": userId },
    {
-    $pull: { "applicants.$.schedule._id": scheduleId },
+    $pull: { "applicants.$.schedule": { _id: scheduleId } },
    },
    { new: true }
-  );
+  ).populate({
+   path: "companyId",
+   select: "companyLogo name headOffice _id",
+  });
   if (!updatedJobs) return false;
 
   return updatedJobs as any;

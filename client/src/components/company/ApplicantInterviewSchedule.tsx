@@ -14,6 +14,7 @@ const ApplicantInterviewSchedule = () => {
   const [testType, setTestType] = useState<string>("");
   const { editJob } = useSelector((state: RootState) => state.company)
   const [employeeId, setEmployeeId] = useState<string>("");
+  const [refetch, setRefetch] = useState<boolean>(false);
   const [scheduleId, setScheduleId] = useState<string>("");
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
   const [scheduleDateAndTime, setScheduleDateAndTime] = useState<string>("");
@@ -57,22 +58,23 @@ const ApplicantInterviewSchedule = () => {
     }
 
     dispatch(scheduleInterviewForUser(interviewData))
+    setTestType("")
     setIsModalOpen(false)
     toast.success("Interview Scheduled Successfully")
   }
 
   useEffect(() => {
     console.log("re rendered")
-  }, [editJob])
+  }, [refetch])
 
-  const handleRemove = () => {
-    console.log("handle delete", scheduleId, id, userId);
+  const handleRemove = async() => {
     const interviewData = {
       userId: userId!,
       jobId: id!,
       scheduleId: scheduleId
     }
     dispatch(cancelInterviewForUser(interviewData))
+    setRefetch(!refetch)
     setIsConfirmModalOpen(false)
     toast.success("Interview Canceled successfully")
   }
