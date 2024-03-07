@@ -167,3 +167,31 @@ export const updateApplicantStatus = createAsyncThunk(
   }
  }
 );
+export const scheduleInterviewForUser = createAsyncThunk(
+ "user/scheduleInterviewForUser",
+ async (
+  InterviewData: {
+   userId: string;
+   jobId: string;
+   scheduleData: {
+    testType: string;
+    date: string;
+    time: string;
+    employeeId: string;
+   };
+  },
+  { rejectWithValue }
+ ) => {
+  try {
+   const { data } = await axios.post(
+    `${COMPANY_BASE_URL}/schedule-interview?userId=${InterviewData.userId}&jobId=${InterviewData.jobId}`,
+    InterviewData.scheduleData,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

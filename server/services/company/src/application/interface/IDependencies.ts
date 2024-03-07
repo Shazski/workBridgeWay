@@ -22,6 +22,9 @@ interface jobRepoData {
   findUserInApplicants:any;
   getUserApplications: any;
   updateApplicantStatus:any;
+  findAllExpiredJobs:any;
+  updateJobExpiryStatus:any;
+  scheduleInterviewForUser:any;
 }
 
 interface jobUseCaseData {
@@ -31,6 +34,7 @@ interface jobUseCaseData {
   getJobById_useCase: any;
   editJobDetails_useCase:any;
   updateApplicantJobStatus_useCase:any;
+  scheduleInterview_useCase:any;
 }
 
 

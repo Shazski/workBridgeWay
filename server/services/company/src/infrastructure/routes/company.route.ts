@@ -13,7 +13,8 @@ export = (dependencies: IDependencies) => {
     getJobById,
     editJob,
     getApplicantDetails,
-    uppdateApplicantStatus
+    uppdateApplicantStatus,
+    scheduleInterviewForUser,
   } = companyController(dependencies);
 
   router.put("/update", verifyCompanyToken,updateCompany);
@@ -24,5 +25,7 @@ export = (dependencies: IDependencies) => {
   router.post("/edit-job",verifyCompanyToken, editJob);
   router.get("/get-applicant-details",verifyCompanyToken, getApplicantDetails);
   router.patch("/update-applicant-status",verifyCompanyToken, uppdateApplicantStatus);
+  router.post("/schedule-interview",verifyCompanyToken, scheduleInterviewForUser);
+  
   return router;
 };

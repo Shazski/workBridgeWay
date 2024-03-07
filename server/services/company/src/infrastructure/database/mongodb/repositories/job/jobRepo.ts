@@ -63,7 +63,7 @@ export const getAllCompanyJobs = async (
  page?: number,
  search?: string
 ): Promise<any> => {
- const skip = Number((page! - 1) ?? 1) * 10 || 0;
+ const skip = Number(page! - 1 ?? 1) * 10 || 0;
 
  if (search !== "") {
  }
@@ -106,38 +106,49 @@ export const getAllCompanyJobs = async (
   }).countDocuments();
 
   const totalPendingApplicantsCount: any = await JobSchema.aggregate([
-    {
-      $match: {
-        companyId: new mongoose.Types.ObjectId(String(companyId)),
-      },
+   {
+    $match: {
+     companyId: new mongoose.Types.ObjectId(String(companyId)),
     },
-    {
-      $unwind: '$applicants', 
+   },
+   {
+    $unwind: "$applicants",
+   },
+   {
+    $match: {
+     "applicants.hiringStage": "pending",
     },
-    {
-      $match: {
-        'applicants.hiringStage': 'pending',
-      },
+   },
+   {
+    $group: {
+     _id: null,
+     totalPendingApplicants: { $sum: 1 },
     },
-    {
-      $group: {
-        _id: null,
-        totalPendingApplicants: { $sum: 1 }, 
-      },
+   },
+   {
+    $project: {
+     _id: 0,
+     totalPendingApplicants: 1,
     },
-    {
-      $project: {
-        _id: 0,
-        totalPendingApplicants: 1,
-      },
-    },
-  ])
+   },
+  ]);
 
   if (!jobs) return false;
   if (jobs.length > 0) {
-   await Client.set(`jobs${page}${search}`, JSON.stringify([jobs, count,totalPendingApplicantsCount[0]?.totalPendingApplicants]));
+   await Client.set(
+    `jobs${page}${search}`,
+    JSON.stringify([
+     jobs,
+     count,
+     totalPendingApplicantsCount[0]?.totalPendingApplicants,
+    ])
+   );
   }
-  return [jobs, count, totalPendingApplicantsCount[0]?.totalPendingApplicants] as any;
+  return [
+   jobs,
+   count,
+   totalPendingApplicantsCount[0]?.totalPendingApplicants,
+  ] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
   return false;
@@ -481,6 +492,70 @@ export const getUserPreferredJobs = async (userCredentials: {
   console.log(
    error,
    "<< Something went wrong in get User Preferred jobs repo >>"
+  );
+  return false;
+ }
+};
+
+export const findAllExpiredJobs = async (currentDate: Date): Promise<any> => {
+ try {
+  const expiredJobs = await JobSchema.find({
+   expiry: { $lt: currentDate },
+   status: true,
+  });
+
+  if (!expiredJobs) return false;
+
+  return expiredJobs as any;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in findAllExpiredJobs  repo >>");
+  return false;
+ }
+};
+export const updateJobExpiryStatus = async (jobId: ObjectId): Promise<any> => {
+ try {
+  const updatedJobs = await JobSchema.findByIdAndUpdate(jobId, {
+   $set: { status: false },
+  });
+
+  if (!updatedJobs) return false;
+
+  return updatedJobs as any;
+ } catch (error) {
+  console.log(
+   error,
+   "<< Something went wrong in updateJobExpiryStatus  repo >>"
+  );
+  return false;
+ }
+};
+export const scheduleInterviewForUser = async (
+ jobId: ObjectId,
+ userId: ObjectId,
+ scheduleData: {
+  testType: string;
+  date: string;
+  time: string;
+  employeeId: ObjectId;
+ }
+): Promise<any> => {
+ try {
+  console.log(scheduleData, jobId, userId, "update want data===>>>>");
+  const updatedJobs = await JobSchema.findOneAndUpdate(
+   { _id: jobId, "applicants.applicantId": userId },
+   {
+    $addToSet: { "applicants.$.schedule": scheduleData },
+   },
+   { new: true }
+  );
+  console.log(updatedJobs, "job data in job repoData");
+  if (!updatedJobs) return false;
+
+  return updatedJobs as any;
+ } catch (error) {
+  console.log(
+   error,
+   "<< Something went wrong in scheduleInterviewForUser  repo >>"
   );
   return false;
  }

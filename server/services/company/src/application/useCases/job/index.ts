@@ -4,6 +4,7 @@ import { updateJobStatus_useCase } from "./updateJobStatus_useCase";
 import { getJobById_useCase } from './getJobById_useCase';
 import { editJobDetails_useCase } from './editJobDetails_useCase';
 import { updateApplicantJobStatus_useCase } from './updateApplicantJobStatus_useCase';
+import { scheduleInterview_useCase } from './scheduleInterview_useCase';
 
 export = {
     postJob_useCase,
@@ -12,4 +13,5 @@ export = {
     getJobById_useCase,
     editJobDetails_useCase,
     updateApplicantJobStatus_useCase,
+    scheduleInterview_useCase,
 }

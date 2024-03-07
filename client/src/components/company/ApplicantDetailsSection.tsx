@@ -3,9 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../redux/store';
-import { updateApplicantStatus } from '../../redux/actions/company/CompanyActions';
+import { scheduleInterviewForUser, updateApplicantStatus } from '../../redux/actions/company/CompanyActions';
 import { changeStatus } from '../../redux/reducers/company/companySlice';
+import Modal from '../Modal';
+import { FormEvent, useState } from 'react';
 const ApplicantDetailsSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [testType, setTestType] = useState<string>("");
+  const [stage, setStage] = useState<string>("");
+  const [employeeId, setEmployeeId] = useState<string>("");
+  const [scheduleDateAndTime, setScheduleDateAndTime] = useState<string>("");
   const { id, userId } = useParams()
   const { editJob } = useSelector((state: RootState) => state.company)
   const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
@@ -16,9 +23,14 @@ const ApplicantDetailsSection = () => {
       jobId: jobId,
       status: status
     };
-    dispatch(changeStatus(updateData))
-    dispatch(updateApplicantStatus(updateData));
 
+    if (status === "interview") {
+      setStage(status)
+      setIsModalOpen(true)
+    } else {
+      dispatch(changeStatus(updateData))
+      dispatch(updateApplicantStatus(updateData));
+    }
   };
 
   const statusColor = {
@@ -28,6 +40,31 @@ const ApplicantDetailsSection = () => {
     rejected: 'red',
     accepted: 'green'
   };
+
+  const handleInterviewSchedule = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const updateData = {
+      applicantId: userId!,
+      jobId: id!,
+      status: stage
+    };
+    const interviewData = {
+      userId: userId!,
+      jobId: id!,
+      scheduleData: {
+        testType: testType,
+        date: scheduleDateAndTime.split('T')[0],
+        time: scheduleDateAndTime.split('T')[1],
+        employeeId: "65ded88e5f384414da78ccab"
+      }
+    }
+
+    dispatch(scheduleInterviewForUser(interviewData))
+    dispatch(changeStatus(updateData))
+    dispatch(updateApplicantStatus(updateData));
+    setIsModalOpen(false)
+  }
+  const currentDate = new Date().toISOString().slice(0, 16);
 
   return (
     <div className='border rounded-md mt-1'>
@@ -44,7 +81,7 @@ const ApplicantDetailsSection = () => {
         <NavLink to={`/company/applicants/${id}/${userId}/interview-schedule`} className={({ isActive }) => {
           return `text-sm px-2 py-2 font-semibold text-blue-gray-700 ms-2 ${isActive ? 'border-b-4 border-lightgreen text-blue-gray-900' : ''} `
         }}>Interview Schedule</NavLink>
-        <select onChange={(e) => handleUpdateStatus(userId!, editJob?._id!, e.target.value)} className={`outline-none border px-2 border-${statusColor[ApplicantData?.hiringStage]}-600 text-${statusColor[ApplicantData?.hiringStage]}-600 h-8 mt-1 text-gray-700 font-semibold`} name="hiringStage" id="">
+        <select onChange={(e) => handleUpdateStatus(userId!, editJob?._id!, e.target.value)} className={`outline-none border px-2 border-${statusColor[ApplicantData?.hiringStage]}-600 text-${statusColor[ApplicantData?.hiringStage]}-600 h-8 mt-1 rounded-md  font-semibold`} name="hiringStage" id="">
           <option defaultChecked hidden value="">{ApplicantData?.hiringStage}</option>
           <option className='font-semibold pt-2 text-gray-600' value="shortlisted" style={{ display: ApplicantData?.hiringStage === 'shortlisted' ? 'none' : 'block' }}>Shortlisted</option>
           <option className='font-semibold pt-2 text-gray-600' value="interview" style={{ display: ApplicantData?.hiringStage === 'interview' ? 'none' : 'block' }}>Interview</option>
@@ -52,6 +89,33 @@ const ApplicantDetailsSection = () => {
           <option className='font-semibold pt-2 text-gray-600' value="rejected" style={{ display: ApplicantData?.hiringStage === 'rejected' ? 'none' : 'block' }}>Reject</option>
         </select>
       </div>
+      <Modal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div>
+          <form action="" onSubmit={handleInterviewSchedule}>
+            <div>
+              <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Test Type</label>
+              <input required name="testType" className="border rounded-md py-2 px-2 mt-2 w-full outline-none" placeholder='Enter Test Type' value={testType} onChange={(e) => setTestType(e.target.value)} />
+            </div>
+            <div className='mt-4'>
+              <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Employee</label>
+              <select onChange={(e) => setEmployeeId(e.target.value)} required name="employeeId" className="border rounded-md py-2 px-2 w-full outline-none" >
+                <option value="" defaultChecked hidden className='text-gray-600 '>Select Employee</option>
+                <option value="hello1" className='text-gray-600 '> Select Employee</option>
+                <option value="hello2" className='text-gray-700 '>Select Employee</option>
+                <option value="hello3" className='text-gray-700 '>Select Employee</option>
+                <option value="hello4" className='text-gray-700 '>Select Employee</option>
+              </select>
+            </div>
+            <div className='mt-4'>
+              <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Date and Time</label>
+              <input min={currentDate} onChange={(e) => setScheduleDateAndTime(e.target.value)} required type="datetime-local" className='border rounded-md py-2 px-2 w-full outline-none' />
+            </div>
+            <div className='mt-4 flex justify-center'>
+              <button className='bg-lightgreen text-white font-semibold text-center px-3 py-2 rounded-md'>Schedule</button>
+            </div>
+          </form>
+        </div>
+      </Modal>
       <div>
         <Outlet />
       </div>
