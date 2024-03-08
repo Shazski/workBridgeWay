@@ -10,7 +10,9 @@ export class EmployeeService {
     @InjectModel(Employee.name) private EmployeeModal: Model<Employee>,
   ) {}
 
-  async addEmployee(employeeDto: EmployeeDto): Promise<Employee | boolean | string> {
+  async addEmployee(
+    employeeDto: EmployeeDto,
+  ): Promise<Employee | boolean | string> {
     try {
       const newEmployee = await this.EmployeeModal.create(employeeDto);
       if (!newEmployee) {
@@ -18,12 +20,12 @@ export class EmployeeService {
       }
       return newEmployee;
     } catch (error) {
-      if(error.code === 11000) {
-        console.log(error.message,"error messages")
-        return "Employee Email Is Already Taken "
+      if (error.code === 11000) {
+        console.log(error.message, 'error messages');
+        return 'Employee Email Is Already Taken ';
       }
-      console.log(error, "<< Something Went wrong in addEmployee Repo >>")
-      return false
+      console.log(error, '<< Something Went wrong in addEmployee Repo >>');
+      return false;
     }
   }
 }

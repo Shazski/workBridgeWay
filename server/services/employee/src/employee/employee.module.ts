@@ -7,6 +7,7 @@ import {
   EmployeeSchema,
 } from 'src/repository/schema/employee.schema';
 import { PasswordService } from './utils/bcrypt/bcrypt.service';
+import { RabbitMqController } from 'src/infra/rabbitMq/rabbitmq.controller';
 
 @Module({
   imports: [
@@ -14,8 +15,7 @@ import { PasswordService } from './utils/bcrypt/bcrypt.service';
       { name: Employee.name, schema: EmployeeSchema },
     ]),
   ],
-  controllers: [EmployeeController],
+  controllers: [EmployeeController, RabbitMqController],
   providers: [EmployeeService, PasswordService],
 })
-
 export class EmployeeModule {}

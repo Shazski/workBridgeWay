@@ -4,7 +4,7 @@ import { ErrorResponse } from "work-bridge-way-common";
 
 export default (dependencies: IDependencies) => {
  const {
-  job_useCase: { updateJobStatus_useCase },
+  job_useCase: { updateApplicantJobStatus_useCase },
  } = dependencies;
  const updateApplicantStatus = async (
   req: Request,
@@ -15,9 +15,8 @@ export default (dependencies: IDependencies) => {
   const jobId = req.query.jobId;
   const applicantId = req.query.applicantId;
 
-  console.log(req.query, "updated data");
   try {
-   const updatedJob = await updateJobStatus_useCase(dependencies).execute(
+   const updatedJob = await updateApplicantJobStatus_useCase(dependencies).execute(
     applicantId,
     jobId,
     stage

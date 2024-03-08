@@ -1,6 +1,5 @@
 import { ObjectId } from "mongoose";
 import { IDependencies } from "../../interface/IDependencies";
-import { IJob } from "../../interface/IJob";
 
 export const scheduleInterview_useCase = (dependencies: IDependencies) => {
  const {

@@ -5,17 +5,5 @@ import { PasswordService } from './utils/bcrypt/bcrypt.service';
 
 @Controller('employee')
 export class EmployeeController {
-  constructor(
-    private readonly employeeService: EmployeeService,
-    private readonly passwordService: PasswordService,
-  ) {}
-
-  @Post('/add-employee')
-  async addEmployee(@Body() employeeData: EmployeeDto) {
-    employeeData.password = await this.passwordService.hashPassword(
-      employeeData.password,
-    );
-    const newEmployee = await this.employeeService.addEmployee(employeeData);
-    console.log(newEmployee, "EmployeeData");
-  }
+  constructor(private readonly employeeService: EmployeeService) {}
 }
