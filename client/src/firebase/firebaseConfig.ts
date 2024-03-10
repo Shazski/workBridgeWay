@@ -50,7 +50,7 @@ export const requestPermission = () => {
 requestPermission();
 
 export const onMessageListener = () => {
- return new Promise<{ notification?: { title?: string; body?: string } }>(
+ return new Promise<{ notification: { title: string; body: string } }>(
   (resolve) => {
    onMessage(messaging, (payload: any) => {
     resolve(payload || {});

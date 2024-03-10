@@ -6,6 +6,7 @@ import { editJobDetails_useCase } from './editJobDetails_useCase';
 import { updateApplicantJobStatus_useCase } from './updateApplicantJobStatus_useCase';
 import { scheduleInterview_useCase } from './scheduleInterview_useCase';
 import { cancelInterviewForUser_useCase } from './cancelInterviewForUser_useCase';
+import { getAllApplicantScheduleDate_useCase } from './getAllApplicantScheduleDate_useCase';
 
 export = {
     postJob_useCase,
@@ -16,4 +17,5 @@ export = {
     updateApplicantJobStatus_useCase,
     scheduleInterview_useCase,
     cancelInterviewForUser_useCase,
+    getAllApplicantScheduleDate_useCase
 }

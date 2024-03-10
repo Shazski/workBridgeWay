@@ -1,4 +1,4 @@
-import { firebase } from ".";
+import { firebase } from "./index";
 
 export const sendChatNotification = async (
  fmcToken: string,
@@ -12,6 +12,7 @@ export const sendChatNotification = async (
    body: body,
   },
  };
+ console.log(message, "message data");
 
  try {
   const response = await firebase.messaging().send(message);
@@ -20,3 +21,5 @@ export const sendChatNotification = async (
   console.error("Opps something went wrong in sending message", error);
  }
 };
+
+

@@ -12,6 +12,7 @@ import cancelInterviewForUser_controller from "./cancelInterviewForUser_controll
 import addEmployee_controller from "./addEmployee_controller";
 import getAllCompanyEmployees_controller from "./getAllCompanyEmployees_controller";
 import editEmployeeDetails_controller from "./editEmployeeDetails_controller";
+import getAllApplicantsSchedule_controller from "./getAllApplicantsSchedule_controller";
 export = (dependencies: IDependencies) => {
   return {
     updateCompany: updateCompany_controller(dependencies),
@@ -27,5 +28,6 @@ export = (dependencies: IDependencies) => {
     addEmployee:addEmployee_controller(dependencies),
     getAllCompanyEmployees:getAllCompanyEmployees_controller(dependencies),
     editEmployee:editEmployeeDetails_controller(dependencies),
+    getAllApplicantsSchedule:getAllApplicantsSchedule_controller(dependencies),
   };
 };

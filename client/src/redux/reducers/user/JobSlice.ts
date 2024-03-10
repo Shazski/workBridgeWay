@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllJobs, getUserApplications, getUserpreferredJob } from "../../actions/user/userActions";
+import {
+ getAllJobs,
+ getUserApplications,
+ getUserpreferredJob,
+} from "../../actions/user/userActions";
 import { IJobData } from "../../../interface/ICompanyData";
+import { getAllApplicantSchedule } from "../../actions/company/CompanyActions";
 
 const jobSlice = createSlice({
  name: "profile",
@@ -11,7 +16,8 @@ const jobSlice = createSlice({
   jobsCount: null as any | null,
   userAppliedJobs: null as any | null,
   userPreferredJobs: null as IJobData[] | null,
-  userAppliedJobsCount: null as number | null
+  userAppliedJobsCount: null as number | null,
+  scheduleData: null as any | null,
  },
  reducers: {},
 
@@ -37,8 +43,8 @@ const jobSlice = createSlice({
    })
    .addCase(getUserApplications.fulfilled, (state, action) => {
     state.loading = false;
-    state.userAppliedJobs = action.payload[0] as any
-    state.userAppliedJobsCount = action.payload[1] as number
+    state.userAppliedJobs = action.payload[0] as any;
+    state.userAppliedJobsCount = action.payload[1] as number;
     state.error = null;
    })
    .addCase(getUserApplications.rejected, (state, action) => {
@@ -50,15 +56,29 @@ const jobSlice = createSlice({
     state.error = null;
    })
    .addCase(getUserpreferredJob.fulfilled, (state, action) => {
-    console.log(action.payload,"payloadData")
+    console.log(action.payload, "payloadData");
     state.loading = false;
-    state.userPreferredJobs = action.payload as IJobData[]
+    state.userPreferredJobs = action.payload as IJobData[];
     state.error = null;
    })
    .addCase(getUserpreferredJob.rejected, (state, action) => {
     state.loading = false;
     state.error = action.payload as string;
    })
+   .addCase(getAllApplicantSchedule.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+   })
+   .addCase(getAllApplicantSchedule.fulfilled, (state, action) => {
+    console.log(action.payload, "payloadData");
+    state.loading = false;
+    state.scheduleData = action.payload as any;
+    state.error = null;
+   })
+   .addCase(getAllApplicantSchedule.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+   });
  },
 });
 

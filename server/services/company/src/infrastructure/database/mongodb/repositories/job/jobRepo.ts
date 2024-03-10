@@ -591,3 +591,34 @@ export const cancelInterviewForUser = async (
   return false;
  }
 };
+export const getAllApplicantsSchedule = async (companyId: string) => {
+ try {
+  console.log(companyId, "companyId");
+  const result = await JobSchema.aggregate([
+   {
+    $match: {
+     companyId: new mongoose.Types.ObjectId(companyId),
+    },
+   },
+   {
+    $unwind: "$applicants",
+   },
+   {
+    $unwind: "$applicants.schedule",
+   },
+   {
+    $project: {
+     _id: "$_id",
+     schedule: "$applicants.schedule",
+    },
+   },
+  ]);
+  console.log(result, "result");
+  if (!result) return false;
+
+  return result;
+ } catch (error) {
+  console.error("Error fetching data:", error);
+  return false;
+ }
+};

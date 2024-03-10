@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { IDependencies } from "../../../application/interface/IDependencies";
 import { ErrorResponse } from "work-bridge-way-common";
+import rabbitmqConfig from "../../../infrastructure/messageBroker/rabbitmq/rabbitmq.config";
 
 export default (dependencies: IDependencies) => {
  const {
   job_useCase: { scheduleInterview_useCase },
+  RabbitMqClient,
  } = dependencies;
  const scheduleInterviewForUser = async (
   req: Request,
@@ -20,8 +22,23 @@ export default (dependencies: IDependencies) => {
   const jobId = req.query.jobId;
   const userId = req.query.userId;
 
-  console.log(req.query, "updated data");
   try {
+   const userFcmToken: any = await RabbitMqClient.Requester(
+    userId,
+    rabbitmqConfig.rabbitMq.queues.user_queue,
+    "getUserById"
+   );
+   const notificationData = {
+    fmcToken: userFcmToken.fmcToken,
+    title: "Interview Scheduled",
+    body: `Date is ${scheduleData.date} and Time is ${scheduleData.time}`,
+   };
+   RabbitMqClient.Requester(
+    notificationData,
+    rabbitmqConfig.rabbitMq.queues.notification_queue,
+    "sendNotifications"
+   );
+
    const updatedJob = await scheduleInterview_useCase(dependencies).execute(
     jobId,
     userId,

@@ -19,6 +19,7 @@ export = (dependencies: IDependencies) => {
   addEmployee,
   getAllCompanyEmployees,
   editEmployee,
+  getAllApplicantsSchedule,
  } = companyController(dependencies);
 
  router.put("/update", verifyCompanyToken, updateCompany);
@@ -46,6 +47,11 @@ export = (dependencies: IDependencies) => {
   getAllCompanyEmployees
  );
  router.patch("/edit-company-employee", verifyCompanyToken, editEmployee);
+ router.get(
+  "/get-all-applicant-schedule",
+  verifyCompanyToken,
+  getAllApplicantsSchedule
+ );
 
  return router;
 };

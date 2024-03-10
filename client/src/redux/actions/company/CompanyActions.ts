@@ -275,3 +275,18 @@ export const EditEmployeeData = createAsyncThunk(
   }
  }
 );
+export const getAllApplicantSchedule = createAsyncThunk(
+ "user/getAllApplicantSchedule",
+ async (_, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${COMPANY_BASE_URL}/get-all-applicant-schedule`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

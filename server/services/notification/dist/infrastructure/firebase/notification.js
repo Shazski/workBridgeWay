@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendChatNotification = void 0;
-const _1 = require(".");
+const index_1 = require("./index");
 const sendChatNotification = (fmcToken, title, body) => __awaiter(void 0, void 0, void 0, function* () {
     let message = {
         token: fmcToken.toString(),
@@ -19,8 +19,9 @@ const sendChatNotification = (fmcToken, title, body) => __awaiter(void 0, void 0
             body: body,
         },
     };
+    console.log(message, "message data");
     try {
-        const response = yield _1.firebase.messaging().send(message);
+        const response = yield index_1.firebase.messaging().send(message);
         console.info("wohooo .... firebase notification sent successfully", response);
     }
     catch (error) {

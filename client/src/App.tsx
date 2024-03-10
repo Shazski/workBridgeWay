@@ -43,6 +43,7 @@ import ApplicantHiringStage from './components/company/ApplicantHiringStage';
 import ApplicantInterviewSchedule from './components/company/ApplicantInterviewSchedule';
 import Notifications from './components/Notifications';
 import EmployeeList from './pages/company/EmployeeList';
+import Schedule from './pages/company/Schedule';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -94,6 +95,7 @@ function App() {
             <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
               <Route path='dashboard' element={<CompanyDashboard />} />
               <Route path='applicants' element={<JobApplicants />} />
+              <Route path='schedule' element={<Schedule />} />
               <Route path='employees' element={<EmployeeList />} />
               <Route path='applicants/:id' element={<CompanyJobApplicants />} />
               <Route path='applicants/:id/:userId' element={<ApplicantDetails />} >
