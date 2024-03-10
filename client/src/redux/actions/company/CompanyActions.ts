@@ -218,3 +218,43 @@ export const cancelInterviewForUser = createAsyncThunk(
   }
  }
 );
+export const addEmployee = createAsyncThunk(
+ "user/addEmployee",
+ async (
+  employeeData: {
+   name: string;
+   email: string;
+   password: string;
+   department: string;
+   workType: string;
+  },
+  { rejectWithValue }
+ ) => {
+  try {
+   const { data } = await axios.post(
+    `${COMPANY_BASE_URL}/add-employee`,
+    employeeData,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const getAllCompanyEmployees = createAsyncThunk(
+ "user/getAllCompanyEmployees",
+ async ({page = 1,search = ""}:{page:number, search:string}, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${COMPANY_BASE_URL}/get-company-employees?page=${page}&search=${search}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

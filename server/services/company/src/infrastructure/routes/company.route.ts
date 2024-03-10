@@ -4,30 +4,42 @@ import companyController from "../../presentation/controller/companyController";
 import { verifyCompanyToken } from "work-bridge-way-common";
 
 export = (dependencies: IDependencies) => {
-  const router = express.Router();
-  const {
-    updateCompany,
-    postJob,
-    getJobs,
-    updateJobStatus,
-    getJobById,
-    editJob,
-    getApplicantDetails,
-    uppdateApplicantStatus,
-    scheduleInterviewForUser,
-    cancelInterviewForUser,
-  } = companyController(dependencies);
+ const router = express.Router();
+ const {
+  updateCompany,
+  postJob,
+  getJobs,
+  updateJobStatus,
+  getJobById,
+  editJob,
+  getApplicantDetails,
+  uppdateApplicantStatus,
+  scheduleInterviewForUser,
+  cancelInterviewForUser,
+  addEmployee,
+  getAllCompanyEmployees
+ } = companyController(dependencies);
 
-  router.put("/update", verifyCompanyToken,updateCompany);
-  router.post("/post-job",verifyCompanyToken, postJob);
-  router.get("/get-jobs",verifyCompanyToken,getJobs);
-  router.post("/update-job-status",verifyCompanyToken, updateJobStatus);
-  router.get("/get-job/:id",verifyCompanyToken, getJobById);
-  router.post("/edit-job",verifyCompanyToken, editJob);
-  router.get("/get-applicant-details",verifyCompanyToken, getApplicantDetails);
-  router.patch("/update-applicant-status",verifyCompanyToken, uppdateApplicantStatus);
-  router.post("/schedule-interview",verifyCompanyToken, scheduleInterviewForUser);
-  router.patch("/cancel-interview",verifyCompanyToken, cancelInterviewForUser);
-  
-  return router;
+ router.put("/update", verifyCompanyToken, updateCompany);
+ router.post("/post-job", verifyCompanyToken, postJob);
+ router.get("/get-jobs", verifyCompanyToken, getJobs);
+ router.post("/update-job-status", verifyCompanyToken, updateJobStatus);
+ router.get("/get-job/:id", verifyCompanyToken, getJobById);
+ router.post("/edit-job", verifyCompanyToken, editJob);
+ router.get("/get-applicant-details", verifyCompanyToken, getApplicantDetails);
+ router.patch(
+  "/update-applicant-status",
+  verifyCompanyToken,
+  uppdateApplicantStatus
+ );
+ router.post(
+  "/schedule-interview",
+  verifyCompanyToken,
+  scheduleInterviewForUser
+ );
+ router.patch("/cancel-interview", verifyCompanyToken, cancelInterviewForUser);
+ router.post("/add-employee", verifyCompanyToken, addEmployee);
+ router.get("/get-company-employees", verifyCompanyToken, getAllCompanyEmployees);
+
+ return router;
 };

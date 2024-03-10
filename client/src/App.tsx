@@ -42,6 +42,7 @@ import ApplicantResume from './components/company/ApplicantResume';
 import ApplicantHiringStage from './components/company/ApplicantHiringStage';
 import ApplicantInterviewSchedule from './components/company/ApplicantInterviewSchedule';
 import Notifications from './components/Notifications';
+import EmployeeList from './pages/company/EmployeeList';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -75,7 +76,7 @@ function App() {
     <div>
       <Toaster position='top-center' />
       <ToastContainer />
-      <Notifications/>
+      <Notifications />
       <div>
         <Routes>
           {/* common routes */}
@@ -93,6 +94,7 @@ function App() {
             <Route path='company' element={<CompanyProtectedRoute element={<CompanySideBar />} />}>
               <Route path='dashboard' element={<CompanyDashboard />} />
               <Route path='applicants' element={<JobApplicants />} />
+              <Route path='employees' element={<EmployeeList />} />
               <Route path='applicants/:id' element={<CompanyJobApplicants />} />
               <Route path='applicants/:id/:userId' element={<ApplicantDetails />} >
                 <Route path='profile' element={<ApplicantPersonalInfo />} />

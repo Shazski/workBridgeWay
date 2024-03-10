@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICompanyData, IJobData } from "../../../interface/ICompanyData";
 import {
+ addEmployee,
  cancelInterviewForUser,
+ getAllCompanyEmployees,
  getApplicantsDetails,
  getCategory,
  getJobById,
@@ -9,6 +11,7 @@ import {
  scheduleInterviewForUser,
 } from "../../actions/company/CompanyActions";
 import { IUserLoginData } from "../../../interface/IuserLogin";
+import { IEmployee } from "../../../interface/IEmployeeData";
 const companySlice = createSlice({
  name: "company",
  initialState: {
@@ -21,6 +24,8 @@ const companySlice = createSlice({
   companyJobCount: null as number | null,
   applicantData: null as IUserLoginData | null,
   pendingApplicantsCount: null as any | null,
+  employees: null as IEmployee[] | null,
+  employeesCount: null as number | null
  },
  reducers: {
   pushCategory: (state, action) => {
@@ -64,6 +69,9 @@ const companySlice = createSlice({
    state.jobs?.map((job) =>
     job._id === action.payload ? (job.status = !job.status) : ""
    );
+  },
+  makeCompanyErrorDisable: (state) => {
+   state.error = "";
   },
  },
 
@@ -150,6 +158,32 @@ const companySlice = createSlice({
     state.error = action.payload as string;
     state.editJob = null;
    })
+   .addCase(addEmployee.pending, (state) => {
+    state.loading = true;
+   })
+   .addCase(addEmployee.fulfilled, (state) => {
+    state.loading = false;
+    state.error = null;
+   })
+   .addCase(addEmployee.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+    state.editJob = null;
+   })
+   .addCase(getAllCompanyEmployees.pending, (state) => {
+    state.loading = true;
+   })
+   .addCase(getAllCompanyEmployees.fulfilled, (state, action) => {
+    state.loading = false;
+    state.employees = action.payload[0];
+    state.employeesCount = action.payload[1];
+    state.error = null;
+   })
+   .addCase(getAllCompanyEmployees.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+    state.editJob = null;
+   })
  },
 });
 export const {
@@ -160,5 +194,6 @@ export const {
  popResponsibilities,
  updateLiveAndClose,
  changeStatus,
+ makeCompanyErrorDisable,
 } = companySlice.actions;
 export default companySlice.reducer;

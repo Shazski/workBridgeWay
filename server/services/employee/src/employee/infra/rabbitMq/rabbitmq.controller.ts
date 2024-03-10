@@ -25,15 +25,18 @@ export class RabbitMqController {
     const message = context.getMessage();
 
     const correlationId = message?.properties.correlationId;
-    const replyToQueue = message.properties.replyToQueue;
+    const replyToQueue = message.properties.replyTo;
 
     const operation = message.properties?.headers?.function;
     let response = {};
 
     switch (operation) {
       case 'addEmployee':
-        data.password = this.passwordService.hashPassword(data.password);
+        data.password = await this.passwordService.hashPassword(data.password);
         response = await this.employeeService.addEmployee(data);
+        break;
+      case 'getAllCompanyEmployees':
+        response = await this.employeeService.getAllCompanyEmployees(data);
         break;
       default:
         response = 'Request_key Not_Found';

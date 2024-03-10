@@ -4,19 +4,22 @@ import { Document, SchemaTypes } from 'mongoose';
 @Schema()
 export class Employee extends Document {
   @Prop({ type: String, required: true })
-  employeeName: string;
+  name: string;
 
   @Prop({ type: String, required: true, unique: true })
   email: string;
-  
-  @Prop({ type: String, required: true})
+
+  @Prop({ type: String, required: true })
   password: string;
 
   @Prop({ type: String, required: true })
   companyId: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, default:"employee" })
   role: string;
+
+  @Prop({ type: String, required: true })
+  workType: string;
 
   @Prop({ type: String, required: true })
   department: string;

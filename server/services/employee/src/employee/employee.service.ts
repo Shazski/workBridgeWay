@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Search } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Employee } from 'src/repository/schema/employee.schema';
 import { EmployeeDto } from './dto/employeeDto';
 
@@ -12,7 +12,7 @@ export class EmployeeService {
 
   async addEmployee(
     employeeDto: EmployeeDto,
-  ): Promise<Employee | boolean | string> {
+  ): Promise<Employee | boolean | string | any> {
     try {
       const newEmployee = await this.EmployeeModal.create(employeeDto);
       if (!newEmployee) {
@@ -21,11 +21,38 @@ export class EmployeeService {
       return newEmployee;
     } catch (error) {
       if (error.code === 11000) {
-        console.log(error.message, 'error messages');
-        return 'Employee Email Is Already Taken ';
+        return { conflict: true, message: 'Email is Already Taken' };
       }
       console.log(error, '<< Something Went wrong in addEmployee Repo >>');
       return false;
     }
+  }
+
+  async getAllCompanyEmployees(data: {
+    companyId: ObjectId;
+    page: number;
+    search: string;
+  }) {
+    const skip = Number((data.page - 1) * 10);
+    const employeeList = await this.EmployeeModal.find({
+      $or: [
+        { name: { $regex: data.search } },
+        { department: { $regex: data.search } },
+      ],
+      companyId: data.companyId,
+    })
+      .limit(10)
+      .skip(skip);
+
+    const employeeCount = await this.EmployeeModal.find({
+      $or: [
+        { name: { $regex: data.search } },
+        { department: { $regex: data.search } },
+      ],
+      companyId: data.companyId,
+    }).countDocuments();
+    if (!employeeList) return false;
+
+    return [employeeList, employeeCount];
   }
 }

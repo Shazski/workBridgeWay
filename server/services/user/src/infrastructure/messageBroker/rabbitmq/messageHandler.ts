@@ -9,8 +9,6 @@ export default class MessageHandler {
         replyTo: string
     ) {
         let response = {}
-        console.log('the operation is', operation);
-        console.log('the data is', data);
         switch (operation) {
             case 'userExist':
                 response = await userRepo.findUserByEmail_repo(data)

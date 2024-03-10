@@ -6,4 +6,6 @@ import { PasswordService } from './utils/bcrypt/bcrypt.service';
 @Controller('employee')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
+
+
 }

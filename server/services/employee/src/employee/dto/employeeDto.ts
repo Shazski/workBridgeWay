@@ -11,7 +11,7 @@ import { ObjectId, isValidObjectId } from 'mongoose';
 export class EmployeeDto {
   @IsNotEmpty()
   @IsString()
-  readonly employeeName: string;
+  readonly name: string;
 
   @IsEmail()
   readonly email: string;
@@ -28,4 +28,7 @@ export class EmployeeDto {
 
   @IsString()
   readonly department: string;
+
+  @IsString()
+  readonly workType: string;
 }
