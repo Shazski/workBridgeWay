@@ -4,7 +4,7 @@ import EmployeeListTable from '../../components/company/EmployeeListTable';
 import Modal from '../../components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { addEmployee, getAllCompanyEmployees } from '../../redux/actions/company/CompanyActions';
+import { addEmployee } from '../../redux/actions/company/CompanyActions';
 import { makeCompanyErrorDisable } from '../../redux/reducers/company/companySlice';
 
 const EmployeeList = () => {
@@ -32,7 +32,7 @@ const EmployeeList = () => {
     }, 5000)
   }, [error])
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.currentTarget
     setFormData({
       ...formData,
@@ -66,7 +66,11 @@ const EmployeeList = () => {
           <h1 className="font-semibold text-blue-gray-700">Department</h1>
           <input required onChange={handleChange} name="department" type='text' className="border rounded-md py-2 w-full outline-none" />
           <h1 className="font-semibold text-blue-gray-700">Work Type</h1>
-          <input required onChange={handleChange} name="workType" type='text' className="border rounded-md py-2 w-full outline-none" />
+          <select required onChange={handleChange} name="workType"  className="border rounded-md py-2 w-full outline-none" >
+            <option value="" hidden defaultChecked>Select Work Type</option>
+            <option value="work from home">Work from Home</option>
+            <option value="work from office">Work from Office</option>
+          </select>
           <div className="flex justify-end me-2 mt-2">
             <button className="px-3 py-2 bg-lightgreen text-white font-semibold rounded-md">Submit</button>
           </div>

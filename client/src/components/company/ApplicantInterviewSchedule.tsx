@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import moment from 'moment-timezone';
-import { cancelInterviewForUser, scheduleInterviewForUser } from '../../redux/actions/company/CompanyActions';
+import { cancelInterviewForUser, getAllCompanyEmployees, scheduleInterviewForUser } from '../../redux/actions/company/CompanyActions';
 import toast from 'react-hot-toast';
 import { GiCancel } from "react-icons/gi";
 const ApplicantInterviewSchedule = () => {
@@ -23,7 +23,7 @@ const ApplicantInterviewSchedule = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
-
+  const { employees } = useSelector((state: RootState) => state.company)
   const formatDate = (date) => {
     if (!(date instanceof Date)) {
       date = new Date(date);
@@ -53,7 +53,7 @@ const ApplicantInterviewSchedule = () => {
         testType: testType,
         date: scheduleDateAndTime.split('T')[0],
         time: scheduleDateAndTime.split('T')[1],
-        employeeId: "65ded88e5f384414da78ccab"
+        employeeId: employeeId
       }
     }
 
@@ -64,10 +64,10 @@ const ApplicantInterviewSchedule = () => {
   }
 
   useEffect(() => {
-    console.log("re rendered")
-  }, [refetch])
+    dispatch(getAllCompanyEmployees({ page: 1, search: "" }))
+  }, [])
 
-  const handleRemove = async() => {
+  const handleRemove = async () => {
     const interviewData = {
       userId: userId!,
       jobId: id!,
@@ -96,7 +96,9 @@ const ApplicantInterviewSchedule = () => {
               <div className='ms-3 mt-4 flex gap-x-3'>
                 <img src={LOGO} alt="" className='w-12 h-12 rounded-full border' />
                 <div className='mt-2'>
-                  <h1 className='text-sm text-blue-gray-800 font-semibold'>Kathryn</h1>
+                <h1 className='text-sm text-blue-gray-800 font-semibold'>
+  {`${employees?.find((emp) => emp._id === schedule.employeeId)?.name || "Not Available"}`}
+</h1>
                   <h1 className='text-xs text-gray-600'>{schedule?.testType}</h1>
                 </div>
               </div>
@@ -125,10 +127,11 @@ const ApplicantInterviewSchedule = () => {
               <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Employee</label>
               <select onChange={(e) => setEmployeeId(e.target.value)} required name="employeeId" className="border rounded-md py-2 px-2 w-full outline-none" >
                 <option value="" defaultChecked hidden className='text-gray-600 '>Select Employee</option>
-                <option value="" className='text-gray-600 '> Select Employee</option>
-                <option value="" className='text-gray-700 '>Select Employee</option>
-                <option value="" className='text-gray-700 '>Select Employee</option>
-                <option value="" className='text-gray-700 '>Select Employee</option>
+                {employees?.map((emp, idx) => (
+                  <>
+                    <option key={idx} value={emp._id} className='text-gray-600 '>{emp?.name}</option>
+                  </>
+                ))}
               </select>
             </div>
             <div className='mt-4'>

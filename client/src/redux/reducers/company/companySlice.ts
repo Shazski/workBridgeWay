@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICompanyData, IJobData } from "../../../interface/ICompanyData";
 import {
+ EditEmployeeData,
  addEmployee,
  cancelInterviewForUser,
  getAllCompanyEmployees,
@@ -25,7 +26,7 @@ const companySlice = createSlice({
   applicantData: null as IUserLoginData | null,
   pendingApplicantsCount: null as any | null,
   employees: null as IEmployee[] | null,
-  employeesCount: null as number | null
+  employeesCount: null as number | null,
  },
  reducers: {
   pushCategory: (state, action) => {
@@ -161,8 +162,13 @@ const companySlice = createSlice({
    .addCase(addEmployee.pending, (state) => {
     state.loading = true;
    })
-   .addCase(addEmployee.fulfilled, (state) => {
+   .addCase(addEmployee.fulfilled, (state, { payload }) => {
     state.loading = false;
+    if (state.employees === null) {
+     state.employees = [payload];
+    } else {
+     state.employees.push(payload);
+    }
     state.error = null;
    })
    .addCase(addEmployee.rejected, (state, action) => {
@@ -184,6 +190,22 @@ const companySlice = createSlice({
     state.error = action.payload as string;
     state.editJob = null;
    })
+   .addCase(EditEmployeeData.pending, (state) => {
+    state.loading = true;
+   })
+   .addCase(EditEmployeeData.fulfilled, (state, { payload }) => {
+    state.loading = false;
+    state.employees =
+     state.employees?.map((employee) =>
+      employee._id === payload._id ? payload : employee
+     ) || state.employees;
+    state.error = null;
+   })
+   .addCase(EditEmployeeData.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+    state.editJob = null;
+   });
  },
 });
 export const {

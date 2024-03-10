@@ -38,6 +38,9 @@ export class RabbitMqController {
       case 'getAllCompanyEmployees':
         response = await this.employeeService.getAllCompanyEmployees(data);
         break;
+      case 'editEmployee':
+        response = await this.employeeService.editEmployee(data);
+        break;
       default:
         response = 'Request_key Not_Found';
         break;

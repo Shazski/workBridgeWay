@@ -55,4 +55,15 @@ export class EmployeeService {
 
     return [employeeList, employeeCount];
   }
+
+  async editEmployee(employeeDetails) {
+    const { _id, ...restValues } = employeeDetails;
+    const editedEmployee = await this.EmployeeModal.findByIdAndUpdate(_id, {
+      ...restValues,
+    },{new:true});
+
+    if(!editedEmployee) return false
+
+    return editedEmployee
+  }
 }

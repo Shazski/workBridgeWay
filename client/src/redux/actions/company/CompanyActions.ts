@@ -7,6 +7,7 @@ import {
  handleError,
 } from "../../../config/configurations";
 import { IJobData } from "../../../interface/ICompanyData";
+import { IEmployee } from "../../../interface/IEmployeeData";
 
 export const addCategory = createAsyncThunk(
  "user/addCategory",
@@ -245,10 +246,26 @@ export const addEmployee = createAsyncThunk(
 );
 export const getAllCompanyEmployees = createAsyncThunk(
  "user/getAllCompanyEmployees",
- async ({page = 1,search = ""}:{page:number, search:string}, { rejectWithValue }) => {
+ async ({page = 1,search = ""}:{page?:number, search?:string}, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${COMPANY_BASE_URL}/get-company-employees?page=${page}&search=${search}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const EditEmployeeData = createAsyncThunk(
+ "user/EditEmployeeData",
+ async (employeeDetails:IEmployee, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.patch(
+    `${COMPANY_BASE_URL}/edit-company-employee`,
+    employeeDetails,
     config
    );
    return data;

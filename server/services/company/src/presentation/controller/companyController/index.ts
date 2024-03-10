@@ -11,6 +11,7 @@ import scheduleInterviewForUser_controller from "./scheduleInterviewForUser_cont
 import cancelInterviewForUser_controller from "./cancelInterviewForUser_controller";
 import addEmployee_controller from "./addEmployee_controller";
 import getAllCompanyEmployees_controller from "./getAllCompanyEmployees_controller";
+import editEmployeeDetails_controller from "./editEmployeeDetails_controller";
 export = (dependencies: IDependencies) => {
   return {
     updateCompany: updateCompany_controller(dependencies),
@@ -25,5 +26,6 @@ export = (dependencies: IDependencies) => {
     cancelInterviewForUser:cancelInterviewForUser_controller(dependencies),
     addEmployee:addEmployee_controller(dependencies),
     getAllCompanyEmployees:getAllCompanyEmployees_controller(dependencies),
+    editEmployee:editEmployeeDetails_controller(dependencies),
   };
 };
