@@ -6,7 +6,7 @@ import { errorHandler } from "work-bridge-way-common";
 import { ENV } from "../config";
 import routes from "../infrastructure/routes";
 import cookieParser from "cookie-parser";
-import cronJob from "../infrastructure/cronjob/jobExpiryCronJob";
+import cronjob from "../infrastructure/cronjob";
 const app = express();
 
 app.use(express.json());
@@ -18,7 +18,7 @@ if (ENV === "dev") app.use(logger("dev"));
 app.use("/api/v1", routes(dependencies));
 
 //cron job
-cronJob(dependencies);
+cronjob(dependencies);
 
 app.use((req: Request, res: Response) => {
  res

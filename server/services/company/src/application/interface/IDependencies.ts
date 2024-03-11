@@ -27,6 +27,7 @@ interface jobRepoData {
   scheduleInterviewForUser:any;
   cancelInterviewForUser:any;
   getAllApplicantsSchedule:any;
+  getAllJobsForScheduleMail:any;
 }
 
 interface jobUseCaseData {

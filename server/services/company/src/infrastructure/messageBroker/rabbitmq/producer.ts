@@ -8,7 +8,6 @@ export default class Producer {
     async requestingProducer(data: any, targetQueue: string, operation: string) {
         try {
             const uuid = randomUUID()
-            console.log(this.replyQueueName, "reply to queue in company service")
             const isSuccess = this.channel?.sendToQueue(
                 targetQueue,
                 Buffer.from(JSON.stringify(data)),

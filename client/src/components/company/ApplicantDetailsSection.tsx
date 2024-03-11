@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../redux/store';
-import { scheduleInterviewForUser, updateApplicantStatus } from '../../redux/actions/company/CompanyActions';
+import { getAllCompanyEmployees, scheduleInterviewForUser, updateApplicantStatus } from '../../redux/actions/company/CompanyActions';
 import { changeStatus } from '../../redux/reducers/company/companySlice';
 import Modal from '../Modal';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 const ApplicantDetailsSection = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [testType, setTestType] = useState<string>("");
@@ -16,7 +16,10 @@ const ApplicantDetailsSection = () => {
   const { id, userId } = useParams()
   const { editJob } = useSelector((state: RootState) => state.company)
   const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+
   const dispatch = useDispatch<AppDispatch>()
+  const { employees } = useSelector((state: RootState) => state.company)
+
   const handleUpdateStatus = (userId: string, jobId: string, status: string) => {
     const updateData = {
       applicantId: userId,
@@ -55,15 +58,20 @@ const ApplicantDetailsSection = () => {
         testType: testType,
         date: scheduleDateAndTime.split('T')[0],
         time: scheduleDateAndTime.split('T')[1],
-        employeeId: "65ded88e5f384414da78ccab"
+        employeeId: employeeId
       }
     }
+
 
     dispatch(scheduleInterviewForUser(interviewData))
     dispatch(changeStatus(updateData))
     dispatch(updateApplicantStatus(updateData));
     setIsModalOpen(false)
   }
+
+  useEffect(() => {
+    dispatch(getAllCompanyEmployees({ page: 1, search: "" }))
+  }, [])
   const currentDate = new Date().toISOString().slice(0, 16);
 
   return (
@@ -100,10 +108,11 @@ const ApplicantDetailsSection = () => {
               <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Employee</label>
               <select onChange={(e) => setEmployeeId(e.target.value)} required name="employeeId" className="border rounded-md py-2 px-2 w-full outline-none" >
                 <option value="" defaultChecked hidden className='text-gray-600 '>Select Employee</option>
-                <option value="hello1" className='text-gray-600 '> Select Employee</option>
-                <option value="hello2" className='text-gray-700 '>Select Employee</option>
-                <option value="hello3" className='text-gray-700 '>Select Employee</option>
-                <option value="hello4" className='text-gray-700 '>Select Employee</option>
+                {employees?.map((emp, idx) => (
+                  <>
+                    <option key={idx} value={emp._id} className='text-gray-600 '>{emp?.name}</option>
+                  </>
+                ))}
               </select>
             </div>
             <div className='mt-4'>

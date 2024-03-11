@@ -19,15 +19,15 @@ const Notifications = () => {
           dispatch(setUserfmcToken(fmcToken));
         }
 
-        const payload = await onMessageListener();
+        const payload: any = await onMessageListener();
 
-        if (payload.notification) {
+        if (payload) {
           setNotification({
             title: payload.notification.title || "",
             body: payload.notification.body || "",
           });
           toast.success(
-            `${notification.title}, ${notification.body}`,
+            `${payload.notification.title}, ${payload.notification.body}`,
             {
               duration: 6000,
               position: "top-right",

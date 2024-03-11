@@ -14,10 +14,9 @@ const Schedule = () => {
   }, [])
 
   const events = scheduleData?.map((schedule) => ({
-    title: schedule?.schedule?.date, 
-    start: `${schedule?.schedule?.date}T${schedule?.schedule?.time}`, 
+    title: schedule?.schedule?.testType,
+    start: `${schedule?.schedule?.date}T${schedule?.schedule?.time}`,
   }));
-  console.log(scheduleData, 'scheduleData')
   return (
     <div>
       <FullCalendar

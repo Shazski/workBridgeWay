@@ -622,3 +622,22 @@ export const getAllApplicantsSchedule = async (companyId: string) => {
   return false;
  }
 };
+export const getAllJobsForScheduleMail = async (currentDate: Date) => {
+ try {
+  const jobs = await JobSchema.find({
+   "applicants.schedule.date": {
+    $lte: currentDate.toISOString().split("T")[0],
+   },
+  });
+
+  if (!jobs) return false;
+
+  return jobs;
+ } catch (error) {
+  console.log(
+   error,
+   "<< Something went wrong in get all jobs for schedule mail repo >>"
+  );
+  return false;
+ }
+};

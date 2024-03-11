@@ -23,13 +23,13 @@ export default (dependencies: IDependencies) => {
   const userId = req.query.userId;
 
   try {
-   const userFcmToken: any = await RabbitMqClient.Requester(
+   const userDetails: any = await RabbitMqClient.Requester(
     userId,
     rabbitmqConfig.rabbitMq.queues.user_queue,
     "getUserById"
    );
    const notificationData = {
-    fmcToken: userFcmToken.fmcToken,
+    fmcToken: userDetails.fmcToken,
     title: "Interview Scheduled",
     body: `Date is ${scheduleData.date} and Time is ${scheduleData.time}`,
    };
@@ -37,6 +37,16 @@ export default (dependencies: IDependencies) => {
     notificationData,
     rabbitmqConfig.rabbitMq.queues.notification_queue,
     "sendNotifications"
+   );
+   const emailNotificationData = {
+    email: userDetails.email,
+    title: "Interview Scheduled",
+    body: `Date is ${scheduleData.date} and Time is ${scheduleData.time}`,
+   };
+   RabbitMqClient.Requester(
+    emailNotificationData,
+    rabbitmqConfig.rabbitMq.queues.notification_queue,
+    "sendInterviewScheduleEmail"
    );
 
    const updatedJob = await scheduleInterview_useCase(dependencies).execute(
