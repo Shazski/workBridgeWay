@@ -13,7 +13,7 @@ async function bootstrap() {
     origin: 'http://localhost:5173',
     credentials: true,
   });
-
+  
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3003);

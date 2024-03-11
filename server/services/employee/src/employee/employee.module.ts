@@ -1,4 +1,3 @@
-// employee.module.ts
 import { Module } from '@nestjs/common';
 import { EmployeeController } from './employee.controller';
 import { EmployeeService } from './employee.service';
@@ -8,6 +7,7 @@ import {
   Employee,
   EmployeeSchema,
 } from 'src/repository/schema/employee.schema';
+import { RabbitMQService } from './infra/rabbitMq/rabbitmqProducer.service';
 
 
 @Module({
@@ -17,6 +17,6 @@ import {
     ]),
   ],
   controllers: [EmployeeController],
-  providers: [EmployeeService, PasswordService, Rabbit],
+  providers: [EmployeeService, PasswordService, RabbitMQService],
 })
 export class EmployeeModule {}

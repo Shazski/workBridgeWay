@@ -9,9 +9,9 @@ export default class Consumer {
   if (eventEmitter) {
    console.log("ready to consume messages on company service");
    this.channel?.consume(
-    queue,
-    (message: ConsumeMessage | null) => {
-     if (message) {
+     queue,
+     (message: ConsumeMessage | null) => {
+       if (message) {
       eventEmitter.emit(message.properties.correlationId.toString(), message);
      }
     },
@@ -21,11 +21,11 @@ export default class Consumer {
    this.channel?.consume(
     queue,
     async (message: ConsumeMessage | null) => {
-     
+      console.log("Got message data in the cave successss====>>>>>",message?.content.toString());
      if (!message) return;
      const { correlationId, replyTo } = message.properties;
      const operation = message.properties.headers.function;
-     if (!correlationId || !replyTo) {
+     if (!correlationId || !replyTo || !operation) {
       console.log("Some properties are missing..");
      } else {
       MessageHandler.handle(

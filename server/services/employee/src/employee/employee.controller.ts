@@ -10,7 +10,7 @@ export class EmployeeController {
   constructor(
     private readonly employeeService: EmployeeService,
     private readonly configService: ConfigService,
-    private readonly rabbitMQService: RabbitMQService
+    private readonly rabbitMQService: RabbitMQService,
   ) {}
 
   @Get('/get-schedules')
@@ -18,8 +18,12 @@ export class EmployeeController {
     const token = request.cookies.auth_jwt;
     const secret = await this.configService.get('JWT_SECRET');
     const employeeId = getUserById(token, secret);
-   await this.rabbitMQService.initialize()
-   await this.rabbitMQService.sendMessage("user_queue","hello iam sharoon from employee service")
-   console.log("success in data transform")
+
+    const data = await this.rabbitMQService.sendMessage(
+      'company_queue',
+      JSON.stringify({employeeId}),
+      "getEmployeeScheduleData"
+    );
+    console.log('success in data transform', data);
   }
 }
