@@ -39,6 +39,10 @@ export default class MessageHandler {
    case "getPreferredJobs":
     response = await job_repo.getUserPreferredJobs(data);
     break;
+   case "getsampletest":
+    console.log("data ini nkilum vaaaa")
+    // response = await job_repo.getUserPreferredJobs(data);
+    break;
    default:
     response = "Request-key notfound";
     break;

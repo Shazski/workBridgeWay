@@ -65,9 +65,6 @@ export const getAllCompanyJobs = async (
 ): Promise<any> => {
  const skip = Number(page! - 1 ?? 1) * 10 || 0;
 
- if (search !== "") {
- }
-
  try {
   const cachedJob = await Client.get(`jobs${page}${search}`);
   if (cachedJob) {
@@ -132,6 +129,27 @@ export const getAllCompanyJobs = async (
     },
    },
   ]);
+  const today = new Date();
+  const scheduleTodayCount = await JobSchema.aggregate([
+   {
+    $unwind: "$applicants",
+   },
+   {
+    $match: {
+     "applicants.schedule.date": today.toISOString().split("T")[0],
+    },
+   },
+   {
+    $group: {
+     _id: null,
+     todayScheduledCount: { $sum: 1 },
+    },
+   },
+  ]);
+  console.log(
+   scheduleTodayCount[0]?.todayScheduledCount,
+   "scheduleTodayCount[0]"
+  );
 
   if (!jobs) return false;
   if (jobs.length > 0) {
@@ -141,6 +159,7 @@ export const getAllCompanyJobs = async (
      jobs,
      count,
      totalPendingApplicantsCount[0]?.totalPendingApplicants,
+     scheduleTodayCount[0].todayScheduledCount,
     ])
    );
   }
@@ -148,6 +167,7 @@ export const getAllCompanyJobs = async (
    jobs,
    count,
    totalPendingApplicantsCount[0]?.totalPendingApplicants,
+   scheduleTodayCount[0].todayScheduledCount,
   ] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
@@ -639,5 +659,37 @@ export const getAllJobsForScheduleMail = async (currentDate: Date) => {
    "<< Something went wrong in get all jobs for schedule mail repo >>"
   );
   return false;
+ }
+};
+
+export const getEmployeeSchedules = async (
+ employeeId: mongoose.Types.ObjectId
+): Promise<any[]> => {
+ try {
+  const jobs = await JobSchema.find({
+   "applicants.schedule.employeeId": employeeId,
+  });
+
+  const schedules: any[] = [];
+
+  jobs.forEach((job: any) => {
+   job.applicants.forEach((applicant: any) => {
+    applicant.schedule.forEach((schedule: any) => {
+     if (schedule.employeeId.equals(employeeId)) {
+      schedules.push({
+       testType: schedule.testType,
+       date: schedule.date,
+       time: schedule.time,
+       applicantId: applicant.applicantId,
+      });
+     }
+    });
+   });
+  });
+  console.log(schedules,"employee schedule data");
+
+  return schedules;
+ } catch (error) {
+  throw error;
  }
 };

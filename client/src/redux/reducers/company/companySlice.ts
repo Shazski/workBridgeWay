@@ -27,6 +27,7 @@ const companySlice = createSlice({
   pendingApplicantsCount: null as any | null,
   employees: null as IEmployee[] | null,
   employeesCount: null as number | null,
+  todayScheduleCount: null as number | null
  },
  reducers: {
   pushCategory: (state, action) => {
@@ -99,7 +100,7 @@ const companySlice = createSlice({
     state.jobs = action.payload[0];
     state.companyJobCount = action.payload[1];
     state.pendingApplicantsCount = action.payload[2];
-    console.log(action.payload, "payload in get job data");
+    state.todayScheduleCount = action.payload[3];
     state.error = null;
    })
    .addCase(getJobs.rejected, (state, action) => {

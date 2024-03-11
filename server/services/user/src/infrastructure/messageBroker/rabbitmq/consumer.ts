@@ -12,6 +12,7 @@ export default class Consumer {
         queue,
         (message: ConsumeMessage | null) => {
           if (message) {
+            console.log("data came from employee service",message);
             eventEmitter.emit(
               message.properties.correlationId.toString(),
               message

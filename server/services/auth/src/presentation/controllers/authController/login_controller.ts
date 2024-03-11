@@ -17,7 +17,7 @@ export = (dependencies: DependenciesData) => {
    if (!user)
     return next(ErrorResponse.unauthorized("The email is not registered"));
 
-   if (user.role === "user" || user.role === "admin") {
+   if (user.role === "user" || user.role === "admin" || user.role === "employee") {
     if (!user.status) {
      return next(ErrorResponse.unauthorized("You Have been blocked by Admin"));
     }
@@ -31,8 +31,10 @@ export = (dependencies: DependenciesData) => {
     let token: string
     if(user.role === "user") {
        token = generateToken(user._id, "user",JWT_SECRET!);
-    } else {
+    } else if(user.role === "admin" ) {
        token = generateToken(user._id, "admin",JWT_SECRET!);
+    } else {
+      token = generateToken(user._id, "employee",JWT_SECRET!);
     }
     delete user.password;
     user.token = token;

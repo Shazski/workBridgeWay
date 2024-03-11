@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CompanyJobApplicants = () => {
   const [search, setSearch] = useState<string>("");
+  const [dateFilter, setDateFilter] = useState<string>("");
   const handleSearch = (searchString: string) => {
     setSearch(searchString)
   }
@@ -22,14 +23,14 @@ const CompanyJobApplicants = () => {
           <SearchBar sentSearchStringToParent={handleSearch} />
         </div>
         <div className='flex justify-center'>
-        <select className='px-3 py-2 border rounded-md outline-none'>
+        <select onChange={(e) => setDateFilter(e.target.value)} className='px-3 py-2 border rounded-md outline-none'>
           <option value=""defaultChecked hidden>Date Filter</option>
           <option value="increasing">new - old</option>
           <option value="decreasing" >old - new</option>
         </select>
         </div>
         <div className='overflow-x-auto'>
-          <CompanyJobApplicantionTable search={search} />
+          <CompanyJobApplicantionTable search={search} dateFilter={dateFilter} />
         </div>
       </div>
     </>

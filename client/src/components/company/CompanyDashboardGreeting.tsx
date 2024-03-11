@@ -10,11 +10,11 @@ const CompanyDashboardGreeting = () => {
     const greeting: number = time.getHours()
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.user)
-    const { pendingApplicantsCount } = useSelector((state: RootState) => state.company)
+    const { pendingApplicantsCount, todayScheduleCount } = useSelector((state: RootState) => state.company)
 
     useEffect(() => {
         dispatch(getJobs({ page }))
-    },[])
+    }, [])
 
     return (
         <div>
@@ -24,9 +24,9 @@ const CompanyDashboardGreeting = () => {
                 </div>
             </div>
             <div className="flex flex-col 2xl:flex-row justify-center items-center">
-                <DataBox color="bg-lightgreen" data={pendingApplicantsCount} message="New Candidates to review" />
-                <DataBox color="bg-teal-400" data="3" message="Schedule for today" />
-                <DataBox color="bg-blue-400" data="24" message="Messages received" />
+                <DataBox color="bg-lightgreen" data={Number(pendingApplicantsCount) || 0} message="New Candidates to review" />
+                <DataBox color="bg-teal-400" data={Number(todayScheduleCount) ?? 0} message="Schedule for today" />
+                <DataBox color="bg-blue-400" data={24} message="Messages received" />
             </div>
         </div>
     )

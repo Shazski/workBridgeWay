@@ -6,7 +6,7 @@ import { getJobById, updateApplicantStatus } from '../../redux/actions/company/C
 import { Link, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 
-const CompanyJobApplicantionTable = ({ search }: { search: string }) => {
+const CompanyJobApplicantionTable = ({ search, dateFilter }: { search: string, dateFilter:string }) => {
   const [page, setPage] = useState<number>(1);
   const [firstIndex, setFirstIndex] = useState<number>(0);
   const [lastIndex, setLastIndex] = useState<number>(10);
@@ -36,16 +36,23 @@ const CompanyJobApplicantionTable = ({ search }: { search: string }) => {
   };
 
   useEffect(() => {
-    let filteredApplicants: never[] = [];
+    let filteredApplicants: Array<{ appliedDate?: Date }> = [];
     if (editJob) {
-      filteredApplicants = (editJob?.applicants || []).filter((applicant) =>
-        Object.values(applicant).some((value) =>
-          value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
-        )
-      );
+      filteredApplicants = (editJob?.applicants || [])
+        .filter((applicant) =>
+          Object.values(applicant).some((value) =>
+            value && typeof value === 'string' && value.toLowerCase().includes(search.toLowerCase())
+          )
+        );
+
+      if (dateFilter === 'decreasing') {
+        filteredApplicants.sort((a, b) => (a.appliedDate! > b.appliedDate! ? 1 : -1)); 
+      } else if (dateFilter === 'increasing') {
+        filteredApplicants.sort((a, b) => (a.appliedDate! > b.appliedDate! ? -1 : 1)); 
+      }
     }
     setFilteredData(filteredApplicants);
-  }, [editJob, search]);
+  }, [editJob, search, dateFilter]);
 
   const handleUpdateStatus = (userId, jobId, status) => {
     const updateData = {

@@ -1,13 +1,14 @@
+// employee.module.ts
 import { Module } from '@nestjs/common';
 import { EmployeeController } from './employee.controller';
 import { EmployeeService } from './employee.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PasswordService } from './utils/bcrypt/bcrypt.service';
 import {
   Employee,
   EmployeeSchema,
 } from 'src/repository/schema/employee.schema';
-import { PasswordService } from './utils/bcrypt/bcrypt.service';
-import { RabbitMqController } from 'src/employee/infra/rabbitMq/rabbitmq.controller';
+
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { RabbitMqController } from 'src/employee/infra/rabbitMq/rabbitmq.control
       { name: Employee.name, schema: EmployeeSchema },
     ]),
   ],
-  controllers: [EmployeeController, RabbitMqController],
-  providers: [EmployeeService, PasswordService],
+  controllers: [EmployeeController],
+  providers: [EmployeeService, PasswordService, Rabbit],
 })
 export class EmployeeModule {}

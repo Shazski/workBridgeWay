@@ -44,6 +44,8 @@ import ApplicantInterviewSchedule from './components/company/ApplicantInterviewS
 import Notifications from './components/Notifications';
 import EmployeeList from './pages/company/EmployeeList';
 import Schedule from './pages/company/Schedule';
+import EmployeeSideBar from './components/employee/EmployeeSideBar';
+import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -72,6 +74,9 @@ function App() {
   const AdminProtectedRoute = ({ element }: { element: ReactNode }) => {
     return user?.role === "admin" ? element : <Navigate to="/login" />;
   }
+  const EmployeeProtectedRoute = ({ element }: { element: ReactNode }) => {
+    return user?.role === "employee" ? element : <Navigate to="/login" />;
+  }
 
   return (
     <div>
@@ -81,7 +86,7 @@ function App() {
       <div>
         <Routes>
           {/* common routes */}
-          <Route path='/' element={user?.role === "company" ? <Navigate to={'/company/dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin/dashboard'} /> : <Home />} />
+          <Route path='/' element={user?.role === "company" ? <Navigate to={'/company/dashboard'} /> : user?.role === "admin" ? <Navigate to={'/admin/dashboard'} /> : user?.role === "employee" ? <Navigate to={'/employee/dashboard'} /> : <Home />} />
           <Route path='/login' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <Login />} />
           <Route path='/signup' element={(user?.email && !user?.user?.email) ? <Navigate to={'/'} /> : user?.user?.email ? <Navigate to={'/otp'} /> : <SignUp />} />
           <Route path='/jobs' element={<FindJobs />} />
@@ -114,6 +119,18 @@ function App() {
           {/* user routes */}
           <Route path='user' element={<UserProtectedRoute element={<UserSidebar />} />}>
             <Route path='dashboard' element={<Dashboard />} />
+            <Route path='profile' element={<Profile />} />
+            <Route path='messages' element={<Messages />} />
+            <Route path='applications' element={<Applications />} />
+            <Route path='settings' element={<Settings />} >
+              <Route path='edit-profile' element={<ProfilePic />} />
+              <Route path='edit-login' element={<UpdateLoginDetails />} />
+            </Route>
+          </Route>
+
+          {/* employee routes */}
+          <Route path='employee' element={<EmployeeProtectedRoute element={<EmployeeSideBar />} />}>
+            <Route path='dashboard' element={<EmployeeDashboard />} />
             <Route path='profile' element={<Profile />} />
             <Route path='messages' element={<Messages />} />
             <Route path='applications' element={<Applications />} />
