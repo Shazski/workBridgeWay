@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Req } from '@nestjs/common';
+import { Controller, Get, Inject, Req, UnauthorizedException } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Request } from 'express';
 import { getUserById } from 'work-bridge-way-common';
@@ -16,8 +16,11 @@ export class EmployeeController {
   @Get('/get-schedules')
   async getEmployeeSchedules(@Req() request: Request) {
     const token = request.cookies.auth_jwt;
-    const secret = await this.configService.get('JWT_SECRET');
 
+    const secret = await this.configService.get('JWT_SECRET');
+    if(!token || !secret) {
+      throw new UnauthorizedException("Invalid token")
+    }
     const employeeId = getUserById(token, secret);
 
     const data = await this.rabbitMQService.sendMessage(

@@ -50,8 +50,8 @@ export class Employee extends Document {
     ],
   })
   attendance: Array<{
-    checkin: string;
-    checkout: string;
+    checkIn: string;
+    checkOut: string;
     date: Date;
     status: string;
   }>;

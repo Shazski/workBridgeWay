@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import {
   Ctx,
+  EventPattern,
   MessagePattern,
   Payload,
   RmqContext,
@@ -40,6 +41,10 @@ export class RabbitMqController {
         break;
       case 'editEmployee':
         response = await this.employeeService.editEmployee(data);
+        break;
+      case 'markCheckIn':
+        console.log('🚀 ~ RabbitMqController ~ data:dadadada', data);
+        response = await this.employeeService.addCheckinForToday(data);
         break;
       default:
         response = 'Request_key Not_Found';

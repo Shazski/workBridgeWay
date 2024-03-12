@@ -4,9 +4,11 @@ import { JWT_SECRET } from "../../../config";
 import { ErrorResponse, generateToken } from "work-bridge-way-common";
 import bcrypt from "bcrypt";
 import { cookieConfig } from "../../../utils/constants/constant";
+import rabbitmqConfig from "../../../infrastructure/messageBroker/rabbitmq/rabbitmq.config";
 export = (dependencies: DependenciesData) => {
  const {
   user_useCase: { findUserByEmail_useCase, findCompanyByEmail_useCase },
+  RabbitMQClient
  } = dependencies;
  const login = async (req: Request, res: Response, next: NextFunction) => {
   const userCredentials = req.body;
@@ -34,6 +36,11 @@ export = (dependencies: DependenciesData) => {
     } else if(user.role === "admin" ) {
        token = generateToken(user._id, "admin",JWT_SECRET!);
     } else {
+      RabbitMQClient.Requester(
+         user._id,
+         rabbitmqConfig.rabbitMq.queues.employee_queue,
+         "markCheckIn"
+        )
       token = generateToken(user._id, "employee",JWT_SECRET!);
     }
     delete user.password;

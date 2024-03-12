@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { EmployeeModule } from './employee/employee.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { RabbitMqController } from './employee/infra/rabbitMq/rabbitmq.controller';
 @Module({
   imports: [
     EmployeeModule,

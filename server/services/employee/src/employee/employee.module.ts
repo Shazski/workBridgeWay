@@ -8,6 +8,7 @@ import {
   EmployeeSchema,
 } from 'src/repository/schema/employee.schema';
 import { RabbitMQService } from './infra/rabbitMq/rabbitmqProducer.service';
+import { RabbitMqController } from './infra/rabbitMq/rabbitmq.controller';
 
 
 @Module({
@@ -16,7 +17,7 @@ import { RabbitMQService } from './infra/rabbitMq/rabbitmqProducer.service';
       { name: Employee.name, schema: EmployeeSchema },
     ]),
   ],
-  controllers: [EmployeeController],
+  controllers: [EmployeeController,RabbitMqController],
   providers: [EmployeeService, PasswordService, RabbitMQService],
 })
 export class EmployeeModule {}

@@ -51,7 +51,7 @@ const EmployeeSideBar = () => {
                             </div> </NavLink>
                     </div>
                     
-                    <div className='mt-3 md:ms-3 flex gap-3'>
+                    {/* <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/employee/leaves' className={({ isActive }) => {
                             return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
@@ -59,12 +59,12 @@ const EmployeeSideBar = () => {
                                 <SlCalender className="text-xl" />
                                 <h1 className="hidden md:flex">View Leaves</h1>
                             </div> </NavLink>
-                    </div>
+                    </div> */}
                     <div className="fixed bottom-10 w-full">
                 <div onClick={() => dispatch(logoutUser())} className="flex ms-9 items-center  justify-start relative cursor-pointer">
                     <div>
-                        <IoExitOutline className="text-xl absolute top-4 left-2 text-red-600" />
-                        <h1 className="bg-gray-300 px-8 py-6 rounded-lg h-12 text-red-600 text-center flex mt-0.5 justify-center items-center ">
+                        <IoExitOutline className="text-xl absolute top-4 left-5 text-red-600" />
+                        <h1 className="bg-gray-300 px-10 ms-2 py-6 rounded-lg h-12 text-red-600 text-center flex mt-0.5 justify-center items-center ">
                             <span>Logout</span>
                         </h1>
                     </div>

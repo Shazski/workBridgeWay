@@ -1,4 +1,4 @@
-import { Injectable, Search } from '@nestjs/common';
+import { Injectable, NotFoundException, Search } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Employee } from 'src/repository/schema/employee.schema';
@@ -58,12 +58,59 @@ export class EmployeeService {
 
   async editEmployee(employeeDetails) {
     const { _id, ...restValues } = employeeDetails;
-    const editedEmployee = await this.EmployeeModal.findByIdAndUpdate(_id, {
-      ...restValues,
-    },{new:true});
+    const editedEmployee = await this.EmployeeModal.findByIdAndUpdate(
+      _id,
+      {
+        ...restValues,
+      },
+      { new: true },
+    );
 
-    if(!editedEmployee) return false
+    if (!editedEmployee) return false;
 
-    return editedEmployee
+    return editedEmployee;
+  }
+
+  async addCheckinForToday(employeeId: ObjectId) {
+    try {
+      const employee = await this.EmployeeModal.findById(employeeId);
+
+      if (!employee) {
+        throw new NotFoundException('Employee not found');
+      }
+
+      const today = new Date();
+      const todayDateString = today.toISOString().split('T')[0];
+
+      const todayAttendanceIndex = employee.attendance.findIndex(
+        (entry) => entry.date.toISOString().split('T')[0] === todayDateString,
+      );
+
+      if (todayAttendanceIndex === -1) {
+        const currentTime = today.toLocaleTimeString('en-US', {
+          hour12: false,
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+        });
+
+        const status =
+          currentTime > '09:05:00' ? 'Late Arrival' : employee?.workType;
+
+        employee.attendance.push({
+          checkIn: currentTime,
+          checkOut: '', // Set initial checkout value if needed
+          date: today,
+          status: status,
+        });
+
+        await employee.save();
+      }
+
+      return employee;
+    } catch (error) {
+      console.error(error, '<< Something Went wrong in addCheckinForToday >>');
+      return false;
+    }
   }
 }
