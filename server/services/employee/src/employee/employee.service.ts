@@ -99,7 +99,7 @@ export class EmployeeService {
 
         employee.attendance.push({
           checkIn: currentTime,
-          checkOut: '', // Set initial checkout value if needed
+          checkOut: '',
           date: today,
           status: status,
         });
@@ -110,6 +110,45 @@ export class EmployeeService {
       return employee;
     } catch (error) {
       console.error(error, '<< Something Went wrong in addCheckinForToday >>');
+      return false;
+    }
+  }
+  async addCheckoutForToday(employeeId: ObjectId) {
+    try {
+      const today = new Date();
+      const todayDateString = today.toISOString().split('T')[0];
+      const currentTime = today.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      });
+
+      const updatedEmployee = await this.EmployeeModal.updateOne(
+        {
+          _id: employeeId,
+          'attendance.date': {
+            $gte: new Date(todayDateString),
+            $lt: new Date(todayDateString + 'T23:59:59.999Z'),
+          },
+          'attendance.checkOut': '',
+        },
+        {
+          $set: {
+            'attendance.$.checkOut': currentTime,
+          },
+        },
+      );
+
+      if (!updatedEmployee) {
+        throw new NotFoundException(
+          'Employee not found or attendance not updated',
+        );
+      }
+
+      return updatedEmployee;
+    } catch (error) {
+      console.error(error, '<< Something Went wrong in addCheckoutForToday >>');
       return false;
     }
   }

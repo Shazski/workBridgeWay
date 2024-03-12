@@ -43,8 +43,10 @@ export class RabbitMqController {
         response = await this.employeeService.editEmployee(data);
         break;
       case 'markCheckIn':
-        console.log('🚀 ~ RabbitMqController ~ data:dadadada', data);
         response = await this.employeeService.addCheckinForToday(data);
+        break;
+      case 'markCheckOut':
+        response = await this.employeeService.addCheckoutForToday(data);
         break;
       default:
         response = 'Request_key Not_Found';

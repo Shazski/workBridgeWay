@@ -147,7 +147,7 @@ const EmployeeDashboard = () => {
                         sortedScheduleData?.map((schedule, idx) => (
                           <>
                             <tr key={idx} className="border-b text-xs bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
-                              <td className="flex whitespace-nowrap px-6 py-4 font-semibold"><h1 className="mt-3">{allUsers.find((user) => user._id === schedule.applicantId).userName}</h1></td>
+                              <td className="flex whitespace-nowrap px-6 py-4 font-semibold"><h1 className="mt-3">{allUsers?.find((user) => user?._id === schedule.applicantId).userName}</h1></td>
                               <td className="whitespace-nowrap px-6 py-4">{new Date(schedule?.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">{formatTimeToAMPM(schedule?.time)}</h1></td>
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{schedule?.testType}</h1></td>

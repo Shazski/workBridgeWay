@@ -1,7 +1,6 @@
 import LOGO from "../../assets/images/Logo.png"
 import { NavLink, Outlet } from 'react-router-dom'
 import { IoExitOutline } from "react-icons/io5";
-import { SlCalender } from "react-icons/sl";
 import { ImProfile } from "react-icons/im";
 import { GoHome } from "react-icons/go";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -9,11 +8,13 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../../redux/actions/user/userActions";
 import { useState } from "react";
+import Modal from "../Modal";
 const EmployeeSideBar = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.user)
 
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [toggle, setToggle] = useState<boolean>(false);
 
     return (
@@ -50,7 +51,7 @@ const EmployeeSideBar = () => {
                                 <h1 className="hidden md:flex">Attendance</h1>
                             </div> </NavLink>
                     </div>
-                    
+
                     {/* <div className='mt-3 md:ms-3 flex gap-3'>
 
                         <NavLink to='/employee/leaves' className={({ isActive }) => {
@@ -61,26 +62,35 @@ const EmployeeSideBar = () => {
                             </div> </NavLink>
                     </div> */}
                     <div className="fixed bottom-10 w-full">
-                <div onClick={() => dispatch(logoutUser())} className="flex ms-9 items-center  justify-start relative cursor-pointer">
-                    <div>
-                        <IoExitOutline className="text-xl absolute top-4 left-5 text-red-600" />
-                        <h1 className="bg-gray-300 px-10 ms-2 py-6 rounded-lg h-12 text-red-600 text-center flex mt-0.5 justify-center items-center ">
-                            <span>Logout</span>
-                        </h1>
+                        <div onClick={() => setIsModalOpen(true)} className="flex ms-9 items-center  justify-start relative cursor-pointer">
+                            <div>
+                                <IoExitOutline className="text-xl absolute top-4 left-5 text-red-600" />
+                                <h1 className="bg-gray-300 px-10 ms-2 py-6 rounded-lg h-12 text-red-600 text-center flex mt-0.5 justify-center items-center ">
+                                    <span>Logout</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <div className="flex profile justify-start ms-12 mt-2">
+                            <div>
+                                <h1 className="font-semibold text-lg">{user?.name}</h1>
+                                <h1 className="text-gray-500 ">{user?.email}</h1>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className="flex profile justify-start ms-12 mt-2">
-                    <div>
-                        <h1 className="font-semibold text-lg">{user?.name}</h1>
-                        <h1 className="text-gray-500 ">{user?.email}</h1>
-                    </div>
-                </div>
-            </div>
                 </div>
                 <div className="w-full z-10">
                     <Outlet />
                 </div>
             </div>
+            <Modal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <div>
+                    <h1 className="font-semibold ">Do you want to mark the Checkout?</h1>
+                    <div className="flex gap-x-2 justify-center mt-3">
+                        <button onClick={() => dispatch(logoutUser())} className="px-3 py-2 rounded-md text-white font-semibold bg-red-600">Yes</button>
+                        <button onClick={() => setIsModalOpen(false)} className="px-3 py-2 rounded-md text-white font-semibold bg-lightgreen">No</button>
+                    </div>
+                </div>
+            </Modal>
         </>
     )
 }
