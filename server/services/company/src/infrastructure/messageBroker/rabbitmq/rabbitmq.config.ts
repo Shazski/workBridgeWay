@@ -5,7 +5,7 @@ export default {
     url: RABBITMQ_URL,
     queues: {
       auth_queue: "auth_queue",
-      user_queue: "user_queue",
+      user_queue: "users_queue",
       chat_queue: "chat_queue",
       company_queue: "company_queue",
       employee_queue: "employee_queue",

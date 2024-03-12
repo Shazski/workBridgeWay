@@ -17,13 +17,28 @@ export class EmployeeController {
   async getEmployeeSchedules(@Req() request: Request) {
     const token = request.cookies.auth_jwt;
     const secret = await this.configService.get('JWT_SECRET');
+
     const employeeId = getUserById(token, secret);
 
     const data = await this.rabbitMQService.sendMessage(
       'company_queue',
-      JSON.stringify({employeeId}),
-      "getEmployeeScheduleData"
+      JSON.stringify({ employeeId }),
+      'getEmployeeScheduleData',
     );
-    console.log('success in data transform', data);
+    if (!data) return false;
+
+    return data;
+  }
+
+  @Get('/get-user-details')
+  async getAllUserDetails() {
+    const data = await this.rabbitMQService.sendMessage(
+      'users_queue',
+      JSON.stringify({ data: 'fetch data' }),
+      'getAllUsers',
+    );
+    if (!data) return false;
+
+    return data;
   }
 }

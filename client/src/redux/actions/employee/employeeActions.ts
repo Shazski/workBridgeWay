@@ -24,3 +24,18 @@ export const getEmployeeSchedules = createAsyncThunk(
   }
  }
 );
+export const getAllUserDetails = createAsyncThunk(
+ "user/getAllUserDetails",
+ async (_, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${EMPLOYEE_BASE_URL}/get-user-details`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

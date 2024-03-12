@@ -40,8 +40,7 @@ export default class MessageHandler {
     response = await job_repo.getUserPreferredJobs(data);
     break;
    case "getEmployeeScheduleData":
-    console.log("data ini nkilum vaaaa",data.employeeId)
-    response = job_repo.getEmployeeSchedules(data.employeeId);
+    response = await job_repo.getEmployeeSchedules(data.employeeId);
     break;
    default:
     response = "Request-key notfound";

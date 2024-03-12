@@ -12,7 +12,8 @@ import {
  uploadResume,
  findUserById_repo,
  setUserPreferredCategory,
- setUserFmcToken
+ setUserFmcToken,
+ getAllUser,
 } from "./userRepo";
 
 export default {
@@ -29,5 +30,6 @@ export default {
  uploadResume,
  findUserById_repo,
  setUserPreferredCategory,
- setUserFmcToken
+ setUserFmcToken,
+ getAllUser,
 };

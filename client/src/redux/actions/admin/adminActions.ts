@@ -29,6 +29,7 @@ export const getAllUsers = createAsyncThunk(
   { search, page }: { search: string; page: number },
   { rejectWithValue }
  ) => {
+  console.log("called data in axios action")
   try {
    const { data } = await axios.get(
     `${ADMIN_BASE_URL}/get-all-users?search=${search}&page=${page}`,

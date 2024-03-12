@@ -72,7 +72,6 @@ const CompanyRegister: FC = () => {
                             const companyLogo = await imageUpload(values.companyLogo)
                             values.companyLogo = companyLogo
                             const res = await dispatch(companyRegister(values))
-                            console.log(res, "response data")
                             setImgPreview("")
                             if (res.payload?.email) {
                                 toast.success("Register success you will get an email after admin verification")

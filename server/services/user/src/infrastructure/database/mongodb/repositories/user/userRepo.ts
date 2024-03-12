@@ -453,3 +453,15 @@ export const setUserFmcToken: any = async (
    return false;
   }
  };
+export const getAllUser: any = async (
+ ): Promise<boolean | IUserData[]> => {
+  try {
+   const usersData: IUserData[] | null = await UserSchema.find({role:"user"})
+ 
+   if (!usersData) return false;
+   return usersData as IUserData[];
+  } catch (error) {
+   console.log(error, "< Something went wrong on setUserFmcToken repo >");
+   return false;
+  }
+ };

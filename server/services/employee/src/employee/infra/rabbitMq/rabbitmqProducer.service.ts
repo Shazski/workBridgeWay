@@ -18,8 +18,11 @@ export class RabbitMQService {
     this.listenToReplyQueue();
   }
 
-  async sendMessage(queue: string, message: any, operation: string): Promise<any> {
-    console.log(queue, message, "queue and message");
+  async sendMessage(
+    queue: string,
+    message: any,
+    operation: string,
+  ): Promise<any> {
 
     if (!this.connection) {
       await this.initialize();
@@ -38,8 +41,9 @@ export class RabbitMQService {
     const responsePromise = new Promise<any>((resolve) => {
       this.eventEmitter.once(correlationId, resolve);
     });
-
-    await this.channel.sendToQueue(queue, Buffer.from(message), { ...messageProperties });
+    await this.channel.sendToQueue(queue, Buffer.from(message), {
+      ...messageProperties,
+    });
 
     return responsePromise;
   }
@@ -50,18 +54,13 @@ export class RabbitMQService {
       (msg: ConsumeMessage | null) => {
         if (msg) {
           const correlationId = msg.properties.correlationId;
-          this.eventEmitter.emit(correlationId, JSON.parse(msg.content.toString()));
+          this.eventEmitter.emit(
+            correlationId,
+            JSON.parse(msg.content.toString()),
+          );
         }
       },
-      { noAck: true }
+      { noAck: true },
     );
-  }
-
-  // Other methods...
-
-  async closeConnection() {
-    if (this.connection) {
-      await this.connection.close();
-    }
   }
 }

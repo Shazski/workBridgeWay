@@ -666,6 +666,7 @@ export const getEmployeeSchedules = async (
  employeeId: mongoose.Types.ObjectId
 ): Promise<any[]> => {
  try {
+  const today = new Date();
   const jobs = await JobSchema.find({
    "applicants.schedule.employeeId": employeeId,
   });
@@ -675,7 +676,10 @@ export const getEmployeeSchedules = async (
   jobs.forEach((job: any) => {
    job.applicants.forEach((applicant: any) => {
     applicant.schedule.forEach((schedule: any) => {
-     if (schedule.employeeId.equals(employeeId)) {
+     if (
+      schedule.employeeId.equals(employeeId) &&
+      new Date(schedule.date) >= today
+     ) {
       schedules.push({
        testType: schedule.testType,
        date: schedule.date,
@@ -686,8 +690,6 @@ export const getEmployeeSchedules = async (
     });
    });
   });
-  console.log(schedules,"employee schedule data");
-
   return schedules;
  } catch (error) {
   throw error;

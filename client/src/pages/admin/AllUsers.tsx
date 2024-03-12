@@ -50,7 +50,6 @@ const AllUsers = () => {
 
   useEffect(() => {
     dispatch(getAllUsers({ search, page }))
-    console.log(usersDetails, "usersDetailsss")
   }, [dispatch, page, search])
 
   const setBlockDetails = (status: boolean, id: string, user: string) => {

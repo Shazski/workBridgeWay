@@ -5,7 +5,8 @@ import {
  getUserpreferredJob,
 } from "../../actions/user/userActions";
 import { IJobData } from "../../../interface/ICompanyData";
-import { getAllApplicantSchedule } from "../../actions/company/CompanyActions";
+import { getAllUserDetails, getEmployeeSchedules } from "../../actions/employee/employeeActions";
+import { IUserLoginData } from "../../../interface/IuserLogin";
 
 const jobSlice = createSlice({
  name: "profile",
@@ -18,6 +19,7 @@ const jobSlice = createSlice({
   userPreferredJobs: null as IJobData[] | null,
   userAppliedJobsCount: null as number | null,
   scheduleData: null as any | null,
+  allUsers: null as any | null
  },
  reducers: {},
 
@@ -65,20 +67,33 @@ const jobSlice = createSlice({
     state.loading = false;
     state.error = action.payload as string;
    })
-   .addCase(getAllApplicantSchedule.pending, (state) => {
+   .addCase(getEmployeeSchedules.pending, (state) => {
     state.loading = true;
     state.error = null;
    })
-   .addCase(getAllApplicantSchedule.fulfilled, (state, action) => {
+   .addCase(getEmployeeSchedules.fulfilled, (state, action) => {
     console.log(action.payload, "payloadData");
     state.loading = false;
     state.scheduleData = action.payload as any;
     state.error = null;
    })
-   .addCase(getAllApplicantSchedule.rejected, (state, action) => {
+   .addCase(getEmployeeSchedules.rejected, (state, action) => {
     state.loading = false;
     state.error = action.payload as string;
-   });
+   })
+   .addCase(getAllUserDetails.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+   })
+   .addCase(getAllUserDetails.fulfilled, (state, action) => {
+    state.loading = false;
+    state.allUsers = action.payload as any;
+    state.error = null;
+   })
+   .addCase(getAllUserDetails.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+   })
  },
 });
 
