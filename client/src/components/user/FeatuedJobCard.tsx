@@ -1,14 +1,18 @@
 import { useNavigate } from "react-router-dom";
 
-const FeatuedJobCard = ({ showApplied = false, job }: { showApplied?: boolean, job: any }) => {
-
+const FeatuedJobCard = ({ showApplied = false, job, showCompanyLogo = true }: { showApplied?: boolean, job: any, showCompanyLogo?: boolean }) => {
+    console.log("🚀 ~ FeatuedJobCard ~ job:", job)
     const navigate = useNavigate()
     return (
         <div>
             <div onClick={() => navigate(`jobs/${job?._id}`)} className={`border border-dashed border-gray-600 w-64 ${showApplied ? "h-72" : "min-h-min py-5"} mt-10  hover:scale-105  transition-all duration-300 ease-in-out hover:cursor-pointer`}>
                 <div className="flex">
-                    <img src={job?.companyId?.companyLogo} className="w-12 h-12 rounded-full m-4 company-logo" />
-                    <h3 className="border text-lightgreen border-lightgreen min-h-min h-8 mt-6 pt-1 px-4 group-hover:border-white">{job?.typeOfEmployment}</h3>
+                    {
+                        showCompanyLogo ? <>
+                            <img src={job?.companyId?.companyLogo} className="w-12 h-12 rounded-full m-4 company-logo" />
+                        </> : ""
+                    }
+                    <h3 className={`border text-lightgreen border-lightgreen min-h-min h-8 ${showCompanyLogo ? '': 'ms-12'}  mt-6 pt-1 px-4 group-hover:border-white`}>{job?.typeOfEmployment}</h3>
                 </div>
                 <h1 className="font-serif text-lg ps-5">{job?.jobTitle?.toUpperCase()}</h1>
                 <h1 className="font-sans text-gray-500 text-sm ps-5">{job?.companyId?.name} . <span>{job?.companyId?.headOffice}</span></h1>
@@ -26,5 +30,6 @@ const FeatuedJobCard = ({ showApplied = false, job }: { showApplied?: boolean, j
         </div>
     )
 }
+
 
 export default FeatuedJobCard

@@ -96,6 +96,7 @@ const companySlice = createSlice({
     state.loading = true;
    })
    .addCase(getJobs.fulfilled, (state, action) => {
+    console.log(action.payload[0],"whole data camedas=======>>>>>")
     state.loading = false;
     state.jobs = action.payload[0];
     state.companyJobCount = action.payload[1];

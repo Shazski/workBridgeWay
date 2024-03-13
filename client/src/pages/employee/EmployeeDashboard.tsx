@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";

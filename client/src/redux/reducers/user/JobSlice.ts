@@ -6,7 +6,6 @@ import {
 } from "../../actions/user/userActions";
 import { IJobData } from "../../../interface/ICompanyData";
 import { getAllUserDetails, getEmployeeSchedules } from "../../actions/employee/employeeActions";
-import { IUserLoginData } from "../../../interface/IuserLogin";
 import { getAllApplicantSchedule } from "../../actions/company/CompanyActions";
 
 const jobSlice = createSlice({

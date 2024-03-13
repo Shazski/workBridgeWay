@@ -110,7 +110,7 @@ const ApplicantDetailsSection = () => {
                 <option value="" defaultChecked hidden className='text-gray-600 '>Select Employee</option>
                 {employees?.map((emp, idx) => (
                   <>
-                    <option key={idx} value={emp._id} className='text-gray-600 '>{emp?.name}</option>
+                    <option key={idx} value={emp?._id!} className='text-gray-600 '>{emp?.name}</option>
                   </>
                 ))}
               </select>

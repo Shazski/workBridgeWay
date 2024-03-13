@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { EditEmployeeData, getAllCompanyEmployees } from '../../redux/actions/company/CompanyActions';
 import { IEmployee } from '../../interface/IEmployeeData';
 import Modal from '../Modal';
+import { useNavigate } from 'react-router-dom';
 
 const EmployeeListTable = ({ search }: { search: string }) => {
   const [page, setPage] = useState<number>(1);
@@ -20,6 +21,7 @@ const EmployeeListTable = ({ search }: { search: string }) => {
 
   const { employees, employeesCount, error } = useSelector((state: RootState) => state.company);
 
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getAllCompanyEmployees({ page, search }))
@@ -48,6 +50,7 @@ const EmployeeListTable = ({ search }: { search: string }) => {
       setEditEmployeeData(employeeDetails)
     setIsModalOpen(true)
   }
+
   return (
     <div className="mt-2 mx-4 flex-grow">
       <div className="flex flex-col border h-full">
@@ -100,10 +103,11 @@ const EmployeeListTable = ({ search }: { search: string }) => {
                         <h1 className="text-gray-500 border border-lightgreen w-min px-2 py-1 rounded-md">{employee?.workType}</h1>
                       </td>
                       <div className='relative'>
-                        <td onClick={() => { setIsOption(!isOption), setCurrentEmployee(idx) }} className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-900 font-semibold text-3xl hover:scale-110 w-16 -z-10 cursor-pointer">...</h1></td>
+                        <td onClick={() => { setIsOption(!isOption), setCurrentEmployee(idx) }} className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-900 font-semibold text-3xl hover:scale-110 w-24 -z-10 cursor-pointer">...</h1></td>
                         {isOption && currentEmployee === idx ?
-                          <div className='bg-gray-200   rounded-md top-3.5 absolute flex'>
-                            <h1 onClick={() => handleEditClick(employee?._id)} className={`px-4 py-2 text-blue-600  w-16 rounded-lg cursor-pointer font-semibold`}>Edit</h1>
+                          <div className='bg-gray-200 w-44  rounded-md top-3.5 absolute flex'>
+                            <h1 onClick={() => navigate(`/company/employees/attendance/${employee?._id!}`)} className={`px-4 py-2 text-red-600   rounded-lg cursor-pointer font-semibold`}>Attendance</h1>
+                            <h1 onClick={() => handleEditClick(employee?._id!)} className={`px-4 py-2 text-blue-600  w-16 rounded-lg cursor-pointer font-semibold`}>Edit</h1>
                           </div> : ""
                         }
                       </div>
@@ -118,12 +122,12 @@ const EmployeeListTable = ({ search }: { search: string }) => {
           {error && <h1 className='text-red-600 font-semibold'>{error}</h1>}
           <form action="" onSubmit={handleEditEmployee}>
             <h1 className="font-semibold text-blue-gray-700">Name</h1>
-            <input required onChange={handleChange} name="name" type='text' value={editEmployeeData?.name} className="border rounded-md py-2 w-full outline-none" />
+            <input required onChange={handleChange} name="name" type='text' value={editEmployeeData?.name || ""} className="border rounded-md py-2 w-full outline-none" />
             <h1 className="font-semibold text-blue-gray-700">Department</h1>
-            <input required onChange={handleChange} name="department" type='text' value={editEmployeeData?.department} className="border rounded-md py-2 w-full outline-none" />
+            <input required onChange={handleChange} name="department" type='text' value={editEmployeeData?.department || ""} className="border rounded-md py-2 w-full outline-none" />
             <h1 className="font-semibold text-blue-gray-700">Work Type</h1>
             <select required onChange={handleChange} name="workType" className="border rounded-md py-2 w-full outline-none" >
-              <option value={editEmployeeData?.workType} hidden defaultChecked>{editEmployeeData?.workType}</option>
+              <option value={editEmployeeData?.workType || ""} hidden defaultChecked>{editEmployeeData?.workType}</option>
               <option value="work from home">Work from Home</option>
               <option value="work from office">Work from Office</option>
             </select>

@@ -13,7 +13,7 @@ export class CronjobService {
     @InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>,
   ) {}
 
-  @Cron('* * * * *', { name: 'checkAndSetAttendance' })
+  @Cron('0 17 * * *', { name: 'checkAndSetAttendance' })
   async checkAndSetAttendance() {
     console.log('cron job running');
     const today = new Date();

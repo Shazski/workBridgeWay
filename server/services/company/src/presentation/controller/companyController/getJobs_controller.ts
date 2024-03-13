@@ -20,6 +20,7 @@ export default (dependencies: IDependencies) => {
    if (!token || companyId === "") {
     return next(ErrorResponse.unauthorized("Company Autherization failed"));
    }
+   
    const jobs = await getCompanyJobs_useCase(dependencies).execute(
     companyId,
     page,
