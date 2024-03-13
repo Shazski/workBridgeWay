@@ -71,3 +71,4 @@ export class Employee extends Document {
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);
+export type EmployeeDocument = Employee & Document;

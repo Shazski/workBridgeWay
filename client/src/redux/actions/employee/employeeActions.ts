@@ -39,3 +39,18 @@ export const getAllUserDetails = createAsyncThunk(
   }
  }
 );
+export const getEmployeeDetails = createAsyncThunk(
+ "user/getEmployeeDetails",
+ async (id:string, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${EMPLOYEE_BASE_URL}/get-employee-details?employeeId=${id}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

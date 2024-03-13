@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { EmployeeModule } from './employee/employee.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { RabbitMqController } from './employee/infra/rabbitMq/rabbitmq.controller';
+import { CronjobModule } from './cronjob/cronjob.module';
 @Module({
   imports: [
     EmployeeModule,
@@ -12,6 +12,7 @@ import { RabbitMqController } from './employee/infra/rabbitMq/rabbitmq.controlle
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    CronjobModule,
   ],
   controllers: [AppController],
   providers: [AppService],

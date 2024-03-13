@@ -152,4 +152,14 @@ export class EmployeeService {
       return false;
     }
   }
+  async getEmployeeData(employeeId: ObjectId): Promise<any> {
+    try {
+      const employeeData = await this.EmployeeModal.findById(employeeId);
+      if (!employeeData) return false;
+      return employeeData;
+    } catch (error) {
+      console.log(error, ' << Something went wron in getEmployeeDetails >> ');
+      return false;
+    }
+  }
 }

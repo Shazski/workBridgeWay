@@ -1,9 +1,18 @@
-import { Controller, Get, Inject, Req, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  NotFoundException,
+  Query,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Request } from 'express';
 import { getUserById } from 'work-bridge-way-common';
 import { ConfigService } from '@nestjs/config';
 import { RabbitMQService } from './infra/rabbitMq/rabbitmqProducer.service';
+import { ObjectId } from 'mongoose';
 
 @Controller('employee')
 export class EmployeeController {
@@ -18,8 +27,8 @@ export class EmployeeController {
     const token = request.cookies.auth_jwt;
 
     const secret = await this.configService.get('JWT_SECRET');
-    if(!token || !secret) {
-      throw new UnauthorizedException("Invalid token")
+    if (!token || !secret) {
+      throw new UnauthorizedException('Invalid token');
     }
     const employeeId = getUserById(token, secret);
 
@@ -41,6 +50,15 @@ export class EmployeeController {
       'getAllUsers',
     );
     if (!data) return false;
+
+    return data;
+  }
+  @Get('/get-employee-details')
+  async getEmployeeDetails(@Query('employeeId') employeeId: ObjectId) {
+
+    const data = await this.employeeService.getEmployeeData(employeeId);
+    
+    if (!data) throw new NotFoundException('Employee details not found');
 
     return data;
   }

@@ -27,7 +27,6 @@ export default (dependencies: IDependencies) => {
     dependencies
    ).execute(companyId);
 
-   console.log("🚀 ~ scheduleData:", scheduleData);
 
    if (!scheduleData)
     return next(ErrorResponse.notFound("No scheduleData found"));

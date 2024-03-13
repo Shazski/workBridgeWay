@@ -46,6 +46,7 @@ import EmployeeList from './pages/company/EmployeeList';
 import Schedule from './pages/company/Schedule';
 import EmployeeSideBar from './components/employee/EmployeeSideBar';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
+import EmployeeAttendance from './pages/employee/EmployeeAttendance';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -131,7 +132,7 @@ function App() {
           {/* employee routes */}
           <Route path='employee' element={<EmployeeProtectedRoute element={<EmployeeSideBar />} />}>
             <Route path='dashboard' element={<EmployeeDashboard />} />
-            <Route path='profile' element={<Profile />} />
+            <Route path='attendance' element={<EmployeeAttendance />} />
             <Route path='messages' element={<Messages />} />
             <Route path='applications' element={<Applications />} />
             <Route path='settings' element={<Settings />} >

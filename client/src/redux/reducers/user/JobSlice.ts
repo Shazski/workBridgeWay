@@ -7,6 +7,7 @@ import {
 import { IJobData } from "../../../interface/ICompanyData";
 import { getAllUserDetails, getEmployeeSchedules } from "../../actions/employee/employeeActions";
 import { IUserLoginData } from "../../../interface/IuserLogin";
+import { getAllApplicantSchedule } from "../../actions/company/CompanyActions";
 
 const jobSlice = createSlice({
  name: "profile",
@@ -19,6 +20,7 @@ const jobSlice = createSlice({
   userPreferredJobs: null as IJobData[] | null,
   userAppliedJobsCount: null as number | null,
   scheduleData: null as any | null,
+  companyScheduleData: null as any | null,
   allUsers: null as any | null
  },
  reducers: {},
@@ -78,6 +80,20 @@ const jobSlice = createSlice({
     state.error = null;
    })
    .addCase(getEmployeeSchedules.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string;
+   })
+   .addCase(getAllApplicantSchedule.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+   })
+   .addCase(getAllApplicantSchedule.fulfilled, (state, action) => {
+    console.log(action.payload, "payloadData");
+    state.loading = false;
+    state.companyScheduleData = action.payload as any;
+    state.error = null;
+   })
+   .addCase(getAllApplicantSchedule.rejected, (state, action) => {
     state.loading = false;
     state.error = action.payload as string;
    })

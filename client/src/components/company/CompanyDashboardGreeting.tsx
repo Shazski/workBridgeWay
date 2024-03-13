@@ -11,6 +11,7 @@ const CompanyDashboardGreeting = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.user)
     const { pendingApplicantsCount, todayScheduleCount } = useSelector((state: RootState) => state.company)
+    console.log("🚀 ~ CompanyDashboardGreeting ~ todayScheduleCount:", todayScheduleCount)
 
     useEffect(() => {
         dispatch(getJobs({ page }))

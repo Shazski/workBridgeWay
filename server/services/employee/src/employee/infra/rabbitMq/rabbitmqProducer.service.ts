@@ -34,7 +34,7 @@ export class RabbitMQService {
       correlationId: correlationId,
       replyTo: this.replyToQueue,
       headers: {
-        function: operation, // Include the operation in headers
+        function: operation, 
       },
     };
 

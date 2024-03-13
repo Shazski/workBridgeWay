@@ -130,13 +130,17 @@ export const getAllCompanyJobs = async (
    },
   ]);
   const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
   const scheduleTodayCount = await JobSchema.aggregate([
    {
     $unwind: "$applicants",
    },
    {
+    $unwind: "$applicants.schedule",
+   },
+   {
     $match: {
-     "applicants.schedule.date": today.toISOString().split("T")[0],
+     "applicants.schedule.date": formattedDate,
     },
    },
    {
@@ -146,10 +150,6 @@ export const getAllCompanyJobs = async (
     },
    },
   ]);
-  console.log(
-   scheduleTodayCount[0]?.todayScheduledCount,
-   "scheduleTodayCount[0]"
-  );
 
   if (!jobs) return false;
   if (jobs.length > 0) {
@@ -159,7 +159,7 @@ export const getAllCompanyJobs = async (
      jobs,
      count,
      totalPendingApplicantsCount[0]?.totalPendingApplicants,
-     scheduleTodayCount[0].todayScheduledCount,
+     scheduleTodayCount[0]?.todayScheduledCount,
     ])
    );
   }
@@ -167,7 +167,7 @@ export const getAllCompanyJobs = async (
    jobs,
    count,
    totalPendingApplicantsCount[0]?.totalPendingApplicants,
-   scheduleTodayCount[0].todayScheduledCount,
+   scheduleTodayCount[0]?.todayScheduledCount,
   ] as any;
  } catch (error) {
   console.log(error, "<< Something went wrong in getAllcompnayrepo >>");
@@ -633,7 +633,6 @@ export const getAllApplicantsSchedule = async (companyId: string) => {
     },
    },
   ]);
-  console.log(result, "result");
   if (!result) return false;
 
   return result;

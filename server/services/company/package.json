@@ -8,8 +8,8 @@
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "build:watch": "npm run build -- --watch",
     "start": "node ./dist/src/index.js",
-    "dev": "nodemon -L --watch ./dist ./dist/index.js",
-    "start:dev": "concurrently --kill-others-on-fail \"npm run build:watch\" \"npm run dev\""
+    "dev": "nodemon ./dist/index.js",
+    "start:dev": "concurrently --kill-others-on-fail \"npm run build\" \"npm run dev\""
   },
   "keywords": [],
   "author": "",

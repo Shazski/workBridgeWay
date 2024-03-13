@@ -8,15 +8,16 @@ import { getAllApplicantSchedule } from '../../redux/actions/company/CompanyActi
 const Schedule = () => {
 
   const dispatch = useDispatch<AppDispatch>()
-  const { scheduleData } = useSelector((state: RootState) => state.job)
+  const { companyScheduleData } = useSelector((state: RootState) => state.job)
   useEffect(() => {
     dispatch(getAllApplicantSchedule())
   }, [])
 
-  const events = scheduleData?.map((schedule) => ({
+  const events = companyScheduleData?.map((schedule) => ({
     title: schedule?.schedule?.testType,
     start: `${schedule?.schedule?.date}T${schedule?.schedule?.time}`,
   }));
+  console.log("🚀 ~ Schedule ~ scheduleData:", companyScheduleData)
   return (
     <div>
       <FullCalendar
