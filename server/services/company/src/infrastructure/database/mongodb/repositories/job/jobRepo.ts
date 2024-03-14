@@ -412,6 +412,7 @@ export const getUserApplications = async (data: {
      linkedInUrl: "$applicants.linkedIn",
      previousJob: "$applicants.previousJob",
      portfolioUrl: "$applicants.portfolioUrl",
+     schedule:"$applicants.schedule"
     },
    },
    { $limit: 10 },

@@ -26,8 +26,8 @@ export class CronjobService {
 
       const attendanceForToday = typedEmployee?.attendance.find(
         (entry) =>
-          entry.date.toISOString().split('T')[0] ===
-          today.toISOString().split('T')[0],
+          entry.date instanceof Date &&
+          entry.date.toISOString().split('T')[0] === today.toISOString().split('T')[0],
       );
 
       if (!attendanceForToday) {

@@ -8,7 +8,6 @@ const JobUpdates = () => {
         dispatch(getJobs({ page: 1, search: "" }))
     }, [])
     const { jobs } = useSelector((state: RootState) => state.company)
-    console.log("🚀 ~ JobUpdates ~ jobs:", jobs)
     const dispatch = useDispatch<AppDispatch>()
     return (
         <div className='border mt-12'>

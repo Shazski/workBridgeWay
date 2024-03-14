@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 const FeatuedJobCard = ({ showApplied = false, job, showCompanyLogo = true }: { showApplied?: boolean, job: any, showCompanyLogo?: boolean }) => {
-    console.log("🚀 ~ FeatuedJobCard ~ job:", job)
     const navigate = useNavigate()
     return (
         <div>

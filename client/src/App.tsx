@@ -48,6 +48,7 @@ import EmployeeSideBar from './components/employee/EmployeeSideBar';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import EmployeeAttendance from './pages/employee/EmployeeAttendance';
 import EmployeeAttendanceTable from './components/company/EmployeeAttendanceTable';
+import Chat from './pages/chat/Chat';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -103,6 +104,7 @@ function App() {
               <Route path='dashboard' element={<CompanyDashboard />} />
               <Route path='applicants' element={<JobApplicants />} />
               <Route path='schedule' element={<Schedule />} />
+              <Route path='messages' element={<Chat />} />
               <Route path='employees' element={<EmployeeList />} />
               <Route path='employees/attendance/:id' element={<EmployeeAttendanceTable />} />
               <Route path='applicants/:id' element={<CompanyJobApplicants />} />

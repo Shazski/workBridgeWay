@@ -19,6 +19,7 @@ const ApplicantsTable = () => {
         setPage(paginationData.currentPage)
     }
     const { userAppliedJobs, userAppliedJobsCount, loading } = useSelector((state: RootState) => state.job)
+    console.log("🚀 ~ ApplicantsTable ~ userAppliedJobs:", userAppliedJobs)
 
 
     useEffect(() => {
@@ -108,7 +109,7 @@ const ApplicantsTable = () => {
                                                             </div>
                                                             <td className="whitespace-nowrap px-3 py-4"><h1 className="mt-3">{job?.jobTitle}</h1></td>
                                                             <td className="whitespace-nowrap  px-3 py-4"><h1 className="text-gray-500">{job?.appliedDate && format(job?.appliedDate, "dd-MM-yyyy")}</h1></td>
-                                                            <td className="whitespace-nowrap   px-3 py-4"><h1 className={`border-2 w-min px-3 border-${status[job?.hiringStage]}-600 text-${status[job?.hiringStage]}-600  py-2 rounded-2xl uppercase font-bold   `}>{job?.hiringStage}</h1></td>
+                                                            <td className="whitespace-nowrap   px-3 py-4"><h1 className={`border-2 w-min px-3 border-${status[job?.hiringStage]}-600 text-${status[job?.hiringStage]}-600  py-2 rounded-2xl uppercase font-bold   `}>{job?.hiringStage}</h1>{job?.hiringStage === "interview" ? <> <span className=''>Date:{job?.schedule?.[0]?.date}</span> <p className=''>Time:{job?.schedule?.[0]?.time}</p> </>: "" }</td>                                                       
                                                         </tr>
                                                     </>
 
