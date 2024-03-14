@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Inject,
   NotFoundException,
   Query,
   Req,
