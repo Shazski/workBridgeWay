@@ -3,10 +3,14 @@ import io, { Socket } from "socket.io-client";
 
 const SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL;
 
-interface SocketContextType {
+export interface SocketContextType {
   socket: Socket;
   message: string | null;
   setMessage: (message: string) => void;
+  privateApplicantMsg: any
+  setPrivateApplicantMsg: (any) => void;
+  currentRoom: string;
+  setCurrentRoom: (room: string) => void;
 }
 
 export const SocketContext = createContext<SocketContextType | null>(null);
@@ -18,11 +22,16 @@ interface SocketProviderProps {
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [message, setMessage] = useState<string | null>(null);
-
+  const [privateApplicantMsg, setPrivateApplicantMsg] = useState<any>(null);
+  const [currentRoom, setCurrentRoom] = useState<string>("");
   const contextValue: SocketContextType = {
     socket,
     message,
-    setMessage
+    setMessage,
+    privateApplicantMsg,
+    setPrivateApplicantMsg,
+    currentRoom,
+    setCurrentRoom
   };
 
   return (

@@ -19,6 +19,7 @@
     "axios": "^1.6.5",
     "date-fns": "^3.3.1",
     "dotenv": "^16.3.2",
+    "emoji-picker-react": "^4.8.0",
     "firebase": "^10.7.2",
     "formik": "^2.4.5",
     "heroicons": "^2.1.1",
