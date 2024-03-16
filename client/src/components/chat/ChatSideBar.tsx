@@ -46,7 +46,7 @@ function ChatSideBar() {
       {/* <div>
         <input type="search" className="border mb-4 outline-none rounded-md py-2 px-7 ms-10 mt-4" placeholder="Search" />
       </div> */}
-      <div onClick={() => handlePrivateMessage({ userId: "65b7ba113da851157fa6bd1e", userName: "shazski", status: "online" })} className="ms-4 gap-x-2 md:flex mt-7 cursor-pointer bg-blue-50 rounded-md me-3">
+      <div onClick={() => handlePrivateMessage({ userId: "65b7ba113da851157fa6bd1e", userName: "shazski", status: "online" })} className="ms-4 gap-x-2 md:flex mt-7 cursor-pointer bg-blue-50 rounded-e-xl rounded-b-xl me-3">
         <div className="py-2 ms-4">
           <img className="w-10 border border-red-600 rounded-full h-10 " src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs2/112692698/original/31a5d2469689575beee06ffcf4e9e76abab3abe2/logo-design-for-profile-picture-dessin-pour-photo-de-profil.png" alt="" />
         </div>

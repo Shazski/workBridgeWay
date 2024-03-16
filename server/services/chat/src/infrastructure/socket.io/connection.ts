@@ -15,13 +15,13 @@ io.on("connection", (socket: Socket) => {
  let roomMessages = [
   {
    message: "hello dear",
-   time: "12:40 am",
+   time: new Date(),
    date: "15-03-2024",
    senderId: "65b7ba113da851157fa6bd1e",
   },
   {
    message: "hello dear",
-   time: "12:40 am",
+   time: new Date(),
    date: "15-03-2024",
    senderId: "65b7ba5dc990db9a68998bae",
   },
@@ -32,14 +32,14 @@ io.on("connection", (socket: Socket) => {
  });
  socket.on(
   "room-message",
-  (messageData: { message: string; currentRoom: string }) => {
+  (messageData: { message: string; currentRoom: string; userId: string }) => {
    console.log("🚀 ~ socket.on ~ room:", messageData.currentRoom);
    console.log(messageData.message, "messageData");
    roomMessages.push({
     message: messageData.message,
-    time: "12:40 am",
+    time: new Date(),
     date: "15-03-2024",
-    senderId: "65b7ba113da851157fa6bd1e",
+    senderId: messageData.userId,
    });
    io.to(messageData?.currentRoom).emit("room-messages", roomMessages);
   }
