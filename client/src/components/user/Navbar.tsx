@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import LOGO from "../../assets/images/Logo.png"
 import PROFILE from "../../assets/images/defaultProfile.jpg"
 import { Link, NavLink, useNavigate } from 'react-router-dom'
@@ -6,10 +6,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { logoutUser } from '../../redux/actions/user/userActions'
 import { AppDispatch } from '../../redux/store'
+import { SocketContext } from '../../context/SocketContext'
 const Navbar: FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const { user } = useSelector((state: any) => state.user)
+
+  const { socket } = useContext(SocketContext) || {}
+
+  const handleLogout = () => {
+    if (socket && user?._id) {
+      dispatch(logoutUser({ socket, userId: user._id }));
+    }
+  };
 
   return (
     <div className='flex fixed top-0 w-full z-50 bg-white justify-between items-center shadow-md'>
@@ -37,7 +46,7 @@ const Navbar: FC = () => {
                       <h1 className='text-center'>{user?.userName}</h1>
                     </div>
                     <div className='mb-4'>
-                      <h1 onClick={() => { dispatch(logoutUser()), toast.success("logout successfull") }} className='bg-red-500 px-4 py-1.5 rounded-md cursor-pointer text-center text-white font-semibold w-24'>Logout</h1>
+                      <h1 onClick={handleLogout} className='bg-red-500 px-4 py-1.5 rounded-md cursor-pointer text-center text-white font-semibold w-24'>Logout</h1>
                     </div>
                   </div>
                 </div>

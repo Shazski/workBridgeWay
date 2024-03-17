@@ -42,6 +42,9 @@ export default class MessageHandler {
    case "getEmployeeScheduleData":
     response = await job_repo.getEmployeeSchedules(data.employeeId);
     break;
+   case "getCompanyById":
+    response = await company_repo.findCompanyById(data);
+    break;
    default:
     response = "Request-key notfound";
     break;

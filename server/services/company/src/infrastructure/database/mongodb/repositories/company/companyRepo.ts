@@ -32,6 +32,20 @@ export const findCompanyByEmail = async (
     return false;
   }
 };
+export const findCompanyById = async (
+  companyId: ObjectId
+): Promise<ICompanyData | boolean> => {
+  try {
+    const companyData: ICompanyData | null = await CompanySchema.findById(companyId);
+    
+    if (!companyData) return false;
+
+    return companyData;
+  } catch (error) {
+    console.log("<<Something went wrong in findCompanyById repo >>");
+    return false;
+  }
+};
 
 export const getAllCompanyData_repo = async (): Promise<
   ICompanyData[] | boolean

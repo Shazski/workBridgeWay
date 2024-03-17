@@ -24,6 +24,11 @@ const connectSocketIo = (server: Server) => {
     }
    });
 
+   socket.on("logout-user", (userId: string) => {
+    onlineUsers = onlineUsers.filter((user) => user.userId !== userId);
+    io.emit("online-users", onlineUsers);
+   });
+
    socket.on("disconnect", () => {
     onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
     io.emit("online-users", onlineUsers);

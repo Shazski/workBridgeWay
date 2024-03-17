@@ -49,3 +49,21 @@ export const getAllChatUserList = createAsyncThunk(
   }
  }
 );
+export const getAllChatCompanyList = createAsyncThunk(
+ "user/getAllChatCompanyList",
+ async (
+  roomRoomJoinerId:string,
+  { rejectWithValue }
+ ) => {
+  try {
+   const { data } = await axios.get(
+    `${CHAT_BASE_URL}/get-chat-company-list?roomJoiner=${roomRoomJoinerId}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

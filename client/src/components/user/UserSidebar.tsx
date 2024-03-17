@@ -9,12 +9,21 @@ import { IoExitOutline } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { logoutUser } from "../../redux/actions/user/userActions";
+import { useContext } from "react";
+import { SocketContext } from "../../context/SocketContext";
 const UserSidebar = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: any) => state.user)
     const location = useLocation();
     const isSettingsActive = () => {
         return location.pathname.startsWith('/user/settings');
+    };
+    const { socket } = useContext(SocketContext) || {}
+
+    const handleLogout = () => {
+        if (socket && user?._id) {
+            dispatch(logoutUser({ socket, userId: user._id }));
+        }
     };
     return (
         <div className="flex">
@@ -71,10 +80,10 @@ const UserSidebar = () => {
                 </div>
                 <div className='mt-3 md:ms-7 flex gap-3'>
 
-                <NavLink
-                    to="/user/settings/edit-profile"
-                    className={`px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isSettingsActive() ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`}
-                >
+                    <NavLink
+                        to="/user/settings/edit-profile"
+                        className={`px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isSettingsActive() ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`}
+                    >
                         <div className="flex gap-3">
                             <CiSettings className="text-xl" />
                             <h1 className="hidden md:flex">
@@ -82,8 +91,8 @@ const UserSidebar = () => {
                             </h1>
                         </div>
                     </NavLink>
-                </div>
-                <div onClick={() => dispatch(logoutUser())} className="flex cursor-pointer mt-40 md:ms-8 ms-3 relative">
+                </div>x
+                <div onClick={handleLogout} className="flex cursor-pointer mt-40 md:ms-8 ms-3 relative">
                     <div>
                         <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
                         <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>
@@ -100,7 +109,7 @@ const UserSidebar = () => {
                 </div>
             </div>
             <div className="w-full">
-            <Outlet />
+                <Outlet />
             </div>
         </div>
     )

@@ -11,6 +11,7 @@ interface companyRepoData {
   getAllCompanyData_repo: any;
   updateRequest: any;
   updateCompany_repo: any;
+  findCompanyById:any;
 }
 
 interface jobRepoData {

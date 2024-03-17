@@ -31,7 +31,21 @@ export const getChatUserList_repo = async (
 
   return result as IChatroom[];
  } catch (error) {
-  console.log("<< Something went wrong in createChatRoom repo >>");
+  console.log("<< Something went wrong in getChatUserList repo >>");
+  return false;
+ }
+};
+export const getChatCompanyList_repo = async (
+ roomJoiner: ObjectId
+): Promise<IChatroom[] | boolean> => {
+ try {
+  const result = await ChatSchema.find({ roomJoiner: roomJoiner });
+
+  if (!result) return false;
+
+  return result as IChatroom[];
+ } catch (error) {
+  console.log("<< Something went wrong in getChatCompanyList repo >>");
   return false;
  }
 };

@@ -12,6 +12,7 @@ import {
  USER_BASE_URL,
 } from "../../../config/constants";
 import { ICompanyData } from "../../../interface/ICompanyData";
+import { Socket } from "socket.io-client";
 
 export const userSignUp = createAsyncThunk(
  "user/userSignUp",
@@ -48,10 +49,12 @@ export const googleAuth = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
  "user/logoutUser",
- async (_, { rejectWithValue }) => {
-  console.log("call camed");
+ async ({socket,userId}:{socket:Socket,userId:string}, { rejectWithValue }) => {
   try {
+    console.log("logout user has camed");
+    
    const { data } = await axios.get(`${AUTH_BASE_URL}/logout`, config);
+   socket.emit("logout-user", userId);
    return data;
   } catch (error) {
    const axiosError = error as AxiosError<MyApiError>;
@@ -396,6 +399,21 @@ export const setUserfmcToken = createAsyncThunk(
    const { data } = await axios.post(
     `${USER_BASE_URL}/set-fmcToken`,
     { fmcToken: fmcToken },
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const getCompanyById = createAsyncThunk(
+ "user/getCompanyById",
+ async (companyId:string, { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${USER_BASE_URL}/get-company-details?companyId=${companyId}`,
     config
    );
    return data;

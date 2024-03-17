@@ -4,6 +4,7 @@ import {
   getAllCompanyData_repo,
   updateRequest,
   updateCompany_repo,
+  findCompanyById
 } from "./companyRepo";
 
 export = {
@@ -12,4 +13,5 @@ export = {
   getAllCompanyData_repo,
   updateRequest,
   updateCompany_repo,
+  findCompanyById
 };

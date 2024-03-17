@@ -1,5 +1,7 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import io, { Socket } from "socket.io-client";
+import { RootState } from "../redux/store";
 
 const SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL;
 
@@ -11,6 +13,8 @@ export interface SocketContextType {
   setPrivateApplicantMsg: (any) => void;
   currentRoom: string;
   setCurrentRoom: (room: string) => void;
+  onlineUsers: { userId: string; socketId: string }[];
+  setOnlineUsers: (users: { userId: string; socketId: string }[]) => void;
 }
 
 export const SocketContext = createContext<SocketContextType | null>(null);
@@ -24,6 +28,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [message, setMessage] = useState<string | null>(null);
   const [privateApplicantMsg, setPrivateApplicantMsg] = useState<any>(null);
   const [currentRoom, setCurrentRoom] = useState<string>("");
+  const [onlineUsers, setOnlineUsers] = useState<{ userId: string; socketId: string }[]>([]);
   const contextValue: SocketContextType = {
     socket,
     message,
@@ -31,8 +36,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     privateApplicantMsg,
     setPrivateApplicantMsg,
     currentRoom,
-    setCurrentRoom
+    setCurrentRoom,
+    onlineUsers,
+    setOnlineUsers
   };
+  const { user } = useSelector((state: RootState) => state.user)
+
+  useEffect(() => {
+    if (user && socket) {
+      socket.emit("new-user", (user._id));
+    }
+  }, [user, socket]);
 
   return (
     <SocketContext.Provider value={contextValue}>

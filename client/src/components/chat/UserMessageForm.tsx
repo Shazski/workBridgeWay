@@ -11,7 +11,8 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useSearchParams } from "react-router-dom";
 import { getApplicantsDetails } from "../../redux/actions/company/CompanyActions";
 import { defaultProfile } from "../../config/constants";
-const MessageForm = () => {
+import { getCompanyById } from "../../redux/actions/user/userActions";
+const UserMessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [roomMessages, setRoomMessages] = useState<any>([])
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
@@ -19,7 +20,7 @@ const MessageForm = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { applicantData } = useSelector((state: RootState) => state.company)
+  const { companyDetails } = useSelector((state: RootState) => state.chat)
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useDispatch<AppDispatch>()
@@ -30,14 +31,17 @@ const MessageForm = () => {
     socket?.emit("room-message", { message, currentRoom, userId: user._id });
     setMessage("");
   };
+  useEffect(() => {
+    if (user && socket) {
+      socket.emit("new-user", (user._id));
+    }
+  }, [user, socket]);
 
-  const chatUserId = searchParams.get("userId")
+  const chatCompanyId = searchParams.get("companyId")
 
   useEffect(() => {
-    dispatch(getApplicantsDetails({ userId: chatUserId! }))
+    dispatch(getCompanyById(chatCompanyId!))
   }, [searchParams])
-
- 
 
   useEffect(() => {
     socket?.off("room-messages").on("room-messages", (messages) => {
@@ -50,27 +54,22 @@ const MessageForm = () => {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
   }, [roomMessages]);
-  useEffect(() => {
-    if (user && socket) {
-      socket.emit("new-user", (user._id));
-    }
-  }, [user, socket]);
 
   return (
     <div className="realtive">
-      <div className='sticky h-[66px] flex items-center bg-white z-50 -top-0 border-b-2'>
+      <div className='sticky h-[66px] flex items-center bg-white z-50 top-16 border-b-2'>
         <div className='ms-6'>
           <div className="flex gap-x-3">
             <img
               className='w-10 rounded-full border-red-600 border'
-              src={typeof applicantData?.profilePic === 'string' ? applicantData.profilePic : defaultProfile}
+              src={typeof companyDetails?.companyLogo === 'string' ? companyDetails?.companyLogo : defaultProfile}
               alt=""
             />
             <div>
-              <h1 className="text-sm font-semibold text-gray-900">Jan Mayer</h1>
+              <h1 className="text-sm font-semibold text-gray-900">{companyDetails?.name}</h1>
               <div className="flex">
-                <h1 className="font-semibold text-gray-800 text-xs">{onlineUsers?.some(users => users.userId === applicantData?._id) ? "online" : "offline"}</h1>
-                <span className={`text ${onlineUsers?.some(users => users.userId === applicantData?._id) ? "text-green-600" : "text-red-600"}  rounded-full`}><GoDotFill /></span>
+                <h1 className="font-semibold text-gray-800 text-xs">{onlineUsers?.some(users => users.userId === companyDetails?._id) ? "online" : "offline"}</h1>
+                <span className={`text ${onlineUsers?.some(users => users.userId === companyDetails?._id) ? "text-green-600" : "text-red-600"}  rounded-full`}><GoDotFill /></span>
               </div>
             </div>
           </div>
@@ -113,4 +112,4 @@ const MessageForm = () => {
   )
 }
 
-export default MessageForm
+export default UserMessageForm

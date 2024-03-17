@@ -35,7 +35,7 @@ const ApplicantDetailsSideBar = () => {
       roomJoiner: userId!
     }
     await dispatch(createChatRoom(ChatRoomData))
-    navigate('/company/messages')
+    navigate(`/company/messages?userId=${userId}`)
 
   }
 

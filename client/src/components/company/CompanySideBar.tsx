@@ -13,7 +13,8 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../../redux/actions/user/userActions";
 import CompanyNavbar from "./CompanyNavbar";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SocketContext } from "../../context/SocketContext";
 const CompanySideBar = () => {
 
     const dispatch = useDispatch<AppDispatch>()
@@ -21,6 +22,13 @@ const CompanySideBar = () => {
 
     const [toggle, setToggle] = useState<boolean>(false);
 
+    const { socket } = useContext(SocketContext) || {}
+
+    const handleLogout = () => {
+        if (socket && user?._id) {
+            dispatch(logoutUser({ socket, userId: user._id }));
+        }
+    };
     return (
         <>
             <div className={`ms-5 flex lg:hidden sticky top-3 z-50 cursor-pointer mt-2`}>
@@ -99,7 +107,7 @@ const CompanySideBar = () => {
                                 <h1 className="hidden md:flex">Schedules</h1>
                             </div> </NavLink>
                     </div>
-                    <div onClick={() => {  dispatch(logoutUser()) }} className="flex ms-6 mt-12 md:ms-8 relative cursor-pointer">
+                    <div onClick={handleLogout} className="flex ms-6 mt-12 md:ms-8 relative cursor-pointer">
                         <div>
                             <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
                             <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>
@@ -107,7 +115,7 @@ const CompanySideBar = () => {
                     </div>
                     <div className="flex profile mt-auto">
                         <div>
-                            <img src={user?.companyLogo} alt="" className="w-32" />
+                            <img src={user?.companyLogo} alt="" className="w-12 h-12 mt-3 rounded-full" />
                         </div>
                         <div>
                             <h1 className="font-semibold text-lg mt-2">{user?.name}</h1>

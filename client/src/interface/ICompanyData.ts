@@ -1,4 +1,5 @@
 export interface ICompanyData {
+  _id?: string | null;
   name?: string;
   email?: string;
   password?: string;
