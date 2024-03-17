@@ -6,17 +6,30 @@ let io: SocketIOServer;
 let onlineUsers: { userId: string; socketId: string }[] = [];
 
 const connectSocketIo = (server: Server) => {
-  if (!io) {
-    io = new SocketIOServer(server, {
-      cors: {
-        origin: FRONTEND_BASE_URL,
-      },
+ if (!io) {
+  io = new SocketIOServer(server, {
+   cors: {
+    origin: FRONTEND_BASE_URL,
+   },
+  });
+
+  io.on("connection", (socket: Socket) => {
+   socket.on("new-user", (userId: string) => {
+    onlineUsers = onlineUsers.filter((user) => {
+     return user.userId !== userId;
     });
+    if (userId) {
+     onlineUsers.push({ userId: userId, socketId: socket.id });
+     io.emit("online-users", onlineUsers);
+    }
+   });
 
-  io.on("connection", (socket:Socket) => {
-    console.log("🚀 ~ io.on ~ socket:", socket.id)
-  })
-}
-}
+   socket.on("disconnect", () => {
+    onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
+    io.emit("online-users", onlineUsers);
+   });
+  });
+ }
+};
 
-export default connectSocketIo
+export default connectSocketIo;

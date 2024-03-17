@@ -21,7 +21,7 @@ const MessageForm = () => {
   const sendMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShowEmoji(false);
-    socket?.emit("room-message", { message, currentRoom, userId:user._id });
+    socket?.emit("room-message", { message, currentRoom, userId: user._id });
     setMessage("");
   };
 
@@ -30,7 +30,15 @@ const MessageForm = () => {
       setRoomMessages(messages)
     })
   }, [socket, message, currentRoom])
+
+  useEffect(() => {
+    if (socket && user) {
+      socket.emit("new-user", user._id);
+    }
+  }, [socket, user]);
+
   
+
   useEffect(() => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
@@ -63,7 +71,7 @@ const MessageForm = () => {
                   <h1 className={`break-all  poppins text-sm font-semibold ${message.senderId === user._id ? 'text-white' : ''}`}>{message?.message}</h1>
                   <div className="flex justify-end">
                     <div>
-                      <h1 className={`text-xs ${message.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(message?.time),"hh:mm a")}</h1>
+                      <h1 className={`text-xs ${message.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(message?.time), "hh:mm a")}</h1>
                       {/* <h1 className="text-xs text-white font-semibold">{message?.date && message?.date && format(new Date(), 'EEEE, MMMM d, yyyy')}</h1> */}
                     </div>
                   </div>

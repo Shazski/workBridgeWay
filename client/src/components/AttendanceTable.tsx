@@ -67,7 +67,7 @@ const AttendanceTable = () => {
     setSelectedMonth(newMonth);
   };
 
-  return (
+  return ( 
     <div className="mt-2 mx-4 flex-grow">
       <div className='mt-20 text-center'>
         <label className="mr-2">Select Month:</label>

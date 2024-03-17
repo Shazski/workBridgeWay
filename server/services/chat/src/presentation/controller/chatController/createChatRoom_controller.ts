@@ -3,7 +3,6 @@ import { IDependencies } from "../../../application/interfaces/IDependencies";
 import { ErrorResponse } from "work-bridge-way-common";
 
 export default (dependencies: IDependencies) => {
- console.log("🚀 ~ dependencies:", dependencies)
  const {
   chatUseCase: { createChatRoom_useCase },
  } = dependencies;

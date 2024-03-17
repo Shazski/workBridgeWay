@@ -34,9 +34,7 @@ const ApplicantDetailsSideBar = () => {
       roomCreater: user._id!,
       roomJoiner: userId!
     }
-    console.log("🚀 ~ handleMessageEvent ~ ChatRoomData:", ChatRoomData)
     await dispatch(createChatRoom(ChatRoomData))
-
     navigate('/company/messages')
 
   }

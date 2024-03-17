@@ -31,3 +31,21 @@ export const createChatRoom = createAsyncThunk(
   }
  }
 );
+export const getAllChatUserList = createAsyncThunk(
+ "user/getAllChatUserList",
+ async (
+  roomCreaterId:string,
+  { rejectWithValue }
+ ) => {
+  try {
+   const { data } = await axios.get(
+    `${CHAT_BASE_URL}/get-chat-user-list?roomCreater=${roomCreaterId}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
