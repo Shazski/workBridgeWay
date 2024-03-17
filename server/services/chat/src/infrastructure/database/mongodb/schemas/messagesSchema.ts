@@ -1,45 +1,33 @@
-import mongoose, { Schema } from "mongoose";
-// import { IMessages } from "../../../../entities/messageEntities";
+import { MessageEntity } from "../../../../domain/entity/messageEntity";
+import { Schema, model } from "mongoose";
 
-const MessageSchema: Schema = new Schema({
-  senderId: {
-    type: Schema.Types.ObjectId,
-    required: true,
+const messageSchema = new Schema<MessageEntity>(
+ {
+  roomId: {
+   type: String,
+   required: true,
   },
-  reciverId: {
-    type: Schema.Types.ObjectId,
-    required: true,
+  sender: {
+   type: Schema.Types.ObjectId,
+   required: true,
   },
-  chatRoomId: {
-    type: Schema.Types.ObjectId,
+  message: {
+   type: String,
+   required: true,
   },
-  message : {
-    type :  String ,
-    required : true 
+  messageType: {
+   type: String,
+   enum: ["text", "image", "audio", "video", "file"],
+   default: "text",
   },
-  typeOfMessage : {
-    type : String 
+  recieverSeen: {
+   type: Boolean,
+   default: false,
   },
-  unread : {
-    type : String ,
-    default : true ,
-    required : true 
-  },
-  showToReciever : {
-    type : String ,
-    default : true 
-  },
-  latestMessage : {
-    type : String ,
-  }
-},{
-    timestamps : true 
-});
+ },
+ {
+  timestamps: true,
+ }
+);
 
-// const MessageCollection  = mongoose.model<IMessages>('messages',MessageSchema)
-// export default MessageCollection ; 
-
-// export interface MessageDocument  extends IMessages {
-//     createdAt : Date,
-//     updatedAt : Date 
-// }
+export const Message = model("messages", messageSchema);

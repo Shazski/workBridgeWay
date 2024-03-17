@@ -1,29 +1,22 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IChatroom } from "../../../../domain/entity";
 
-interface IChatroom extends Document {
- roomCreater: Schema.Types.ObjectId;
- roomJoiner: Schema.Types.ObjectId;
- lastMessage: string;
- lastMessageTime: Date;
- createdAt: Date;
- updatedAt: Date;
-}
 
 const ChatRoomSchema: Schema<IChatroom> = new Schema(
  {
   roomCreater: {
-   type: Schema.Types.ObjectId,
+   type: Schema.Types.ObjectId, // companyId 
    required: true,
   },
   roomJoiner: {
-   type: Schema.Types.ObjectId,
+   type: Schema.Types.ObjectId, //userId
    required: true,
   },
   lastMessage: {
-   messagePerson: { type: String },
+   messagePerson: { type: String }, //last message in the chat with personName and message
    message: { String },
   },
-  lastMessageTime: { type: Date },
+  lastMessageTime: { type: Date }, // Time of last message for sorting chat with message person
  },
  {
   timestamps: true,

@@ -16,6 +16,7 @@ const MessageForm = () => {
 
 
   const { user } = useSelector((state: RootState) => state.user)
+  const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
   const sendMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,12 +24,13 @@ const MessageForm = () => {
     socket?.emit("room-message", { message, currentRoom, userId:user._id });
     setMessage("");
   };
+
   useEffect(() => {
     socket?.off("room-messages").on("room-messages", (messages) => {
       setRoomMessages(messages)
     })
   }, [socket, message, currentRoom])
-  const messageBoxRef = useRef<HTMLDivElement | null>(null);
+  
   useEffect(() => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;

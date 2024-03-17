@@ -2,15 +2,20 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdMessage } from "react-icons/md";
 import { MdEmail } from "react-icons/md";
 import { IoIosPhonePortrait } from "react-icons/io";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
 import { useNavigate, useParams } from "react-router-dom";
+import { createChatRoom } from "../../redux/actions/chat/chatActions";
 const ApplicantDetailsSideBar = () => {
   const { applicantData, editJob } = useSelector((state: RootState) => state.company)
   const { userId } = useParams()
+
+  const { user } = useSelector((state: RootState) => state.user)
+
   const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
 
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   const getDateDifference = (appliedDate: string): number => {
     const providedDateObject = new Date(appliedDate);
@@ -18,12 +23,23 @@ const ApplicantDetailsSideBar = () => {
       console.error('Invalid date provided');
       return 0;
     }
-
     const today = new Date();
     const timeDifference: number = providedDateObject.getTime() - today.getTime();
     const daysDifference = Math.ceil(Math.abs(timeDifference / (1000 * 60 * 60 * 24)));
     return daysDifference;
   };
+
+  const handleMessageEvent = async () => {
+    const ChatRoomData = {
+      roomCreater: user._id!,
+      roomJoiner: userId!
+    }
+    console.log("🚀 ~ handleMessageEvent ~ ChatRoomData:", ChatRoomData)
+    await dispatch(createChatRoom(ChatRoomData))
+
+    navigate('/company/messages')
+
+  }
 
   return (
     <>
@@ -74,7 +90,7 @@ const ApplicantDetailsSideBar = () => {
           <div className="border-2 w-5/6 rounded-md  ms-4 flex justify-center h-full py-1 ">
             <h1 className="text-lightgreen font-bold">Schedule Interview</h1>
           </div>
-          <div className="border-2 w-1/6 rounded-md  flex me-4 text-lightgreen text-xl justify-center h-full py-1.5 mb-4">
+          <div onClick={() => handleMessageEvent()} className="border-2 w-1/6 rounded-md cursor-pointer flex me-4 text-lightgreen text-xl justify-center h-full py-1.5 mb-4">
             <h1><MdMessage /></h1>
           </div>
         </div>
