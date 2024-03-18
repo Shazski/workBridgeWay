@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
  getAllChatCompanyList,
  getAllChatUserList,
 } from "../../actions/chat/chatActions";
-import { getCompanyById } from "../../actions/user/userActions";
+import { getChatCompanyDetailsByIds, getCompanyById } from "../../actions/user/userActions";
 import { ICompanyData } from "../../../interface/ICompanyData";
 
 const chatSlice = createSlice({
@@ -11,12 +11,17 @@ const chatSlice = createSlice({
  initialState: {
   chatLoading: null as boolean | null,
   chatUserList: null as any[] | null,
-  chatCompanyList: null as any[] | null,
+  chatCompanyList: [] as any[],
   messages: null as any | null,
   chatError: null as string | null,
   companyDetails: null as ICompanyData | null,
+  companyFullDetails: null as ICompanyData[] | null
  },
- reducers: {},
+ reducers: {
+  updateChatCompanyList : (state, action: PayloadAction<any>) => {
+    state.chatCompanyList = action.payload;
+  },
+ },
 
  extraReducers: (builder) => {
   builder
@@ -44,7 +49,7 @@ const chatSlice = createSlice({
    .addCase(getAllChatCompanyList.rejected, (state, { payload }) => {
     state.chatLoading = false;
     state.chatError = payload as string;
-    state.chatCompanyList = null;
+    state.chatCompanyList = [];
    })
    .addCase(getCompanyById.pending, (state) => {
     state.chatLoading = true;
@@ -56,10 +61,23 @@ const chatSlice = createSlice({
    })
    .addCase(getCompanyById.rejected, (state, { payload }) => {
     state.chatLoading = false;
-    state.chatError = payload as string;
+    state.chatError = payload as string; 
     state.companyDetails = null;
-   });
+   })
+   .addCase(getChatCompanyDetailsByIds.pending, (state) => {
+    state.chatLoading = true;
+   })
+   .addCase(getChatCompanyDetailsByIds.fulfilled, (state, { payload }) => {
+    state.chatLoading = false;
+    state.companyFullDetails = payload;
+    state.chatError = null;
+   })
+   .addCase(getChatCompanyDetailsByIds.rejected, (state, { payload }) => {
+    state.chatLoading = false;
+    state.chatError = payload as string; 
+    state.companyFullDetails = null;
+   })
  },
 });
-// export const {  } = adminSlice.actions;
+export const { updateChatCompanyList } = chatSlice.actions;
 export default chatSlice.reducer;

@@ -423,3 +423,19 @@ export const getCompanyById = createAsyncThunk(
   }
  }
 );
+export const getChatCompanyDetailsByIds = createAsyncThunk(
+ "user/getChatCompanyDetailsByIds",
+ async (companyId:string[], { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${USER_BASE_URL}/get-company-details-by-ids?companyId=${companyId}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+

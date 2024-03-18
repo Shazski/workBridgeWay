@@ -17,9 +17,6 @@ export default (dependencies: IDependencies) => {
     roomJoiner
    );
 
-   console.log(chatCompanyList,"chatCompanyList");
-   
-
    if (!chatCompanyList)
     return next(ErrorResponse.notFound("No User Found"));
 

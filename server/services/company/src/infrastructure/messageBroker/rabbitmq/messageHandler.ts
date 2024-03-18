@@ -45,6 +45,9 @@ export default class MessageHandler {
    case "getCompanyById":
     response = await company_repo.findCompanyById(data);
     break;
+   case "getCompanyByIds":
+    response = await company_repo.findCompanyByIds(data);
+    break;
    default:
     response = "Request-key notfound";
     break;

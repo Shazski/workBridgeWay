@@ -1,123 +1,142 @@
+import { AnyAaaaRecord } from "dns";
 import { ICompany } from "../../../../../domain/entities/company.entity";
 import CompanySchema, { ICompanyData } from "../../schema/companySchema";
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
-export const registerCompany:any = async (
-  companyCredentials: ICompany
+export const registerCompany: any = async (
+ companyCredentials: ICompany
 ): Promise<ICompanyData | boolean> => {
-  try {
-    const newCompany = await CompanySchema.create({
-      ...companyCredentials,
-    });
-    if (!newCompany) return false;
+ try {
+  const newCompany = await CompanySchema.create({
+   ...companyCredentials,
+  });
+  if (!newCompany) return false;
 
-    return newCompany;
-  } catch (error) {
-    console.log(error, "<<Something went wrong in register company repo >>");
-    return false;
-  }
+  return newCompany;
+ } catch (error) {
+  console.log(error, "<<Something went wrong in register company repo >>");
+  return false;
+ }
 };
 export const findCompanyByEmail = async (
-  companyCredentials: ICompany
+ companyCredentials: ICompany
 ): Promise<ICompanyData | boolean> => {
-  try {
-    const companyExists: ICompanyData | null = await CompanySchema.findOne({
-      email: companyCredentials.email,
-    });
-    if (!companyExists) return false;
+ try {
+  const companyExists: ICompanyData | null = await CompanySchema.findOne({
+   email: companyCredentials.email,
+  });
+  if (!companyExists) return false;
 
-    return companyExists;
-  } catch (error) {
-    console.log("<<Something went wrong in find company by email repo >>");
-    return false;
-  }
+  return companyExists;
+ } catch (error) {
+  console.log("<<Something went wrong in find company by email repo >>");
+  return false;
+ }
 };
 export const findCompanyById = async (
-  companyId: ObjectId
+ companyId: ObjectId
 ): Promise<ICompanyData | boolean> => {
-  try {
-    const companyData: ICompanyData | null = await CompanySchema.findById(companyId);
-    
-    if (!companyData) return false;
+ try {
+  const companyData: ICompanyData | null = await CompanySchema.findById(
+   companyId
+  );
 
-    return companyData;
-  } catch (error) {
-    console.log("<<Something went wrong in findCompanyById repo >>");
-    return false;
-  }
+  if (!companyData) return false;
+
+  return companyData;
+ } catch (error) {
+  console.log("<<Something went wrong in findCompanyById_repo >>");
+  return false;
+ }
 };
+export const findCompanyByIds = async (
+  companyIds: ObjectId[]
+ ): Promise<ICompanyData | boolean> => {
+  try {
+   const companyData: any = await CompanySchema.find({
+    _id: { $in: companyIds },
+   });
+ 
+   if (!companyData) return false;
+ 
+   return companyData as any;
+  } catch (error) {
+   console.log(error, "<<Something went wrong in findCompanyByIds repo >>");
+   return false;
+  }
+ };
 
 export const getAllCompanyData_repo = async (): Promise<
-  ICompanyData[] | boolean
+ ICompanyData[] | boolean
 > => {
-  try {
-    const companyData: ICompanyData[] | null = await CompanySchema.find();
+ try {
+  const companyData: ICompanyData[] | null = await CompanySchema.find();
 
-    if (!companyData) return false;
+  if (!companyData) return false;
 
-    return companyData;
-  } catch (error) {
-    console.log("Error getting all companies data from repo");
-    return false;
-  }
+  return companyData;
+ } catch (error) {
+  console.log("Error getting all companies data from repo");
+  return false;
+ }
 };
 export const updateRequest = async (credentials: {
-  email: string;
-  stage: string;
-  rejectReason?: string;
+ email: string;
+ stage: string;
+ rejectReason?: string;
 }): Promise<ICompanyData | boolean> => {
-  let companyData;
-  try {
-    if (credentials.stage === "approved") {
-      companyData = await CompanySchema.findOneAndUpdate(
-        { email: credentials.email },
-        {
-          approved: true,
-          stage: credentials.stage,
-        },
-        { new: true }
-      );
-    } else {
-      companyData = await CompanySchema.findOneAndUpdate(
-        { email: credentials.email },
-        {
-          approved: false,
-          stage: credentials.stage,
-          rejectReason: credentials.rejectReason,
-        },
-        { new: true }
-      );
-    }
-
-    if (!companyData) return false;
-
-    return companyData;
-  } catch (error) {
-    console.log("Error getting all companies data from repo");
-    return false;
+ let companyData;
+ try {
+  if (credentials.stage === "approved") {
+   companyData = await CompanySchema.findOneAndUpdate(
+    { email: credentials.email },
+    {
+     approved: true,
+     stage: credentials.stage,
+    },
+    { new: true }
+   );
+  } else {
+   companyData = await CompanySchema.findOneAndUpdate(
+    { email: credentials.email },
+    {
+     approved: false,
+     stage: credentials.stage,
+     rejectReason: credentials.rejectReason,
+    },
+    { new: true }
+   );
   }
+
+  if (!companyData) return false;
+
+  return companyData;
+ } catch (error) {
+  console.log("Error getting all companies data from repo");
+  return false;
+ }
 };
 
 export const updateCompany_repo = async (
-  credentials: ICompanyData,
-  id: ObjectId
+ credentials: ICompanyData,
+ id: ObjectId
 ): Promise<ICompanyData | boolean> => {
-  credentials.stage = "reapplied";
-  try {
-    const companyData = await CompanySchema.findByIdAndUpdate(
-      id,
-      {
-        ...credentials,
-        reRequested: true,
-      },
-      { new: true, upsert: true }
-    );
+ credentials.stage = "reapplied";
+ try {
+  const companyData = await CompanySchema.findByIdAndUpdate(
+   id,
+   {
+    ...credentials,
+    reRequested: true,
+   },
+   { new: true, upsert: true }
+  );
 
-    if (!companyData) return false;
+  if (!companyData) return false;
 
-    return companyData;
-  } catch (error) {
-    console.log(error, "<< Something went wrong in update company repo >>");
-    return false;
-  }
+  return companyData;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in update company repo >>");
+  return false;
+ }
 };

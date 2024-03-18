@@ -25,6 +25,7 @@ export = (dependencies: IDependenciesData) => {
   getPreferredJobs,
   setUserFmcToken,
   getCompanyById,
+  getCompanyDetailsByIds,
  } = userController(dependencies);
  const router = express.Router();
 
@@ -109,6 +110,12 @@ export = (dependencies: IDependenciesData) => {
   verifyUserToken,
   checkUserBlockOrNot,
   getCompanyById
+ );
+ router.get(
+  "/get-company-details-by-ids",
+  verifyUserToken,
+  checkUserBlockOrNot,
+  getCompanyDetailsByIds
  );
  return router;
 };

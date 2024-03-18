@@ -1,11 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IChatroom } from "../../../../domain/entity";
 
-
 const ChatRoomSchema: Schema<IChatroom> = new Schema(
  {
   roomCreater: {
-   type: Schema.Types.ObjectId, // companyId 
+   type: Schema.Types.ObjectId, // companyId
    required: true,
   },
   roomJoiner: {
@@ -13,8 +12,7 @@ const ChatRoomSchema: Schema<IChatroom> = new Schema(
    required: true,
   },
   lastMessage: {
-   messagePerson: { type: String }, //last message in the chat with personName and message
-   message: { String },
+   type: String, //last message data
   },
   lastMessageTime: { type: Date }, // Time of last message for sorting chat with message person
  },

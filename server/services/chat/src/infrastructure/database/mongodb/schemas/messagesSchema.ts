@@ -7,7 +7,7 @@ const messageSchema = new Schema<MessageEntity>(
    type: String,
    required: true,
   },
-  sender: {
+  senderId: {
    type: Schema.Types.ObjectId,
    required: true,
   },

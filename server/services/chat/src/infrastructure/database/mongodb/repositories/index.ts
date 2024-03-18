@@ -1,7 +1,15 @@
-import { createChatRoom_repo,getChatUserList_repo,getChatCompanyList_repo} from "./chat.repo";
+import {
+ createChatRoom_repo,
+ getChatUserList_repo,
+ getChatCompanyList_repo,
+ getLastMessagesFromRoom,
+ createMessage
+} from "./chat.repo";
 
 export default {
  createChatRoom_repo,
  getChatUserList_repo,
- getChatCompanyList_repo
+ getChatCompanyList_repo,
+ getLastMessagesFromRoom,
+ createMessage
 };

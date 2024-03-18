@@ -16,6 +16,7 @@ import setUserPreferredCategory_controller from "./setUserPreferredCategory_cont
 import getPreferredJobs_controller from "./getPreferredJobs_controller";
 import setUserFmcToken_controller from "./setUserFmcToken_controller";
 import getCompanyById_controller from "./getCompanyById_controller";
+import getCompanyDetailsByIds_controller from "./getCompanyDetailsByIds_controller";
 export = (dependencies: IDependenciesData) => {
  return {
   editUser: editUser_controller(dependencies),
@@ -34,6 +35,7 @@ export = (dependencies: IDependenciesData) => {
   setUserPreferredCategory: setUserPreferredCategory_controller(dependencies),
   getPreferredJobs: getPreferredJobs_controller(dependencies),
   setUserFmcToken:setUserFmcToken_controller(dependencies),
-  getCompanyById:getCompanyById_controller(dependencies)
+  getCompanyById:getCompanyById_controller(dependencies),
+  getCompanyDetailsByIds:getCompanyDetailsByIds_controller(dependencies)
  };
 };
