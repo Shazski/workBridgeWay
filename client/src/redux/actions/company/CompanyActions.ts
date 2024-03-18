@@ -293,3 +293,18 @@ export const getAllApplicantSchedule = createAsyncThunk(
   }
  }
 );
+export const getChatUserDetailsByIds = createAsyncThunk(
+ "user/getChatUserDetailsByIds",
+ async (userIds:string[], { rejectWithValue }) => {
+  try {
+   const { data } = await axios.get(
+    `${COMPANY_BASE_URL}/get-all-user-details-by-ids?userIds=${userIds}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);

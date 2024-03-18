@@ -13,11 +13,11 @@ import { defaultProfile } from "../../config/constants";
 import { getCompanyById } from "../../redux/actions/user/userActions";
 import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png'
 import { updateChatCompanyList } from "../../redux/reducers/chat/chatSlice";
+
 const UserMessageForm = () => {
   const [message, setMessage] = useState<string>("");
-  const [roomMessages, setRoomMessages] = useState<any>([])
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
-  const { socket, currentRoom, onlineUsers } = useContext(SocketContext) || {}
+  const { socket, currentRoom, onlineUsers,roomMessages, setRoomMessages } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
 
   const { user } = useSelector((state: RootState) => state.user)
@@ -56,7 +56,7 @@ const UserMessageForm = () => {
 
   useEffect(() => {
     socket?.off("room-messages").on("room-messages", (messages) => {
-      setRoomMessages(messages)
+      setRoomMessages && setRoomMessages(messages)
     })
   }, [socket, message, currentRoom])
 
@@ -98,14 +98,14 @@ const UserMessageForm = () => {
                       </div>
                       <h1 className="text-center px-4 py-3 bg-lightgreen text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
                       <div className='border-b-2 w-4/12  border-gray-300'>
-                   
+
                       </div>
                     </div>
                     {message?.messagesByDate?.map((msg, idx) => (
                       <>
                         <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>
                           <div className="">
-                            <img className={`w-10 border border-red-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs2/112692698/original/31a5d2469689575beee06ffcf4e9e76abab3abe2/logo-design-for-profile-picture-dessin-pour-photo-de-profil.png"} alt="" />
+                            <img className={`w-10 border border-red-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : companyDetails?.companyLogo || ""} alt="" />
                             <div className={`px-3.5 py-2 max-w-xs ${msg.senderId === user._id ? 'me-1 bg-blue-600 rounded-s-xl rounded-b-2xl' : 'ms-12 bg-white rounded-e-xl rounded-b-xl'}`}>
                               <h1 className={`break-all  poppins text-sm font-semibold ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
                               <div className="flex justify-end">

@@ -465,3 +465,20 @@ export const getAllUser: any = async (
    return false;
   }
  };
+
+ export const findUserByIds = async (
+  userIds: ObjectId[]
+ ): Promise<IUserData[] | boolean> => {
+  try {
+   const userData: any = await UserSchema.find({
+    _id: { $in: userIds },
+   });
+ 
+   if (!userData) return false;
+ 
+   return userData as IUserData[];
+  } catch (error) {
+   console.log(error, "<<Something went wrong in findUserByIds repo >>");
+   return false;
+  }
+ };

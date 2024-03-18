@@ -15,6 +15,8 @@ export interface SocketContextType {
   setCurrentRoom: (room: string) => void;
   onlineUsers: { userId: string; socketId: string }[];
   setOnlineUsers: (users: { userId: string; socketId: string }[]) => void;
+  roomMessages: any[],
+  setRoomMessages: (messages: any) => void
 }
 
 export const SocketContext = createContext<SocketContextType | null>(null);
@@ -29,6 +31,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [privateApplicantMsg, setPrivateApplicantMsg] = useState<any>(null);
   const [currentRoom, setCurrentRoom] = useState<string>("");
   const [onlineUsers, setOnlineUsers] = useState<{ userId: string; socketId: string }[]>([]);
+  const [roomMessages, setRoomMessages] = useState<any>([])
   const contextValue: SocketContextType = {
     socket,
     message,
@@ -38,7 +41,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     currentRoom,
     setCurrentRoom,
     onlineUsers,
-    setOnlineUsers
+    setOnlineUsers,
+    roomMessages,
+    setRoomMessages
   };
   const { user } = useSelector((state: RootState) => state.user)
 

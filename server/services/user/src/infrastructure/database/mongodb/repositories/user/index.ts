@@ -14,6 +14,7 @@ import {
  setUserPreferredCategory,
  setUserFmcToken,
  getAllUser,
+ findUserByIds
 } from "./userRepo";
 
 export default {
@@ -32,4 +33,5 @@ export default {
  setUserPreferredCategory,
  setUserFmcToken,
  getAllUser,
+ findUserByIds
 };

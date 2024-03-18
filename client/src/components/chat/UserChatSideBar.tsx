@@ -11,7 +11,7 @@ function UserChatSideBar() {
 
   const [searchParams, _] = useSearchParams()
 
-  const { socket, currentRoom, setCurrentRoom, setOnlineUsers, onlineUsers } = useContext(SocketContext) || {}
+  const { socket, currentRoom, setCurrentRoom, setOnlineUsers, onlineUsers, roomMessages } = useContext(SocketContext) || {}
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -19,7 +19,7 @@ function UserChatSideBar() {
 
   useEffect(() => {
     dispatch(getAllChatCompanyList(user._id))
-  }, [])
+  }, [roomMessages])
 
   const navigate = useNavigate()
 
@@ -29,14 +29,7 @@ function UserChatSideBar() {
     if (!user) return
     socket?.emit("join-room", room)
     setCurrentRoom && setCurrentRoom(room)
-    console.log(currentRoom, "rooms data");
   }
-
-  useEffect(() => {
-    socket && socket.on("online-users", (onlineUsers) => {
-      setOnlineUsers && setOnlineUsers(onlineUsers)
-    })
-  }, [socket])
 
   const createPrivateRoomId = (id1: string, id2: string) => {
     if (id1 > id2) {
@@ -55,6 +48,11 @@ function UserChatSideBar() {
     handlePrivateMessage(userId)
     navigate(`/user/messages?companyId=${userId}`)
   }
+  useEffect(() => {
+    socket && socket.on("online-users", (onlineUsers) => {
+      setOnlineUsers && setOnlineUsers(onlineUsers)
+    })
+  }, [socket])
 
   useEffect(() => {
     const companyIds = chatCompanyList?.map(user => user.roomCreater)
@@ -64,7 +62,6 @@ function UserChatSideBar() {
 
 
   const getTimeAgo = (timestamp) => {
-    console.log("🚀 ~ getTimeAgo ~ timestamp:", timestamp)
 
     const now = new Date().getTime();
     const diffMs = now - new Date(timestamp).getTime();
@@ -104,9 +101,8 @@ function UserChatSideBar() {
                     <div className="flex w-full ">
                       <h1 className="text-sm font-semibold text-gray-900">{companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.name}</h1>
                       <span className={`text-xl rounded-full  ${onlineUsers && onlineUsers?.some((users) => users.userId === chatUser?.roomCreater) ? 'text-green-600' : 'text-red-600'}`}><GoDotFill /></span>
-                      <div className="w-24 md:ms-12">
                         <h1 className="text-xs  font-semibold text-end poppins  text-gray-700  mt-1 ">{getTimeAgo(chatUser?.lastMessageTime)}</h1>
-                      </div>
+
                     </div>
                     <h1 className="text-xs mt-1 font-semibold  text-gray-700">
                       {chatUser?.lastMessage && chatUser?.lastMessage.length > 20

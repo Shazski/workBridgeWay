@@ -22,6 +22,9 @@ export default class MessageHandler {
             case 'getAllUsers':
                 response = await userRepo.getAllUser()
                 break;
+            case 'getUserByIds':
+                response = await userRepo.findUserByIds(data)
+                break;
             default:
                 response = 'Request-key notfound'
                 break;

@@ -3,8 +3,13 @@ import {
  getAllChatCompanyList,
  getAllChatUserList,
 } from "../../actions/chat/chatActions";
-import { getChatCompanyDetailsByIds, getCompanyById } from "../../actions/user/userActions";
+import {
+ getChatCompanyDetailsByIds,
+ getCompanyById,
+} from "../../actions/user/userActions";
 import { ICompanyData } from "../../../interface/ICompanyData";
+import { IUserLoginData } from "../../../interface/IuserLogin";
+import { getChatUserDetailsByIds } from "../../actions/company/CompanyActions";
 
 const chatSlice = createSlice({
  name: "admin",
@@ -15,11 +20,20 @@ const chatSlice = createSlice({
   messages: null as any | null,
   chatError: null as string | null,
   companyDetails: null as ICompanyData | null,
-  companyFullDetails: null as ICompanyData[] | null
+  companyFullDetails: null as ICompanyData[] | null,
+  userFullDetails: null as IUserLoginData[] | null,
  },
  reducers: {
-  updateChatCompanyList : (state, action: PayloadAction<any>) => {
-    state.chatCompanyList = action.payload;
+  updateChatCompanyList: (state, action: PayloadAction<any>) => {
+   console.log(
+    "🚀 ~ action.payload:updateChatCompanyList<<<<<<<<<<",
+    action.payload
+   );
+   state.chatCompanyList = action.payload;
+  },
+  updateChatUserList: (state, action: PayloadAction<any>) => {
+   console.log("🚀 ~ action.payload:updateChatUserList=======", action.payload);
+   state.chatUserList = action.payload;
   },
  },
 
@@ -61,7 +75,7 @@ const chatSlice = createSlice({
    })
    .addCase(getCompanyById.rejected, (state, { payload }) => {
     state.chatLoading = false;
-    state.chatError = payload as string; 
+    state.chatError = payload as string;
     state.companyDetails = null;
    })
    .addCase(getChatCompanyDetailsByIds.pending, (state) => {
@@ -74,10 +88,23 @@ const chatSlice = createSlice({
    })
    .addCase(getChatCompanyDetailsByIds.rejected, (state, { payload }) => {
     state.chatLoading = false;
-    state.chatError = payload as string; 
+    state.chatError = payload as string;
     state.companyFullDetails = null;
    })
+   .addCase(getChatUserDetailsByIds.pending, (state) => {
+    state.chatLoading = true;
+   })
+   .addCase(getChatUserDetailsByIds.fulfilled, (state, { payload }) => {
+    state.chatLoading = false;
+    state.userFullDetails = payload;
+    state.chatError = null;
+   })
+   .addCase(getChatUserDetailsByIds.rejected, (state, { payload }) => {
+    state.chatLoading = false;
+    state.chatError = payload as string;
+    state.userFullDetails = null;
+   });
  },
 });
-export const { updateChatCompanyList } = chatSlice.actions;
+export const { updateChatCompanyList, updateChatUserList } = chatSlice.actions;
 export default chatSlice.reducer;

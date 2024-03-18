@@ -20,6 +20,7 @@ export = (dependencies: IDependencies) => {
   getAllCompanyEmployees,
   editEmployee,
   getAllApplicantsSchedule,
+  getUserDetailsByIds
  } = companyController(dependencies);
 
  router.put("/update", verifyCompanyToken, updateCompany);
@@ -51,6 +52,11 @@ export = (dependencies: IDependencies) => {
   "/get-all-applicant-schedule",
   verifyCompanyToken,
   getAllApplicantsSchedule
+ );
+ router.get(
+  "/get-all-user-details-by-ids",
+  verifyCompanyToken,
+  getUserDetailsByIds
  );
 
  return router;
