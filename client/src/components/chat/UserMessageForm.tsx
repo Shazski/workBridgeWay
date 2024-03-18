@@ -5,7 +5,7 @@ import { FaPaperclip } from "react-icons/fa";
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import EmojiPicker from 'emoji-picker-react';
 import { SocketContext } from "../../context/SocketContext";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useSearchParams } from "react-router-dom";
@@ -37,7 +37,7 @@ const UserMessageForm = () => {
       }
       return chatUser;
     }).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime());
-  
+
     dispatch(updateChatCompanyList(updatedChatCompanyList));
 
     setMessage("");
@@ -93,7 +93,14 @@ const UserMessageForm = () => {
               {
                 roomMessages && roomMessages?.map((message, idx) => (
                   <>
-                    <h1 className="text-center">{format(new Date(message._id), 'EEEE ,MMMM dd, yyyy')}</h1>
+                    <div key={idx} className="flex justify-between items-center sticky top-0 bg-light-blue-50">
+                      <div className='border-b-2 w-4/12 border-gray-300'>
+                      </div>
+                      <h1 className="text-center px-4 py-3 bg-lightgreen text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
+                      <div className='border-b-2 w-4/12  border-gray-300'>
+                   
+                      </div>
+                    </div>
                     {message?.messagesByDate?.map((msg, idx) => (
                       <>
                         <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>

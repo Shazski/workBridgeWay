@@ -14,8 +14,6 @@ function ChatSideBar() {
     dispatch(getAllChatUserList(user._id))
   }, [])
 
-  const { applicantData } = useSelector((state: RootState) => state.company)
-
   const navigate = useNavigate()
 
   const { chatUserList } = useSelector((state: RootState) => state.chat)

@@ -5,7 +5,7 @@ import ProfileHeader from "../../components/user/ProfileHeader"
 const Messages = () => {
   return (
     <div>
-      <div className="sticky bg-white top-0 w-full">
+      <div className="sticky bg-white z-50 top-0 w-full">
         <ProfileHeader page="Messages" />
       </div>
       <div className='w-full flex'>

@@ -5,7 +5,7 @@ import { FaPaperclip } from "react-icons/fa";
 import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import EmojiPicker from 'emoji-picker-react';
 import { SocketContext } from "../../context/SocketContext";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useSearchParams } from "react-router-dom";
@@ -17,7 +17,7 @@ const MessageForm = () => {
   const [roomMessages, setRoomMessages] = useState<any>([])
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const { socket, currentRoom, onlineUsers } = useContext(SocketContext) || {}
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
 
   const { user } = useSelector((state: RootState) => state.user)
   const { applicantData } = useSelector((state: RootState) => state.company)
