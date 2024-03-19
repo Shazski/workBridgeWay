@@ -8,16 +8,17 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChatUserDetailsByIds } from "../../redux/actions/company/CompanyActions";
 function ChatSideBar() {
   const { user } = useSelector((state: RootState) => state.user)
-  const { socket, currentRoom, setCurrentRoom, setOnlineUsers, onlineUsers } = useContext(SocketContext) || {}
+  const { socket, currentRoom, setCurrentRoom, roomMessages,setOnlineUsers, onlineUsers,reRender } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
   const dispatch = useDispatch<AppDispatch>()
+  const { chatUserList, userFullDetails,sidebarReRender } = useSelector((state: RootState) => state.chat)
   useEffect(() => {
     dispatch(getAllChatUserList(user._id))
-  }, [])
+    console.log(reRender,"reRenderdata===>>>>")
+  }, [roomMessages,user._id,dispatch,reRender,sidebarReRender])
 
   const navigate = useNavigate()
 
-  const { chatUserList, userFullDetails } = useSelector((state: RootState) => state.chat)
 
   const chatUserId = searchParams.get("userId")
 
@@ -31,6 +32,7 @@ function ChatSideBar() {
   const joinRoom = (room: string) => {
     if (!user) return
     socket?.emit("join-room", room)
+    setCurrentRoom && setCurrentRoom("")
     setCurrentRoom && setCurrentRoom(room)
   }
 

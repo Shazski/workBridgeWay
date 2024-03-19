@@ -13,6 +13,8 @@ export interface SocketContextType {
   setPrivateApplicantMsg: (any) => void;
   currentRoom: string;
   setCurrentRoom: (room: string) => void;
+  reRender: any;
+  setReRender: (any) => void;
   onlineUsers: { userId: string; socketId: string }[];
   setOnlineUsers: (users: { userId: string; socketId: string }[]) => void;
   roomMessages: any[],
@@ -30,6 +32,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [message, setMessage] = useState<string | null>(null);
   const [privateApplicantMsg, setPrivateApplicantMsg] = useState<any>(null);
   const [currentRoom, setCurrentRoom] = useState<string>("");
+  const [reRender, setReRender] = useState<boolean>(false);
   const [onlineUsers, setOnlineUsers] = useState<{ userId: string; socketId: string }[]>([]);
   const [roomMessages, setRoomMessages] = useState<any>([])
   const contextValue: SocketContextType = {
@@ -43,13 +46,23 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     onlineUsers,
     setOnlineUsers,
     roomMessages,
-    setRoomMessages
+    setRoomMessages,
+    reRender,
+    setReRender
   };
   const { user } = useSelector((state: RootState) => state.user)
 
   useEffect(() => {
     if (user && socket) {
       socket.emit("new-user", (user._id));
+    }
+  }, [user, socket]);
+
+  useEffect(() => {
+    if (user && socket) {
+      socket.on("notification",(message) => {
+      setReRender(message)
+      });
     }
   }, [user, socket]);
 

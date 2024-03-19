@@ -12,33 +12,40 @@ import { useSearchParams } from "react-router-dom";
 import { defaultProfile } from "../../config/constants";
 import { getCompanyById } from "../../redux/actions/user/userActions";
 import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png'
-import { updateChatCompanyList } from "../../redux/reducers/chat/chatSlice";
+import { reRenderSideBar, updateChatCompanyList } from "../../redux/reducers/chat/chatSlice";
 
 const UserMessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
-  const { socket, currentRoom, onlineUsers,roomMessages, setRoomMessages } = useContext(SocketContext) || {}
+  const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { companyDetails, chatCompanyList } = useSelector((state: RootState) => state.chat)
+  const { companyDetails, chatCompanyList, sidebarReRender } = useSelector((state: RootState) => state.chat)
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
   const chatCompanyId = searchParams.get("companyId")
   const dispatch = useDispatch<AppDispatch>()
 
-  const sendMessage = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setShowEmoji(false);
-    socket?.emit("send-message", { roomId: currentRoom, roomCreater: chatCompanyId, senderId: user._id, message, roomJoiner: user._id });
+  const updateCompanyList = (roomId, message) => {
     const updatedChatCompanyList = chatCompanyList.map(chatUser => {
-      if (chatUser.roomCreater === chatCompanyId) {
+      if (chatUser.roomCreater === roomId) {
         return { ...chatUser, lastMessage: message, lastMessageTime: new Date() };
       }
       return chatUser;
     }).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime());
 
     dispatch(updateChatCompanyList(updatedChatCompanyList));
+    
+  };
+
+  const sendMessage = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setShowEmoji(false);
+    setReRender && setReRender(!reRender)
+    socket?.emit("send-message", { roomId: currentRoom, roomCreater: chatCompanyId, senderId: user._id, message, roomJoiner: user._id });
+
+    updateCompanyList(currentRoom, message);
 
     setMessage("");
   };
@@ -56,7 +63,13 @@ const UserMessageForm = () => {
 
   useEffect(() => {
     socket?.off("room-messages").on("room-messages", (messages) => {
-      setRoomMessages && setRoomMessages(messages)
+      if (messages[0].messagesByDate[0].roomId === currentRoom)
+        setRoomMessages && setRoomMessages(messages)
+
+      if (currentRoom) {
+        const latestMessage = messages[messages.length - 1]?.messagesByDate[messages[messages.length - 1]?.messagesByDate.length - 1]?.message;
+        updateCompanyList(currentRoom, latestMessage);
+      }
     })
   }, [socket, message, currentRoom])
 

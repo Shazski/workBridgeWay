@@ -11,19 +11,20 @@ function UserChatSideBar() {
 
   const [searchParams, _] = useSearchParams()
 
-  const { socket, currentRoom, setCurrentRoom, setOnlineUsers, onlineUsers, roomMessages } = useContext(SocketContext) || {}
+  const { socket, currentRoom, setCurrentRoom, setOnlineUsers, onlineUsers, roomMessages, reRender } = useContext(SocketContext) || {}
 
   const dispatch = useDispatch<AppDispatch>()
 
   const chatCompanyId = searchParams.get("companyId")
+  const { chatCompanyList, companyFullDetails, sidebarReRender } = useSelector((state: RootState) => state.chat)
 
   useEffect(() => {
     dispatch(getAllChatCompanyList(user._id))
-  }, [roomMessages])
+    console.log(reRender, "reRenderdata===>>>>")
+  }, [roomMessages, reRender, sidebarReRender])
 
   const navigate = useNavigate()
 
-  const { chatCompanyList, companyFullDetails } = useSelector((state: RootState) => state.chat)
 
   const joinRoom = (room: string) => {
     if (!user) return
@@ -101,7 +102,7 @@ function UserChatSideBar() {
                     <div className="flex w-full ">
                       <h1 className="text-sm font-semibold text-gray-900">{companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.name}</h1>
                       <span className={`text-xl rounded-full  ${onlineUsers && onlineUsers?.some((users) => users.userId === chatUser?.roomCreater) ? 'text-green-600' : 'text-red-600'}`}><GoDotFill /></span>
-                        <h1 className="text-xs  font-semibold text-end poppins  text-gray-700  mt-1 ">{getTimeAgo(chatUser?.lastMessageTime)}</h1>
+                      <h1 className="text-xs  font-semibold text-end poppins  text-gray-700  mt-1 ">{getTimeAgo(chatUser?.lastMessageTime)}</h1>
 
                     </div>
                     <h1 className="text-xs mt-1 font-semibold  text-gray-700">

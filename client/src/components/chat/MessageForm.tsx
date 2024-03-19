@@ -12,15 +12,15 @@ import { useSearchParams } from "react-router-dom";
 import { getApplicantsDetails } from "../../redux/actions/company/CompanyActions";
 import { defaultProfile } from "../../config/constants";
 import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png'
-import { updateChatCompanyList, updateChatUserList } from "../../redux/reducers/chat/chatSlice";
+import { reRenderSideBar, updateChatCompanyList, updateChatUserList } from "../../redux/reducers/chat/chatSlice";
 const MessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
-  const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages } = useContext(SocketContext) || {}
+  const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender } = useContext(SocketContext) || {}
   const [searchParams] = useSearchParams()
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { chatUserList } = useSelector((state: RootState) => state.chat)
+  const { chatUserList ,sidebarReRender} = useSelector((state: RootState) => state.chat)
   const { applicantData } = useSelector((state: RootState) => state.company)
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
@@ -30,8 +30,8 @@ const MessageForm = () => {
   const sendMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShowEmoji(false);
+    setReRender && setReRender(!reRender)
     socket?.emit("send-message", { roomId: currentRoom, roomCreater: user._id, senderId: user._id, message, roomJoiner: chatUserId });
-
     const updatedChatUserList = chatUserList?.map(chatUser => {
       if (chatUser.roomJoiner === chatUserId) {
         return { ...chatUser, lastMessage: message, lastMessageTime: new Date() };
@@ -39,24 +39,24 @@ const MessageForm = () => {
       return chatUser;
     }).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime());
 
-
+    // dispatch(updateChatCompanyList(updatedChatUserList));
     dispatch(updateChatUserList(updatedChatUserList));
-
+    dispatch(reRenderSideBar(updatedChatUserList))
     setMessage("");
   };
 
-
   useEffect(() => {
     dispatch(getApplicantsDetails({ userId: chatUserId! }))
-  }, [searchParams])
+  }, [searchParams, roomMessages])
 
 
 
   useEffect(() => {
-    socket?.off("room-messages").on("room-messages", (messages) => {
-      setRoomMessages && setRoomMessages(messages)
+    socket?.off("room-messages").on("room-messages", (messages: { roomId: string }) => {
+      if (messages[0].messagesByDate[0].roomId === currentRoom)
+        setRoomMessages && setRoomMessages(messages)
     })
-  }, [socket, message, currentRoom])
+  }, [socket, message, chatUserId])
 
   useEffect(() => {
     if (messageBoxRef.current) {
@@ -127,7 +127,7 @@ const MessageForm = () => {
                   ))
                 }
               </div>
-              <div className="absolute ms-10 -bottom-6 w-7/12">
+              <div className="absolute ms-10 bottom-3 w-7/12">
                 <EmojiPicker className=" bottom-2 ms-[460px]" height={"410px"} lazyLoadEmojis width={"350px"} open={showEmoji} reactionsDefaultOpen={false} onEmojiClick={(data) => setMessage((prev) => prev + data.emoji)} />
                 <form action="" onSubmit={sendMessage}>
                   <div className="flex gap-x-3">
