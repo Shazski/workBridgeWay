@@ -51,8 +51,6 @@ export const logoutUser = createAsyncThunk(
  "user/logoutUser",
  async ({socket,userId}:{socket:Socket,userId:string}, { rejectWithValue }) => {
   try {
-    console.log("logout user has camed");
-    
    const { data } = await axios.get(`${AUTH_BASE_URL}/logout`, config);
    socket.emit("logout-user", userId);
    return data;
@@ -61,7 +59,7 @@ export const logoutUser = createAsyncThunk(
    return handleError(axiosError, rejectWithValue);
   }
  }
-);
+)
 
 export const editUser = createAsyncThunk(
  "user/editUser",

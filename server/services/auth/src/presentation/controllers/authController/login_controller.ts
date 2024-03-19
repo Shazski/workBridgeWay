@@ -50,6 +50,7 @@ export = (dependencies: DependenciesData) => {
     const company = await findCompanyByEmail_useCase(dependencies).execute(
      userCredentials
     );
+    console.log("🚀 ~ file: login_controller.ts:54 ~ login ~ company:", company)
     const passwordMatchCompany: boolean = bcrypt.compareSync(
      userCredentials.password,
      company.password

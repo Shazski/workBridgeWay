@@ -9,18 +9,21 @@ import { IoExitOutline } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../../redux/actions/user/userActions";
 import { AppDispatch, RootState } from "../../redux/store";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MdCategory } from "react-icons/md";
 import { addCategory, getCategory } from "../../redux/actions/company/CompanyActions";
 import { pushCategory } from "../../redux/reducers/company/companySlice";
 import Modal from "../Modal";
+import { SocketContext } from "../../context/SocketContext";
 const AdminSideBar = () => {
     const dispatch = useDispatch<AppDispatch>()
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [categoryString, setCategoryString] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const { socket } = useContext(SocketContext) || {}
     const { category } = useSelector((state: RootState) => state.company)
+    const { user } = useSelector((state: RootState) => state.user)
     const handleSubmit = async () => {
         const categoryData = {
             category: categoryString,
@@ -44,6 +47,12 @@ const AdminSideBar = () => {
         }
         dispatch(getCategory())
     }, [error, dispatch])
+
+    const handleLogout = () => {
+        if (socket && user?._id) {
+            dispatch(logoutUser({ socket, userId: user._id }));
+        }
+    };
     return (
         <div className="flex">
             <div className='border-e-2 scrollbar md:flex md:flex-col md:sticky top-0 md:w-3/6 lg:w-2/6 xl:w-3/12 w-1/4 h-screen overflow-y-auto'>
@@ -120,7 +129,7 @@ const AdminSideBar = () => {
                         </div>
                     </button>
                 </div>
-                <div onClick={() => dispatch(logoutUser())} className="flex mt-60 md:ms-8 relative cursor-pointer">
+                <div onClick={handleLogout} className="flex mt-60 md:ms-8 relative cursor-pointer">
                     <div>
                         <IoExitOutline className="absolute text-xl text-red-600 top-4 ms-5  " />
                         <h1 className=" bg-gray-300 px-8 md:px-12 py-6 md:py-3 rounded-lg text-red-600 mt-0.5 md:flex"><span className="hidden md:flex">Logout</span></h1>

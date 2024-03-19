@@ -20,8 +20,10 @@ function UserChatSideBar() {
 
   useEffect(() => {
     dispatch(getAllChatCompanyList(user._id))
-    console.log(reRender, "reRenderdata===>>>>")
+
   }, [roomMessages, reRender])
+  console.log("🚀 ~ file: UserChatSideBar.tsx:25 ~ UserChatSideBar ~ roomMessages:",roomMessages && roomMessages[0]?.messagesByDate?.filter((msg) => msg.recieverSeen === false).length)
+  
 
   const navigate = useNavigate()
 
@@ -95,7 +97,7 @@ function UserChatSideBar() {
             <>
               <div key={idx} onClick={() => handleProfileClick(chatUser?.roomCreater)} className={`ms-4 gap-x-2 md:flex mt-3 cursor-pointer rounded-e-xl rounded-b-xl me-3 ${currentRoom && chatCompanyId === chatUser?.roomCreater ? 'bg-blue-50 ' : ''} `}>
                 <div className="py-2 ms-4 hidden md:flex">
-                  <img className="w-10 border border-red-600 rounded-full h-10 " src={companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.companyLogo ?? ""} alt={companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.name} />
+                  <img className="w-10 border border-gray-500 rounded-full h-10 " src={companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.companyLogo ?? ""} alt={companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.name} />
                 </div>
                 <div className="md:flex gap-x-1 py-2 ">
                   <div>
@@ -103,6 +105,7 @@ function UserChatSideBar() {
                       <h1 className="text-sm font-semibold text-gray-900">{companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.name}</h1>
                       <span className={`text-xl rounded-full  ${onlineUsers && onlineUsers?.some((users) => users.userId === chatUser?.roomCreater) ? 'text-green-600' : 'text-red-600'}`}><GoDotFill /></span>
                       <h1 className="text-xs  font-semibold text-end poppins  text-gray-700  mt-1 ">{getTimeAgo(chatUser?.lastMessageTime)}</h1>
+                      <h1 className="text-xs  font-semibold text-end poppins bg-lightgreen rounded-full text-white px-2 py-0.5 ms-6  mt-1 ">{roomMessages && roomMessages[0]?.messagesByDate?.filter((msg) => msg.recieverSeen === false).length}</h1>
 
                     </div>
                     <h1 className="text-xs mt-1 font-semibold  text-gray-700">

@@ -86,8 +86,8 @@ function ChatSideBar() {
 
 
   return (
-    <div className="border-e-red-200">
-      <div className="border-b-2 ">
+    <div className="border-e-red-200 ">
+      <div className="border-b-2 shadow-lg">
         <h1 className="text-2xl py-4  font-serif font-semibold ms-6">Messages</h1>
       </div>
       {/* <div>
@@ -100,7 +100,7 @@ function ChatSideBar() {
               <div onClick={() => handleProfileClick(chatUser?.roomJoiner)} key={idx} className={`ms-4 gap-x-2 md:flex mt-7 cursor-pointer rounded-e-xl rounded-b-xl me-3 ${ currentRoom && chatUserId === chatUser?.roomJoiner ? 'bg-blue-50 ' : ''} `}>
                 <div className="py-2 ms-4">
                   <img
-                    className="w-10 border hidden md:flex border-red-600 rounded-full h-10 "
+                    className="w-10 border hidden md:flex  rounded-full h-10 "
                     src={userFullDetails.find((user) => user._id === chatUser.roomJoiner)?.profilePic ?? ""}
                     alt=""
                   />

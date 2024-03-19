@@ -17,6 +17,7 @@ export default class MessageHandler {
                 response = await userRepo.SignUpUser_repo(data)
                 break;
             case 'getUserById':
+                if(data)
                 response = await userRepo.findUserById_repo(data)
                 break;
             case 'getAllUsers':

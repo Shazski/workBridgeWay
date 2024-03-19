@@ -7,15 +7,22 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux"
 import { logoutUser } from "../../redux/actions/user/userActions";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "../Modal";
+import { SocketContext } from "../../context/SocketContext";
 const EmployeeSideBar = () => {
 
     const dispatch = useDispatch<AppDispatch>()
     const { user } = useSelector((state: RootState) => state.user)
-
+    const { socket } = useContext(SocketContext) || {}
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [toggle, setToggle] = useState<boolean>(false);
+
+    const handleLogout = () => {
+        if (socket && user?._id) {
+            dispatch(logoutUser({ socket, userId: user._id }));
+        }
+    };
 
     return (
         <>
@@ -86,7 +93,7 @@ const EmployeeSideBar = () => {
                 <div>
                     <h1 className="font-semibold ">Do you want to mark the Checkout?</h1>
                     <div className="flex gap-x-2 justify-center mt-3">
-                        <button onClick={() => dispatch(logoutUser())} className="px-3 py-2 rounded-md text-white font-semibold bg-red-600">Yes</button>
+                        <button onClick={handleLogout} className="px-3 py-2 rounded-md text-white font-semibold bg-red-600">Yes</button>
                         <button onClick={() => setIsModalOpen(false)} className="px-3 py-2 rounded-md text-white font-semibold bg-lightgreen">No</button>
                     </div>
                 </div>

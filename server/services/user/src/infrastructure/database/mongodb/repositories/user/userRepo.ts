@@ -389,13 +389,14 @@ export const uploadResume = async (
 export const findUserById_repo: any = async (
  userId: ObjectId
 ): Promise<boolean | IUserData> => {
- try {
+  try {
+   console.log("🚀 ~ file: userRepo.ts:392 ~ userId:", userId)
   const userData: IUserData | null = await UserSchema.findById(userId);
 
   if (!userData) return false;
   return userData as IUserData;
  } catch (error) {
-  console.log(error, "< Something went wrong on FindUserByEmail_repo >");
+  console.log(error, "< Something went wrong on findUserById_repo >");
   return false;
  }
 };

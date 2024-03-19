@@ -65,11 +65,6 @@ const UserMessageForm = () => {
     socket?.off("room-messages").on("room-messages", (messages) => {
       if (messages[0].messagesByDate[0].roomId === currentRoom)
         setRoomMessages && setRoomMessages(messages)
-
-      if (currentRoom) {
-        const latestMessage = messages[messages.length - 1]?.messagesByDate[messages[messages.length - 1]?.messagesByDate.length - 1]?.message;
-        updateCompanyList(currentRoom, latestMessage);
-      }
     })
   }, [socket, message, currentRoom])
 
@@ -84,11 +79,11 @@ const UserMessageForm = () => {
       {
         chatCompanyId && currentRoom ? (
           <div className="realtive">
-            <div className='sticky h-[66px] flex items-center bg-white z-50 top-16 border-b-2'>
+            <div className='sticky h-[66px] flex items-center shadow-md bg-white z-50 top-16 border-b-2'>
               <div className='ms-6'>
                 <div className="flex gap-x-3">
                   <img
-                    className='w-10 rounded-full border-red-600 border'
+                    className='w-10 rounded-full border-gray-600 border'
                     src={typeof companyDetails?.companyLogo === 'string' ? companyDetails?.companyLogo : defaultProfile}
                     alt=""
                   />
@@ -102,14 +97,14 @@ const UserMessageForm = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-light-blue-50 h-[532px] border-b-2 border-gray-200 overflow-y-scroll scrollbar" ref={messageBoxRef}>
+            <div className="bg-white h-[532px] border-b-2 border-gray-200 overflow-y-scroll scrollbar" ref={messageBoxRef}>
               {
                 roomMessages && roomMessages?.map((message, idx) => (
                   <>
-                    <div key={idx} className="flex justify-between items-center sticky top-0 bg-light-blue-50">
+                    <div key={idx} className="flex justify-between items-center bg-white">
                       <div className='border-b-2 w-4/12 border-gray-300'>
                       </div>
-                      <h1 className="text-center px-4 py-3 bg-lightgreen text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
+                      <h1 className="text-center px-4 py-3 bg-blue-600 text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
                       <div className='border-b-2 w-4/12  border-gray-300'>
 
                       </div>
@@ -118,9 +113,9 @@ const UserMessageForm = () => {
                       <>
                         <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>
                           <div className="">
-                            <img className={`w-10 border border-red-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : companyDetails?.companyLogo || ""} alt="" />
-                            <div className={`px-3.5 py-2 max-w-xs ${msg.senderId === user._id ? 'me-1 bg-blue-600 rounded-s-xl rounded-b-2xl' : 'ms-12 bg-white rounded-e-xl rounded-b-xl'}`}>
-                              <h1 className={`break-all  poppins text-sm font-semibold ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
+                            <img className={`w-10 border border-gray-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : companyDetails?.companyLogo || ""} alt="" />
+                            <div className={`px-3.5 py-1 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl rounded-b-2xl' : 'ms-12 bg-gray-200 rounded-e-xl rounded-b-xl'}`}>
+                              <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
                               <div className="flex justify-end">
                                 <div>
                                   <h1 className={`text-xs ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(msg?.createdAt), "hh:mm a")}</h1>
