@@ -11,11 +11,11 @@ function ChatSideBar() {
   const { socket, currentRoom, setCurrentRoom, roomMessages,setOnlineUsers, onlineUsers,reRender } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
   const dispatch = useDispatch<AppDispatch>()
-  const { chatUserList, userFullDetails,sidebarReRender } = useSelector((state: RootState) => state.chat)
+  const { chatUserList, userFullDetails } = useSelector((state: RootState) => state.chat)
   useEffect(() => {
     dispatch(getAllChatUserList(user._id))
     console.log(reRender,"reRenderdata===>>>>")
-  }, [roomMessages,user._id,dispatch,reRender,sidebarReRender])
+  }, [roomMessages,user._id,dispatch,reRender])
 
   const navigate = useNavigate()
 

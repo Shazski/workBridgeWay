@@ -12,7 +12,7 @@ import { useSearchParams } from "react-router-dom";
 import { defaultProfile } from "../../config/constants";
 import { getCompanyById } from "../../redux/actions/user/userActions";
 import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png'
-import { reRenderSideBar, updateChatCompanyList } from "../../redux/reducers/chat/chatSlice";
+import { updateChatCompanyList } from "../../redux/reducers/chat/chatSlice";
 
 const UserMessageForm = () => {
   const [message, setMessage] = useState<string>("");
@@ -21,7 +21,7 @@ const UserMessageForm = () => {
   const [searchParams, _] = useSearchParams()
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { companyDetails, chatCompanyList, sidebarReRender } = useSelector((state: RootState) => state.chat)
+  const { companyDetails, chatCompanyList } = useSelector((state: RootState) => state.chat)
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
   const chatCompanyId = searchParams.get("companyId")

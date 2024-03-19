@@ -22,22 +22,13 @@ const chatSlice = createSlice({
   companyDetails: null as ICompanyData | null,
   companyFullDetails: null as ICompanyData[] | null,
   userFullDetails: null as IUserLoginData[] | null,
-  sidebarReRender: "" as string,
  },
  reducers: {
   updateChatCompanyList: (state, action: PayloadAction<any>) => {
-   console.log(
-    "🚀 ~ action.payload:updateChatCompanyList<<<<<<<<<<",
-    action.payload
-   );
    state.chatCompanyList = action.payload;
   },
   updateChatUserList: (state, action: PayloadAction<any>) => {
    state.chatUserList = action.payload;
-  },
-  reRenderSideBar: (state, action: PayloadAction<any>) => {
-   console.log("🚀 ~ action.payload:", action.payload);
-   state.sidebarReRender = action.payload;
   },
  },
 
@@ -110,6 +101,6 @@ const chatSlice = createSlice({
    });
  },
 });
-export const { updateChatCompanyList, updateChatUserList, reRenderSideBar } =
+export const { updateChatCompanyList, updateChatUserList } =
  chatSlice.actions;
 export default chatSlice.reducer;

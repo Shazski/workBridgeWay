@@ -16,12 +16,12 @@ function UserChatSideBar() {
   const dispatch = useDispatch<AppDispatch>()
 
   const chatCompanyId = searchParams.get("companyId")
-  const { chatCompanyList, companyFullDetails, sidebarReRender } = useSelector((state: RootState) => state.chat)
+  const { chatCompanyList, companyFullDetails } = useSelector((state: RootState) => state.chat)
 
   useEffect(() => {
     dispatch(getAllChatCompanyList(user._id))
     console.log(reRender, "reRenderdata===>>>>")
-  }, [roomMessages, reRender, sidebarReRender])
+  }, [roomMessages, reRender])
 
   const navigate = useNavigate()
 

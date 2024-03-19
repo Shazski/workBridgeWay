@@ -12,7 +12,7 @@ import { useSearchParams } from "react-router-dom";
 import { getApplicantsDetails } from "../../redux/actions/company/CompanyActions";
 import { defaultProfile } from "../../config/constants";
 import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png'
-import { reRenderSideBar, updateChatCompanyList, updateChatUserList } from "../../redux/reducers/chat/chatSlice";
+import { updateChatUserList } from "../../redux/reducers/chat/chatSlice";
 const MessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
@@ -20,7 +20,7 @@ const MessageForm = () => {
   const [searchParams] = useSearchParams()
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { chatUserList ,sidebarReRender} = useSelector((state: RootState) => state.chat)
+  const { chatUserList} = useSelector((state: RootState) => state.chat)
   const { applicantData } = useSelector((state: RootState) => state.company)
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,7 +41,6 @@ const MessageForm = () => {
 
     // dispatch(updateChatCompanyList(updatedChatUserList));
     dispatch(updateChatUserList(updatedChatUserList));
-    dispatch(reRenderSideBar(updatedChatUserList))
     setMessage("");
   };
 
