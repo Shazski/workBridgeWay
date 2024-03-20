@@ -5,7 +5,6 @@ import OPENEYE from "../../assets/images/open-eye.png"
 import { useDispatch, useSelector } from "react-redux"
 import { FC, useState, useRef, ChangeEvent } from 'react'
 import SignUpNavbar from '../../components/user/SignUpNavbar'
-// import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage, isObject } from "formik"
 import { validationSchemaCompanyRegister } from '../../validations/ValidationSchema'
 import { toast } from 'react-hot-toast';

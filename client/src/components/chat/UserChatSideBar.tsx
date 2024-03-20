@@ -109,7 +109,8 @@ function UserChatSideBar() {
 
                     </div>
                     <h1 className="text-xs mt-1 font-semibold  text-gray-700">
-                      {chatUser?.lastMessage && chatUser?.lastMessage.length > 20
+                      { 
+                      chatUser?.lastMessage && chatUser?.lastMessage.length > 20
                         ? chatUser?.lastMessage.substring(0, 15) + '...'
                         : chatUser?.lastMessage || '....'}
                     </h1>

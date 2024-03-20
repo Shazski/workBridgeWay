@@ -32,7 +32,6 @@ const connectSocketIo = (server: Server) => {
 
    socket.on("join-room", async (room: string) => {
     socket.join(room);
-    console.log("Joined room:", room);
     const roomMessages = await getLastMessagesFromRoom(room);
     if (roomMessages) {
      socket.emit("room-messages", roomMessages);
@@ -57,7 +56,6 @@ const connectSocketIo = (server: Server) => {
      });
      const roomMessages = await getLastMessagesFromRoom(messageData?.roomId);
      io.to(messageData?.roomId).emit("room-messages", roomMessages);
-
      io.emit("notification",message)
     }
    );

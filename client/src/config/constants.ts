@@ -14,6 +14,13 @@ export const override: CSSProperties = {
  borderColor: "red",
  height: "500px",
 };
+export const overrideforUpload: CSSProperties = {
+ display: "flex",
+ justifyContent: "right",
+ marginRight:"150px",
+ borderColor: "red",
+ height: "50px",
+};
 
 export const CHAT_BASE_URL = "http://localhost:3004/api/v1/chat";
 export const AUTH_BASE_URL = "http://localhost:3000/api/v1/auth";
