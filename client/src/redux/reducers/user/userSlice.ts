@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 import { persistReducer } from "redux-persist";
-import { persistConfig } from "../../../config/constants";
+import { TODO, persistConfig } from "../../../config/constants";
 import {
   addSkill,
   changeUserEmail,
@@ -24,7 +24,7 @@ import { ICompanyData } from "../../../interface/ICompanyData";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null as any | null,
+    user: null as TODO | null,
     error: null as string | null,
     loading: false as boolean,
   },

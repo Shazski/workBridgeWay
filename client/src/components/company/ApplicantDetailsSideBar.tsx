@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { createChatRoom } from "../../redux/actions/chat/chatActions";
+import { TODO } from "../../config/constants";
 const ApplicantDetailsSideBar = () => {
   const { applicantData, editJob } = useSelector((state: RootState) => state.company)
   const { userId } = useParams()
 
   const { user } = useSelector((state: RootState) => state.user)
 
-  const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+  const ApplicantData: TODO = editJob?.applicants?.find((value: TODO) => value.applicantId === userId)
 
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()

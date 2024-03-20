@@ -1,17 +1,18 @@
 import { useState, ChangeEvent, KeyboardEvent, useRef, useEffect } from 'react'
 import CountdownTimer from './CountDownTimer';
-import { AppDispatch } from '../../redux/store';
+import { AppDispatch, RootState } from '../../redux/store';
 import { useSelector, useDispatch } from "react-redux"
 import { toast } from "react-hot-toast"
 import { changeUserEmail, userSignUp } from '../../redux/actions/user/userActions';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IUserLoginData } from '../../interface/IuserLogin';
+import { TODO } from '../../config/constants';
 const OtpForm = ({ length = 4 }: { length: number }) => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const location = useLocation()
-  const { user, error } = useSelector((state: any) => state.user)
+  const { user, error } = useSelector((state: RootState) => state.user)
   const [otp, setOtp] = useState<(string | number)[]>(new Array(length).fill(""))
   const inputRef = useRef<(HTMLInputElement | null)[]>(new Array(length).fill(""));
   const formData: IUserLoginData = {
@@ -60,7 +61,7 @@ const OtpForm = ({ length = 4 }: { length: number }) => {
   }
   const handleUpdateEmailSubmit = async () => {
     const combinedOtp = otp.join("");
-    const newFormData: { email: any; otp?: number, oldEmail: string } = {
+    const newFormData: { email: TODO; otp?: number, oldEmail: string } = {
       email: user.newEmail,
       oldEmail: user.email
     };

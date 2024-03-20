@@ -22,6 +22,8 @@ export const overrideforUpload: CSSProperties = {
  height: "50px",
 };
 
+export type TODO = any
+
 export const CHAT_BASE_URL = "http://localhost:3004/api/v1/chat";
 export const AUTH_BASE_URL = "http://localhost:3000/api/v1/auth";
 export const USER_BASE_URL = "http://localhost:3001/api/v1/user";

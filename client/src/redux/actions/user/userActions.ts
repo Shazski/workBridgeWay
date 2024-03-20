@@ -9,6 +9,7 @@ import { IUserLoginData } from "../../../interface/IuserLogin";
 import {
  AUTH_BASE_URL,
  COMPANY_BASE_URL,
+ TODO,
  USER_BASE_URL,
 } from "../../../config/constants";
 import { ICompanyData } from "../../../interface/ICompanyData";
@@ -257,7 +258,7 @@ export const companyRegister = createAsyncThunk(
 );
 export const userLogin = createAsyncThunk(
  "user/userLogin",
- async (userCredentials: any, { rejectWithValue }) => {
+ async (userCredentials: TODO, { rejectWithValue }) => {
   try {
    const { data } = await axios.post(
     `${AUTH_BASE_URL}/login`,
@@ -289,7 +290,7 @@ export const updateCompanyDetails = createAsyncThunk(
 );
 export const getAllJobs = createAsyncThunk(
  "user/getAllJobs",
- async (searchParams: any, { rejectWithValue }) => {
+ async (searchParams: TODO, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${USER_BASE_URL}/get-all-jobs?${searchParams}`,
@@ -305,7 +306,7 @@ export const getAllJobs = createAsyncThunk(
 
 export const uploadResume = createAsyncThunk(
  "user/uploadResume",
- async (pdfFile: any, { rejectWithValue }) => {
+ async (pdfFile: TODO, { rejectWithValue }) => {
   try {
    const { data } = await axios.post(
     `${USER_BASE_URL}/upload-resume`,
@@ -326,7 +327,7 @@ export const uploadResume = createAsyncThunk(
 );
 export const applyForJob = createAsyncThunk(
  "user/applyForJob",
- async (applicantCredentials: any, { rejectWithValue }) => {
+ async (applicantCredentials: TODO, { rejectWithValue }) => {
   try {
    const { data } = await axios.post(
     `${USER_BASE_URL}/apply-for-job`,

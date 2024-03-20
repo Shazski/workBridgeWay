@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../redux/store';
 import { setUserfmcToken } from '../redux/actions/user/userActions';
 import { getToken } from 'firebase/messaging';
+import { TODO } from '../config/constants';
 
 const Notifications = () => {
   const [notification, setNotification] = useState<{ title: string; body: string }>({ title: "", body: "" });
@@ -19,7 +20,7 @@ const Notifications = () => {
           dispatch(setUserfmcToken(fmcToken));
         }
 
-        const payload: any = await onMessageListener();
+        const payload: TODO = await onMessageListener();
 
         if (payload) {
           setNotification({

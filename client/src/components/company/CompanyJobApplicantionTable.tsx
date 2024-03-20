@@ -5,12 +5,13 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { getJobById, updateApplicantStatus } from '../../redux/actions/company/CompanyActions';
 import { Link, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
+import { TODO } from '../../config/constants';
 
 const CompanyJobApplicantionTable = ({ search, dateFilter }: { search: string, dateFilter:string }) => {
   const [page, setPage] = useState<number>(1);
   const [firstIndex, setFirstIndex] = useState<number>(0);
   const [lastIndex, setLastIndex] = useState<number>(10);
-  const [filteredData, setFilteredData] = useState<any>([]);
+  const [filteredData, setFilteredData] = useState<TODO>([]);
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
 
@@ -21,7 +22,7 @@ const CompanyJobApplicantionTable = ({ search, dateFilter }: { search: string, d
   };
 
   useEffect(() => {
-    dispatch(getJobById(id));
+    dispatch(getJobById(id!));
   }, [dispatch, page, id]);
 
   const { editJob } = useSelector((state: RootState) => state.company);
@@ -60,7 +61,7 @@ const CompanyJobApplicantionTable = ({ search, dateFilter }: { search: string, d
       jobId: jobId,
       status: status
     };
-    const jobStatus: any = editJob?.applicants!.find((val: any) => val.applicantId === userId);
+    const jobStatus: TODO = editJob?.applicants!.find((val: TODO) => val.applicantId === userId);
     if (jobStatus?.hiringStage === 'pending') {
       dispatch(updateApplicantStatus(updateData));
     }

@@ -7,20 +7,21 @@ import {
 import { IJobData } from "../../../interface/ICompanyData";
 import { getAllUserDetails, getEmployeeSchedules } from "../../actions/employee/employeeActions";
 import { getAllApplicantSchedule } from "../../actions/company/CompanyActions";
+import { TODO } from "../../../config/constants";
 
 const jobSlice = createSlice({
  name: "profile",
  initialState: {
   error: null as string | null,
   loading: false as boolean,
-  jobs: null as any | null,
-  jobsCount: null as any | null,
-  userAppliedJobs: null as any | null,
+  jobs: null as TODO | null,
+  jobsCount: null as TODO | null,
+  userAppliedJobs: null as TODO | null,
   userPreferredJobs: null as IJobData[] | null,
   userAppliedJobsCount: null as number | null,
-  scheduleData: null as any | null,
-  companyScheduleData: null as any | null,
-  allUsers: null as any | null
+  scheduleData: null as TODO | null,
+  companyScheduleData: null as TODO | null,
+  allUsers: null as TODO | null
  },
  reducers: {},
 
@@ -33,7 +34,7 @@ const jobSlice = createSlice({
    .addCase(getAllJobs.fulfilled, (state, action) => {
     state.loading = false;
     state.jobs = action.payload[0] as IJobData[];
-    state.jobsCount = action.payload[1] as any;
+    state.jobsCount = action.payload[1] as TODO;
     state.error = null;
    })
    .addCase(getAllJobs.rejected, (state, action) => {
@@ -46,7 +47,7 @@ const jobSlice = createSlice({
    })
    .addCase(getUserApplications.fulfilled, (state, action) => {
     state.loading = false;
-    state.userAppliedJobs = action.payload[0] as any;
+    state.userAppliedJobs = action.payload[0] as TODO;
     state.userAppliedJobsCount = action.payload[1] as number;
     state.error = null;
    })
@@ -75,7 +76,7 @@ const jobSlice = createSlice({
    .addCase(getEmployeeSchedules.fulfilled, (state, action) => {
     console.log(action.payload, "payloadData");
     state.loading = false;
-    state.scheduleData = action.payload as any;
+    state.scheduleData = action.payload as TODO;
     state.error = null;
    })
    .addCase(getEmployeeSchedules.rejected, (state, action) => {
@@ -89,7 +90,7 @@ const jobSlice = createSlice({
    .addCase(getAllApplicantSchedule.fulfilled, (state, action) => {
     console.log(action.payload, "payloadData");
     state.loading = false;
-    state.companyScheduleData = action.payload as any;
+    state.companyScheduleData = action.payload as TODO;
     state.error = null;
    })
    .addCase(getAllApplicantSchedule.rejected, (state, action) => {
@@ -102,7 +103,7 @@ const jobSlice = createSlice({
    })
    .addCase(getAllUserDetails.fulfilled, (state, action) => {
     state.loading = false;
-    state.allUsers = action.payload as any;
+    state.allUsers = action.payload as TODO;
     state.error = null;
    })
    .addCase(getAllUserDetails.rejected, (state, action) => {

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit/react";
 import axios, { AxiosError } from "axios";
-import { ADMIN_BASE_URL, COMPANY_BASE_URL } from "../../../config/constants";
+import { ADMIN_BASE_URL, COMPANY_BASE_URL, TODO } from "../../../config/constants";
 import {
  MyApiError,
  config,
@@ -43,7 +43,7 @@ export const getCategory = createAsyncThunk(
 
 export const postJob = createAsyncThunk(
  "user/postJob",
- async (jobData: any, { rejectWithValue }) => {
+ async (jobData: TODO, { rejectWithValue }) => {
   try {
    const { data } = await axios.post(
     `${COMPANY_BASE_URL}/post-job`,
@@ -105,7 +105,7 @@ export const getJobs = createAsyncThunk(
 );
 export const getJobById = createAsyncThunk(
  "user/getJobsById",
- async (id: any, { rejectWithValue }) => {
+ async (id: string, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${COMPANY_BASE_URL}/get-job/${id}`,

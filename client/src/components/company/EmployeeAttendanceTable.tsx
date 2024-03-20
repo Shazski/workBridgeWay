@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import { TODO } from '../../config/constants';
 
 const EmployeeAttendanceTable = () => {
   const [employeeData, setEmployeeData] = useState<IEmployee | null>(null);
@@ -42,7 +43,7 @@ const EmployeeAttendanceTable = () => {
         return 0
       }
       return adjustedTimeDiffInHours;
-    } catch (error: any) {
+    } catch (error: TODO) {
       console.error(`Error: ${error.message}`);
       return NaN;
     }

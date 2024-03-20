@@ -8,6 +8,7 @@ import moment from 'moment-timezone';
 import { cancelInterviewForUser, getAllCompanyEmployees, scheduleInterviewForUser } from '../../redux/actions/company/CompanyActions';
 import toast from 'react-hot-toast';
 import { GiCancel } from "react-icons/gi";
+import { TODO } from '../../config/constants';
 const ApplicantInterviewSchedule = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -22,7 +23,7 @@ const ApplicantInterviewSchedule = () => {
   const { id, userId } = useParams()
   const dispatch = useDispatch<AppDispatch>()
 
-  const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+  const ApplicantData: TODO = editJob?.applicants?.find((value: TODO) => value.applicantId === userId)
   const { employees } = useSelector((state: RootState) => state.company)
   const formatDate = (date) => {
     if (!(date instanceof Date)) {
@@ -129,7 +130,7 @@ const ApplicantInterviewSchedule = () => {
                 <option value="" defaultChecked hidden className='text-gray-600 '>Select Employee</option>
                 {employees?.map((emp, idx) => (
                   <>
-                    <option key={idx} value={emp._id} className='text-gray-600 '>{emp?.name}</option>
+                    <option key={idx} value={emp?._id || ""} className='text-gray-600 '>{emp?.name}</option>
                   </>
                 ))}
               </select>

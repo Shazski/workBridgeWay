@@ -8,6 +8,7 @@ import Modal from '../../components/Modal';
 import { format, parseISO } from 'date-fns';
 import { popResponsibilities, popSkills, pushResponsibilities, pushSkill } from '../../redux/reducers/company/companySlice';
 import toast from 'react-hot-toast';
+import { TODO } from '../../config/constants';
 
 const UpdateJobDetails = () => {
 
@@ -20,7 +21,7 @@ const UpdateJobDetails = () => {
 
     const { id } = useParams()
 
-    const [formData, setFormData] = useState<any>("");
+    const [formData, setFormData] = useState<TODO>("");
 
     const [skill, setSkill] = useState<string>("");
     const [responsibility, setResponsibility] = useState<string>("")
@@ -40,7 +41,7 @@ const UpdateJobDetails = () => {
     };
 
     useEffect(() => {
-        dispatch(getJobById(id))
+        dispatch(getJobById(id!))
         dispatch(getCategory())
     }, [dispatch])
 

@@ -1,9 +1,10 @@
 import LOGO from "../../assets/images/Logo.png"
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
+import { RootState } from "../../redux/store";
 
 const CompanyNavbar = () => {
-    const { user } = useSelector((state: any) => state.user)
+    const { user } = useSelector((state: RootState) => state.user)
     return (
         <div className="flex w-full sticky top-0 z-50 bg-white justify-between h-20 border-b-2">
             <div className="flex mt-1">

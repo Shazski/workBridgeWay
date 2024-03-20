@@ -11,7 +11,7 @@ const ApplicantDetails = () => {
   const { userId, id } = useParams()
   useEffect(() => {
     dispatch(getApplicantsDetails({ userId: userId! }))
-    dispatch(getJobById(id))
+    dispatch(getJobById(id!))
   }, [])
   return (
     <div className="w-full flex">

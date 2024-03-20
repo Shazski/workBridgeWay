@@ -17,7 +17,7 @@ const LatestJobs = () => {
                         <h1 className="font-semibold">Social Media Assistant</h1>
                         <h1 className="text-sm">Nomad . <span>Paris, France</span></h1>
                         <div className="flex gap-3">
-                        <JobCategogyBtn/>
+                        {/* <JobCategogyBtn/> */}
                         </div>
                     </div>
                 </div>
@@ -30,62 +30,11 @@ const LatestJobs = () => {
                         <h1 className="font-semibold">Social Media Assistant</h1>
                         <h1 className="text-sm">Nomad . <span>Paris, France</span></h1>
                         <div className="flex gap-3">
-                        <JobCategogyBtn/>
+                        {/* <JobCategogyBtn/> */}
                         </div>
                     </div>
                 </div>
-                <div className="bg-white flex mt-12 w-11/12 h-[105px] lg:w-9/12">
-                    <div>
-                        <img src={LOGO} alt="" className="w-28 mt-2" />
-                    </div>
-
-                    <div className="pt-3">
-                        <h1 className="font-semibold">Social Media Assistant</h1>
-                        <h1 className="text-sm">Nomad . <span>Paris, France</span></h1>
-                        <div className="flex gap-3">
-                        <JobCategogyBtn/>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white flex mt-12 w-11/12 h-[105px] lg:w-9/12">
-                    <div>
-                        <img src={LOGO} alt="" className="w-28 mt-2" />
-                    </div>
-
-                    <div className="pt-3">
-                        <h1 className="font-semibold">Social Media Assistant</h1>
-                        <h1 className="text-sm">Nomad . <span>Paris, France</span></h1>
-                        <div className="flex gap-3">
-                        <JobCategogyBtn/>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white flex mt-12 w-11/12 h-[105px] lg:w-9/12">
-                    <div>
-                        <img src={LOGO} alt="" className="w-28 mt-2" />
-                    </div>
-
-                    <div className="pt-3">
-                        <h1 className="font-semibold">Social Media Assistant</h1>
-                        <h1 className="text-sm">Nomad . <span>Paris, France</span></h1>
-                        <div className="flex gap-3">
-                        <JobCategogyBtn/>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white flex mt-12 w-11/12 h-[105px] lg:w-9/12">
-                    <div>
-                        <img src={LOGO} alt="" className="w-28 mt-2" />
-                    </div>
-
-                    <div className="pt-3">
-                        <h1 className="font-semibold">Social Media Assistant</h1>
-                        <h1 className="text-sm">Nomad . <span>Paris, France</span></h1>
-                        <div className="flex gap-3">
-                        <JobCategogyBtn/>
-                        </div>
-                    </div>
-                </div>
+               
                 
             </div>
         </div>

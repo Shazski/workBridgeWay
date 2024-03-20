@@ -8,11 +8,11 @@ import SignUpNavbar from '../../components/user/SignUpNavbar'
 import { Formik, Form, Field, ErrorMessage, isObject } from "formik"
 import { validationSchemaCompanyRegister } from '../../validations/ValidationSchema'
 import { toast } from 'react-hot-toast';
-import { AppDispatch } from "../../redux/store"
+import { AppDispatch, RootState } from "../../redux/store"
 import { companyRegister } from "../../redux/actions/user/userActions"
 import { NavLink, useNavigate } from "react-router-dom"
 const CompanyRegister: FC = () => {
-    const { error } = useSelector((state: any) => state.user)
+    const { error } = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     const [loading, setLoading] = useState<boolean>(false)

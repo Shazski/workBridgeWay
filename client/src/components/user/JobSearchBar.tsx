@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom"
+import { TODO } from "../../config/constants";
 const JobSearchBar = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate()
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: TODO) => {
     const param = new URLSearchParams(window.location.search)
     const isSearchEmpty = searchParams.get('search')
     setSearch(e.target.value)

@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { getAllUserDetails, getEmployeeSchedules } from "../../redux/actions/employee/employeeActions";
 import PropagateLoader from "react-spinners/PropagateLoader";
-import { override } from "../../config/constants";
+import { TODO, override } from "../../config/constants";
 const EmployeeDashboard = () => {
 
   const { user } = useSelector((state: RootState) => state.user)
@@ -13,7 +13,7 @@ const EmployeeDashboard = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const [idx, setIdx] = useState<number>(0);
-  const [sortedScheduleData, setSortedScheduleData] = useState<any>([]);
+  const [sortedScheduleData, setSortedScheduleData] = useState<TODO>([]);
 
   useEffect(() => {
     dispatch(getEmployeeSchedules())

@@ -8,17 +8,18 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { FaPaperclip } from "react-icons/fa6";
 import toast from 'react-hot-toast';
 import { applyForJob } from '../../redux/actions/user/userActions';
-const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatTag?: boolean, showApplied?: boolean, jobs?: any }) => {
+import { TODO } from '../../config/constants';
+const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatTag?: boolean, showApplied?: boolean, jobs?: TODO }) => {
 
 	const { user } = useSelector((state: RootState) => state.user)
 	const navigate = useNavigate()
-	const resumeRef = useRef<any>(null)
+	const resumeRef = useRef<TODO>(null)
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [showResumeUpload, setShowResumeUpload] = useState<boolean>(false);
 	const [pdfPreview, setPdfPreview] = useState<string>("");
-	const [resumeFile, setResumeFile] = useState<any>(null);
+	const [resumeFile, setResumeFile] = useState<TODO>(null);
 	const [userFormData, setUserFormData] = useState<IUserLoginData>({});
 
 	const dispatch = useDispatch<AppDispatch>()
@@ -37,7 +38,7 @@ const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatT
 		})
 	}
 
-	const imageUpload = async (image: any) => {
+	const imageUpload = async (image: TODO) => {
 		setIsLoading(true)
 		const formData = new FormData();
 		formData.append('file', image);

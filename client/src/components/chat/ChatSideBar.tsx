@@ -8,14 +8,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChatUserDetailsByIds } from "../../redux/actions/company/CompanyActions";
 function ChatSideBar() {
   const { user } = useSelector((state: RootState) => state.user)
-  const { socket, currentRoom, setCurrentRoom, roomMessages,setOnlineUsers, onlineUsers,reRender } = useContext(SocketContext) || {}
+  const { socket, currentRoom, setCurrentRoom, roomMessages, setOnlineUsers, onlineUsers, reRender } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
   const dispatch = useDispatch<AppDispatch>()
   const { chatUserList, userFullDetails } = useSelector((state: RootState) => state.chat)
   useEffect(() => {
     dispatch(getAllChatUserList(user._id))
-    console.log(reRender,"reRenderdata===>>>>")
-  }, [roomMessages,user._id,dispatch,reRender])
+    console.log(reRender, "reRenderdata===>>>>")
+  }, [roomMessages, user._id, dispatch, reRender])
 
   const navigate = useNavigate()
 
@@ -85,6 +85,7 @@ function ChatSideBar() {
   };
 
 
+
   return (
     <div className="border-e-red-200 ">
       <div className="border-b-2 shadow-lg">
@@ -97,11 +98,11 @@ function ChatSideBar() {
         userFullDetails && chatUserList && chatUserList.slice()
           .sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())?.map((chatUser, idx) => (
             <>
-              <div onClick={() => handleProfileClick(chatUser?.roomJoiner)} key={idx} className={`ms-4 gap-x-2 md:flex mt-7 cursor-pointer rounded-e-xl rounded-b-xl me-3 ${ currentRoom && chatUserId === chatUser?.roomJoiner ? 'bg-blue-50 ' : ''} `}>
+              <div onClick={() => handleProfileClick(chatUser?.roomJoiner)} key={idx} className={`ms-4 gap-x-2 md:flex mt-7 cursor-pointer rounded-e-xl rounded-b-xl me-3 ${currentRoom && chatUserId === chatUser?.roomJoiner ? 'bg-blue-50 ' : ''} `}>
                 <div className="py-2 ms-4">
                   <img
-                    className="w-10 border hidden md:flex  rounded-full h-10 "
-                    src={userFullDetails.find((user) => user._id === chatUser.roomJoiner)?.profilePic ?? ""}
+                    className="w-10 border hidden md:flex rounded-full h-10"
+                    src={typeof userFullDetails.find((user) => user._id === chatUser.roomJoiner)?.profilePic === 'string' ? userFullDetails.find((user) => user._id === chatUser.roomJoiner)?.profilePic : undefined}
                     alt=""
                   />
                 </div>

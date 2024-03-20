@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import VERIFIED from '../../assets/images/verified.png'
 import { toast } from "react-hot-toast"
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
@@ -8,7 +8,7 @@ import { changeUserEmail, changeUserPassowrd } from "../../redux/actions/user/us
 import PasswordField from "./PasswordField";
 import { useNavigate } from "react-router-dom";
 const UpdateLoginDetails = () => {
-    const { user, error } = useSelector((state: any) => state.user);
+    const { user, error } = useSelector((state: RootState) => state.user);
     const [err, setErr] = useState<string>("")
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()

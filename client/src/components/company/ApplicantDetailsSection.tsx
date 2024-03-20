@@ -7,6 +7,7 @@ import { getAllCompanyEmployees, scheduleInterviewForUser, updateApplicantStatus
 import { changeStatus } from '../../redux/reducers/company/companySlice';
 import Modal from '../Modal';
 import { FormEvent, useEffect, useState } from 'react';
+import { TODO } from '../../config/constants';
 const ApplicantDetailsSection = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [testType, setTestType] = useState<string>("");
@@ -15,7 +16,7 @@ const ApplicantDetailsSection = () => {
   const [scheduleDateAndTime, setScheduleDateAndTime] = useState<string>("");
   const { id, userId } = useParams()
   const { editJob } = useSelector((state: RootState) => state.company)
-  const ApplicantData: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+  const ApplicantData:TODO = editJob?.applicants?.find((value:TODO) => value.applicantId === userId)
 
   const dispatch = useDispatch<AppDispatch>()
   const { employees } = useSelector((state: RootState) => state.company)

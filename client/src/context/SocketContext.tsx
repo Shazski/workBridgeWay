@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import io, { Socket } from "socket.io-client";
 import { RootState } from "../redux/store";
+import { TODO } from "../config/constants";
 
 const SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL;
 
@@ -9,16 +10,16 @@ export interface SocketContextType {
   socket: Socket;
   message: string | null;
   setMessage: (message: string) => void;
-  privateApplicantMsg: any
-  setPrivateApplicantMsg: (any) => void;
+  privateApplicantMsg: TODO
+  setPrivateApplicantMsg: (TODO) => void;
   currentRoom: string;
   setCurrentRoom: (room: string) => void;
-  reRender: any;
-  setReRender: (any) => void;
+  reRender: TODO;
+  setReRender: (TODO) => void;
   onlineUsers: { userId: string; socketId: string }[];
   setOnlineUsers: (users: { userId: string; socketId: string }[]) => void;
-  roomMessages: any[],
-  setRoomMessages: (messages: any) => void
+  roomMessages: TODO[],
+  setRoomMessages: (messages: TODO) => void
 }
 
 export const SocketContext = createContext<SocketContextType | null>(null);
@@ -30,11 +31,11 @@ interface SocketProviderProps {
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [message, setMessage] = useState<string | null>(null);
-  const [privateApplicantMsg, setPrivateApplicantMsg] = useState<any>(null);
+  const [privateApplicantMsg, setPrivateApplicantMsg] = useState<TODO>(null);
   const [currentRoom, setCurrentRoom] = useState<string>("");
   const [reRender, setReRender] = useState<boolean>(false);
   const [onlineUsers, setOnlineUsers] = useState<{ userId: string; socketId: string }[]>([]);
-  const [roomMessages, setRoomMessages] = useState<any>([])
+  const [roomMessages, setRoomMessages] = useState<TODO>([])
   const contextValue: SocketContextType = {
     socket,
     message,

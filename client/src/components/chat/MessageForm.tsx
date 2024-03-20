@@ -15,6 +15,7 @@ import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png
 import { updateChatUserList } from "../../redux/reducers/chat/chatSlice";
 import { CiMicrophoneOn } from "react-icons/ci";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import ReactAudioPlayer from "react-audio-player";
 const MessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
@@ -28,18 +29,18 @@ const MessageForm = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
 
   const { user } = useSelector((state: RootState) => state.user)
-  const { chatUserList} = useSelector((state: RootState) => state.chat)
+  const { chatUserList } = useSelector((state: RootState) => state.chat)
   const { applicantData } = useSelector((state: RootState) => state.company)
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useDispatch<AppDispatch>()
   const chatUserId = searchParams.get("userId")
 
-  const sendMessage = (e: FormEvent<HTMLFormElement>,messageType?:string,msg?:string) => {
+  const sendMessage = (e: FormEvent<HTMLFormElement>, messageType?: string, msg?: string) => {
     e.preventDefault();
     setShowEmoji(false);
     setReRender && setReRender(!reRender)
-    socket?.emit("send-message", { roomId: currentRoom, roomCreater: user._id, senderId: user._id, message: msg, messageType: messageType, roomJoiner: user._id });    const updatedChatUserList = chatUserList?.map(chatUser => {
+    socket?.emit("send-message", { roomId: currentRoom, roomCreater: user._id, senderId: user._id, message: msg, messageType: messageType, roomJoiner: user._id }); const updatedChatUserList = chatUserList?.map(chatUser => {
       if (chatUser.roomJoiner === chatUserId) {
         return { ...chatUser, lastMessage: message, lastMessageTime: new Date() };
       }
@@ -51,8 +52,8 @@ const MessageForm = () => {
   };
 
   useEffect(() => {
-    if(chatUserId!)
-    dispatch(getApplicantsDetails({ userId: chatUserId! }))
+    if (chatUserId!)
+      dispatch(getApplicantsDetails({ userId: chatUserId! }))
   }, [searchParams, roomMessages])
 
 
@@ -157,60 +158,67 @@ const MessageForm = () => {
                 </div>
               </div>
               <div className="bg-white h-[532px] border-b-2 border-gray-200 overflow-y-scroll scrollbar" ref={messageBoxRef}>
-              {
-                roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
-                  <>
-                    <div key={idx} className="flex justify-between items-center bg-white">
-                      <div className='border-b-2 w-4/12 border-gray-300'>
+                {
+                  roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
+                    <>
+                      <div key={idx} className="flex justify-between items-center bg-white">
+                        <div className='border-b-2 w-4/12 border-gray-300'>
+                        </div>
+                        <h1 className="text-center px-4 py-3 bg-blue-600 text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
+                        <div className='border-b-2 w-4/12  border-gray-300'>
+                        </div>
                       </div>
-                      <h1 className="text-center px-4 py-3 bg-blue-600 text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
-                      <div className='border-b-2 w-4/12  border-gray-300'>
-                      </div>
-                    </div>
-                    {message?.messagesByDate?.map((msg, idx) => (
-                      <>
-                        <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>
-                          <div className="">
-                            <img className={`w-10 border border-gray-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : applicantData?.profilePic || ""} alt="" />
-                            <div className={`px-3.5 py-1 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl rounded-b-2xl' : 'ms-12 bg-gray-200 rounded-e-xl rounded-b-xl'}`}>
-                              {
-                                msg.messageType === "text" ? <>
-                                  <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
-                                </> : msg.messageType === "audio" ? <>
-                                  <audio src={msg?.message} controls className={` my-2 rounded-md ${msg.senderId === user._id ? 'text-white' : ''}`}></audio>
-                                </> : msg.messageType === "video" ? <>
-                                  <video src={recordings} controls className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
-                                </> : msg.messageType === "file" ? <>
-                                  <img src={msg?.message} alt="" />
-                                </> : ''
-                              }
-                              <div className="flex justify-end">
-                                <div>
-                                  <h1 className={`text-xs ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(msg?.createdAt), "hh:mm a")}</h1>
+                      {message?.messagesByDate?.map((msg, idx) => (
+                        <>
+                          <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>
+                            <div className="">
+                              <img
+                                className={`w-10 border border-gray-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`}
+                                src={msg.senderId === user._id ? "" : (applicantData?.profilePic instanceof File ? URL.createObjectURL(applicantData.profilePic) : applicantData?.profilePic || "")}
+                                alt=""
+                              />                              <div className={`px-3.5 py-1 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl rounded-b-2xl' : 'ms-12 bg-gray-200 rounded-e-xl rounded-b-xl'}`}>
+                                {
+                                  msg.messageType === "text" ? <>
+                                    <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
+                                  </> : msg.messageType === "audio" ? <>
+                                    <ReactAudioPlayer
+                                      src={msg?.message}
+                                      controls
+                                      className="mt-3"
+                                    />
+                                  </> : msg.messageType === "video" ? <>
+                                    <video src={recordings} controls className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
+                                  </> : msg.messageType === "file" ? <>
+                                    <img src={msg?.message} alt="" />
+                                  </> : ''
+                                }
+                                <div className="flex justify-end">
+                                  <div>
+                                    <h1 className={`text-xs ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(msg?.createdAt), "hh:mm a")}</h1>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </>
-                    ))}
+                        </>
+                      ))}
+                    </>
+                  ))
+                }
+                {
+                  uploadLoading && <>
+                    <div className="flex justify-end">
+                      <ScaleLoader
+                        color={'#197195'}
+                        loading={uploadLoading}
+                        cssOverride={overrideforUpload}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                      />
+                    </div>
                   </>
-                ))
-              }
-              {
-                uploadLoading && <>
-                  <div className="flex justify-end">
-                    <ScaleLoader
-                      color={'#197195'}
-                      loading={uploadLoading}
-                      cssOverride={overrideforUpload}
-                      aria-label="Loading Spinner"
-                      data-testid="loader"
-                    />
-                  </div>
-                </>
-              }
-            </div>
+                }
+              </div>
               <div className="absolute ms-10 bottom-3 w-7/12">
                 <EmojiPicker className=" bottom-2 ms-[460px]" height={"410px"} lazyLoadEmojis width={"350px"} open={showEmoji} reactionsDefaultOpen={false} onEmojiClick={(data) => setMessage((prev) => prev + data.emoji)} />
                 <form action="" onSubmit={(e) => sendMessage(e, "text", message)}>

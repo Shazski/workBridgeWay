@@ -2,16 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import DEFAULTPROFILE from "../../assets/images/defaultProfile.jpg";
 import { CiImageOn } from "react-icons/ci";
 import { useRef, useState, useEffect } from "react";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import { editUser } from "../../redux/actions/user/userActions";
 import { toast } from "react-hot-toast"
 import { IUserLoginData } from "../../interface/IuserLogin";
+import { TODO } from "../../config/constants";
 const ProfilePic = () => {
-    const [userData, setUserData] = useState<IUserLoginData>({ email: "", phone: "", userName: "", profilePic: null, dob: "" })
+    const [userData, setUserData] = useState<IUserLoginData>({ email: "", phone: "", userName: "", profilePic:"", dob: "" })
     const profileRef = useRef<HTMLInputElement | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [droppedImage, setDroppedImage] = useState<string | null>(null);
-    const { user, error } = useSelector((state: any) => state.user);
+    const { user, error } = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         const newUserData = {
@@ -44,7 +45,7 @@ const ProfilePic = () => {
 
         if (files && files.length > 0) {
 
-            userData.profilePic = files[0];
+            userData.profilePic = files[0] || "";
             const imageUrl = URL.createObjectURL(files[0]);
             setDroppedImage(imageUrl);
         }
@@ -56,7 +57,7 @@ const ProfilePic = () => {
             [name]: value,
         });
     }
-    const imageUpload = async (image: any) => {
+    const imageUpload = async (image: TODO) => {
         setIsLoading(true)
         const formData = new FormData();
         formData.append('file', image);

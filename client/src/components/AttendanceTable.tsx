@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from '../redux/store'
 import { differenceInMinutes, endOfMonth, format, parseISO, startOfMonth } from 'date-fns'
 import { IEmployee } from '../interface/IEmployeeData'
 import { getEmployeeDetails } from '../redux/actions/employee/employeeActions'
+import { TODO } from '../config/constants'
 
 const AttendanceTable = () => {
   const { user } = useSelector((state: RootState) => state.user)
@@ -37,7 +38,7 @@ const AttendanceTable = () => {
         return 0
       }
       return adjustedTimeDiffInHours;
-    } catch (error: any) {
+    } catch (error: TODO) {
       console.error(`Error: ${error.message}`);
       return NaN; 
     }

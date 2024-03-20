@@ -1,23 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser, updateCompanyDetails } from '../../redux/actions/user/userActions';
-import { AppDispatch } from '../../redux/store';
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { AppDispatch, RootState } from '../../redux/store';
+import { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import Modal from '../../components/Modal';
 import { ICompanyData } from '../../interface/ICompanyData';
+import { SocketContext } from '../../context/SocketContext';
 
 const WaitingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<ICompanyData | null>(null);
   const dispatch = useDispatch<AppDispatch>()
   const [reApplied, setReApplied] = useState<number>(0)
-  const { user } = useSelector((state: any) => state.user)
-  
+  const { user } = useSelector((state: RootState) => state.user)
+
+  const { socket } = useContext(SocketContext) || {}
+
   useEffect(() => {
     setFormData(user)
     const localStorageReApplied = localStorage.getItem('reappliedCount');
-
-  // Set the reApplied state with the parsed integer value from localStorage
-  setReApplied(localStorageReApplied ? parseInt(localStorageReApplied, 10) : 0);
+    // Set the reApplied state with the parsed integer value from localStorage
+    setReApplied(localStorageReApplied ? parseInt(localStorageReApplied, 10) : 0);
   }, [user])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +35,11 @@ const WaitingPage = () => {
     e.preventDefault()
     dispatch(updateCompanyDetails(formData))
   }
+  const handleLogout = () => {
+    if (socket && user?._id) {
+      dispatch(logoutUser({ socket, userId: user._id }));
+    }
+  };
   return (
     <div id='wrapper' className='fixed rounded-md inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center'>
       <div className='w-[600px] bg-white rounded-md p-2'>
@@ -50,15 +57,15 @@ const WaitingPage = () => {
           }
           {
             user?.stage === "rejected" && <>
-            <div className='flex flex-col'>
-              <h1><span className='font-semibold underline-offset-1 underline'>You have been rejected by the Admin for the Reason </span><br></br> <span className='text-red-600 font-semibold'> {user?.rejectReason}</span></h1>
-            </div>
+              <div className='flex flex-col'>
+                <h1><span className='font-semibold underline-offset-1 underline'>You have been rejected by the Admin for the Reason </span><br></br> <span className='text-red-600 font-semibold'> {user?.rejectReason}</span></h1>
+              </div>
             </>
           }
-          <button onClick={() => dispatch(logoutUser())} className='px-4 py-2 text-red-600 font-semibold bg-gray-200 rounded-md mt-4'>Logout</button>
+          <button onClick={handleLogout} className='px-4 py-2 text-red-600 font-semibold bg-gray-200 rounded-md mt-4'>Logout</button>
           {
             user?.stage === "rejected" &&
-            <button disabled={user?.rejectReason === "Rejected"}  onClick={() => setIsModalOpen(true)} className='px-4 ms-3 py-2 text-lightgreen disabled:opacity-50 disabled:cursor-not-allowed font-semibold bg-gray-200 rounded-md mt-4'>Verify</button>
+            <button disabled={user?.rejectReason === "Rejected"} onClick={() => setIsModalOpen(true)} className='px-4 ms-3 py-2 text-lightgreen disabled:opacity-50 disabled:cursor-not-allowed font-semibold bg-gray-200 rounded-md mt-4'>Verify</button>
           }
         </div>
       </div>

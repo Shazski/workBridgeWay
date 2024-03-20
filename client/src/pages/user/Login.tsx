@@ -8,25 +8,26 @@ import { useSelector, useDispatch } from 'react-redux'
 import useForm from '../../hooks/useForm'
 import { IUserLoginData } from '../../interface/IuserLogin'
 import GoogleAuthButton from '../../components/user/GoogleAuthButton'
-import { AppDispatch } from '../../redux/store'
+import { AppDispatch, RootState } from '../../redux/store'
 import { userLogin } from '../../redux/actions/user/userActions'
 import Particles from 'react-tsparticles'
 import { loadSlim } from 'tsparticles-slim'
+import { TODO } from '../../config/constants'
 const Login: FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const { values, handleChange } = useForm({} as IUserLoginData)
-    const { error } = useSelector((state: any) => state.user)
+    const { error } = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch<AppDispatch>()
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(userLogin(values))
     }
-    const particlesInit = useCallback(async (engine: any) => {
+    const particlesInit = useCallback(async (engine: TODO) => {
         console.log(engine);
         await loadSlim(engine);
       }, []);
     
-      const particlesLoaded = useCallback(async (container: any | undefined) => {
+      const particlesLoaded = useCallback(async (container: TODO | undefined) => {
         return new Promise<void>((resolve) => {
           console.log(container);
           // Additional initialization logic can go here

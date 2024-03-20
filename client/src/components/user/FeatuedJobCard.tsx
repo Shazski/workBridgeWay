@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { TODO } from "../../config/constants";
 
-const FeatuedJobCard = ({ showApplied = false, job, showCompanyLogo = true }: { showApplied?: boolean, job: any, showCompanyLogo?: boolean }) => {
+const FeatuedJobCard = ({ showApplied = false, job, showCompanyLogo = true }: { showApplied?: boolean, job: TODO, showCompanyLogo?: boolean }) => {
     const navigate = useNavigate()
     return (
         <div>

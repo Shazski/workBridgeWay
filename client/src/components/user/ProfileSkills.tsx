@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { addSkill, removeSkill, uploadResume } from "../../redux/actions/user/userActions";
 import { toast } from "react-hot-toast";
+import { TODO } from "../../config/constants";
 const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConfirmModalOpen }: { user: { skills: string[], email: string, resume: string }, isAboutModalOpen: boolean, isSocialModalOpen: boolean, isSocialConfirmModalOpen: boolean }) => {
   const dispatch = useDispatch<AppDispatch>()
   const [skills, setSkills] = useState<string>("")
@@ -12,7 +13,7 @@ const ProfileSkills = ({ user, isAboutModalOpen, isSocialModalOpen, isSocialConf
   const [removeIndex, setRemoveIndex] = useState<number>(0)
   const [error, setError] = useState<string | null>(null)
   const [isSkillModalOpen, setIsSkillModalOpen] = useState<boolean>(false)
-  const [pdfData, setPdfData] = useState<any>(null)
+  const [pdfData, setPdfData] = useState<TODO>(null)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSkills(e.currentTarget.value)

@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
 import { useParams } from "react-router-dom"
+import { TODO } from "../../config/constants"
 
 const ApplicantHiringStage = () => {
   const { editJob } = useSelector((state: RootState) => state.company)
   const { userId } = useParams()
-  const linkedInUrl: any = editJob?.applicants?.find((value: any) => value.applicantId === userId)
+  const linkedInUrl: TODO = editJob?.applicants?.find((value: TODO) => value.applicantId === userId)
   return (
     <div className="mt-4">
       <h1 className='font-semibold text-blue-gray-800 ms-3'>Current Stage</h1>

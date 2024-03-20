@@ -10,24 +10,25 @@ import {
 import { ICompanyData } from "../../../interface/ICompanyData";
 import { IUserLoginData } from "../../../interface/IuserLogin";
 import { getChatUserDetailsByIds } from "../../actions/company/CompanyActions";
+import { TODO } from "../../../config/constants";
 
 const chatSlice = createSlice({
  name: "admin",
  initialState: {
   chatLoading: null as boolean | null,
-  chatUserList: null as any[] | null,
-  chatCompanyList: [] as any[],
-  messages: null as any | null,
+  chatUserList: null as TODO[] | null,
+  chatCompanyList: [] as TODO[],
+  messages: null as TODO | null,
   chatError: null as string | null,
   companyDetails: null as ICompanyData | null,
   companyFullDetails: null as ICompanyData[] | null,
   userFullDetails: null as IUserLoginData[] | null,
  },
  reducers: {
-  updateChatCompanyList: (state, action: PayloadAction<any>) => {
+  updateChatCompanyList: (state, action: PayloadAction<TODO>) => {
    state.chatCompanyList = action.payload;
   },
-  updateChatUserList: (state, action: PayloadAction<any>) => {
+  updateChatUserList: (state, action: PayloadAction<TODO>) => {
    state.chatUserList = action.payload;
   },
  },

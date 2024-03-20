@@ -7,13 +7,13 @@ import { CiSettings } from "react-icons/ci";
 import LOGO from "../../assets/images/Logo.png"
 import { IoExitOutline } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import { logoutUser } from "../../redux/actions/user/userActions";
 import { useContext } from "react";
 import { SocketContext } from "../../context/SocketContext";
 const UserSidebar = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const { user } = useSelector((state: any) => state.user)
+    const { user } = useSelector((state: RootState) => state.user)
     const location = useLocation();
     const isSettingsActive = () => {
         return location.pathname.startsWith('/user/settings');

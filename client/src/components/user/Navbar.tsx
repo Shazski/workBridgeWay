@@ -5,12 +5,12 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-hot-toast'
 import { logoutUser } from '../../redux/actions/user/userActions'
-import { AppDispatch } from '../../redux/store'
+import { AppDispatch, RootState } from '../../redux/store'
 import { SocketContext } from '../../context/SocketContext'
 const Navbar: FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
-  const { user } = useSelector((state: any) => state.user)
+  const { user } = useSelector((state: RootState) => state.user)
 
   const { socket } = useContext(SocketContext) || {}
 
