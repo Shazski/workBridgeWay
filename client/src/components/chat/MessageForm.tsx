@@ -27,20 +27,25 @@ const MessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
-  const [showMediaPreview, setShowMediaPreview] = useState<boolean>(false);
-  const [showImagesPreview, setShowImagesPreview] = useState<string | string[]>("");
   const [showSendBtn, setShowSendBtn] = useState<boolean>(true);
-  const [showVideoPreview, setShowVideoPreview] = useState<string | string[]>("");
-  const [showDocumentPreview, setShowDocumentPreview] = useState<string | string[]>("");
   const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
 
   const audioChunk = useRef<any>([])
   const mediaRecorderRef = useRef<any>(null)
   const [recordings, setRecordings] = useState<string>("")
-  const [imageFile, setImageFile] = useState<File[]>([]);
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
+
+  const [showImagesPreview, setShowImagesPreview] = useState<string | string[]>("");
+  const [showVideoPreview, setShowVideoPreview] = useState<string>("");
+  const [showDocumentPreview, setShowDocumentPreview] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File[]>([]);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
+
+  const [showMediaPreview, setShowMediaPreview] = useState<boolean>(false);
+  const [showVideoPreviewModal, setShowVideoPreviewModal] = useState<boolean>(false);
 
   const { user } = useSelector((state: RootState) => state.user)
   const { chatUserList } = useSelector((state: RootState) => state.chat)
@@ -73,8 +78,6 @@ const MessageForm = () => {
     if (chatUserId!)
       dispatch(getApplicantsDetails({ userId: chatUserId! }))
   }, [searchParams, roomMessages])
-
-
 
   useEffect(() => {
     socket?.off("room-messages").on("room-messages", (messages: { roomId: string }) => {
@@ -167,7 +170,12 @@ const MessageForm = () => {
     }
   };
   const handleVideoChange = (e: ChangeEvent<HTMLInputElement>) => {
-
+    if (e.target.files) {
+      setVideoFile(e.target.files[0])
+      const videoPreview = URL.createObjectURL(e.target.files[0])
+      setShowVideoPreviewModal(true);
+      setShowVideoPreview(videoPreview)
+    }
   }
   const handleDocumentChange = (e: ChangeEvent<HTMLInputElement>) => {
 
@@ -349,6 +357,10 @@ const MessageForm = () => {
                     <button onClick={(e) => handleImageUplaod(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
                   </>
                 }
+              </Modal>
+              <Modal isVisible={showVideoPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
+                <video controls src={showVideoPreview}></video>
+                <button onClick={(e) => handleImageUplaod(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
               </Modal>
               <input type="file" hidden multiple onChange={handleImageChange} ref={imageRef} accept="image/*" />
               <input type="file" hidden onChange={handleVideoChange} ref={videoRef} accept="video/*" />
