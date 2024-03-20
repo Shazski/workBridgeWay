@@ -21,9 +21,7 @@ function UserChatSideBar() {
   useEffect(() => {
     dispatch(getAllChatCompanyList(user._id))
 
-  }, [roomMessages, reRender])
-  console.log("🚀 ~ file: UserChatSideBar.tsx:25 ~ UserChatSideBar ~ roomMessages:",roomMessages && roomMessages[0]?.messagesByDate?.filter((msg) => msg.recieverSeen === false).length)
-  
+  }, [roomMessages, reRender])  
 
   const navigate = useNavigate()
 

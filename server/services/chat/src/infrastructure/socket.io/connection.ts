@@ -52,11 +52,20 @@ const connectSocketIo = (server: Server) => {
      const lastMessageUpdated = await updateLastMessage({
       roomCreater: messageData.roomCreater,
       roomJoiner: messageData.roomJoiner,
-      message: messageData.message,
+      message:
+       messageData.messageType === "image"
+        ? "Images"
+        : messageData.messageType === "audio"
+        ? "Audio"
+        : messageData.messageType === "video"
+        ? "Video"
+        : messageData.messageType === "file"
+        ? "Document"
+        : messageData.message,
      });
      const roomMessages = await getLastMessagesFromRoom(messageData?.roomId);
      io.to(messageData?.roomId).emit("room-messages", roomMessages);
-     io.emit("notification",message)
+     io.emit("notification", message);
     }
    );
    socket.on("logout-user", (userId: string) => {

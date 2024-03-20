@@ -12,7 +12,7 @@ const ChatRoomSchema: Schema<IChatroom> = new Schema(
    required: true,
   },
   lastMessage: {
-   type: String, //last message data
+   type: Schema.Types.Mixed, //last message data
   },
   lastMessageTime: { type: Date }, // Time of last message for sorting chat with message person
  },

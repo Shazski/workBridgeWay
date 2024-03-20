@@ -12,7 +12,7 @@ const messageSchema = new Schema<MessageEntity>(
    required: true,
   },
   message: {
-   type: String,
+   type: Schema.Types.Mixed,
    required: true,
   },
   messageType: {

@@ -18,7 +18,11 @@ import { updateChatCompanyList } from "../../redux/reducers/chat/chatSlice";
 import { CiImageOn } from "react-icons/ci";
 import { IoDocumentOutline } from "react-icons/io5";
 import { HiOutlineVideoCamera } from "react-icons/hi2";
+import { IoIosMore } from "react-icons/io";
 import ScaleLoader from "react-spinners/ScaleLoader";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Modal from "../Modal";
 
 const UserMessageForm = () => {
@@ -27,6 +31,7 @@ const UserMessageForm = () => {
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
   const [showMediaPreview, setShowMediaPreview] = useState<boolean>(false);
   const [showImagesPreview, setShowImagesPreview] = useState<string | string[]>("");
+  const [showSendBtn, setShowSendBtn] = useState<boolean>(true);
   const [showVideoPreview, setShowVideoPreview] = useState<string | string[]>("");
   const [showDocumentPreview, setShowDocumentPreview] = useState<string | string[]>("");
   const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender } = useContext(SocketContext) || {}
@@ -36,6 +41,7 @@ const UserMessageForm = () => {
   const audioChunk = useRef<TODO>([])
   const mediaRecorderRef = useRef<TODO>(null)
   const [recordings, setRecordings] = useState<string>("")
+  const [imageFile, setImageFile] = useState<File[]>([]);
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
 
@@ -62,7 +68,7 @@ const UserMessageForm = () => {
 
   };
 
-  const sendMessage = (e: FormEvent<HTMLFormElement>, messageType?: string, msg?: string) => {
+  const sendMessage = (e: FormEvent<HTMLFormElement>, messageType?: string, msg?: string | string[]) => {
     e.preventDefault();
     setShowEmoji(false);
     setReRender && setReRender(!reRender)
@@ -156,19 +162,57 @@ const UserMessageForm = () => {
   }
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-
-    if (e.target.files) {
-      const imageUrl = URL.createObjectURL(e.target.files[0])
-      setShowMediaPreview(true)
-      setShowImagesPreview(imageUrl)
+    setShowSendBtn(true)
+    if (e.target.files && e.target.files.length > 0) {
+      const imageFiles = Array.from(e.target.files)
+      setImageFile(imageFiles)
+      const imagesArray = Array.from(e.target.files).map(file => URL.createObjectURL(file));
+      setShowMediaPreview(true);
+      if (imagesArray.length === 1) {
+        setShowImagesPreview(imagesArray[0]);
+      } else {
+        setShowImagesPreview(imagesArray);
+      }
     }
-  }
+  };
   const handleVideoChange = (e: ChangeEvent<HTMLInputElement>) => {
 
   }
   const handleDocumentChange = (e: ChangeEvent<HTMLInputElement>) => {
 
   }
+
+  const slickSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
+
+  const handleImageUplaod = async (e: TODO) => {
+    setShowMediaPreview(false);
+    if (Array.isArray(showImagesPreview)) {
+      try {
+        if (imageFile.length > 0) {
+          const urls = await Promise.all(imageFile?.map(async (image) => {
+            const url = await cloudinaryUpload(image, "image");
+            return url;
+          }));
+
+          sendMessage(e, "image", urls)
+        }
+
+        setShowImagesPreview("");
+      } catch (error) {
+        console.error('Error uploading images:', error);
+      }
+    } else {
+      const url = await cloudinaryUpload(imageFile[0], "image");
+      sendMessage(e, "image", url)
+      setShowImagesPreview("");
+    }
+  };
 
   return (
     <>
@@ -221,9 +265,49 @@ const UserMessageForm = () => {
                                   />
                                 </> : msg.messageType === "video" ? <>
                                   <video src={recordings} controls className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
-                                </> : msg.messageType === "file" ? <>
-                                  <img src={msg?.message} alt="" />
-                                </> : ''
+                                </> : msg.messageType === "image" ?
+                                  <>
+                                    {
+                                      Array.isArray(msg?.message) ?
+                                        <>
+                                          {
+                                            <div className="grid grid-cols-2 gap-2 ">
+                                              {
+                                                msg.message.length <= 4 ?
+                                                  msg?.message?.map((img, idx) => (
+                                                    <>
+                                                      <div key={idx} className="mt-2">
+                                                        <img src={img} alt="" className="w-44 h-24" />
+                                                      </div>
+                                                    </>
+                                                  )) :
+                                                  <>
+                                                    {
+                                                      msg?.message?.slice(0, 3).map((img, idx) => (
+                                                        <>
+                                                          <div key={idx} className="mt-2">
+                                                            <img src={img} alt="" className="w-44 h-24" />
+                                                          </div>
+                                                        </>
+                                                      ))
+                                                    }
+                                                    <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
+                                                      <h1 className="text-5xl"><IoIosMore /></h1>
+                                                      <div className="flex gap-x-2">
+                                                        <h1 className=" font-bold">{msg?.message.length - 3}</h1>
+                                                        <h1 className=" font-bold">More</h1>
+                                                      </div>
+                                                    </div>
+                                                  </>
+                                              }
+                                            </div>
+                                          }
+                                        </> :
+                                        <>
+                                          <img src={msg?.message} alt="" className="w-44 mt-3" />
+                                        </>
+                                    }
+                                  </> : ''
                               }
                               <div className="flex justify-end">
                                 <div>
@@ -253,12 +337,25 @@ const UserMessageForm = () => {
               }
             </div>
             <Modal isVisible={showMediaPreview} onClose={() => setShowMediaPreview(false)}>
-              <div className="flex flex-col">
-                <img src={Array.isArray(showImagesPreview) ? "" : showImagesPreview} alt="" />
-                <button className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-3 ">Send</button>
-              </div>
+              {Array.isArray(showImagesPreview) ? (
+                <Slider {...slickSettings}>
+                  {showImagesPreview.map((img, idx) => (
+                    <div key={idx}>
+                      <img src={img} alt="" className="w-full h-72" />
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                <img src={showImagesPreview} alt="" className="w-full h-72" />
+              )}
+              {
+                showSendBtn &&
+                <>
+                  <button onClick={(e) => handleImageUplaod(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+                </>
+              }
             </Modal>
-            <input type="file" hidden onChange={handleImageChange} ref={imageRef} accept="image/*" />
+            <input type="file" hidden multiple onChange={handleImageChange} ref={imageRef} accept="image/*" />
             <input type="file" hidden onChange={handleVideoChange} ref={videoRef} accept="video/*" />
             <input type="file" hidden onChange={handleDocumentChange} ref={documentRef} accept=".pdf, .doc, .docx" />
             <div className="absolute ms-5 bottom-2 w-7/12">
