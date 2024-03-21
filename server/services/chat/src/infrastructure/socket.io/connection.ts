@@ -11,7 +11,8 @@ import { ObjectId } from "mongoose";
 
 let io: SocketIOServer;
 let onlineUsers: { userId: string; socketId: string }[] = [];
-
+let userCurrentRoom: string = "";
+let companyCurrentRoom: string = "";
 const connectSocketIo = (server: Server) => {
  if (!io) {
   io = new SocketIOServer(server, {
@@ -31,9 +32,9 @@ const connectSocketIo = (server: Server) => {
     }
    });
 
-   socket.on("join-room", async (room: string,senderId:ObjectId) => {
-    socket.join(room); 
-    await makeMessageReceiverSeen(room,senderId)
+   socket.on("join-room", async (room: string, senderId: ObjectId) => {
+    socket.join(room);
+    await makeMessageReceiverSeen(room, senderId);
     const roomMessages = await getLastMessagesFromRoom(room);
     if (roomMessages) {
      socket.emit("room-messages", roomMessages);
@@ -49,6 +50,7 @@ const connectSocketIo = (server: Server) => {
      roomCreater: ObjectId;
      roomJoiner: ObjectId;
      messageType?: "text" | "image" | "audio" | "video" | "file";
+     recieverSeen?: boolean;
     }) => {
      let messageTypeText = messageData.message;
      if (messageData.messageType === "image") {
@@ -62,7 +64,12 @@ const connectSocketIo = (server: Server) => {
      } else {
       messageTypeText = messageData?.message;
      }
-
+     if (
+      messageData.roomId === userCurrentRoom &&
+      messageData.roomId === companyCurrentRoom
+     ) {
+      messageData.recieverSeen = true;
+     }
      const message = await createMessage(messageData);
      updateLastMessage({
       roomCreater: messageData.roomCreater,
@@ -75,6 +82,13 @@ const connectSocketIo = (server: Server) => {
      io.emit("notification", message);
     }
    );
+
+   socket.on("userCurrentRoom", (room: string) => {
+    userCurrentRoom = room;
+   });
+   socket.on("companyCurrentRoom", (room: string) => {
+    companyCurrentRoom = room;
+   });
    socket.on("logout-user", (userId: string) => {
     onlineUsers = onlineUsers.filter((user) => user.userId !== userId);
     io.emit("online-users", onlineUsers);

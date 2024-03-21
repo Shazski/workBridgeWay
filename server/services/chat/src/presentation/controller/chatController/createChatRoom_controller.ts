@@ -17,6 +17,7 @@ export default (dependencies: IDependencies) => {
     chatCredentials
    );
 
+
    if (!chatRoomData)
     return next(ErrorResponse.conflict("Room already exists"));
 

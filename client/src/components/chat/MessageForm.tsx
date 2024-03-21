@@ -221,7 +221,7 @@ const MessageForm = () => {
     setShowVideoPreviewModal(false)
 
     const videoUrl = await cloudinaryUpload(videoFile!, "video");
-    
+
     sendMessage(e, "video", videoUrl)
     setShowVideoPreview("")
   }
@@ -259,102 +259,102 @@ const MessageForm = () => {
                 </div>
               </div>
               <div className="bg-white h-[532px] border-b-2 border-gray-200 overflow-y-scroll scrollbar" ref={messageBoxRef}>
-              {
-               currentRoom && roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
-                  <>
-                    <div key={idx} className="flex justify-between items-center bg-white">
-                      <div className='border-b-2 w-4/12 border-gray-300'>
+                {
+                  currentRoom && roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
+                    <>
+                      <div key={idx} className="flex justify-between items-center bg-white">
+                        <div className='border-b-2 w-4/12 border-gray-300'>
+                        </div>
+                        <h1 className="text-center px-4 py-3 bg-blue-600 text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
+                        <div className='border-b-2 w-4/12  border-gray-300'>
+                        </div>
                       </div>
-                      <h1 className="text-center px-4 py-3 bg-blue-600 text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
-                      <div className='border-b-2 w-4/12  border-gray-300'>
-                      </div>
-                    </div>
-                    {message?.messagesByDate?.map((msg, idx) => (
-                      <>
-                        <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>
-                          <div className="">
-                            <img className={`w-10 border border-gray-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : applicantData?.profilePic || ""} alt="" />
-                            <div className={`px-3.5 py-1 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl rounded-b-2xl' : 'ms-12 bg-gray-200 rounded-e-xl rounded-b-xl'}`}>
-                              {
-                                msg.messageType === "text" ? <>
-                                  <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
-                                </> : msg.messageType === "audio" ? <>
-                                  <ReactAudioPlayer
-                                    src={msg?.message}
-                                    controls
-                                    className="mt-3"
-                                  />
-                                </> :
-                                  msg.messageType === "file" ? <>
-                                    <a href={msg.message} download={`document${idx}`} className={`flex gap-x-3 ${msg.senderId === user._id ? 'text-white' : 'text-black'} `}>
-                                      <div className={`border  mt-2 rounded-full ${msg.senderId === user._id ? 'border-white' : 'border-black'}`}>
-                                      <IoDocumentOutline className="text-xl mx-2 my-2" />
-                                      </div>
-                                      <h1 className="mt-3">Document</h1>
-                                    </a>
+                      {message?.messagesByDate?.map((msg, idx) => (
+                        <>
+                          <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>
+                            <div className="">
+                              <img className={`w-10 border border-gray-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : applicantData?.profilePic || ""} alt="" />
+                              <div className={`px-3.5 py-1 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl rounded-b-2xl' : 'ms-12 bg-gray-200 rounded-e-xl rounded-b-xl'}`}>
+                                {
+                                  msg.messageType === "text" ? <>
+                                    <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
+                                  </> : msg.messageType === "audio" ? <>
+                                    <ReactAudioPlayer
+                                      src={msg?.message}
+                                      controls
+                                      className="mt-3"
+                                    />
                                   </> :
-                                    msg.messageType === "video" ?
-                                      <>
-                                        <video src={msg?.message} controls className={`break-all mt-3 poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
-                                      </>
-                                      :
-                                      msg.messageType === "image" ?
+                                    msg.messageType === "file" ? <>
+                                      <a href={msg.message} download={`document${idx}`} className={`flex gap-x-3 ${msg.senderId === user._id ? 'text-white' : 'text-black'} `}>
+                                        <div className={`border  mt-2 rounded-full ${msg.senderId === user._id ? 'border-white' : 'border-black'}`}>
+                                          <IoDocumentOutline className="text-xl mx-2 my-2" />
+                                        </div>
+                                        <h1 className="mt-3">Document</h1>
+                                      </a>
+                                    </> :
+                                      msg.messageType === "video" ?
                                         <>
-                                          {
-                                            Array.isArray(msg?.message) ?
-                                              <>
-                                                {
-                                                  <div className="grid grid-cols-2 gap-2 ">
-                                                    {
-                                                      msg.message.length <= 4 ?
-                                                        msg?.message?.map((img, idx) => (
+                                          <video src={msg?.message} controls className={`break-all mt-3 poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
+                                        </>
+                                        :
+                                        msg.messageType === "image" ?
+                                          <>
+                                            {
+                                              Array.isArray(msg?.message) ?
+                                                <>
+                                                  {
+                                                    <div className="grid grid-cols-2 gap-2 ">
+                                                      {
+                                                        msg.message.length <= 4 ?
+                                                          msg?.message?.map((img, idx) => (
+                                                            <>
+                                                              <div key={idx} className="mt-2">
+                                                                <img src={img} alt="" className="w-44 h-24" />
+                                                              </div>
+                                                            </>
+                                                          )) :
                                                           <>
-                                                            <div key={idx} className="mt-2">
-                                                              <img src={img} alt="" className="w-44 h-24" />
+                                                            {
+                                                              msg?.message?.slice(0, 3).map((img, idx) => (
+                                                                <>
+                                                                  <div key={idx} className="mt-2">
+                                                                    <img src={img} alt="" className="w-44 h-24" />
+                                                                  </div>
+                                                                </>
+                                                              ))
+                                                            }
+                                                            <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
+                                                              <h1 className="text-5xl"><IoIosMore /></h1>
+                                                              <div className="flex gap-x-2">
+                                                                <h1 className=" font-bold">{msg?.message.length - 3}</h1>
+                                                                <h1 className=" font-bold">More</h1>
+                                                              </div>
                                                             </div>
                                                           </>
-                                                        )) :
-                                                        <>
-                                                          {
-                                                            msg?.message?.slice(0, 3).map((img, idx) => (
-                                                              <>
-                                                                <div key={idx} className="mt-2">
-                                                                  <img src={img} alt="" className="w-44 h-24" />
-                                                                </div>
-                                                              </>
-                                                            ))
-                                                          }
-                                                          <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
-                                                            <h1 className="text-5xl"><IoIosMore /></h1>
-                                                            <div className="flex gap-x-2">
-                                                              <h1 className=" font-bold">{msg?.message.length - 3}</h1>
-                                                              <h1 className=" font-bold">More</h1>
-                                                            </div>
-                                                          </div>
-                                                        </>
-                                                    }
-                                                  </div>
-                                                }
-                                              </> :
-                                              <>
-                                                <img src={msg?.message} alt="" className="w-44 mt-3" />
-                                              </>
-                                          }
-                                        </> : ''
-                              }
-                              <div className="flex justify-end">
-                                <div>
-                                  <h1 className={`text-xs ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(msg?.createdAt), "hh:mm a")}</h1>
+                                                      }
+                                                    </div>
+                                                  }
+                                                </> :
+                                                <>
+                                                  <img src={msg?.message} alt="" className="w-44 mt-3" />
+                                                </>
+                                            }
+                                          </> : ''
+                                }
+                                <div className="flex justify-end">
+                                  <div>
+                                    <h1 className={`text-xs ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(msg?.createdAt), "hh:mm a")}</h1>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </>
-                    ))}
-                  </>
-                ))
-              }
+                        </>
+                      ))}
+                    </>
+                  ))
+                }
                 {
                   uploadLoading && <>
                     <div className="flex justify-end">
@@ -393,11 +393,11 @@ const MessageForm = () => {
                 <button onClick={(e) => handleVideoUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
               </Modal>
               <Modal isVisible={showDocumentPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
-              <div className="flex flex-col items-center">
-                <iframe width={"300px"} height={"400px"} src={showDocumentPreview}></iframe>
-                <button onClick={(e) => handleDocumentUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
-              </div>
-            </Modal>
+                <div className="flex flex-col items-center">
+                  <iframe width={"300px"} height={"400px"} src={showDocumentPreview}></iframe>
+                  <button onClick={(e) => handleDocumentUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+                </div>
+              </Modal>
               <input type="file" hidden multiple onChange={handleImageChange} ref={imageRef} accept="image/*" />
               <input type="file" hidden onChange={handleVideoChange} ref={videoRef} accept="video/*" />
               <input type="file" hidden onChange={handleDocumentChange} ref={documentRef} accept=".pdf, .doc, .docx" />

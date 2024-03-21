@@ -30,7 +30,7 @@ const UserMessageForm = () => {
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
   const [showSendBtn, setShowSendBtn] = useState<boolean>(true);
-  const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender } = useContext(SocketContext) || {}
+  const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender, companyCurrentRoom } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
 
   const audioChunk = useRef<any>([])
@@ -87,7 +87,6 @@ const UserMessageForm = () => {
       socket.emit("new-user", (user._id));
     }
   }, [user, socket]);
-
 
   useEffect(() => {
     if (chatCompanyId)
@@ -271,7 +270,7 @@ const UserMessageForm = () => {
             </div>
             <div className="bg-white h-[532px] border-b-2 border-gray-200 overflow-y-scroll scrollbar" ref={messageBoxRef}>
               {
-               currentRoom && roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
+                currentRoom && roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
                   <>
                     <div key={idx} className="flex justify-between items-center bg-white">
                       <div className='border-b-2 w-4/12 border-gray-300'>
@@ -299,7 +298,7 @@ const UserMessageForm = () => {
                                   msg.messageType === "file" ? <>
                                     <a href={msg.message} download={`document${idx}`} className={`flex gap-x-3 ${msg.senderId === user._id ? 'text-white' : 'text-black'} `}>
                                       <div className={`border  mt-2 rounded-full ${msg.senderId === user._id ? 'border-white' : 'border-black'}`}>
-                                      <IoDocumentOutline className="text-xl mx-2 my-2" />
+                                        <IoDocumentOutline className="text-xl mx-2 my-2" />
                                       </div>
                                       <h1 className="mt-3">Document</h1>
                                     </a>

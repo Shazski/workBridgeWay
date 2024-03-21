@@ -3,18 +3,17 @@ import { SocketContext } from "../../context/SocketContext"
 import { useContext, useEffect } from 'react'
 import { GoDotFill } from "react-icons/go";
 import { AppDispatch, RootState } from "../../redux/store";
-import { getAllChatUserList } from "../../redux/actions/chat/chatActions";
+import { getAllChatUserList, getAllUnreadMessages } from "../../redux/actions/chat/chatActions";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChatUserDetailsByIds } from "../../redux/actions/company/CompanyActions";
 function ChatSideBar() {
   const { user } = useSelector((state: RootState) => state.user)
-  const { socket, currentRoom, setCurrentRoom, roomMessages, setOnlineUsers, onlineUsers, reRender } = useContext(SocketContext) || {}
+  const { socket, currentRoom, setCurrentRoom, roomMessages, setOnlineUsers, onlineUsers, reRender, setCompanyCurrentRoom, companyCurrentRoom } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
   const dispatch = useDispatch<AppDispatch>()
-  const { chatUserList, userFullDetails } = useSelector((state: RootState) => state.chat)
+  const { chatUserList, userFullDetails, unreadMessages } = useSelector((state: RootState) => state.chat)
   useEffect(() => {
     dispatch(getAllChatUserList(user._id))
-    console.log(reRender, "reRenderdata===>>>>")
   }, [roomMessages, user._id, dispatch, reRender])
 
   const navigate = useNavigate()
@@ -32,10 +31,14 @@ function ChatSideBar() {
   const joinRoom = (room: string) => {
     if (!user) return
     socket?.emit("join-room", room)
-    setCurrentRoom && setCurrentRoom("")
+    socket?.emit("companyCurrentRoom", room)
+    setCompanyCurrentRoom && setCompanyCurrentRoom(room)
     setCurrentRoom && setCurrentRoom(room)
   }
 
+  useEffect(() => {
+    console.log(companyCurrentRoom, "companyCurrentRoom");
+  }, [companyCurrentRoom])
 
 
   const createPrivateRoomId = (id1: string, id2: string) => {
@@ -45,6 +48,12 @@ function ChatSideBar() {
       return id2 + "_" + id1
     }
   }
+  const unreadMessageCounts: { [roomId: string]: number } = {};
+
+  chatUserList?.forEach((list) => {
+    const countofRoom = unreadMessages?.filter((room) => room.senderId !== user._id && createPrivateRoomId(list?.roomCreater, list?.roomJoiner) === room.roomId).length
+    unreadMessageCounts[createPrivateRoomId(list.roomCreater, list.roomJoiner)] = countofRoom || 0
+  })
 
   const handlePrivateMessage = (userId) => {
     const room = createPrivateRoomId(userId, user._id)
@@ -83,7 +92,9 @@ function ChatSideBar() {
       return 'Just now'
     }
   };
-
+  useEffect(() => {
+    dispatch(getAllUnreadMessages())
+  }, [reRender, chatUserList])
 
 
   return (
@@ -112,6 +123,12 @@ function ChatSideBar() {
                       <h1 className="text-sm font-semibold text-gray-900">{userFullDetails?.find((user) => user?._id === chatUser?.roomJoiner)?.userName || "unknown"} </h1>
                       <span className={`text-xl rounded-full  ${onlineUsers && onlineUsers?.some((users) => users.userId === chatUser?.roomJoiner) ? 'text-green-600' : 'text-red-600'}`}><GoDotFill /></span>
                       <h1 className="text-xs  font-semibold text-end poppins  text-gray-700  mt-1 ">{getTimeAgo(chatUser?.lastMessageTime)}</h1>
+                      {
+                        unreadMessageCounts[createPrivateRoomId(chatUser?.roomCreater, chatUser?.roomJoiner)] > 0 &&
+                        <h1 className="text-xs font-semibold text-end poppins bg-lightgreen rounded-full text-white px-2 py-0.5 ms-6 mt-1">
+                          {unreadMessageCounts && unreadMessageCounts[createPrivateRoomId(chatUser?.roomCreater, chatUser?.roomJoiner)] || 0}
+                        </h1>
+                      }
                     </div>
                     <h1 className="text-xs mt-1 font-semibold  text-gray-700">
                       {chatUser?.lastMessage && chatUser?.lastMessage.length > 20

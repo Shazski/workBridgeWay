@@ -10,8 +10,6 @@ export interface SocketContextType {
   socket: Socket;
   message: string | null;
   setMessage: (message: string) => void;
-  privateApplicantMsg: TODO
-  setPrivateApplicantMsg: (TODO) => void;
   currentRoom: string;
   setCurrentRoom: (room: string) => void;
   reRender: TODO;
@@ -21,17 +19,16 @@ export interface SocketContextType {
   roomMessages: TODO[],
   setRoomMessages: (messages: TODO) => void
 }
-
-export const SocketContext = createContext<SocketContextType | null>(null);
-export const socket = io(SOCKET_URL, { transports: ["websocket", "polling"] });
-
 interface SocketProviderProps {
   children: ReactNode;
 }
 
+export const SocketContext = createContext<SocketContextType | null>(null);
+export const socket = io(SOCKET_URL, { transports: ["websocket", "polling"] });
+
+
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [message, setMessage] = useState<string | null>(null);
-  const [privateApplicantMsg, setPrivateApplicantMsg] = useState<TODO>(null);
   const [currentRoom, setCurrentRoom] = useState<string>("");
   const [reRender, setReRender] = useState<boolean>(false);
   const [onlineUsers, setOnlineUsers] = useState<{ userId: string; socketId: string }[]>([]);
@@ -40,8 +37,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     socket,
     message,
     setMessage,
-    privateApplicantMsg,
-    setPrivateApplicantMsg,
     currentRoom,
     setCurrentRoom,
     onlineUsers,
@@ -61,8 +56,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (user && socket) {
-      socket.on("notification",(message) => {
-      setReRender(message)
+      socket.on("notification", (message) => {
+        setReRender(message)
       });
     }
   }, [user, socket]);

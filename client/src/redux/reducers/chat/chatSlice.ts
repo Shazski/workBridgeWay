@@ -25,6 +25,8 @@ const chatSlice = createSlice({
   companyFullDetails: null as ICompanyData[] | null,
   userFullDetails: null as IUserLoginData[] | null,
   unreadMessages: null as TODO[] | null,
+  companyCurrentRoom: "" as string,
+  userCurrentRoom: "" as string,
  },
  reducers: {
   updateChatCompanyList: (state, action: PayloadAction<TODO>) => {
@@ -117,5 +119,8 @@ const chatSlice = createSlice({
    });
  },
 });
-export const { updateChatCompanyList, updateChatUserList } = chatSlice.actions;
+export const {
+ updateChatCompanyList,
+ updateChatUserList,
+} = chatSlice.actions;
 export default chatSlice.reducer;

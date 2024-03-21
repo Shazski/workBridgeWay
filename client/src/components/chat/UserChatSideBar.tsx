@@ -35,20 +35,19 @@ function UserChatSideBar() {
 
   const unreadMessageCounts: { [roomId: string]: number } = {};
 
-  chatCompanyList.forEach(() => {
-    const countofRoom = unreadMessages?.filter((room) => room.senderId !== user._id).length
-    unreadMessageCounts[createPrivateRoomId(user._id, chatCompanyId!)] = countofRoom || 0
+  chatCompanyList.forEach((list) => {
+    const countofRoom = unreadMessages?.filter((room) => room.senderId !== user._id && createPrivateRoomId(list?.roomCreater, list?.roomJoiner) === room.roomId).length
+    unreadMessageCounts[createPrivateRoomId(list.roomCreater, list.roomJoiner)] = countofRoom || 0
   })
 
-  console.log("🚀 ~ file: UserChatSideBar.tsx:37 ~ UserChatSideBar ~ unreadMessageCounts:", unreadMessageCounts)
+
 
   const joinRoom = (room: string) => {
     if (!user) return
     socket?.emit("join-room", room, user._id)
+    socket?.emit("userCurrentRoom",room)
     setCurrentRoom && setCurrentRoom(room)
   }
-
-
 
   const handlePrivateMessage = (userId) => {
     const room = createPrivateRoomId(userId, user._id)
@@ -73,7 +72,7 @@ function UserChatSideBar() {
 
   useEffect(() => {
     dispatch(getAllUnreadMessages())
-  }, [reRender])
+  }, [reRender, chatCompanyList])
 
 
   const getTimeAgo = (timestamp) => {
@@ -117,8 +116,12 @@ function UserChatSideBar() {
                       <h1 className="text-sm font-semibold text-gray-900">{companyFullDetails?.find(details => details._id === chatUser.roomCreater)?.name}</h1>
                       <span className={`text-xl rounded-full  ${onlineUsers && onlineUsers?.some((users) => users.userId === chatUser?.roomCreater) ? 'text-green-600' : 'text-red-600'}`}><GoDotFill /></span>
                       <h1 className="text-xs  font-semibold text-end poppins  text-gray-700  mt-1 ">{getTimeAgo(chatUser?.lastMessageTime)}</h1>
-                      <h1 className="text-xs  font-semibold text-end poppins bg-lightgreen rounded-full text-white px-2 py-0.5 ms-6  mt-1 ">{unreadMessageCounts["65b8b09d5daf53803ec10c89_65b7ba113da851157fa6bd1e"] || 0}</h1>
-
+                      {
+                        unreadMessageCounts[createPrivateRoomId(chatUser?.roomCreater, chatUser?.roomJoiner)] > 0 &&
+                        <h1 className="text-xs font-semibold text-end poppins bg-lightgreen rounded-full text-white px-2 py-0.5 ms-6 mt-1">
+                          {unreadMessageCounts && unreadMessageCounts[createPrivateRoomId(chatUser?.roomCreater, chatUser?.roomJoiner)] || 0}
+                        </h1>
+                      }
                     </div>
                     <h1 className="text-xs mt-1 font-semibold  text-gray-700">
                       {
