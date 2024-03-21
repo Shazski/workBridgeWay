@@ -30,7 +30,7 @@ const UserMessageForm = () => {
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
   const [showSendBtn, setShowSendBtn] = useState<boolean>(true);
-  const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender, companyCurrentRoom } = useContext(SocketContext) || {}
+  const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
 
   const audioChunk = useRef<any>([])
