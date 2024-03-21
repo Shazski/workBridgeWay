@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
  getAllChatCompanyList,
  getAllChatUserList,
+ getAllUnreadMessages,
 } from "../../actions/chat/chatActions";
 import {
  getChatCompanyDetailsByIds,
@@ -23,6 +24,7 @@ const chatSlice = createSlice({
   companyDetails: null as ICompanyData | null,
   companyFullDetails: null as ICompanyData[] | null,
   userFullDetails: null as IUserLoginData[] | null,
+  unreadMessages: null as TODO[] | null,
  },
  reducers: {
   updateChatCompanyList: (state, action: PayloadAction<TODO>) => {
@@ -99,9 +101,21 @@ const chatSlice = createSlice({
     state.chatLoading = false;
     state.chatError = payload as string;
     state.userFullDetails = null;
+   })
+   .addCase(getAllUnreadMessages.pending, (state) => {
+    state.chatLoading = true;
+   })
+   .addCase(getAllUnreadMessages.fulfilled, (state, { payload }) => {
+    state.chatLoading = false;
+    state.unreadMessages = payload;
+    state.chatError = null;
+   })
+   .addCase(getAllUnreadMessages.rejected, (state, { payload }) => {
+    state.chatLoading = false;
+    state.chatError = payload as string;
+    state.unreadMessages = null;
    });
  },
 });
-export const { updateChatCompanyList, updateChatUserList } =
- chatSlice.actions;
+export const { updateChatCompanyList, updateChatUserList } = chatSlice.actions;
 export default chatSlice.reducer;

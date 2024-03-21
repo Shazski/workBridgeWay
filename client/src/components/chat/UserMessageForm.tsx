@@ -35,7 +35,6 @@ const UserMessageForm = () => {
 
   const audioChunk = useRef<any>([])
   const mediaRecorderRef = useRef<any>(null)
-  const [recordings, setRecordings] = useState<string>("")
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
 
@@ -145,13 +144,10 @@ const UserMessageForm = () => {
       mediaRecorderRef.current.onstop = async () => {
         const audioBlob = new Blob(audioChunk.current, { type: 'audio/wav' });
         const messageUrl = await cloudinaryUpload(audioBlob, "raw", "audio.wav")
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setRecordings(audioUrl)
         setMessage(messageUrl)
         audioChunk.current = [];
         if (messageUrl)
           sendMessage(e, "audio", messageUrl)
-        setRecordings("")
       }
       mediaRecorderRef.current.start();
     } catch (error) {
@@ -275,7 +271,7 @@ const UserMessageForm = () => {
             </div>
             <div className="bg-white h-[532px] border-b-2 border-gray-200 overflow-y-scroll scrollbar" ref={messageBoxRef}>
               {
-                roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
+               currentRoom && roomMessages && roomMessages?.sort((a, b) => new Date(a._id).getTime() - new Date(b._id).getTime()).map((message, idx) => (
                   <>
                     <div key={idx} className="flex justify-between items-center bg-white">
                       <div className='border-b-2 w-4/12 border-gray-300'>
@@ -301,9 +297,11 @@ const UserMessageForm = () => {
                                   />
                                 </> :
                                   msg.messageType === "file" ? <>
-                                    <a href={msg.message} download={`document${idx}`} className="flex text-white ">
-                                      <IoDocumentOutline className="text-xl rounded-md border border-white mt-2 mr-2" />
-                                      <h1 className="mt-2">Document</h1>
+                                    <a href={msg.message} download={`document${idx}`} className={`flex gap-x-3 ${msg.senderId === user._id ? 'text-white' : 'text-black'} `}>
+                                      <div className={`border  mt-2 rounded-full ${msg.senderId === user._id ? 'border-white' : 'border-black'}`}>
+                                      <IoDocumentOutline className="text-xl mx-2 my-2" />
+                                      </div>
+                                      <h1 className="mt-3">Document</h1>
                                     </a>
                                   </> :
                                     msg.messageType === "video" ?

@@ -3,7 +3,9 @@ import {
  getChatUserList_repo,
  getChatCompanyList_repo,
  getLastMessagesFromRoom,
- createMessage
+ createMessage,
+ makeMessageReceiverSeen,
+ getUnreadMessages
 } from "./chat.repo";
 
 export default {
@@ -11,5 +13,7 @@ export default {
  getChatUserList_repo,
  getChatCompanyList_repo,
  getLastMessagesFromRoom,
- createMessage
+ createMessage,
+ makeMessageReceiverSeen,
+ getUnreadMessages
 };

@@ -67,7 +67,7 @@ export const getLastMessagesFromRoom = async (room: string) => {
      messageType: 1,
      recieverSeen: 1,
      createdAt: 1,
-     roomId:1
+     roomId: 1,
     },
    },
    {
@@ -108,7 +108,6 @@ export const updateLastMessage = async (messageData: {
  roomJoiner: ObjectId;
  message: string;
 }) => {
- console.log("🚀 ~ file: chat.repo.ts:111 ~ messageData:", messageData)
  try {
   const { roomCreater, roomJoiner, message } = messageData;
 
@@ -126,6 +125,33 @@ export const updateLastMessage = async (messageData: {
   return updatedMessage;
  } catch (error) {
   console.log(error, "<< Something went wrong in updateLastMessage >>");
+  throw error;
+ }
+};
+
+export const makeMessageReceiverSeen = async (
+ roomId: string,
+ senderId: ObjectId
+) => {
+ try {
+  const updatedMessage = await Message.updateMany(
+   { roomId: roomId, senderId: { $ne: senderId } },
+   {
+    $set: { recieverSeen: true },
+   }
+  );
+  return updatedMessage;
+ } catch (error) {
+  console.error("Error updating messages:", error);
+  throw error;
+ }
+};
+export const getUnreadMessages = async () => {
+ try {
+  const updatedMessage = await Message.find({ recieverSeen: false });
+  return updatedMessage;
+ } catch (error) {
+  console.error("Error updating messages:", error);
   throw error;
  }
 };

@@ -4,6 +4,7 @@ import { FRONTEND_BASE_URL } from "../../utils/constants/constants";
 import {
  createMessage,
  getLastMessagesFromRoom,
+ makeMessageReceiverSeen,
  updateLastMessage,
 } from "../database/mongodb/repositories/chat.repo";
 import { ObjectId } from "mongoose";
@@ -30,8 +31,9 @@ const connectSocketIo = (server: Server) => {
     }
    });
 
-   socket.on("join-room", async (room: string) => {
-    socket.join(room);
+   socket.on("join-room", async (room: string,senderId:ObjectId) => {
+    socket.join(room); 
+    await makeMessageReceiverSeen(room,senderId)
     const roomMessages = await getLastMessagesFromRoom(room);
     if (roomMessages) {
      socket.emit("room-messages", roomMessages);
@@ -62,7 +64,7 @@ const connectSocketIo = (server: Server) => {
      }
 
      const message = await createMessage(messageData);
-     const lastMessageUpdated = await updateLastMessage({
+     updateLastMessage({
       roomCreater: messageData.roomCreater,
       roomJoiner: messageData.roomJoiner,
       message: messageTypeText,
