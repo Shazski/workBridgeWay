@@ -48,21 +48,26 @@ const connectSocketIo = (server: Server) => {
      roomJoiner: ObjectId;
      messageType?: "text" | "image" | "audio" | "video" | "file";
     }) => {
+     let messageTypeText = messageData.message;
+     if (messageData.messageType === "image") {
+      messageTypeText = "Image";
+     } else if (messageData.messageType === "audio") {
+      messageTypeText = "Audio";
+     } else if (messageData.messageType === "video") {
+      messageTypeText = "Video";
+     } else if (messageData.messageType === "file") {
+      messageTypeText = "Document";
+     } else {
+      messageTypeText = messageData?.message;
+     }
+
      const message = await createMessage(messageData);
      const lastMessageUpdated = await updateLastMessage({
       roomCreater: messageData.roomCreater,
       roomJoiner: messageData.roomJoiner,
-      message:
-       messageData.messageType === "image"
-        ? "Images"
-        : messageData.messageType === "audio"
-        ? "Audio"
-        : messageData.messageType === "video"
-        ? "Video"
-        : messageData.messageType === "file"
-        ? "Document"
-        : messageData.message,
+      message: messageTypeText,
      });
+
      const roomMessages = await getLastMessagesFromRoom(messageData?.roomId);
      io.to(messageData?.roomId).emit("room-messages", roomMessages);
      io.emit("notification", message);

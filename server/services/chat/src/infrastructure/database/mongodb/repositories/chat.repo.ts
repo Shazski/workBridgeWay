@@ -108,6 +108,7 @@ export const updateLastMessage = async (messageData: {
  roomJoiner: ObjectId;
  message: string;
 }) => {
+ console.log("🚀 ~ file: chat.repo.ts:111 ~ messageData:", messageData)
  try {
   const { roomCreater, roomJoiner, message } = messageData;
 

@@ -29,21 +29,26 @@ const UserMessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
-  const [showMediaPreview, setShowMediaPreview] = useState<boolean>(false);
-  const [showImagesPreview, setShowImagesPreview] = useState<string | string[]>("");
   const [showSendBtn, setShowSendBtn] = useState<boolean>(true);
-  const [showVideoPreview, setShowVideoPreview] = useState<string | string[]>("");
-  const [showDocumentPreview, setShowDocumentPreview] = useState<string | string[]>("");
   const { socket, currentRoom, onlineUsers, roomMessages, setRoomMessages, setReRender, reRender } = useContext(SocketContext) || {}
   const [searchParams, _] = useSearchParams()
 
-  //audio files
-  const audioChunk = useRef<TODO>([])
-  const mediaRecorderRef = useRef<TODO>(null)
+  const audioChunk = useRef<any>([])
+  const mediaRecorderRef = useRef<any>(null)
   const [recordings, setRecordings] = useState<string>("")
-  const [imageFile, setImageFile] = useState<File[]>([]);
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
+
+  const [showImagesPreview, setShowImagesPreview] = useState<string | string[]>("");
+  const [showVideoPreview, setShowVideoPreview] = useState<string>("");
+  const [showDocumentPreview, setShowDocumentPreview] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File[]>([]);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
+
+  const [showMediaPreview, setShowMediaPreview] = useState<boolean>(false);
+  const [showVideoPreviewModal, setShowVideoPreviewModal] = useState<boolean>(false);
+  const [showDocumentPreviewModal, setShowDocumentPreviewModal] = useState<boolean>(false);
 
   const { user } = useSelector((state: RootState) => state.user)
   const { companyDetails, chatCompanyList } = useSelector((state: RootState) => state.chat)
@@ -104,13 +109,13 @@ const UserMessageForm = () => {
   }, [roomMessages, uploadLoading]);
 
 
-  const cloudinaryUpload = async (File: Blob | File, type?: string) => {
+  const cloudinaryUpload = async (File: Blob | File, uploadType: string, type?: string) => {
     setUploadLoading(true)
     const formData = new FormData();
     formData.append('file', File, type);
     formData.append('upload_preset', 'drtyu0yv');
     try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dvjggxcc1/raw/upload', {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/dvjggxcc1/${uploadType}/upload`, {
         method: 'post',
         body: formData,
       })
@@ -139,7 +144,7 @@ const UserMessageForm = () => {
       }
       mediaRecorderRef.current.onstop = async () => {
         const audioBlob = new Blob(audioChunk.current, { type: 'audio/wav' });
-        const messageUrl = await cloudinaryUpload(audioBlob, "audio.wav")
+        const messageUrl = await cloudinaryUpload(audioBlob, "raw", "audio.wav")
         const audioUrl = URL.createObjectURL(audioBlob);
         setRecordings(audioUrl)
         setMessage(messageUrl)
@@ -170,16 +175,30 @@ const UserMessageForm = () => {
       setShowMediaPreview(true);
       if (imagesArray.length === 1) {
         setShowImagesPreview(imagesArray[0]);
+        imageRef.current.value = null
       } else {
         setShowImagesPreview(imagesArray);
+        imageRef.current.value = null
       }
     }
   };
   const handleVideoChange = (e: ChangeEvent<HTMLInputElement>) => {
-
+    if (e.target.files) {
+      setVideoFile(e.target.files[0])
+      const videoPreview = URL.createObjectURL(e.target.files[0])
+      setShowVideoPreviewModal(true);
+      setShowVideoPreview(videoPreview)
+      videoRef.current.value = null;
+    }
   }
   const handleDocumentChange = (e: ChangeEvent<HTMLInputElement>) => {
-
+    if (e.target.files) {
+      setDocumentFile(e.target.files[0])
+      const videoPreview = URL.createObjectURL(e.target.files[0])
+      setShowDocumentPreviewModal(true);
+      setShowDocumentPreview(videoPreview)
+      documentRef.current.value = null;
+    }
   }
 
   const slickSettings = {
@@ -196,7 +215,7 @@ const UserMessageForm = () => {
       try {
         if (imageFile.length > 0) {
           const urls = await Promise.all(imageFile?.map(async (image) => {
-            const url = await cloudinaryUpload(image, "image");
+            const url = await cloudinaryUpload(image, "image", "image");
             return url;
           }));
 
@@ -208,11 +227,28 @@ const UserMessageForm = () => {
         console.error('Error uploading images:', error);
       }
     } else {
-      const url = await cloudinaryUpload(imageFile[0], "image");
+      const url = await cloudinaryUpload(imageFile[0], "image", "image");
       sendMessage(e, "image", url)
       setShowImagesPreview("");
     }
   };
+
+  const handleVideoUpload = async (e: TODO) => {
+    setShowVideoPreviewModal(false)
+
+    const videoUrl = await cloudinaryUpload(videoFile!, "video", "video");
+
+    sendMessage(e, "video", videoUrl)
+    setShowVideoPreview("")
+  }
+  const handleDocumentUpload = async (e: TODO) => {
+    setShowDocumentPreviewModal(false)
+
+    const documentUrl = await cloudinaryUpload(documentFile!, "image", "file");
+
+    sendMessage(e, "file", documentUrl)
+    setShowVideoPreview("")
+  }
 
   return (
     <>
@@ -263,51 +299,61 @@ const UserMessageForm = () => {
                                     controls
                                     className="mt-3"
                                   />
-                                </> : msg.messageType === "video" ? <>
-                                  <video src={recordings} controls className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
-                                </> : msg.messageType === "image" ?
-                                  <>
-                                    {
-                                      Array.isArray(msg?.message) ?
+                                </> :
+                                  msg.messageType === "file" ? <>
+                                    <a href={msg.message} download={`document${idx}`} className="flex text-white ">
+                                      <IoDocumentOutline className="text-xl rounded-md border border-white mt-2 mr-2" />
+                                      <h1 className="mt-2">Document</h1>
+                                    </a>
+                                  </> :
+                                    msg.messageType === "video" ?
+                                      <>
+                                        <video src={msg?.message} controls className={`break-all mt-3 poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
+                                      </>
+                                      :
+                                      msg.messageType === "image" ?
                                         <>
                                           {
-                                            <div className="grid grid-cols-2 gap-2 ">
-                                              {
-                                                msg.message.length <= 4 ?
-                                                  msg?.message?.map((img, idx) => (
-                                                    <>
-                                                      <div key={idx} className="mt-2">
-                                                        <img src={img} alt="" className="w-44 h-24" />
-                                                      </div>
-                                                    </>
-                                                  )) :
-                                                  <>
+                                            Array.isArray(msg?.message) ?
+                                              <>
+                                                {
+                                                  <div className="grid grid-cols-2 gap-2 ">
                                                     {
-                                                      msg?.message?.slice(0, 3).map((img, idx) => (
+                                                      msg.message.length <= 4 ?
+                                                        msg?.message?.map((img, idx) => (
+                                                          <>
+                                                            <div key={idx} className="mt-2">
+                                                              <img src={img} alt="" className="w-44 h-24" />
+                                                            </div>
+                                                          </>
+                                                        )) :
                                                         <>
-                                                          <div key={idx} className="mt-2">
-                                                            <img src={img} alt="" className="w-44 h-24" />
+                                                          {
+                                                            msg?.message?.slice(0, 3).map((img, idx) => (
+                                                              <>
+                                                                <div key={idx} className="mt-2">
+                                                                  <img src={img} alt="" className="w-44 h-24" />
+                                                                </div>
+                                                              </>
+                                                            ))
+                                                          }
+                                                          <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
+                                                            <h1 className="text-5xl"><IoIosMore /></h1>
+                                                            <div className="flex gap-x-2">
+                                                              <h1 className=" font-bold">{msg?.message.length - 3}</h1>
+                                                              <h1 className=" font-bold">More</h1>
+                                                            </div>
                                                           </div>
                                                         </>
-                                                      ))
                                                     }
-                                                    <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
-                                                      <h1 className="text-5xl"><IoIosMore /></h1>
-                                                      <div className="flex gap-x-2">
-                                                        <h1 className=" font-bold">{msg?.message.length - 3}</h1>
-                                                        <h1 className=" font-bold">More</h1>
-                                                      </div>
-                                                    </div>
-                                                  </>
-                                              }
-                                            </div>
+                                                  </div>
+                                                }
+                                              </> :
+                                              <>
+                                                <img src={msg?.message} alt="" className="w-44 mt-3" />
+                                              </>
                                           }
-                                        </> :
-                                        <>
-                                          <img src={msg?.message} alt="" className="w-44 mt-3" />
-                                        </>
-                                    }
-                                  </> : ''
+                                        </> : ''
                               }
                               <div className="flex justify-end">
                                 <div>
@@ -355,6 +401,16 @@ const UserMessageForm = () => {
                 </>
               }
             </Modal>
+            <Modal isVisible={showVideoPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
+              <video controls src={showVideoPreview}></video>
+              <button onClick={(e) => handleVideoUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+            </Modal>
+            <Modal isVisible={showDocumentPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
+              <div className="flex flex-col items-center">
+                <iframe width={"300px"} height={"400px"} src={showDocumentPreview}></iframe>
+                <button onClick={(e) => handleDocumentUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+              </div>
+            </Modal>
             <input type="file" hidden multiple onChange={handleImageChange} ref={imageRef} accept="image/*" />
             <input type="file" hidden onChange={handleVideoChange} ref={videoRef} accept="video/*" />
             <input type="file" hidden onChange={handleDocumentChange} ref={documentRef} accept=".pdf, .doc, .docx" />
@@ -374,7 +430,7 @@ const UserMessageForm = () => {
               <div className={`absolute duration-300 transition-all ease-in-out ${showMediaModal ? 'w-52 h-24' : 'w-0 h-0'} bottom-12 rounded-e-xl rounded-t-xl bg-lightgreen ms-6`}>
                 {
                   showMediaModal && <>
-                    <div className="flex flex-wrap gap-x-5 mt-6 ms-9 text-white">
+                    <div className="flex flex-wrap absolute gap-x-5 mt-6 ms-9 text-white">
                       <div>
                         <CiImageOn className="text-3xl cursor-pointer" onClick={() => { imageRef.current.click(), setShowMediaModal(false) }} />
                         <label className="text-xs" htmlFor="">photos</label>

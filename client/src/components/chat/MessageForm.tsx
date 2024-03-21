@@ -33,7 +33,6 @@ const MessageForm = () => {
 
   const audioChunk = useRef<any>([])
   const mediaRecorderRef = useRef<any>(null)
-  const [recordings, setRecordings] = useState<string>("")
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
 
@@ -63,7 +62,7 @@ const MessageForm = () => {
     e.preventDefault();
     setShowEmoji(false);
     setReRender && setReRender(!reRender)
-    socket?.emit("send-message", { roomId: currentRoom, roomCreater: user._id, senderId: user._id, message: msg, messageType: messageType, roomJoiner: user._id }); const updatedChatUserList = chatUserList?.map(chatUser => {
+    socket?.emit("send-message", { roomId: currentRoom, roomCreater: user._id, senderId: user._id, message: msg, messageType: messageType, roomJoiner: chatUserId }); const updatedChatUserList = chatUserList?.map(chatUser => {
       if (chatUser.roomJoiner === chatUserId) {
         return { ...chatUser, lastMessage: message, lastMessageTime: new Date() };
       }
@@ -125,7 +124,7 @@ const MessageForm = () => {
       const mediaRecorder = new MediaRecorder(stream)
       mediaRecorderRef.current = mediaRecorder;
 
-      mediaRecorderRef.current.ondataavailable = (e: any) => {
+      mediaRecorderRef.current.ondataavailable = (e: TODO) => {
         if (e.data.size > 0) {
           audioChunk.current.push(e.data)
         }
@@ -133,13 +132,10 @@ const MessageForm = () => {
       mediaRecorderRef.current.onstop = async () => {
         const audioBlob = new Blob(audioChunk.current, { type: 'audio/wav' });
         const messageUrl = await cloudinaryUpload(audioBlob)
-        const audioUrl = URL.createObjectURL(audioBlob);
-        setRecordings(audioUrl)
         setMessage(messageUrl)
         audioChunk.current = [];
         if (messageUrl)
           sendMessage(e, "audio", messageUrl)
-        setRecordings("")
       }
       mediaRecorderRef.current.start();
     } catch (error) {
@@ -175,6 +171,7 @@ const MessageForm = () => {
       const videoPreview = URL.createObjectURL(e.target.files[0])
       setShowVideoPreviewModal(true);
       setShowVideoPreview(videoPreview)
+      videoRef.current.value = null;
     }
   }
   const handleDocumentChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -212,6 +209,15 @@ const MessageForm = () => {
       setShowImagesPreview("");
     }
   };
+
+  const handleVideoUpload = async (e: TODO) => {
+    setShowVideoPreviewModal(false)
+
+    const videoUrl = await cloudinaryUpload(videoFile!, "video");
+    
+    sendMessage(e, "video", videoUrl)
+    setShowVideoPreview("")
+  }
 
   return (
     <>
@@ -267,7 +273,7 @@ const MessageForm = () => {
                                       className="mt-3"
                                     />
                                   </> : msg.messageType === "video" ? <>
-                                    <video src={recordings} controls className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
+                                    <video src={msg?.message} controls className={`break-all poppins mt-3 text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
                                   </> : msg.messageType === "image" ?
                                     <>
                                       {
@@ -360,7 +366,7 @@ const MessageForm = () => {
               </Modal>
               <Modal isVisible={showVideoPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
                 <video controls src={showVideoPreview}></video>
-                <button onClick={(e) => handleImageUplaod(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+                <button onClick={(e) => handleVideoUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
               </Modal>
               <input type="file" hidden multiple onChange={handleImageChange} ref={imageRef} accept="image/*" />
               <input type="file" hidden onChange={handleVideoChange} ref={videoRef} accept="video/*" />
@@ -381,7 +387,7 @@ const MessageForm = () => {
                 <div className={`absolute duration-300 transition-all ease-in-out ${showMediaModal ? 'w-52 h-24' : 'w-0 h-0'} bottom-12 rounded-e-xl rounded-t-xl bg-lightgreen ms-6`}>
                   {
                     showMediaModal && <>
-                      <div className="flex flex-wrap gap-x-5 mt-6 ms-9 text-white">
+                      <div className="flex flex-wrap gap-x-5 mt-6 absolute ms-9 text-white">
                         <div>
                           <CiImageOn className="text-3xl cursor-pointer" onClick={() => { imageRef.current.click(), setShowMediaModal(false) }} />
                           <label className="text-xs" htmlFor="">photos</label>
