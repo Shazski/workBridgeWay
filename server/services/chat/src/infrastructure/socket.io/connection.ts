@@ -89,6 +89,15 @@ const connectSocketIo = (server: Server) => {
    socket.on("companyCurrentRoom", (room: string) => {
     companyCurrentRoom = room;
    });
+
+   socket.on("typing", (senderId: ObjectId,roomId:string) => {
+    io.emit("typing", senderId,roomId);
+   });
+   
+   socket.on("typingStoped", (senderId: ObjectId,roomId:string) => {
+    io.emit("typingStoped", senderId,roomId);
+   });
+
    socket.on("logout-user", (userId: string) => {
     onlineUsers = onlineUsers.filter((user) => user.userId !== userId);
     io.emit("online-users", onlineUsers);

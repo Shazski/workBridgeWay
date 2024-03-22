@@ -389,8 +389,7 @@ export const uploadResume = async (
 export const findUserById_repo: any = async (
  userId: ObjectId
 ): Promise<boolean | IUserData> => {
-  try {
-   console.log("🚀 ~ file: userRepo.ts:392 ~ userId:", userId)
+ try {
   const userData: IUserData | null = await UserSchema.findById(userId);
 
   if (!userData) return false;
@@ -439,47 +438,49 @@ export const setUserPreferredCategory: any = async (
 };
 
 export const setUserFmcToken: any = async (
-  userId: ObjectId,
-  fmcToken:string
- ): Promise<boolean | IUserData> => {
-  try {
-   const userData: IUserData | null = await UserSchema.findByIdAndUpdate(userId, {
-    fmcToken:fmcToken
-   });
- 
-   if (!userData) return false;
-   return userData as IUserData;
-  } catch (error) {
-   console.log(error, "< Something went wrong on setUserFmcToken repo >");
-   return false;
-  }
- };
-export const getAllUser: any = async (
- ): Promise<boolean | IUserData[]> => {
-  try {
-   const usersData: IUserData[] | null = await UserSchema.find({role:"user"})
- 
-   if (!usersData) return false;
-   return usersData as IUserData[];
-  } catch (error) {
-   console.log(error, "< Something went wrong on setUserFmcToken repo >");
-   return false;
-  }
- };
+ userId: ObjectId,
+ fmcToken: string
+): Promise<boolean | IUserData> => {
+ try {
+  const userData: IUserData | null = await UserSchema.findByIdAndUpdate(
+   userId,
+   {
+    fmcToken: fmcToken,
+   }
+  );
 
- export const findUserByIds = async (
-  userIds: ObjectId[]
- ): Promise<IUserData[] | boolean> => {
-  try {
-   const userData: any = await UserSchema.find({
-    _id: { $in: userIds },
-   });
- 
-   if (!userData) return false;
- 
-   return userData as IUserData[];
-  } catch (error) {
-   console.log(error, "<<Something went wrong in findUserByIds repo >>");
-   return false;
-  }
- };
+  if (!userData) return false;
+  return userData as IUserData;
+ } catch (error) {
+  console.log(error, "< Something went wrong on setUserFmcToken repo >");
+  return false;
+ }
+};
+export const getAllUser: any = async (): Promise<boolean | IUserData[]> => {
+ try {
+  const usersData: IUserData[] | null = await UserSchema.find({ role: "user" });
+
+  if (!usersData) return false;
+  return usersData as IUserData[];
+ } catch (error) {
+  console.log(error, "< Something went wrong on setUserFmcToken repo >");
+  return false;
+ }
+};
+
+export const findUserByIds = async (
+ userIds: ObjectId[]
+): Promise<IUserData[] | boolean> => {
+ try {
+  const userData: any = await UserSchema.find({
+   _id: { $in: userIds },
+  });
+
+  if (!userData) return false;
+
+  return userData as IUserData[];
+ } catch (error) {
+  console.log(error, "<<Something went wrong in findUserByIds repo >>");
+  return false;
+ }
+};

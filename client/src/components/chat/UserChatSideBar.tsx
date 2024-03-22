@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { SocketContext } from "../../context/SocketContext"
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { GoDotFill } from "react-icons/go";
 import { AppDispatch, RootState } from "../../redux/store";
 import { getAllChatCompanyList, getAllUnreadMessages } from "../../redux/actions/chat/chatActions";
@@ -12,7 +12,8 @@ function UserChatSideBar() {
   const [searchParams, _] = useSearchParams()
 
   const { socket, currentRoom, setCurrentRoom, setOnlineUsers, onlineUsers, roomMessages, reRender } = useContext(SocketContext) || {}
-
+  const [typingUserId, setTypingUserId] = useState<string>("");
+  const [typingCurrentRoom, setTypingCurrentRoom] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>()
 
   const chatCompanyId = searchParams.get("companyId")
@@ -45,7 +46,7 @@ function UserChatSideBar() {
   const joinRoom = (room: string) => {
     if (!user) return
     socket?.emit("join-room", room, user._id)
-    socket?.emit("userCurrentRoom",room)
+    socket?.emit("userCurrentRoom", room)
     setCurrentRoom && setCurrentRoom(room)
   }
 
@@ -97,6 +98,20 @@ function UserChatSideBar() {
     }
   };
 
+  useEffect(() => {
+    socket?.on("typing", (senderId, roomId) => {
+      setTypingUserId(senderId)
+      setTypingCurrentRoom(roomId)
+    })
+  }, [socket])
+
+  useEffect(() => {
+    socket?.on("typingStoped", () => {
+      setTypingUserId("")
+      setTypingCurrentRoom("")
+    })
+  }, [socket])
+
   return (
     <div className="border-t-2 mt-16">
       {/* <div>
@@ -125,9 +140,15 @@ function UserChatSideBar() {
                     </div>
                     <h1 className="text-xs mt-1 font-semibold  text-gray-700">
                       {
-                        chatUser?.lastMessage && chatUser?.lastMessage.length > 20
-                          ? chatUser?.lastMessage.substring(0, 15) + '...'
-                          : chatUser?.lastMessage || '....'}
+                        typingUserId.length > 0 && typingUserId !== user._id && typingCurrentRoom === createPrivateRoomId(chatUser.roomCreater, chatUser.roomJoiner) ?
+                          <>
+                            <h1>Typing...</h1>
+                          </> : <>
+                            {chatUser?.lastMessage && chatUser?.lastMessage.length > 20
+                              ? chatUser?.lastMessage.substring(0, 15) + '...'
+                              : chatUser?.lastMessage || '....'}
+                          </>
+                      }
                     </h1>
                   </div>
                   <div>

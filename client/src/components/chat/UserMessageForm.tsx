@@ -24,6 +24,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Modal from "../Modal";
+import BeatLoader from "react-spinners/BeatLoader";
 
 const UserMessageForm = () => {
   const [message, setMessage] = useState<string>("");
@@ -52,6 +53,8 @@ const UserMessageForm = () => {
   const { user } = useSelector((state: RootState) => state.user)
   const { companyDetails, chatCompanyList } = useSelector((state: RootState) => state.chat)
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
+
+  const [typingUserId, setTypingUserId] = useState<string>("");
 
   const imageRef = useRef<TODO>(null)
   const videoRef = useRef<TODO>(null)
@@ -104,7 +107,7 @@ const UserMessageForm = () => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
-  }, [roomMessages, uploadLoading]);
+  }, [roomMessages, uploadLoading,typingUserId]);
 
 
   const cloudinaryUpload = async (File: Blob | File, uploadType: string, type?: string) => {
@@ -245,6 +248,29 @@ const UserMessageForm = () => {
     setShowVideoPreview("")
   }
 
+  const handleTyping = (e: ChangeEvent<HTMLInputElement>, senderId: string) => {
+    setMessage(e.target.value)
+    socket?.emit("typing", senderId, currentRoom)
+    setTimeout(() => {
+      socket?.emit("typingStoped", senderId, currentRoom)
+    }, 2000)
+  }
+  useEffect(() => {
+    socket?.on("typing", (senderId) => {
+      if (senderId === companyDetails?._id) {
+        setTypingUserId(senderId)
+      }
+    })
+  }, [socket])
+
+  useEffect(() => {
+    socket?.on("typingStoped", (senderId) => {
+      if (senderId === companyDetails?._id) {
+        setTypingUserId("")
+      }
+    })
+  }, [socket])
+
   return (
     <>
       {
@@ -261,7 +287,7 @@ const UserMessageForm = () => {
                   <div>
                     <h1 className="text-sm font-semibold text-gray-900">{companyDetails?.name}</h1>
                     <div className="flex">
-                      <h1 className="font-semibold text-gray-800 text-xs">{onlineUsers?.some(users => users.userId === companyDetails?._id) ? "online" : "offline"}</h1>
+                      <h1 className="font-semibold text-gray-800 text-xs">{typingUserId.length > 0 && typingUserId === companyDetails?._id ? 'Typing...' : onlineUsers?.some(users => users.userId === companyDetails?._id) ? "online" : "offline"}</h1>
                       <span className={`text ${onlineUsers?.some(users => users.userId === companyDetails?._id) ? "text-green-600" : "text-red-600"}  rounded-full`}><GoDotFill /></span>
                     </div>
                   </div>
@@ -275,16 +301,22 @@ const UserMessageForm = () => {
                     <div key={idx} className="flex justify-between items-center bg-white">
                       <div className='border-b-2 w-4/12 border-gray-300'>
                       </div>
-                      <h1 className="text-center px-4 py-3 bg-blue-600 text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
+                      <h1 className="text-center px-4 py-3 bg-blue-gray-300 text-white rounded-full mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
                       <div className='border-b-2 w-4/12  border-gray-300'>
                       </div>
                     </div>
                     {message?.messagesByDate?.map((msg, idx) => (
                       <>
                         <div key={idx} className={`flex mt-4  ${msg.senderId === user._id ? 'justify-end me-2' : 'justify-start'}`}>
+                          {idx === 0 || msg.senderId !== message.messagesByDate[idx - 1].senderId ? (
+                            <div className="">
+                              <img className={`w-10 border border-gray-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : companyDetails?.companyLogo || ""} alt="" />
+                            </div>
+                          ) : (
+                            <div className="" />
+                          )}
                           <div className="">
-                            <img className={`w-10 border border-gray-600 rounded-full ${msg.senderId === user._id ? "hidden" : "block"}  h-10 ms-3`} src={msg.senderId === user._id ? "" : companyDetails?.companyLogo || ""} alt="" />
-                            <div className={`px-3.5 py-1 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl rounded-b-2xl' : 'ms-12 bg-gray-200 rounded-e-xl rounded-b-xl'}`}>
+                            <div className={`px-3.5 py-1.5 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl -mt-5 rounded-b-2xl' : `bg-gray-200 rounded-e-xl rounded-b-xl ${idx === 0 || msg.senderId !== message.messagesByDate[idx - 1].senderId ? 'ms-2 mt-8' : 'ms-16 -mt-5'}`}`}>
                               {
                                 msg.messageType === "text" ? <>
                                   <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
@@ -334,11 +366,14 @@ const UserMessageForm = () => {
                                                               </>
                                                             ))
                                                           }
-                                                          <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
-                                                            <h1 className="text-5xl"><IoIosMore /></h1>
-                                                            <div className="flex gap-x-2">
-                                                              <h1 className=" font-bold">{msg?.message.length - 3}</h1>
-                                                              <h1 className=" font-bold">More</h1>
+                                                          <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center relative ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
+                                                            <img src={msg.message[3]} alt="" className="w-44 h-24 blur-md" />
+                                                            <div className="absolute ms-12 mt-2">
+                                                              <h1 className="text-5xl"><IoIosMore /></h1>
+                                                              <div className="flex gap-x-2">
+                                                                <h1 className=" font-bold">{msg?.message.length - 3}</h1>
+                                                                <h1 className=" font-bold">More</h1>
+                                                              </div>
                                                             </div>
                                                           </div>
                                                         </>
@@ -362,6 +397,18 @@ const UserMessageForm = () => {
                         </div>
                       </>
                     ))}
+                    {
+                      typingUserId.length > 0 && typingUserId === companyDetails?._id &&
+                      <div className=" w-min rounded-md ms-16 mb-3">
+                        <BeatLoader
+                          color={'#808080'}
+                          loading={true}
+                          cssOverride={overrideforUpload}
+                          aria-label="Loading Spinner"
+                          data-testid="loader"
+                        />
+                      </div>
+                    }
                   </>
                 ))
               }
@@ -384,13 +431,15 @@ const UserMessageForm = () => {
                 <Slider {...slickSettings}>
                   {showImagesPreview.map((img, idx) => (
                     <div key={idx}>
-                      <img src={img} alt="" className="w-full h-72" />
+                      <img src={img} alt="" className="w-full h-72 object-contain" />
                     </div>
                   ))}
                 </Slider>
               ) : (
                 <img src={showImagesPreview} alt="" className="w-full h-72" />
               )}
+              <h1 className="mb-4">
+              </h1>
               {
                 showSendBtn &&
                 <>
@@ -416,7 +465,7 @@ const UserMessageForm = () => {
               <form action="" onSubmit={(e) => sendMessage(e, "text", message)}>
                 <div className="flex gap-x-3">
                   <FaPaperclip onClick={() => setShowMediaModal(!showMediaModal)} className="absolute left-2 bottom-32 text-gray-600 text-lg top-2.5 cursor-pointer" />
-                  <input value={message} onChange={(e) => setMessage(e.target.value)} type="text" name="message" className="text-sm bg-blue-50 py-2 w-full outline-none text-gray-600 px-8 border border-gray-400 rounded-xl" placeholder="Message..." />
+                  <input value={message} onChange={(e) => handleTyping(e, user._id)} type="text" name="message" className="text-sm bg-blue-50 py-2 w-full outline-none text-gray-600 px-8 border border-gray-400 rounded-xl" placeholder="Message..." />
                   <MdOutlineEmojiEmotions onClick={() => setShowEmoji(!showEmoji)} className="text-2xl cursor-pointer text-gray-700 absolute right-28 bottom-2" />
                   <CiMicrophoneOn onMouseDown={handleRecord} onMouseLeave={stopRec} onMouseUp={stopRec} className={`text-2xl ${isRecording ? 'animate-bounce' : ''} cursor-pointer text-gray-700 absolute right-20 bottom-2`} />
                   <button className={`bg-lightgreen px-3 pb-2  cursor-pointer py-2 w-min rounded-lg disabled:opacity-70 disabled:cursor-not-allowed`} disabled={message === ""}>
