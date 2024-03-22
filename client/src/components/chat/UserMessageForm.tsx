@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useSearchParams } from "react-router-dom";
-import { TODO, defaultProfile, overrideforUpload } from "../../config/constants";
+import { TODO, defaultProfile, overrideforTyping, overrideforUpload } from "../../config/constants";
 import { getCompanyById } from "../../redux/actions/user/userActions";
 import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png'
 import { updateChatCompanyList } from "../../redux/reducers/chat/chatSlice";
@@ -25,7 +25,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Modal from "../Modal";
 import BeatLoader from "react-spinners/BeatLoader";
-
+import { IoMdCheckmark } from "react-icons/io";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
 const UserMessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
@@ -101,13 +102,13 @@ const UserMessageForm = () => {
       if (messages[0].messagesByDate[0].roomId === currentRoom)
         setRoomMessages && setRoomMessages(messages)
     })
-  }, [socket, message, currentRoom])
+  }, [socket, message, currentRoom, reRender])
 
   useEffect(() => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
-  }, [roomMessages, uploadLoading,typingUserId]);
+  }, [roomMessages, uploadLoading, typingUserId]);
 
 
   const cloudinaryUpload = async (File: Blob | File, uploadType: string, type?: string) => {
@@ -388,8 +389,21 @@ const UserMessageForm = () => {
                                         </> : ''
                               }
                               <div className="flex justify-end">
-                                <div>
+                                <div className="flex text-white">
                                   <h1 className={`text-xs ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(msg?.createdAt), "hh:mm a")}</h1>
+                                  {
+                                    msg.senderId === user._id ? <>
+                                      {
+
+                                        msg?.recieverSeen === true ?
+                                          <>
+                                            <IoCheckmarkDoneSharp />
+                                          </> : <>
+                                            <IoMdCheckmark />
+                                          </>
+                                      }
+                                    </> : ""
+                                  }
                                 </div>
                               </div>
                             </div>
@@ -403,9 +417,10 @@ const UserMessageForm = () => {
                         <BeatLoader
                           color={'#808080'}
                           loading={true}
-                          cssOverride={overrideforUpload}
+                          cssOverride={overrideforTyping}
                           aria-label="Loading Spinner"
                           data-testid="loader"
+                          size={10}
                         />
                       </div>
                     }

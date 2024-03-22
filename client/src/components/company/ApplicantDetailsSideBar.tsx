@@ -86,7 +86,7 @@ const ApplicantDetailsSideBar = () => {
           </div>
         </div>
         <div className="flex w-full gap-x-2 h-full">
-          <div className="border-2 w-5/6 rounded-md  ms-4 flex justify-center h-full py-1 ">
+          <div onClick={() => handleMessageEvent()} className="border-2 w-5/6 rounded-md  ms-4 flex justify-center h-full py-1 ">
             <h1 className="text-lightgreen font-bold">Schedule Interview</h1>
           </div>
           <div onClick={() => handleMessageEvent()} className="border-2 w-1/6 rounded-md cursor-pointer flex me-4 text-lightgreen text-xl justify-center h-full py-1.5 mb-4">

@@ -32,7 +32,7 @@ function ChatSideBar() {
 
   const joinRoom = (room: string) => {
     if (!user) return
-    socket?.emit("join-room", room)
+    socket?.emit("join-room", room,user._id)
     socket?.emit("companyCurrentRoom", room)
     setCurrentRoom && setCurrentRoom(room)
   }

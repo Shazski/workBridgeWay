@@ -22,6 +22,7 @@ const connectSocketIo = (server: Server) => {
   });
 
   io.on("connection", (socket: Socket) => {
+
    socket.on("new-user", (userId: string) => {
     onlineUsers = onlineUsers.filter((user) => {
      return user.userId !== userId;
@@ -39,6 +40,7 @@ const connectSocketIo = (server: Server) => {
     if (roomMessages) {
      socket.emit("room-messages", roomMessages);
     }
+    io.emit("notification", roomMessages);
    });
 
    socket.on(
@@ -93,7 +95,7 @@ const connectSocketIo = (server: Server) => {
    socket.on("typing", (senderId: ObjectId,roomId:string) => {
     io.emit("typing", senderId,roomId);
    });
-   
+
    socket.on("typingStoped", (senderId: ObjectId,roomId:string) => {
     io.emit("typingStoped", senderId,roomId);
    });

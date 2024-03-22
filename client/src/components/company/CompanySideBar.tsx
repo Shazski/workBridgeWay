@@ -35,7 +35,7 @@ const CompanySideBar = () => {
                 <GiHamburgerMenu onClick={() => setToggle(!toggle)} className="text-2xl" />
             </div>
             <div className="flex">
-                <div className={`border-e-2 fixed  lg:sticky top-3 lg:translate-x-0 scrollbar transition-all duration-300 bg-white flex-col md:w-2/6 lg:w-2/6 xl:w-3/12 2xl:w-1/5 w-3/12 h-screen overflow-y-auto ${toggle ? 'translate-x-0 z-40 fixed ' : '-translate-x-96'}`}>
+                <div onClick={() => { socket && socket.emit("companyCurrentRoom", "") }} className={`border-e-2 fixed  lg:sticky top-3 lg:translate-x-0 scrollbar transition-all duration-300 bg-white flex-col md:w-2/6 lg:w-2/6 xl:w-3/12 2xl:w-1/5 w-3/12 h-screen overflow-y-auto ${toggle ? 'translate-x-0 z-40 fixed ' : '-translate-x-96'}`}>
                     <div className='md:flex hidden'>
                         <img src={LOGO} alt="" className='w-28' />
                         <h1 className='mt-5 font-bold text-lightgreen hidden md:flex'>WorkBridgeWay</h1>

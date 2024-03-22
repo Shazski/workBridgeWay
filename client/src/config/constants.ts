@@ -21,6 +21,13 @@ export const overrideforUpload: CSSProperties = {
  borderColor: "red",
  height: "50px",
 };
+export const overrideforTyping: CSSProperties = {
+ display: "flex",
+ justifyContent: "right",
+ marginRight:"150px",
+ borderColor: "red",
+ height: "50px",
+};
 
 export type TODO = any
 

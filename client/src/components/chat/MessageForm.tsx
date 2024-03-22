@@ -10,16 +10,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useSearchParams } from "react-router-dom";
 import { getApplicantsDetails } from "../../redux/actions/company/CompanyActions";
-import { TODO, defaultProfile, overrideforUpload } from "../../config/constants";
+import { TODO, defaultProfile, overrideforTyping, overrideforUpload } from "../../config/constants";
 import NoMessage from '../../assets/images/undraw_Push_notifications_re_t84m.png'
 import { updateChatUserList } from "../../redux/reducers/chat/chatSlice";
 import { CiImageOn, CiMicrophoneOn } from "react-icons/ci";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import BeatLoader from "react-spinners/BeatLoader";
 import ReactAudioPlayer from "react-audio-player";
-import { IoIosMore } from "react-icons/io";
+import { IoIosMore, IoMdCheckmark } from "react-icons/io";
 import { HiOutlineVideoCamera } from "react-icons/hi2";
-import { IoDocumentOutline } from "react-icons/io5";
+import { IoCheckmarkDoneSharp, IoDocumentOutline } from "react-icons/io5";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -87,13 +87,13 @@ const MessageForm = () => {
       if (messages[0].messagesByDate[0].roomId === currentRoom)
         setRoomMessages && setRoomMessages(messages)
     })
-  }, [socket, message, chatUserId])
+  }, [socket, message, chatUserId, reRender])
 
   useEffect(() => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
-  }, [roomMessages, uploadLoading,typingUserId]);
+  }, [roomMessages, uploadLoading, typingUserId]);
   useEffect(() => {
     if (user && socket) {
       socket.emit("new-user", (user._id));
@@ -375,8 +375,20 @@ const MessageForm = () => {
                                           </> : ''
                                 }
                                 <div className="flex justify-end">
-                                  <div>
+                                  <div className="flex text-white">
                                     <h1 className={`text-xs ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>{format(new Date(msg?.createdAt), "hh:mm a")}</h1>
+                                    {
+                                      msg.senderId === user._id ? <>
+                                        {
+                                          msg?.recieverSeen === true ?
+                                            <>
+                                              <IoCheckmarkDoneSharp />
+                                            </> : <>
+                                              <IoMdCheckmark />
+                                            </>
+                                        }
+                                      </> : ""
+                                    }
                                   </div>
                                 </div>
                               </div>
@@ -390,9 +402,10 @@ const MessageForm = () => {
                           <BeatLoader
                             color={'#808080'}
                             loading={true}
-                            cssOverride={overrideforUpload}
+                            cssOverride={overrideforTyping}
                             aria-label="Loading Spinner"
                             data-testid="loader"
+                            size={10}
                           />
                         </div>
                       }

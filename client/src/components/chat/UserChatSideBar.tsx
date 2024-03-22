@@ -113,7 +113,10 @@ function UserChatSideBar() {
   }, [socket])
 
   return (
-    <div className="border-t-2 mt-16">
+    <div className="">
+      <div className="border-b-2 shadow-lg">
+        <h1 className="text-2xl py-4  font-serif font-semibold ms-6">Company List</h1>
+      </div>
       {/* <div>
         <input type="search" className="border mb-4 outline-none rounded-md py-2 px-7 ms-10 mt-4" placeholder="Search" />
       </div> */}
