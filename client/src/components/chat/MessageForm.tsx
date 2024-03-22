@@ -54,6 +54,7 @@ const MessageForm = () => {
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
   const [typingUserId, setTypingUserId] = useState<string>("");
+  const [typingRoom, setTypingRoom] = useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>()
   const chatUserId = searchParams.get("userId")
@@ -244,16 +245,20 @@ const MessageForm = () => {
     }, 2000)
   }
   useEffect(() => {
-    socket?.on("typing", (senderId) => {
+    socket?.on("typing", (senderId: string, roomId: string) => {
       if (senderId === applicantData?._id) {
         setTypingUserId(senderId)
       }
+      setTypingRoom(roomId)
     })
   }, [socket])
 
   useEffect(() => {
-    socket?.on("typingStoped", () => {
-      setTypingUserId("")
+    socket?.on("typingStoped", (senderId: string) => {
+      if (senderId === applicantData?._id) {
+        setTypingUserId("")
+      }
+      setTypingRoom("")
     })
   }, [socket])
 
@@ -274,7 +279,7 @@ const MessageForm = () => {
                     <div>
                       <h1 className="text-sm font-semibold text-gray-900">{applicantData?.userName}</h1>
                       <div className="flex">
-                        <h1 className="font-semibold text-gray-800 text-xs">{typingUserId.length > 0 && typingUserId === applicantData?._id ? 'Typing...' : onlineUsers?.some(users => users.userId === applicantData?._id) ? "online" : "offline"}</h1>
+                        <h1 className="font-semibold text-gray-800 text-xs">{typingUserId.length > 0 && typingUserId === applicantData?._id && typingRoom === currentRoom ? 'Typing...' : onlineUsers?.some(users => users.userId === applicantData?._id) ? "online" : "offline"}</h1>
                         <span className={`text ${onlineUsers?.some(users => users.userId === applicantData?._id) ? "text-green-600" : "text-red-600"}  rounded-full`}><GoDotFill /></span>
                       </div>
                     </div>
@@ -397,7 +402,7 @@ const MessageForm = () => {
                         </>
                       ))}
                       {
-                        typingUserId.length > 0 && typingUserId === applicantData?._id &&
+                        typingUserId.length > 0 && typingUserId === applicantData?._id && typingRoom === currentRoom &&
                         <div className=" w-min rounded-md ms-16 mb-3">
                           <BeatLoader
                             color={'#808080'}

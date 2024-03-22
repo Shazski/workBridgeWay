@@ -56,6 +56,7 @@ const UserMessageForm = () => {
   const messageBoxRef = useRef<HTMLDivElement | null>(null);
 
   const [typingUserId, setTypingUserId] = useState<string>("");
+  const [typingRoom, setTypingRoom] = useState<string>("");
 
   const imageRef = useRef<TODO>(null)
   const videoRef = useRef<TODO>(null)
@@ -257,17 +258,19 @@ const UserMessageForm = () => {
     }, 2000)
   }
   useEffect(() => {
-    socket?.on("typing", (senderId) => {
+    socket?.on("typing", (senderId: string, roomId: string) => {
       if (senderId === companyDetails?._id) {
         setTypingUserId(senderId)
+        setTypingRoom(roomId)
       }
     })
   }, [socket])
 
   useEffect(() => {
-    socket?.on("typingStoped", (senderId) => {
+    socket?.on("typingStoped", (senderId: string) => {
       if (senderId === companyDetails?._id) {
         setTypingUserId("")
+        setTypingRoom("")
       }
     })
   }, [socket])
@@ -288,7 +291,7 @@ const UserMessageForm = () => {
                   <div>
                     <h1 className="text-sm font-semibold text-gray-900">{companyDetails?.name}</h1>
                     <div className="flex">
-                      <h1 className="font-semibold text-gray-800 text-xs">{typingUserId.length > 0 && typingUserId === companyDetails?._id ? 'Typing...' : onlineUsers?.some(users => users.userId === companyDetails?._id) ? "online" : "offline"}</h1>
+                      <h1 className="font-semibold text-gray-800 text-xs">{typingUserId.length > 0 && typingUserId === companyDetails?._id && typingRoom === currentRoom ? 'Typing...' : onlineUsers?.some(users => users.userId === companyDetails?._id) ? "online" : "offline"}</h1>
                       <span className={`text ${onlineUsers?.some(users => users.userId === companyDetails?._id) ? "text-green-600" : "text-red-600"}  rounded-full`}><GoDotFill /></span>
                     </div>
                   </div>
@@ -412,7 +415,7 @@ const UserMessageForm = () => {
                       </>
                     ))}
                     {
-                      typingUserId.length > 0 && typingUserId === companyDetails?._id &&
+                      typingUserId.length > 0 && typingUserId === companyDetails?._id && typingRoom === currentRoom &&
                       <div className=" w-min rounded-md ms-16 mb-3">
                         <BeatLoader
                           color={'#808080'}
