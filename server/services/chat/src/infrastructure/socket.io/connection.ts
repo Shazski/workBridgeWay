@@ -22,6 +22,7 @@ const connectSocketIo = (server: Server) => {
   });
 
   io.on("connection", (socket: Socket) => {
+   socket.emit("me", socket.id);
 
    socket.on("new-user", (userId: string) => {
     onlineUsers = onlineUsers.filter((user) => {
@@ -92,12 +93,12 @@ const connectSocketIo = (server: Server) => {
     companyCurrentRoom = room;
    });
 
-   socket.on("typing", (senderId: ObjectId,roomId:string) => {
-    io.emit("typing", senderId,roomId);
+   socket.on("typing", (senderId: ObjectId, roomId: string) => {
+    io.emit("typing", senderId, roomId);
    });
 
-   socket.on("typingStoped", (senderId: ObjectId,roomId:string) => {
-    io.emit("typingStoped", senderId,roomId);
+   socket.on("typingStoped", (senderId: ObjectId, roomId: string) => {
+    io.emit("typingStoped", senderId, roomId);
    });
 
    socket.on("logout-user", (userId: string) => {
@@ -105,9 +106,22 @@ const connectSocketIo = (server: Server) => {
     io.emit("online-users", onlineUsers);
    });
 
+   socket.on("callUser", (data) => {
+    io.to(data.userToCall).emit("callUser", {
+     signal: data.signalData,
+     from: data.from,
+     name: data.name,
+    });
+   });
+
+   socket.on("answerCall", (data) => {
+    io.to(data.to).emit("callAccepted", data.signal);
+   });
+
    socket.on("disconnect", () => {
     onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
     io.emit("online-users", onlineUsers);
+    socket.broadcast.emit("callEnded");
    });
   });
  }
