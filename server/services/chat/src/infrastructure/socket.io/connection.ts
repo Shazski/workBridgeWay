@@ -44,6 +44,12 @@ const connectSocketIo = (server: Server) => {
     io.emit("notification", roomMessages);
    });
 
+   socket.on("joinVideoCall", (roomId: string, peerId: string) => {
+    console.log("🚀 ~ file: connection.ts:48 ~ socket.on ~ peerId:", peerId);
+    console.log("🚀 ~ file: connection.ts:48 ~ socket.on ~ roomId:", roomId);
+    socket.emit("user-joined", { peerId });
+   });
+
    socket.on(
     "send-message",
     async (messageData: {
