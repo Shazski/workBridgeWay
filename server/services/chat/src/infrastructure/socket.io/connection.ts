@@ -13,6 +13,7 @@ let io: SocketIOServer;
 let onlineUsers: { userId: string; socketId: string }[] = [];
 let userCurrentRoom: string = "";
 let companyCurrentRoom: string = "";
+let users:any = {}
 const connectSocketIo = (server: Server) => {
  if (!io) {
   io = new SocketIOServer(server, {
@@ -44,11 +45,21 @@ const connectSocketIo = (server: Server) => {
     io.emit("notification", roomMessages);
    });
 
-   socket.on("joinVideoCall", (roomId: string, peerId: string) => {
-    console.log("🚀 ~ file: connection.ts:48 ~ socket.on ~ peerId:", peerId);
-    console.log("🚀 ~ file: connection.ts:48 ~ socket.on ~ roomId:", roomId);
-    socket.emit("user-joined", { peerId });
-   });
+   socket.on('register', ({ userId, peerId }) => {
+    console.log("🚀 ~ file: connection.ts:49 ~ socket.on ~ peerId:", peerId)
+    console.log("🚀 ~ file: connection.ts:49 ~ socket.on ~ userId:", userId)
+    users[userId] = { peerId, socket };
+  });
+
+  // Handle call requests
+  socket.on('call', ({ to, callerPeerId }:any) => {
+    console.log("🚀 ~ file: connection.ts:56 ~ socket.on ~ to:", to)
+    console.log("🚀 ~ file: connection.ts:56 ~ socket.on ~ callerPeerId:", callerPeerId)
+    const remoteUser = users[to];
+    if (remoteUser) {
+      remoteUser.socket.emit('call', { callerPeerId });
+    }
+  });
 
    socket.on(
     "send-message",
