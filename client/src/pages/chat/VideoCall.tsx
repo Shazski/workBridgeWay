@@ -1,63 +1,77 @@
-import Peer from "peerjs";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react"
+import Peer from "peerjs"
+import { useNavigate, useParams } from "react-router-dom";
 import { SocketContext } from "../../context/SocketContext";
-import { useParams } from "react-router-dom";
-
+import { FaVideoSlash } from "react-icons/fa";
+import { FaVideo } from "react-icons/fa";
+import { AiFillAudio } from "react-icons/ai";
+import { IoMdMicOff } from "react-icons/io";
+import { IoExit } from "react-icons/io5";
+import { MdOutlineIosShare } from "react-icons/md";
 const VideoCall = () => {
-  const [peerId, setPeerId] = useState('');
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [callAccepted, setCallAccepted] = useState(false);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
-  const [showRemoteVideo, setShowRemoteVideo] = useState<boolean>(true)
-  const [videoEnabled, setVideoEnabled] = useState(true);
-  const [audioEnabled, setAudioEnabled] = useState(true);
-  const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
-  const currentUserVideoRef = useRef<HTMLVideoElement | null>(null);
-  const peerInstance = useRef<Peer | null>(null);
-  const callRef = useRef<any>(null);
 
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [peerId, setPeerId] = useState<string>("");
+  const [sharingId, setSharingId] = useState<boolean>(false);
+  const [personToCall, setPersonToCall] = useState<string>("")
+  const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
+  const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
+  const [userAccepted, setUserAccepted] = useState<boolean>(false);
+  const [isleaveRoom, setIsLeaveRoom] = useState<boolean>(false);
+  const myVideoRef = useRef<HTMLVideoElement | null>(null)
+  const remoteVideoRef = useRef<HTMLVideoElement | null>(null)
+  const peerInstance = useRef<Peer | null>(null)
   const { socket } = useContext(SocketContext) || {}
   const { roomId } = useParams()
+
+  const navigate = useNavigate()
   useEffect(() => {
     const peer = new Peer();
 
-
-
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        if (currentUserVideoRef.current) {
-          currentUserVideoRef.current.srcObject = stream;
-        }
-        setStream(stream);
-      });
-
-    peer.on('open', (id) => {
-      setPeerId(id);
-      socket && socket.emit("videoRoom-joined", id)
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+      if (myVideoRef.current) {
+        myVideoRef.current.srcObject = stream;
+      }
+      setStream(stream);
     });
-    peer.on('call', (call) => {
-      callRef.current = call;
-      call.answer(stream!)
-      call.on('stream', (remoteStream: MediaStream) => {
-        if (remoteVideoRef.current) {
-          remoteVideoRef.current.srcObject = remoteStream;
-        }
-        setCallAccepted(true);
-        setReceivingCall(false);
-      });
+
+    peer.on("open", (id) => {
+      setPeerId(id);
+      socket && socket.emit("room-joined", ({ roomId, id }));
     });
 
     peerInstance.current = peer;
+
+    return () => {
+      peerInstance.current?.destroy();
+    };
   }, []);
 
-  const answerCall = () => {
-    if (callRef.current && stream) {
-      setShowRemoteVideo(true)
-      callRef.current.answer(stream);
+  useEffect(() => {
+    socket &&
+      socket.on('new-user-joined', (userId) => {
+        if (userId !== peerId) {
+          setPersonToCall(userId)
+        }
+      });
+  }, [socket]);
+
+
+  peerInstance.current && peerInstance.current.on("call", (call) => {
+    if (stream) {
+      call.answer(stream);
+      call.on("stream", (remoteVideoStream) => {
+        if (remoteVideoRef.current) {
+          remoteVideoRef.current.srcObject = remoteVideoStream;
+        }
+      });
     }
-  };
+    call.on('close', () => {
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = null;
+      }
+    });
+  })
 
   const call = (remotePeerId: string) => {
     if (peerInstance.current && stream) {
@@ -68,6 +82,7 @@ const VideoCall = () => {
         }
       });
     }
+
   };
 
   const toggleVideo = () => {
@@ -83,51 +98,63 @@ const VideoCall = () => {
   };
 
   const leaveRoom = () => {
-    if (callRef.current) {
-      callRef.current.close();
-    }
+    setIsLeaveRoom(true)
+    navigate('/')
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
     }
-
   };
 
+  const switchStream = (stream) => {
+    setStream(stream)
+    setSharingId(!sharingId)
+    if (peerInstance.current)
+      Object.values(peerInstance.current?.connections).forEach((connection: any) => {
+        const videoTrack = stream?.getTracks().find((track) => track.kind === "video");
+        connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err: any) => console.log(err, "error in get tracks"))
+      })
+    if (myVideoRef.current) {
+      myVideoRef.current.srcObject = stream
+    }
+  }
+
+  const shareScreen = () => {
+    if (sharingId) {
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((switchStream))
+    } else {
+      navigator.mediaDevices.getDisplayMedia({ video: true, audio: true }).then((switchStream))
+    }
+  }
+
   return (
-    <div className="App">
-      <h1>Current user id is {peerId}</h1>
-      <input
-        type="text"
-        value={remotePeerIdValue}
-        onChange={(e) => setRemotePeerIdValue(e.target.value)}
-        className="border px-4 py-4"
-      />
-      <button onClick={() => call(remotePeerIdValue)}>Call</button>
-      <div className="">
-        <h1>Current User</h1>
-        <video autoPlay muted={true} ref={currentUserVideoRef} />
+    <>
+      {
+        personToCall.length > 0 && personToCall !== peerId && !userAccepted &&
+        <>
+          <h1 className=" poppins ">Someone is requesting to join....</h1>
+          <button className="px-2 py-2 rounded-md bg-lightgreen text-white font-bold" onClick={() => { call(personToCall), setUserAccepted(true) }}>Accept Join</button>
+        </>
+      }
+      <div className={`grid place-content-start ${userAccepted ? 'md:grid-cols-2 grid-cols-1' : 'md:grid-cols-2 grid-cols-1'} `}>
         <div>
-          <button onClick={toggleVideo}>{videoEnabled ? 'Disable Video' : 'Enable Video'}</button>
-          <button onClick={toggleAudio}>{audioEnabled ? 'Mute Audio' : 'Unmute Audio'}</button>
-          {callAccepted && <button onClick={leaveRoom}>Leave Room</button>}
+          {
+            !isleaveRoom &&
+            <video className={` mt-5 rounded-lg${isleaveRoom ? 'hidden' : ''}`} autoPlay muted ref={remoteVideoRef}></video>
+          }
+        </div>
+        <div>
+          <video className={`w-full mt-5 rounded-lg`} autoPlay ref={myVideoRef}></video>
         </div>
       </div>
-      {receivingCall && !callAccepted && (
-        <>
-          <h1>Incoming call...</h1>
-          <button onClick={answerCall} className="px-2 py-1 bg-lightgreen rounded-lg">
-            Answer
-          </button>
-        </>
-      )}
-      <div className="">
-        <h1>Remote User</h1>
-        {
-          showRemoteVideo &&
-          <video muted autoPlay ref={remoteVideoRef} />
-        }
-      </div>
-    </div>
-  );
-};
 
-export default VideoCall;
+      <div className="flex gap-x-4 mt-12 bg-gray-900 justify-center py-3 rounded-md  w-6/6 ">
+        <button className="text-3xl bg-lightgreen px-3 py-2 text-white rounded-lg" onClick={toggleVideo}>{videoEnabled ? <FaVideo className="text-3xl" /> : <FaVideoSlash className="" />}</button>
+        <button className="text-3xl bg-lightgreen text-white rounded-lg px-3 py-2" onClick={shareScreen}>{<MdOutlineIosShare className="text-3xl" />}</button>
+        <button className="text-3xl bg-lightgreen text-white rounded-lg px-3 py-2" onClick={toggleAudio}>{audioEnabled ? <AiFillAudio className="text-3xl" /> : <IoMdMicOff className="text-3xl" />}</button>
+        {<button className="text-3xl bg-red-600 text-white rounded-lg px-3 py-2" onClick={leaveRoom}>{<IoExit className="text-3xl" />}</button>}
+      </div>
+    </>
+  )
+}
+
+export default VideoCall

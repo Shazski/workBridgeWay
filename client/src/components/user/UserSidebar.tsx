@@ -78,7 +78,7 @@ const UserSidebar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 md:ms-7 flex gap-3'>
+                {/* <div className='mt-3 md:ms-7 flex gap-3'>
                     <NavLink to='/user/videocall' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md font-semibold" : "text-gray-500"}`
                     }}>
@@ -89,7 +89,7 @@ const UserSidebar = () => {
                             </h1>
                         </div>
                     </NavLink>
-                </div>
+                </div> */}
                 <div className='mt-3 md:ms-7 flex gap-3'>
 
                     <NavLink

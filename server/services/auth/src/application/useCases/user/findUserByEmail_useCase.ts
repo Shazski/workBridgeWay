@@ -8,7 +8,6 @@ export const findUserByEmail_useCase = (dependencies: DependenciesData) => {
   if (!RabbitMQClient) throw new Error("Rabbitmq dependency is required");
   try {
     const execute = (userCredentials: IUser) => {
-      console.log("🚀 ~ execute ~ userCredentials:", userCredentials)
       return RabbitMQClient.Requester(
         userCredentials,
         rabbitmqConfig.rabbitMq.queues.user_queue,

@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../redux/store"
-import { TODO, override } from "../../config/constants"
+import { TODO } from "../../config/constants"
 
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md"
-import PropagateLoader from "react-spinners/PropagateLoader"
 import { getUserApplications } from "../../redux/actions/user/userActions"
+import JoinRoom from "../chat/JoinRoom"
 
 const Dashboard = () => {
     const { user } = useSelector((state: RootState) => state.user)
-    const { scheduleData, loading } = useSelector((state: RootState) => state.job)
     const dispatch = useDispatch<AppDispatch>()
-
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [idx, setIdx] = useState<number>(0);
     const [sortedScheduleData, setSortedScheduleData] = useState<TODO>([]);
 
@@ -45,11 +44,11 @@ const Dashboard = () => {
     const { userAppliedJobs } = useSelector((state: RootState) => state.job);
 
 
-const userScheduleList = userAppliedJobs?.filter((job) => job?.schedule && job?.schedule.length > 0 && job.schedule);
+    const userScheduleList = userAppliedJobs?.filter((job) => job?.schedule && job?.schedule.length > 0 && job.schedule);
 
-const schedules = userScheduleList?.flatMap((job) => job?.schedule.filter((schedule) => new Date(schedule.date) > new Date()));
+    const schedules = userScheduleList?.flatMap((job) => job?.schedule.filter((schedule) => new Date(schedule.date) > new Date()));
 
-const userSchedule = schedules;
+    const userSchedule = schedules;
 
     const isScheduleDataValid = Array.isArray(userSchedule);
 
@@ -69,9 +68,12 @@ const userSchedule = schedules;
             });
             setSortedScheduleData(sortedData);
         }
-    }, [scheduleData]);
+    }, [userSchedule]);
 
 
+    const openVideoCallModal = () => {
+        setIsModalOpen(true)
+    }
 
     return (
         <>
@@ -79,7 +81,11 @@ const userSchedule = schedules;
                 <div className="ms-12">
                     <h1 className="text-2xl font-serif font-semibold">DashBoard</h1>
                 </div>
+                <div className="md:me-36 me-3">
+                    <button className="border border-blue-gray-100 px-4 py-2 text-lightgreen font-medium font-serif" onClick={openVideoCallModal}>VideoCall</button>
+                </div>
             </div>
+            <JoinRoom navigation="/user/videocall/" isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             <h1 className="text-2xl font-semibold font-serif text-center mt-12">Hello {user?.userName}</h1>
             <div className="flex items-center  w-full  ms-12 mt-12">
                 <div className="border-2 px-4 py-2 w-3/6 h-2/6 ">
@@ -102,9 +108,8 @@ const userSchedule = schedules;
                             </div>
                         )}
                         <div className="border 4/6 flex px-4 py-2 h-16 mt-2 ms-4 rounded-lg gap-x-5 bg-light-blue-50">
-                            {/* <img src={currentApplicant?.profilePic} alt="" className="w-12 h-12 rounded-full" /> */}
                             <div className="pe-20 ps-5">
-                                {/* <h1 className="font-serif ">{currentApplicant?.userName}</h1> */}
+                                <h1 className="font-serif ">{sortedScheduleData?.employeeId}</h1>
                                 <h1 className="text-xs font-semibold">{sortedScheduleData?.[idx]?.testType}</h1>
                             </div>
                         </div>
@@ -117,7 +122,7 @@ const userSchedule = schedules;
                 </div>
 
             </div>
-            
+
         </>
     )
 }

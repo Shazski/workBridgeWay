@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getAllUserDetails, getEmployeeSchedules } from "../../redux/actions/employee/employeeActions";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { TODO, override } from "../../config/constants";
+import JoinRoom from "../chat/JoinRoom";
 const EmployeeDashboard = () => {
 
   const { user } = useSelector((state: RootState) => state.user)
@@ -13,11 +14,11 @@ const EmployeeDashboard = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const [idx, setIdx] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [sortedScheduleData, setSortedScheduleData] = useState<TODO>([]);
 
   useEffect(() => {
     dispatch(getEmployeeSchedules())
-
   }, [])
 
   useEffect(() => {
@@ -71,16 +72,21 @@ const EmployeeDashboard = () => {
   const currentApplicantId = sortedScheduleData?.[idx]?.applicantId;
   const currentApplicant = allUsers?.find(user => user._id === currentApplicantId);
 
+  const openVideoCallModal = () => {
+    setIsModalOpen(true)
+  }
+
   return (
     <>
       <div className="flex justify-between bg-white sticky top-0 items-center h-16 border-b-2">
         <div className="ms-12">
           <h1 className="text-2xl font-serif font-semibold">DashBoard</h1>
         </div>
-        {/* <div className="md:me-36 me-3">
-          <Link className="border border-blue-gray-100 px-4 py-2 text-lightgreen font-medium font-serif" to={'/'}>Request for Leave</Link>
-        </div> */}
+        <div className="md:me-36 me-3">
+          <button className="border border-blue-gray-100 px-4 py-2 text-lightgreen font-medium font-serif" onClick={openVideoCallModal}>VideoCall</button>
+        </div>
       </div>
+      <JoinRoom navigation="/employee/videocall/" isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <h1 className="text-2xl font-semibold font-serif text-center mt-12">Hello {user?.userName}</h1>
       <div className="flex items-center  w-full  ms-12 mt-12">
         <div className="border-2 px-4 py-2 w-3/6 h-2/6 ">
@@ -90,8 +96,8 @@ const EmployeeDashboard = () => {
           <div className="border-b mt-6 flex justify-between">
             <h1>{dateDifference === 0 ? 'Today' : `${dateDifference} days left`}, {new Date(sortedScheduleData?.[idx]?.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</h1>
             <div className="flex text-3xl font-semibold">
-              <MdKeyboardArrowLeft className={`cursor-pointer ${idx === 0 ?'hidden': 'block'}`} onClick={() => idx > 0 && setIdx(idx - 1)} />
-              <MdKeyboardArrowRight className={`cursor-pointer ${idx === sortedScheduleData?.length - 1 ?'hidden': 'block'}`} onClick={() => idx < (sortedScheduleData?.length - 1) && setIdx(idx + 1)} />
+              <MdKeyboardArrowLeft className={`cursor-pointer ${idx === 0 ? 'hidden' : 'block'}`} onClick={() => idx > 0 && setIdx(idx - 1)} />
+              <MdKeyboardArrowRight className={`cursor-pointer ${idx === sortedScheduleData?.length - 1 ? 'hidden' : 'block'}`} onClick={() => idx < (sortedScheduleData?.length - 1) && setIdx(idx + 1)} />
             </div>
           </div>
           <div className="flex w-full mt-7">
@@ -113,7 +119,7 @@ const EmployeeDashboard = () => {
         </div>
         <div className="border">
           <div className="border">
-            
+
           </div>
         </div>
 
