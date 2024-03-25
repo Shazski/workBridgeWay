@@ -19,7 +19,6 @@ const ApplicantsTable = () => {
         setPage(paginationData.currentPage)
     }
     const { userAppliedJobs, userAppliedJobsCount, loading } = useSelector((state: RootState) => state.job)
-    console.log("🚀 ~ ApplicantsTable ~ userAppliedJobs:", userAppliedJobs)
 
 
     useEffect(() => {

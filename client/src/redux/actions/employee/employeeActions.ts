@@ -6,8 +6,6 @@ import {
  config,
  handleError,
 } from "../../../config/configurations";
-// import { IJobData } from "../../../interface/ICompanyData";
-// import { IEmployee } from "../../../interface/IEmployeeData";
 
 export const getEmployeeSchedules = createAsyncThunk(
  "user/getEmployeeSchedules",

@@ -1,5 +1,7 @@
 import Peer from "peerjs";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { SocketContext } from "../../context/SocketContext";
+import { useParams } from "react-router-dom";
 
 const VideoCall = () => {
   const [peerId, setPeerId] = useState('');
@@ -15,8 +17,12 @@ const VideoCall = () => {
   const peerInstance = useRef<Peer | null>(null);
   const callRef = useRef<any>(null);
 
+  const { socket } = useContext(SocketContext) || {}
+  const { roomId } = useParams()
   useEffect(() => {
     const peer = new Peer();
+
+
 
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -29,12 +35,11 @@ const VideoCall = () => {
 
     peer.on('open', (id) => {
       setPeerId(id);
+      socket && socket.emit("videoRoom-joined", id)
     });
-
     peer.on('call', (call) => {
-      setReceivingCall(true);
       callRef.current = call;
-
+      call.answer(stream!)
       call.on('stream', (remoteStream: MediaStream) => {
         if (remoteVideoRef.current) {
           remoteVideoRef.current.srcObject = remoteStream;
@@ -85,7 +90,6 @@ const VideoCall = () => {
       stream.getTracks().forEach((track) => track.stop());
     }
 
-    setCallAccepted(false);
   };
 
   return (

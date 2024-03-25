@@ -13,7 +13,7 @@ let io: SocketIOServer;
 let onlineUsers: { userId: string; socketId: string }[] = [];
 let userCurrentRoom: string = "";
 let companyCurrentRoom: string = "";
-let users:any = {}
+let rooms: any = {};
 const connectSocketIo = (server: Server) => {
  if (!io) {
   io = new SocketIOServer(server, {
@@ -45,20 +45,34 @@ const connectSocketIo = (server: Server) => {
     io.emit("notification", roomMessages);
    });
 
-   socket.on('register', ({ userId, peerId }) => {
-    console.log("🚀 ~ file: connection.ts:49 ~ socket.on ~ peerId:", peerId)
-    console.log("🚀 ~ file: connection.ts:49 ~ socket.on ~ userId:", userId)
-    users[userId] = { peerId, socket };
-  });
-
-  // Handle call requests
-  socket.on('call', ({ to, callerPeerId }:any) => {
-    console.log("🚀 ~ file: connection.ts:56 ~ socket.on ~ to:", to)
-    console.log("🚀 ~ file: connection.ts:56 ~ socket.on ~ callerPeerId:", callerPeerId)
-    const remoteUser = users[to];
-    if (remoteUser) {
-      remoteUser.socket.emit('call', { callerPeerId });
+   //  socket.on("room-joined", ({ roomId, id }) => {
+   //   socket.join(roomId);
+   //   if (!rooms[roomId]) {
+   //    rooms[roomId] = [];
+   //   }
+   //   rooms[roomId].push(id);
+   //   io.to(roomId).emit("user-joined", { id });
+   //   io.to(roomId).emit("room-peers", rooms);
+   //   socket.on("disconnect", () => {
+   //    rooms[roomId] = rooms[roomId].filter((ids: any) => ids !== id);
+   //   });
+   //  });
+   socket.on("room-joined", ({ roomId, id }) => {
+    socket.join(roomId);
+  
+    if (!rooms[roomId]) {
+      rooms[roomId] = [];
     }
+  
+    rooms[roomId].push(id);
+  
+    socket.emit('user-list', rooms[roomId].filter((userId:any) => userId !== id));
+  
+    io.to(roomId).emit('new-user-joined', id);
+  
+    socket.on("disconnect", () => {
+      rooms[roomId] = rooms[roomId].filter((ids: any) => ids !== id);
+    });
   });
 
    socket.on(
@@ -123,22 +137,9 @@ const connectSocketIo = (server: Server) => {
     io.emit("online-users", onlineUsers);
    });
 
-   socket.on("callUser", (data) => {
-    io.to(data.userToCall).emit("callUser", {
-     signal: data.signalData,
-     from: data.from,
-     name: data.name,
-    });
-   });
-
-   socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
-   });
-
    socket.on("disconnect", () => {
     onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
     io.emit("online-users", onlineUsers);
-    socket.broadcast.emit("callEnded");
    });
   });
  }

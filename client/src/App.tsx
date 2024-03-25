@@ -50,6 +50,8 @@ import EmployeeAttendance from './pages/employee/EmployeeAttendance';
 import EmployeeAttendanceTable from './components/company/EmployeeAttendanceTable';
 import Chat from './pages/chat/Chat';
 import VideoCall from './pages/chat/VideoCall';
+import JoinRoom from './pages/chat/JoinRoom';
+import TestVideoCall from './pages/chat/TestVideoCall';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -128,7 +130,8 @@ function App() {
             <Route path='profile' element={<Profile />} />
             <Route path='messages' element={<Messages />} />
             <Route path='applications' element={<Applications />} />
-            <Route path='videocall' element={<VideoCall />} />
+            <Route path='videocall' element={<JoinRoom />} />
+            <Route path='videocall/:roomId' element={<TestVideoCall />} />
             <Route path='settings' element={<Settings />} >
               <Route path='edit-profile' element={<ProfilePic />} />
               <Route path='edit-login' element={<UpdateLoginDetails />} />
