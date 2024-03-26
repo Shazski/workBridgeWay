@@ -9,6 +9,7 @@ import { cancelInterviewForUser, getAllCompanyEmployees, scheduleInterviewForUse
 import toast from 'react-hot-toast';
 import { GiCancel } from "react-icons/gi";
 import { TODO } from '../../config/constants';
+import { v4 as uuidV4 } from "uuid"
 const ApplicantInterviewSchedule = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -54,7 +55,8 @@ const ApplicantInterviewSchedule = () => {
         testType: testType,
         date: scheduleDateAndTime.split('T')[0],
         time: scheduleDateAndTime.split('T')[1],
-        employeeId: employeeId
+        employeeId: employeeId,
+        roomId: uuidV4()
       }
     }
 
@@ -91,15 +93,15 @@ const ApplicantInterviewSchedule = () => {
         </div>
       </div>
       {
-        ApplicantData?.schedule?.map((schedule: { testType: string, date: string, time: string, employeeId: string, _id: string }, idx: number) => (
+        ApplicantData?.schedule?.map((schedule: { testType: string, date: string, time: string, employeeId: string, _id: string, roomId:string }, idx: number) => (
           <>
             <div key={idx} className="border mt-5 flex justify-between flex-wrap ">
               <div className='ms-3 mt-4 flex gap-x-3'>
                 <img src={LOGO} alt="" className='w-12 h-12 rounded-full border' />
                 <div className='mt-2'>
-                <h1 className='text-sm text-blue-gray-800 font-semibold'>
-  {`${employees?.find((emp) => emp._id === schedule.employeeId)?.name || "Not Available"}`}
-</h1>
+                  <h1 className='text-sm text-blue-gray-800 font-semibold'>
+                    {`${employees?.find((emp) => emp._id === schedule.employeeId)?.name || "Not Available"}`}
+                  </h1>
                   <h1 className='text-xs text-gray-600'>{schedule?.testType}</h1>
                 </div>
               </div>
@@ -108,7 +110,7 @@ const ApplicantInterviewSchedule = () => {
                   <h1 className='text-sm font-semibold text-gray-800'>{formatDate(schedule?.date)}</h1>
                   <h1 className='text-sm font-semibold text-gray-800'>{convertToLocalTime(schedule?.time)}</h1>
                 </div>
-                <h1 className='text-xs'>RoomId .<span>{typeof editJob?.companyId === 'object' ? editJob?.companyId?.name : editJob?.companyId}</span> </h1>
+                <h1 className='text-xs'>RoomId : {schedule?.roomId}<span></span> </h1>
               </div>
               <div>
                 <GiCancel onClick={() => { setIsConfirmModalOpen(true), setScheduleId(schedule?._id) }} className='text-xl text-red-600 mt-5 me-12 cursor-pointer rounded-md ' />

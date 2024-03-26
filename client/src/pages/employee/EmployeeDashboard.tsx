@@ -111,8 +111,9 @@ const EmployeeDashboard = () => {
             <div className="border 4/6 flex px-4 py-2 h-16 mt-2 ms-4 rounded-lg gap-x-5 bg-light-blue-50">
               <img src={currentApplicant?.profilePic} alt="" className="w-12 h-12 rounded-full" />
               <div className="pe-20 ps-5">
-                <h1 className="font-serif ">{currentApplicant?.userName}</h1>
-                <h1 className="text-xs font-semibold">{sortedScheduleData?.[idx]?.testType}</h1>
+                <h1 className="font-serif ">Applicant: {currentApplicant?.userName}</h1>
+                <h1 className="text-xs font-semibold">Test Type: {sortedScheduleData?.[idx]?.testType}</h1>
+                <h1 className="text-xs ">Room:ID {sortedScheduleData?.[idx]?.roomId}</h1>
               </div>
             </div>
           </div>

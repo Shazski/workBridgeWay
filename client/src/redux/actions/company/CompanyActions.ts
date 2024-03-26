@@ -1,6 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit/react";
 import axios, { AxiosError } from "axios";
-import { ADMIN_BASE_URL, COMPANY_BASE_URL, TODO } from "../../../config/constants";
+import {
+ ADMIN_BASE_URL,
+ COMPANY_BASE_URL,
+ TODO,
+} from "../../../config/constants";
 import {
  MyApiError,
  config,
@@ -179,6 +183,7 @@ export const scheduleInterviewForUser = createAsyncThunk(
     date: string;
     time: string;
     employeeId: string;
+    roomId: string;
    };
   },
   { rejectWithValue }
@@ -295,7 +300,7 @@ export const getAllApplicantSchedule = createAsyncThunk(
 );
 export const getChatUserDetailsByIds = createAsyncThunk(
  "user/getChatUserDetailsByIds",
- async (userIds:string[], { rejectWithValue }) => {
+ async (userIds: string[], { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${COMPANY_BASE_URL}/get-all-user-details-by-ids?userIds=${userIds}`,

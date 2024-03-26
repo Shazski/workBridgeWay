@@ -18,6 +18,7 @@ const JobsSchema: Schema = new Schema(
      testType: { type: String },
      date: { type: String },
      employeeId: { type: Schema.Types.ObjectId },
+     roomId:{type:String},
      time: { type: String },
     }],
    },

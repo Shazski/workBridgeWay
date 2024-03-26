@@ -59,6 +59,7 @@ const connectSocketIo = (server: Server) => {
    //  });
    socket.on("room-joined", ({ roomId, id }) => {
     socket.join(roomId);
+    console.log("🚀 ~ file: connection.ts:77dsadsadsad ~ socket.on ~ id:", id)
   
     if (!rooms[roomId]) {
       rooms[roomId] = [];

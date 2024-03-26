@@ -17,7 +17,6 @@ const Schedule = () => {
     title: schedule?.schedule?.testType,
     start: `${schedule?.schedule?.date}T${schedule?.schedule?.time}`,
   }));
-  console.log("🚀 ~ Schedule ~ scheduleData:", companyScheduleData)
   return (
     <div>
       <FullCalendar

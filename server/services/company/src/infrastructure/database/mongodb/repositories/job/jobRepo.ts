@@ -412,7 +412,7 @@ export const getUserApplications = async (data: {
      linkedInUrl: "$applicants.linkedIn",
      previousJob: "$applicants.previousJob",
      portfolioUrl: "$applicants.portfolioUrl",
-     schedule:"$applicants.schedule"
+     schedule: "$applicants.schedule",
     },
    },
    { $limit: 10 },
@@ -667,7 +667,7 @@ export const getEmployeeSchedules = async (
 ): Promise<any[]> => {
  try {
   const today = new Date();
-  const jobs = await JobSchema.find({
+  const jobs:any = await JobSchema.find({
    "applicants.schedule.employeeId": employeeId,
   });
 
@@ -685,6 +685,7 @@ export const getEmployeeSchedules = async (
        date: schedule.date,
        time: schedule.time,
        applicantId: applicant.applicantId,
+       roomId: schedule.roomId,
       });
      }
     });
