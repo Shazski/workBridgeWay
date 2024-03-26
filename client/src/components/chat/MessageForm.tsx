@@ -308,7 +308,7 @@ const MessageForm = () => {
                               <div className="" />
                             )}
                             <div className="">
-                              <div className={`px-3.5 py-1.5 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl -mt-5 rounded-b-2xl' : `bg-gray-200 rounded-e-xl rounded-b-xl ${idx === 0 || msg.senderId !== message.messagesByDate[idx - 1].senderId ? 'ms-2 mt-8' : 'ms-16 -mt-5'}`}`}>
+                              <div className={`px-3.5 py-1.5 shadow-md  max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl -mt-5 rounded-b-2xl' : `bg-gray-200 rounded-e-xl rounded-b-xl ${idx === 0 || msg.senderId !== message.messagesByDate[idx - 1].senderId ? 'ms-2 mt-8' : 'ms-16 -mt-5'}`}`}>
                                 {
                                   msg.messageType === "text" ? <>
                                     <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
