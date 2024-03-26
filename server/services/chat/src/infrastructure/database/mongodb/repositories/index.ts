@@ -5,7 +5,8 @@ import {
  getLastMessagesFromRoom,
  createMessage,
  makeMessageReceiverSeen,
- getUnreadMessages
+ getUnreadMessages,
+ getCompanyMessageCount
 } from "./chat.repo";
 
 export default {
@@ -15,5 +16,6 @@ export default {
  getLastMessagesFromRoom,
  createMessage,
  makeMessageReceiverSeen,
- getUnreadMessages
+ getUnreadMessages,
+ getCompanyMessageCount
 };

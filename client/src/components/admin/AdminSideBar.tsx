@@ -82,7 +82,7 @@ const AdminSideBar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 md:ms-5 flex gap-3'>
+                {/* <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <NavLink to='/admin/companies' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
@@ -93,7 +93,7 @@ const AdminSideBar = () => {
                             </h1>
                         </div>
                     </NavLink>
-                </div>
+                </div> */}
                 <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <NavLink to='/admin/all-users' className={({ isActive }) => {
@@ -105,7 +105,7 @@ const AdminSideBar = () => {
                         </div>
                     </NavLink>
                 </div>
-                <div className='mt-3 md:ms-5 flex gap-3'>
+                {/* <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <NavLink to='/admin/company-complaints' className={({ isActive }) => {
                         return `px-6 py-3 w-16 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
@@ -117,7 +117,7 @@ const AdminSideBar = () => {
                             </h1>
                         </div>
                     </NavLink>
-                </div>
+                </div> */}
                 <div className='mt-3 md:ms-5 flex gap-3'>
 
                     <button onClick={() => setIsModalOpen(true)}>

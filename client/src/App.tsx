@@ -50,6 +50,7 @@ import EmployeeAttendance from './pages/employee/EmployeeAttendance';
 import EmployeeAttendanceTable from './components/company/EmployeeAttendanceTable';
 import Chat from './pages/chat/Chat';
 import VideoCall from './pages/chat/VideoCall';
+import { CompanyProfile } from './pages/company/CompanyProfile';
 function App() {
   const { user, error } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>()
@@ -106,6 +107,7 @@ function App() {
               <Route path='applicants' element={<JobApplicants />} />
               <Route path='schedule' element={<Schedule />} />
               <Route path='messages' element={<Chat />} />
+              <Route path='profile' element={<CompanyProfile />} />
               <Route path='employees' element={<EmployeeList />} />
               <Route path='employees/attendance/:id' element={<EmployeeAttendanceTable />} />
               <Route path='applicants/:id' element={<CompanyJobApplicants />} />

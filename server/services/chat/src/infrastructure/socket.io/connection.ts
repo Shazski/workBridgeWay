@@ -3,6 +3,7 @@ import { Server as SocketIOServer, Socket } from "socket.io";
 import { FRONTEND_BASE_URL } from "../../utils/constants/constants";
 import {
  createMessage,
+ getCompanyMessageCount,
  getLastMessagesFromRoom,
  makeMessageReceiverSeen,
  updateLastMessage,
@@ -45,36 +46,32 @@ const connectSocketIo = (server: Server) => {
     io.emit("notification", roomMessages);
    });
 
-   //  socket.on("room-joined", ({ roomId, id }) => {
-   //   socket.join(roomId);
-   //   if (!rooms[roomId]) {
-   //    rooms[roomId] = [];
-   //   }
-   //   rooms[roomId].push(id);
-   //   io.to(roomId).emit("user-joined", { id });
-   //   io.to(roomId).emit("room-peers", rooms);
-   //   socket.on("disconnect", () => {
-   //    rooms[roomId] = rooms[roomId].filter((ids: any) => ids !== id);
-   //   });
-   //  });
    socket.on("room-joined", ({ roomId, id }) => {
     socket.join(roomId);
-    console.log("🚀 ~ file: connection.ts:77dsadsadsad ~ socket.on ~ id:", id)
-  
+
     if (!rooms[roomId]) {
-      rooms[roomId] = [];
+     rooms[roomId] = [];
     }
-  
+
     rooms[roomId].push(id);
-  
-    socket.emit('user-list', rooms[roomId].filter((userId:any) => userId !== id));
-  
-    io.to(roomId).emit('new-user-joined', id);
-  
+
+    socket.emit(
+     "user-list",
+     rooms[roomId].filter((userId: any) => userId !== id)
+    );
+
+    io.to(roomId).emit("new-user-joined", id);
+
     socket.on("disconnect", () => {
-      rooms[roomId] = rooms[roomId].filter((ids: any) => ids !== id);
+     rooms[roomId] = rooms[roomId].filter((ids: any) => ids !== id);
     });
-  });
+   });
+
+   socket.on("get-company-message", async (companyId) => {
+    const count = await getCompanyMessageCount(companyId);
+    console.log("🚀 ~ file: connection.ts:70 ~ socket.on ~ count:", count);
+    socket.emit("company-messages-count", count);
+   });
 
    socket.on(
     "send-message",

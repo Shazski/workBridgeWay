@@ -155,3 +155,21 @@ export const getUnreadMessages = async () => {
   throw error;
  }
 };
+export const getCompanyMessageCount = async (companyId: ObjectId) => {
+ console.log(
+  "🚀 ~ file: chat.repo.ts:159 ~ getCompanyMessageCount ~ companyId:",
+  companyId
+ );
+ try {
+  const messageCount = await Message.find({
+   senderId: {
+    $ne: companyId,
+   },
+   recieverSeen: false,
+  }).countDocuments();
+  return messageCount;
+ } catch (error) {
+  console.error("Error updating messages:", error);
+  throw error;
+ }
+};
