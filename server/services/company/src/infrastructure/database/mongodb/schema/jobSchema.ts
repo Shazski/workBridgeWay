@@ -14,13 +14,16 @@ const JobsSchema: Schema = new Schema(
     portfolioURL: { type: String },
     previousJob: { type: String },
     resume: { type: String },
-    schedule: [{
-     testType: { type: String },
-     date: { type: String },
-     employeeId: { type: Schema.Types.ObjectId },
-     roomId:{type:String},
-     time: { type: String },
-    }],
+    schedule: [
+     {
+      testType: { type: String },
+      date: { type: String },
+      employeeId: { type: Schema.Types.ObjectId },
+      roomId: { type: String },
+      time: { type: String },
+      status: { type: String, default: "pending" },
+     },
+    ],
    },
   ],
   category: { type: String },

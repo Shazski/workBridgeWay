@@ -93,7 +93,7 @@ const ApplicantInterviewSchedule = () => {
         </div>
       </div>
       {
-        ApplicantData?.schedule?.map((schedule: { testType: string, date: string, time: string, employeeId: string, _id: string, roomId:string }, idx: number) => (
+        ApplicantData?.schedule?.map((schedule: { testType: string, date: string, time: string, employeeId: string, _id: string, roomId: string, status: string }, idx: number) => (
           <>
             <div key={idx} className="border mt-5 flex justify-between flex-wrap ">
               <div className='ms-3 mt-4 flex gap-x-3'>
@@ -111,9 +111,13 @@ const ApplicantInterviewSchedule = () => {
                   <h1 className='text-sm font-semibold text-gray-800'>{convertToLocalTime(schedule?.time)}</h1>
                 </div>
                 <h1 className='text-xs'>RoomId : {schedule?.roomId}<span></span> </h1>
+                <h1 className='text-xs'>Result : {schedule?.status}<span></span> </h1>
               </div>
               <div>
-                <GiCancel onClick={() => { setIsConfirmModalOpen(true), setScheduleId(schedule?._id) }} className='text-xl text-red-600 mt-5 me-12 cursor-pointer rounded-md ' />
+                {
+                  schedule?.status === "pending" && 
+                  <GiCancel onClick={() => { setIsConfirmModalOpen(true), setScheduleId(schedule?._id) }} className='text-xl text-red-600 mt-5 me-12 cursor-pointer rounded-md ' />
+                }
               </div>
             </div>
           </>

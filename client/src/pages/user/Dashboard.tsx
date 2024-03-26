@@ -19,7 +19,7 @@ const Dashboard = () => {
 
 
     const { userAppliedJobs, userAppliedJobsCount } = useSelector((state: RootState) => state.job);
-    
+
     useEffect(() => {
         dispatch(getUserApplications({ page: 1, getStatus: "" }));
     }, [])
@@ -52,7 +52,7 @@ const Dashboard = () => {
         return diffDays;
     };
 
-    
+
     let userSchedule
     useEffect(() => {
         const userScheduleList = userAppliedJobs?.filter((job) => job?.schedule && job?.schedule.length > 0 && job.schedule);
@@ -139,14 +139,13 @@ const Dashboard = () => {
                 </div>
 
             </div>
-                <div className="border ms-12 mt-6 md:w-1/4 h-52">
-                    <div className="">
-                        <h1 className="text-2xl font-serif ms-3 mt-3">Interview</h1>
-                        <h1 className="text-6xl mt-3 ms-5 font-serif font-bold">{interviewedJobsCount}</h1>
-                        <img src={INTERVIEW} alt="" className="mt-7 ms-auto" />
-                    </div>
+            <div className="border ms-12 mt-6 md:w-1/4 h-52">
+                <div className="">
+                    <h1 className="text-2xl font-serif ms-3 mt-3">Interview</h1>
+                    <h1 className="text-6xl mt-3 ms-5 font-serif font-bold">{interviewedJobsCount}</h1>
+                    <img src={INTERVIEW} alt="" className="mt-7 ms-auto" />
                 </div>
-
+            </div>
         </>
     )
 }

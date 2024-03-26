@@ -3,7 +3,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
-import { getAllUserDetails, getEmployeeSchedules } from "../../redux/actions/employee/employeeActions";
+import { getAllUserDetails, getEmployeeSchedules, updatePassOrFail } from "../../redux/actions/employee/employeeActions";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { TODO, override } from "../../config/constants";
 import JoinRoom from "../chat/JoinRoom";
@@ -15,11 +15,12 @@ const EmployeeDashboard = () => {
 
   const [idx, setIdx] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [refetch, setRefetch] = useState<boolean>(false);
   const [sortedScheduleData, setSortedScheduleData] = useState<TODO>([]);
 
   useEffect(() => {
     dispatch(getEmployeeSchedules())
-  }, [])
+  }, [refetch])
 
   useEffect(() => {
     dispatch(getAllUserDetails())
@@ -46,7 +47,7 @@ const EmployeeDashboard = () => {
     return timeIn24HourFormat.toLocaleTimeString(undefined, options);
   };
   const calculateDateDifference = (date1: Date, date2: Date): number => {
-    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    const oneDay = 24 * 60 * 60 * 1000; 
     const diffDays = Math.round(Math.abs((date1.getTime() - date2.getTime()) / oneDay));
     return diffDays;
   };
@@ -76,6 +77,11 @@ const EmployeeDashboard = () => {
     setIsModalOpen(true)
   }
 
+  const handlePassOrFail = async (status: string, scheduleId: string) => {
+    await dispatch(updatePassOrFail({ status, scheduleId }))
+    setRefetch(!refetch)
+  }
+
   return (
     <>
       <div className="flex justify-between bg-white sticky top-0 items-center h-16 border-b-2">
@@ -94,7 +100,7 @@ const EmployeeDashboard = () => {
             <h1 className="font-serif mb-2 font-semibold">Upcoming Interview</h1>
           </div>
           <div className="border-b mt-6 flex justify-between">
-            <h1>{dateDifference === 0 ? 'Today' : `${dateDifference} days left`}, {new Date(sortedScheduleData?.[idx]?.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</h1>
+            <h1>{ !isNaN(dateDifference) ? dateDifference === 0 ? 'Today' : `${dateDifference} days left`: "No Interview"}, { !isNaN(dateDifference) && new Date(sortedScheduleData?.[idx]?.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</h1>
             <div className="flex text-3xl font-semibold">
               <MdKeyboardArrowLeft className={`cursor-pointer ${idx === 0 ? 'hidden' : 'block'}`} onClick={() => idx > 0 && setIdx(idx - 1)} />
               <MdKeyboardArrowRight className={`cursor-pointer ${idx === sortedScheduleData?.length - 1 ? 'hidden' : 'block'}`} onClick={() => idx < (sortedScheduleData?.length - 1) && setIdx(idx + 1)} />
@@ -146,6 +152,7 @@ const EmployeeDashboard = () => {
                         <th scope="col" className="px-6 py-4">Interview Date</th>
                         <th scope="col" className="px-6 py-4">Interview Time</th>
                         <th scope="col" className="px-6 py-4">Test Type</th>
+                        <th scope="col" className="px-6 py-4">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -157,13 +164,13 @@ const EmployeeDashboard = () => {
                               <td className="whitespace-nowrap px-6 py-4">{new Date(schedule?.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">{formatTimeToAMPM(schedule?.time)}</h1></td>
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{schedule?.testType}</h1></td>
+                              <td className="whitespace-nowrap px-6 py-4">
+                                <h1 onClick={() => handlePassOrFail("pass", schedule?._id)} className="text-white font-bold bg-green-600 inline px-2 py-1 cursor-pointer rounded-md">Pass</h1>
+                                <h1 onClick={() => handlePassOrFail("fail", schedule?._id)} className="text-white font-bold bg-red-600 py-1 px-2 inline rounded-md ms-1 cursor-pointer">Fail</h1></td>
                             </tr>
                           </>
                         ))
                       }
-
-
-
                     </tbody>
                   </table>
                 </> : <>

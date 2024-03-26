@@ -667,7 +667,7 @@ export const getEmployeeSchedules = async (
 ): Promise<any[]> => {
  try {
   const today = new Date();
-  const jobs:any = await JobSchema.find({
+  const jobs: any = await JobSchema.find({
    "applicants.schedule.employeeId": employeeId,
   });
 
@@ -678,7 +678,8 @@ export const getEmployeeSchedules = async (
     applicant.schedule.forEach((schedule: any) => {
      if (
       schedule.employeeId.equals(employeeId) &&
-      new Date(schedule.date) >= today
+      new Date(schedule.date) >= today &&
+      schedule.status === "pending"
      ) {
       schedules.push({
        testType: schedule.testType,
@@ -686,6 +687,7 @@ export const getEmployeeSchedules = async (
        time: schedule.time,
        applicantId: applicant.applicantId,
        roomId: schedule.roomId,
+       _id: schedule._id,
       });
      }
     });
@@ -696,3 +698,24 @@ export const getEmployeeSchedules = async (
   throw error;
  }
 };
+export const updatePassOrFail = async (data: {
+  status: string;
+  scheduleId: ObjectId;
+ }): Promise<any> => {
+  try {
+   const updatedJobs = await JobSchema.findOneAndUpdate(
+    { "applicants.schedule._id": data.scheduleId },
+    { $set: { "applicants.$[].schedule.$[elem].status": data.status } },
+    {
+     new: true,
+     arrayFilters: [{ "elem._id": data.scheduleId }],
+    }
+   );
+   if (!updatedJobs) return false;
+ 
+   return updatedJobs as any;
+  } catch (error) {
+   console.log(error, "<< Something went wrong in updatePassOrFail repo >>");
+   return false;
+  }
+ };

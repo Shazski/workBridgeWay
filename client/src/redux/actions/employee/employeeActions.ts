@@ -39,10 +39,29 @@ export const getAllUserDetails = createAsyncThunk(
 );
 export const getEmployeeDetails = createAsyncThunk(
  "user/getEmployeeDetails",
- async (id:string, { rejectWithValue }) => {
+ async (id: string, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${EMPLOYEE_BASE_URL}/get-employee-details?employeeId=${id}`,
+    config
+   );
+   return data;
+  } catch (error) {
+   const axiosError = error as AxiosError<MyApiError>;
+   return handleError(axiosError, rejectWithValue);
+  }
+ }
+);
+export const updatePassOrFail = createAsyncThunk(
+ "user/updatePassOrFail",
+ async (
+  { status, scheduleId }: { status: string; scheduleId: string },
+  { rejectWithValue }
+ ) => {
+  try {
+   const { data } = await axios.patch(
+    `${EMPLOYEE_BASE_URL}/update-pass-or-fail`,
+    { status: status, scheduleId: scheduleId },
     config
    );
    return data;

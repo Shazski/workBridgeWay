@@ -17,7 +17,8 @@ import {
  cancelInterviewForUser,
  getAllApplicantsSchedule,
  getAllJobsForScheduleMail,
- getEmployeeSchedules
+ getEmployeeSchedules,
+ updatePassOrFail
 } from "./jobRepo";
 
 export default {
@@ -39,5 +40,6 @@ export default {
  cancelInterviewForUser,
  getAllApplicantsSchedule,
  getAllJobsForScheduleMail,
- getEmployeeSchedules
+ getEmployeeSchedules,
+ updatePassOrFail
 };

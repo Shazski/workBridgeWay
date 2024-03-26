@@ -1,7 +1,9 @@
 import {
+  Body,
   Controller,
   Get,
   NotFoundException,
+  Patch,
   Query,
   Req,
   UnauthorizedException,
@@ -54,10 +56,23 @@ export class EmployeeController {
   }
   @Get('/get-employee-details')
   async getEmployeeDetails(@Query('employeeId') employeeId: ObjectId) {
-
     const data = await this.employeeService.getEmployeeData(employeeId);
-    
+
     if (!data) throw new NotFoundException('Employee details not found');
+
+    return data;
+  }
+
+  @Patch('/update-pass-or-fail')
+  async updatePassOrFail(
+    @Body() { status, scheduleId }: { status: string; scheduleId: string },
+  ) {
+    const data = await this.rabbitMQService.sendMessage(
+      'company_queue',
+      JSON.stringify({ status, scheduleId }),
+      'updatePassOrFail',
+    );
+    if (!data) throw new NotFoundException('status not updated');
 
     return data;
   }

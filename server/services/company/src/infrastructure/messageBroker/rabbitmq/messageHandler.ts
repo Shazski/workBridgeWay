@@ -48,6 +48,10 @@ export default class MessageHandler {
    case "getCompanyByIds":
     response = await company_repo.findCompanyByIds(data);
     break;
+   case "updatePassOrFail":
+    console.log(data,"data here in message handler==>>>")
+    response = await job_repo.updatePassOrFail(data);
+    break;
    default:
     response = "Request-key notfound";
     break;
