@@ -69,7 +69,6 @@ const connectSocketIo = (server: Server) => {
 
    socket.on("get-company-message", async (companyId) => {
     const count = await getCompanyMessageCount(companyId);
-    console.log("🚀 ~ file: connection.ts:70 ~ socket.on ~ count:", count);
     socket.emit("company-messages-count", count);
    });
 

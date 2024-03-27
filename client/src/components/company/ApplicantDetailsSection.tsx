@@ -8,6 +8,7 @@ import { changeStatus } from '../../redux/reducers/company/companySlice';
 import Modal from '../Modal';
 import { FormEvent, useEffect, useState } from 'react';
 import { TODO } from '../../config/constants';
+import { v4 as uuidV4 } from 'uuid'
 const ApplicantDetailsSection = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [testType, setTestType] = useState<string>("");
@@ -16,7 +17,7 @@ const ApplicantDetailsSection = () => {
   const [scheduleDateAndTime, setScheduleDateAndTime] = useState<string>("");
   const { id, userId } = useParams()
   const { editJob } = useSelector((state: RootState) => state.company)
-  const ApplicantData:TODO = editJob?.applicants?.find((value:TODO) => value.applicantId === userId)
+  const ApplicantData: TODO = editJob?.applicants?.find((value: TODO) => value.applicantId === userId)
 
   const dispatch = useDispatch<AppDispatch>()
   const { employees } = useSelector((state: RootState) => state.company)
@@ -59,7 +60,8 @@ const ApplicantDetailsSection = () => {
         testType: testType,
         date: scheduleDateAndTime.split('T')[0],
         time: scheduleDateAndTime.split('T')[1],
-        employeeId: employeeId
+        employeeId: employeeId,
+        roomId: uuidV4()
       }
     }
 
@@ -92,10 +94,14 @@ const ApplicantDetailsSection = () => {
         }}>Interview Schedule</NavLink>
         <select onChange={(e) => handleUpdateStatus(userId!, editJob?._id!, e.target.value)} className={`outline-none border px-2 border-${statusColor[ApplicantData?.hiringStage]}-600 text-${statusColor[ApplicantData?.hiringStage]}-600 h-8 mt-1 rounded-md  font-semibold`} name="hiringStage" id="">
           <option defaultChecked hidden value="">{ApplicantData?.hiringStage}</option>
-          <option className='font-semibold pt-2 text-gray-600' value="shortlisted" style={{ display: ApplicantData?.hiringStage === 'shortlisted' ? 'none' : 'block' }}>Shortlisted</option>
-          <option className='font-semibold pt-2 text-gray-600' value="interview" style={{ display: ApplicantData?.hiringStage === 'interview' ? 'none' : 'block' }}>Interview</option>
-          <option className='font-semibold pt-2 text-gray-600' value="accepted" style={{ display: ApplicantData?.hiringStage === 'accepted' ? 'none' : 'block' }}>Accept</option>
-          <option className='font-semibold pt-2 text-gray-600' value="rejected" style={{ display: ApplicantData?.hiringStage === 'rejected' ? 'none' : 'block' }}>Reject</option>
+          {
+            ApplicantData?.hiringStage !== "accepted" && <>
+              <option className='font-semibold pt-2 text-gray-600' value="shortlisted" style={{ display: ApplicantData?.hiringStage === 'shortlisted' ? 'none' : 'block' }}>Shortlisted</option>
+              <option className='font-semibold pt-2 text-gray-600' value="interview" style={{ display: ApplicantData?.hiringStage === 'interview' ? 'none' : 'block' }}>Interview</option>
+              <option className='font-semibold pt-2 text-gray-600' value="accepted" style={{ display: ApplicantData?.hiringStage === 'accepted' ? 'none' : 'block' }}>Accept</option>
+              <option className='font-semibold pt-2 text-gray-600' value="rejected" style={{ display: ApplicantData?.hiringStage === 'rejected' ? 'none' : 'block' }}>Reject</option>
+            </>
+          }
         </select>
       </div>
       <Modal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)}>

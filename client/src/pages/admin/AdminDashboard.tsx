@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IoMdBusiness } from "react-icons/io";
-import { FaUsers } from "react-icons/fa";
-import { MdWork } from "react-icons/md";
-import { MdOutlinePendingActions } from "react-icons/md";
-// import AdminDashCards from "@/components/admin/Dashboard/AdminDashCards";
-// import {
-//   fetchJobs,
-// } from "@/redux/actions/companyActions";
 import {
   LineChart,
   XAxis,
@@ -18,75 +10,51 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { TODO } from "../../config/constants";
-import { ICompanyData } from "../../interface/ICompanyData";
+import { ADMIN_BASE_URL, TODO } from "../../config/constants";
+import { getAllUsers } from "../../redux/actions/admin/adminActions";
+import { AppDispatch, RootState } from "../../redux/store";
+import axios from "axios";
+import { config } from "../../config/configurations";
 
 
 const AdminDashboard: React.FC = () => {
-  const dispatch = useDispatch();
-  const [usersCount, setUsersCount] = useState<number>(0);
-  const [users, setUsers] = useState([]);
-  const [_, setJobs] = useState([]);
-  const [companies, setCompanies] = useState([]);
-  const [jobsCount, setJobsCount] = useState<number>(0);
-  const [companyCount, setCompaniesCount] = useState<number>(0);
-  const [pendingApprovels, setPendingApprovels] = useState<number>(0);
+  const dispatch = useDispatch<AppDispatch>();
+  const [users, setUsers] = useState<TODO>([]);
+  const [sliceVal, setSliceVal] = useState<number>(10);
+  const [companies, setCompanies] = useState<TODO[]>([]);
   const [timeFrame, setTimeFrame] = useState<string>('monthly');
   const Month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', ' Oct', 'Nov', 'Dec']
 
-  // Fetch data on component mount
-  // useEffect(() => {
-  //   fetchUsersAndCompanies();
-  //   fetchTotalJobs();
-  // }, [timeFrame]); // Refetch data when the time frame changes
+  const { usersDetails } = useSelector((state: RootState) => state.admin)
+  useEffect(() => {
+    dispatch(getAllUsers({ search: "", page: 1 }))
 
-  // Fetch users and companies data
-  // const fetchUsersAndCompanies = async () => {
-  //   try {
-  //     // const data = await fetchUsers();
+  }, [dispatch])
 
-  //     // Filter users
-  //     const filteredUsers = data?.data?.filter(
-  //       (user: TODO) => user?.role === "user"
-  //     );
-  //     setUsersCount(filteredUsers?.length);
-  //     setUsers(filteredUsers);
+  const getAllRequest = async () => {
+    try {
 
-  //     // Filter companies
-  //     const filteredCompanies = data?.data?.filter(
-  //       (company: TODO) => company?.role === "company"
-  //     );
-  //     setCompaniesCount(filteredCompanies?.length);
-  //     setCompanies(filteredCompanies);
+      const response = await axios.get(`${ADMIN_BASE_URL}/get-requests`, config);
+      setCompanies(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
-  //     // Count pending approvals
-  //     const pendingApprovelsCount = data?.data?.filter(
-  //       (company: TODO) => company?.approved === false
-  //     );
-  //     setPendingApprovels(pendingApprovelsCount?.length);
-  //   } catch (err: unknown) {
-  //     console.log(err, " error in useEffect of AdminDashboard");
-  //   }
-  // };
+  useEffect(() => {
+    getAllRequest();
+  }, []);
 
-  // Fetch total jobs
-  // const fetchTotalJobs = async () => {
-  //   try {
-  //     const totalJobs = await fetchJobs();
-  //     setJobsCount(totalJobs?.data?.length);
-  //     setJobs(totalJobs?.data);
-  //   } catch (err: unknown) {
-  //     console.log(err, " error in fetching totalJobs of AdminDashboard");
-  //   }
-  // };
 
-  // Handle logout
-  // const handleLogout = () => {
-  //   console.log("Logging out...");
-  //   dispatch(logout());
-  // };
+  useEffect(() => {
+    const data = usersDetails
 
-  // Prepare data for the line chart showing companies registered in each month
+    const filteredUsers = data?.filter(
+      (user: TODO) => user?.role === "user"
+    );
+    setUsers(filteredUsers!);
+  }, [])
+
   const prepareCompanyData = () => {
     const monthsData: { [key: string]: number } = {};
 
@@ -135,7 +103,7 @@ const AdminDashboard: React.FC = () => {
     const userData: { [key: string]: number } = {};
 
     // Count the number of users created in each month
-    users.forEach((user: TODO) => {
+    users?.forEach((user: TODO) => {
       const creationDate = new Date(user?.createdAt);
       let monthName = '';
 
@@ -177,19 +145,6 @@ const AdminDashboard: React.FC = () => {
             Welcome Admin!
           </h1>
           <div className="w-full flex flex-wrap justify-around gap-3">
-            {/* Dashboard cards */}
-            {/* <AdminDashCards
-              text="Total Companies "
-              icon={IoMdBusiness}
-              count={companyCount}
-            />
-            <AdminDashCards text="Total Users " icon={FaUsers} count={usersCount} />
-            <AdminDashCards text="Total Jobs " icon={MdWork} count={jobsCount} />
-            <AdminDashCards
-              text="Pending Approvals"
-              icon={MdOutlinePendingActions}
-              count={pendingApprovels}
-            /> */}
           </div>
           {/* Filter selection */}
           <div className="flex justify-center mt-6">
@@ -203,7 +158,7 @@ const AdminDashboard: React.FC = () => {
               <option value="yearly">Yearly</option>
             </select>
           </div>
-          <div className="grid grid-cols-2 gap-6 mt-8">
+          <div className="md:grid grid-cols-2 gap-6 mt-8">
             {/* Line Chart */}
             <div className="border rounded shadow-md w-full p-3 h-auto bg-white">
               <LineChart
@@ -222,11 +177,11 @@ const AdminDashboard: React.FC = () => {
                   stroke="#8884d8"
                 />
               </LineChart>
-              <div className="w-full text-center p-3">
+              <div className="flex flex-col md:items-center p-3">
                 <h1 className="font-bold text-lg">
                   Companies Registered Per {timeFrame.charAt(0).toUpperCase() + timeFrame.slice(1)}
                 </h1>
-                <p>Number of companies registered in each {timeFrame}</p>
+                <h1>Number of companies registered in each {timeFrame}</h1>
               </div>
             </div>
             {/* Bar Chart */}
@@ -243,7 +198,7 @@ const AdminDashboard: React.FC = () => {
                 <CartesianGrid stroke="#f5f5f5" />
                 <Bar dataKey="NumberOfUsers" fill="#82ca9d" />
               </BarChart>
-              <div className="w-full text-center p-3">
+              <div className="flex flex-col md:items-center p-3">
                 <h1 className="font-bold text-lg">No. Of Users</h1>
                 <p>Count of users created in recent {timeFrame}</p>
               </div>
@@ -272,7 +227,7 @@ const AdminDashboard: React.FC = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {/* Render latest users here */}
-                {users.reverse().map((user: TODO) => (
+                {users?.reverse().map((user: TODO) => (
                   <tr key={user._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {user.userName}
@@ -313,16 +268,16 @@ const AdminDashboard: React.FC = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {/* Render latest users here */}
-                {companies.reverse().map((company: TODO) => (
+                {companies?.reverse()?.slice(0, sliceVal).map((company: TODO) => (
                   <tr key={company._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {company.userName}
+                      {company.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {company.email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {company.status}
+                      {company?.stage}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {new Date(company.createdAt).toLocaleString()}
@@ -332,9 +287,15 @@ const AdminDashboard: React.FC = () => {
               </tbody>
             </table>
           </div>
-          {/*  */}
-        </main>
-      </div>
+          {
+            companies?.length > sliceVal && <>
+              <div className="text-center mt-2 cursor-pointer">
+                <h1 onClick={() => { companies?.length > sliceVal && setSliceVal(sliceVal + 10) }} className="px-3 py-2 border border-gray-600 inline">Load More</h1>
+              </div>
+            </>
+          }
+        </main >
+      </div >
     </>
   );
 };

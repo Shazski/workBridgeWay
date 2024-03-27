@@ -26,10 +26,9 @@ export const approveOrRejectCompany = createAsyncThunk(
 export const getAllUsers = createAsyncThunk(
  "company/getAllUsers",
  async (
-  { search, page }: { search: string; page: number },
+  { search = "", page = 1 }: { search?: string; page?: number },
   { rejectWithValue }
  ) => {
-  console.log("called data in axios action")
   try {
    const { data } = await axios.get(
     `${ADMIN_BASE_URL}/get-all-users?search=${search}&page=${page}`,

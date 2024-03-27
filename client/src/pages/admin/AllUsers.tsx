@@ -26,7 +26,6 @@ const AllUsers = () => {
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const updateStatus = (status: boolean, userId: string) => {
-    console.log(status, userId, "in update case status and id for managing id")
     const updateData = {
       id: userId,
       status
@@ -46,7 +45,6 @@ const AllUsers = () => {
     setSearch(value)
 
   }
-
 
   useEffect(() => {
     dispatch(getAllUsers({ search, page }))
