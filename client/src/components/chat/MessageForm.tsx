@@ -6,6 +6,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from 
 import EmojiPicker from 'emoji-picker-react';
 import { SocketContext } from "../../context/SocketContext";
 import { format } from "date-fns";
+import imageCompression from 'browser-image-compression';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useSearchParams } from "react-router-dom";
@@ -24,6 +25,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Modal from "../Modal";
+import toast from "react-hot-toast";
 const MessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
@@ -38,10 +40,10 @@ const MessageForm = () => {
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
 
   const [showImagesPreview, setShowImagesPreview] = useState<string | string[]>("");
-  const [showVideoPreview, setShowVideoPreview] = useState<string>("");
+  const [showVideoPreview, setShowVideoPreview] = useState<string | string[]>("");
   const [showDocumentPreview, setShowDocumentPreview] = useState<string>("");
   const [imageFile, setImageFile] = useState<File[]>([]);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File[]>([]);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
 
   const [showMediaPreview, setShowMediaPreview] = useState<boolean>(false);
@@ -171,14 +173,32 @@ const MessageForm = () => {
     }
   };
   const handleVideoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setVideoFile(e.target.files[0])
-      const videoPreview = URL.createObjectURL(e.target.files[0])
-      setShowVideoPreviewModal(true);
-      setShowVideoPreview(videoPreview)
-      videoRef.current.value = null;
+    setShowSendBtn(true)
+    if (e.target.files && e.target.files.length > 0) {
+      const videoFiles = Array.from(e.target.files)
+      const maxSizeBytes = 50 * 1024 * 1024;
+      let isValid = true;
+      for (const file of videoFiles) {
+        if (file.size > maxSizeBytes) {
+          isValid = false;
+          toast.error("Selected video file(s) exceed the maximum size limit.max limit is 50Mb");
+          break;
+        }
+      }
+      if (isValid) {
+        setVideoFile(videoFiles)
+        const videoArray = Array.from(e.target.files).map(file => URL.createObjectURL(file));
+        setShowVideoPreviewModal(true);
+        if (videoArray.length === 1) {
+          setShowVideoPreviewModal(true);
+          setShowVideoPreview(videoArray[0]);
+        } else {
+          setShowVideoPreviewModal(true);
+          setShowVideoPreview(videoArray);
+        }
+      }
     }
-  }
+  };
   const handleDocumentChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setDocumentFile(e.target.files[0])
@@ -197,13 +217,22 @@ const MessageForm = () => {
     slidesToScroll: 1
   };
 
+  const compressOptions = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+  }
+
   const handleImageUplaod = async (e: TODO) => {
     setShowMediaPreview(false);
     if (Array.isArray(showImagesPreview)) {
       try {
         if (imageFile.length > 0) {
           const urls = await Promise.all(imageFile?.map(async (image) => {
-            const url = await cloudinaryUpload(image, "image");
+            setUploadLoading(true)
+            const compressedImage = await imageCompression(image, compressOptions)
+            setUploadLoading(false)
+            const url = await cloudinaryUpload(compressedImage, "image");
             return url;
           }));
 
@@ -215,20 +244,38 @@ const MessageForm = () => {
         console.error('Error uploading images:', error);
       }
     } else {
-      const url = await cloudinaryUpload(imageFile[0], "image");
+      const compressedImage = await imageCompression(imageFile[0], compressOptions)
+      const url = await cloudinaryUpload(compressedImage, "image");
       sendMessage(e, "image", url)
       setShowImagesPreview("");
     }
   };
-
   const handleVideoUpload = async (e: TODO) => {
-    setShowVideoPreviewModal(false)
+    setShowVideoPreviewModal(false);
+    if (Array.isArray(showVideoPreview)) {
+      try {
+        setUploadLoading(true)
+        if (videoFile.length > 0) {
+          const urls = await Promise.all(videoFile?.map(async (video) => {
+            const url = await cloudinaryUpload(video, "video");
+            return url;
+          }));
+          sendMessage(e, "video", urls)
+          setUploadLoading(false)
+        }
 
-    const videoUrl = await cloudinaryUpload(videoFile!, "video");
+        setShowVideoPreview("");
+      } catch (error) {
+        console.error('Error uploading images:', error);
+      }
+    } else {
+      const url = await cloudinaryUpload(videoFile[0], "video");
+      sendMessage(e, "video", url)
+      setShowVideoPreview("");
+    }
+  };
 
-    sendMessage(e, "video", videoUrl)
-    setShowVideoPreview("")
-  }
+
   const handleDocumentUpload = async (e: TODO) => {
     setShowDocumentPreviewModal(false)
 
@@ -329,7 +376,49 @@ const MessageForm = () => {
                                     </> :
                                       msg.messageType === "video" ?
                                         <>
-                                          <video src={msg?.message} controls className={`break-all mt-3 poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}></video>
+                                          {
+                                            Array.isArray(msg?.message) ?
+                                              <>
+                                                {
+                                                  <div className="grid grid-cols-2 gap-2 ">
+                                                    {
+                                                      msg.message.length <= 4 ?
+                                                        msg?.message?.map((video: string, idx: number) => (
+                                                          <>
+                                                            <div key={idx} className="mt-2">
+                                                              <video controls src={video} className="w-44 h-24" />
+                                                            </div>
+                                                          </>
+                                                        )) :
+                                                        <>
+                                                          {
+                                                            msg?.message?.slice(0, 3).map((video: string, idx: number) => (
+                                                              <>
+                                                                <div key={idx} className="mt-2">
+                                                                  <video controls src={video} className="w-44 h-24" />
+                                                                </div>
+                                                              </>
+                                                            ))
+                                                          }
+                                                          <div onClick={() => { setShowMediaPreview(true), setShowImagesPreview(msg?.message), setShowSendBtn(false) }} className={`grid cursor-pointer place-content-center relative ${msg.senderId === user._id ? 'text-white' : 'text-black'}`}>
+                                                            <video src={msg.message[3]} controls className="w-44 h-24 blur-md" />
+                                                            <div className="absolute ms-12">
+                                                              <h1 className="text-5xl"><IoIosMore /></h1>
+                                                              <div className="flex gap-x-2">
+                                                                <h1 className=" font-bold">{msg?.message.length - 3}</h1>
+                                                                <h1 className=" font-bold">More</h1>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </>
+                                                    }
+                                                  </div>
+                                                }
+                                              </> :
+                                              <>
+                                                <video controls src={msg?.message} className="w-44 mt-3" />
+                                              </>
+                                          }
                                         </>
                                         :
                                         msg.messageType === "image" ?
@@ -341,7 +430,7 @@ const MessageForm = () => {
                                                     <div className="grid grid-cols-2 gap-2 ">
                                                       {
                                                         msg.message.length <= 4 ?
-                                                          msg?.message?.map((img, idx) => (
+                                                          msg?.message?.map((img: string, idx: number) => (
                                                             <>
                                                               <div key={idx} className="mt-2">
                                                                 <img src={img} alt="" className="w-44 h-24" />
@@ -350,7 +439,7 @@ const MessageForm = () => {
                                                           )) :
                                                           <>
                                                             {
-                                                              msg?.message?.slice(0, 3).map((img, idx) => (
+                                                              msg?.message?.slice(0, 3).map((img: string, idx: number) => (
                                                                 <>
                                                                   <div key={idx} className="mt-2">
                                                                     <img src={img} alt="" className="w-44 h-24" />
@@ -398,6 +487,7 @@ const MessageForm = () => {
                                 </div>
                               </div>
                             </div>
+                            <h1 className="ms-4 cursor-pointer">:</h1>
                           </div>
                         </>
                       ))}
@@ -453,8 +543,25 @@ const MessageForm = () => {
                 }
               </Modal>
               <Modal isVisible={showVideoPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
-                <video controls src={showVideoPreview}></video>
-                <button onClick={(e) => handleVideoUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+                {Array.isArray(showVideoPreview) ? (
+                  <Slider {...slickSettings}>
+                    {showVideoPreview.map((video, idx) => (
+                      <div key={idx}>
+                        <video controls src={video} className="w-full h-72 object-contain" />
+                      </div>
+                    ))}
+                  </Slider>
+                ) : (
+                  <video controls src={showVideoPreview} className="w-full h-72" />
+                )}
+                <h1 className="mb-4">
+                </h1>
+                {
+                  showSendBtn &&
+                  <>
+                    <button onClick={(e) => handleVideoUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+                  </>
+                }
               </Modal>
               <Modal isVisible={showDocumentPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
                 <div className="flex flex-col items-center">
@@ -463,7 +570,7 @@ const MessageForm = () => {
                 </div>
               </Modal>
               <input type="file" hidden multiple onChange={handleImageChange} ref={imageRef} accept="image/*" />
-              <input type="file" hidden onChange={handleVideoChange} ref={videoRef} accept="video/*" />
+              <input type="file" hidden multiple onChange={handleVideoChange} ref={videoRef} accept="video/*" />
               <input type="file" hidden onChange={handleDocumentChange} ref={documentRef} accept=".pdf, .doc, .docx" />
               <div className="absolute ms-10 bottom-3 w-7/12">
                 <EmojiPicker className=" bottom-2 ms-[460px]" height={"410px"} lazyLoadEmojis width={"350px"} open={showEmoji} reactionsDefaultOpen={false} onEmojiClick={(data) => setMessage((prev) => prev + data.emoji)} />

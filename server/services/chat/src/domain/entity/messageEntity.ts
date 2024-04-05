@@ -4,6 +4,7 @@ export interface MessageEntity {
     _id?: string | Types.ObjectId;
     roomId: string;
     senderId: Types.ObjectId | string;
+    replyMessage: string;
     message: string;
     messageType: 'text' | 'image' | 'video' | 'audio' | 'file';
     recieverSeen: boolean;

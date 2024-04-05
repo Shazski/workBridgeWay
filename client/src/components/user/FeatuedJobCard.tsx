@@ -5,7 +5,7 @@ const FeatuedJobCard = ({ showApplied = false, job, showCompanyLogo = true }: { 
     const navigate = useNavigate()
     return (
         <div>
-            <div onClick={() => navigate(`jobs/${job?._id}`)} className={`border border-dashed border-gray-600 w-64 ${showApplied ? "h-72" : "min-h-min py-5"} mt-10  hover:scale-105  transition-all duration-300 ease-in-out hover:cursor-pointer`}>
+            <div onClick={() => navigate(`jobs/${job?._id}`)} className={`border shadow-xl border-dashed border-gray-600 w-64 ${showApplied ? "h-72" : "min-h-min py-5"} mt-10  hover:scale-105  transition-all duration-300 ease-in-out hover:cursor-pointer`}>
                 <div className="flex">
                     {
                         showCompanyLogo ? <>

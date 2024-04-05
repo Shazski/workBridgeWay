@@ -50,7 +50,10 @@ export const googleAuth = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
  "user/logoutUser",
- async ({socket,userId}:{socket:Socket,userId:string}, { rejectWithValue }) => {
+ async (
+  { socket, userId }: { socket: Socket; userId: string },
+  { rejectWithValue }
+ ) => {
   try {
    const { data } = await axios.get(`${AUTH_BASE_URL}/logout`, config);
    socket.emit("logout-user", userId);
@@ -60,7 +63,7 @@ export const logoutUser = createAsyncThunk(
    return handleError(axiosError, rejectWithValue);
   }
  }
-)
+);
 
 export const editUser = createAsyncThunk(
  "user/editUser",
@@ -393,7 +396,7 @@ export const getUserpreferredJob = createAsyncThunk(
 );
 export const setUserfmcToken = createAsyncThunk(
  "user/setUserfmcToken",
- async (fmcToken:string, { rejectWithValue }) => {
+ async (fmcToken: string, { rejectWithValue }) => {
   try {
    const { data } = await axios.post(
     `${USER_BASE_URL}/set-fmcToken`,
@@ -409,7 +412,7 @@ export const setUserfmcToken = createAsyncThunk(
 );
 export const getCompanyById = createAsyncThunk(
  "user/getCompanyById",
- async (companyId:string, { rejectWithValue }) => {
+ async (companyId: string, { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${USER_BASE_URL}/get-company-details?companyId=${companyId}`,
@@ -424,7 +427,7 @@ export const getCompanyById = createAsyncThunk(
 );
 export const getChatCompanyDetailsByIds = createAsyncThunk(
  "user/getChatCompanyDetailsByIds",
- async (companyId:string[], { rejectWithValue }) => {
+ async (companyId: string[], { rejectWithValue }) => {
   try {
    const { data } = await axios.get(
     `${USER_BASE_URL}/get-company-details-by-ids?companyId=${companyId}`,
@@ -437,4 +440,3 @@ export const getChatCompanyDetailsByIds = createAsyncThunk(
   }
  }
 );
-

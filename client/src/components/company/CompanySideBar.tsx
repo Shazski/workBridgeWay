@@ -31,7 +31,7 @@ const CompanySideBar = () => {
     };
     return (
         <>
-            <div className={`ms-5 flex lg:hidden sticky top-3 z-50 cursor-pointer mt-2`}>
+            <div className={`ms-5 flex lg:hidden sticky top-20 z-50 cursor-pointer mt-2`}>
                 <GiHamburgerMenu onClick={() => setToggle(!toggle)} className="text-2xl" />
             </div>
             <div className="flex">

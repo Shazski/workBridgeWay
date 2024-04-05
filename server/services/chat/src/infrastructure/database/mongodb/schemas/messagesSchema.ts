@@ -11,6 +11,9 @@ const messageSchema = new Schema<MessageEntity>(
    type: Schema.Types.ObjectId,
    required: true,
   },
+  replyMessage: {
+   type: Schema.Types.Mixed,
+  },
   message: {
    type: Schema.Types.Mixed,
    required: true,

@@ -1,11 +1,4 @@
 import { MdDesignServices } from "react-icons/md";
-// import { BsGraphUpArrow } from "react-icons/bs";
-// import { AiOutlineSound } from "react-icons/ai";
-// import { FaMoneyBillTrendUp } from "react-icons/fa6";
-// import { GrCloudComputer } from "react-icons/gr";
-// import { MdOutlineEngineering } from "react-icons/md";
-// import { FaBusinessTime } from "react-icons/fa6";
-// import { IoPeople } from "react-icons/io5";
 import { FaArrowRight } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -32,7 +25,7 @@ const CategorySection = () => {
                 {
                     category && category?.map((cat, idx) => (
                         <>
-                            <div key={idx} onClick={() => navigate(`/jobs?category=${cat}`)} className="border w-64 h-44 mt-10 group hover:bg-lightgreen text-lightgreen hover:scale-105 transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-white">
+                            <div key={idx} onClick={() => navigate(`/jobs?category=${cat}`)} className="border shadow-lg w-64 h-44 mt-10 group hover:bg-lightgreen text-lightgreen hover:scale-105 transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-white">
                                 <MdDesignServices className="text-4xl m-5  " />
                                 <h1 className="font-serif text-lg ps-5 group-hover:translate-x-2 transition-all duration-300 ease-in">{cat}</h1>
                                 <div className="flex group-hover:translate-x-2 duration-300">

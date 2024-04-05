@@ -3,7 +3,6 @@ import LOGO from "../../assets/images/Logo.png"
 import PROFILE from "../../assets/images/defaultProfile.jpg"
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { toast } from 'react-hot-toast'
 import { logoutUser } from '../../redux/actions/user/userActions'
 import { AppDispatch, RootState } from '../../redux/store'
 import { SocketContext } from '../../context/SocketContext'
@@ -27,7 +26,6 @@ const Navbar: FC = () => {
         <NavLink to='/jobs' className={({ isActive }) => {
           return `font-sans hover:cursor-pointer ${isActive ? 'border-b-4 border-lightgreen text-lightgreen' : ''}`
         }}>Find Jobs</NavLink>
-        <NavLink to="/companies" className='font-sans hidden sm:block hover:cursor-pointer'>Browse Companies</NavLink>
       </div>
       <div className='flex gap-3 md:me-[125px]'>
         {

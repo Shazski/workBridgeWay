@@ -11,8 +11,11 @@ export default withMT( {
     extend: {
       colors:{
         'lightgreen':'#197195'
-      }
+      },
+      daisyui: {
+        themes: ["light", "dark", "cupcake"],
+      },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 })

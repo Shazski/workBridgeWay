@@ -56,10 +56,10 @@ const JobListTable = () => {
           </div>
         </>
       }
-      <div className="flex flex-col overflow-x-auto">
+      <div className="flex flex-col rounded-lg overflow-x-auto">
         <div className="sm:mx-6 lg:mx-8 overflow-x-auto flex-grow">
           <div className="inline-block overflow-x-auto min-w-full py-2  ">
-            <div className="overflow-x-auto md:h-[500px] duration-500 scrollbar">
+            <div className="overflow-x-auto md:h-[500px] rounded-md duration-500 scrollbar">
               {jobs && jobs?.length > 0 ?
                 loading ? <PropagateLoader
                   color={'#197195'}
@@ -69,10 +69,10 @@ const JobListTable = () => {
                   aria-label="Loading Spinner"
                   data-testid="loader"
                 /> : <>
-                  <table className="min-w-full text-left text-sm font-light w-full">
+                  <table className="min-w-full text-left rounded-md text-sm font-light w-full">
                     <thead
                       className="border-b bg-white z-40 dark:border-neutral-500 dark:bg-neutral-600 sticky top-0 w-full">
-                      <tr className='w-full'>
+                      <tr className='w-full rounded-md'>
                         <th scope="col" className="px-6 py-4">Roles</th>
                         <th scope="col" className="px-6 py-4">status</th>
                         <th scope="col" className="px-6 py-4">Date Posted</th>
@@ -85,8 +85,8 @@ const JobListTable = () => {
                       {
                         jobs?.map((job, idx) => (
                           <>
-                            <tr key={idx} className="border-b  bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
-                              <td className="flex whitespace-nowrap py-4 font-semibold"><h1 className="mt-3">{job?.jobTitle}</h1></td>
+                            <tr key={idx} className="border-b ms-12 rounded-md bg-neutral-100 dark:border-neutral-500 dark:bg-neutral-700">
+                              <td className="flex whitespace-nowrap py-4 font-semibold"><h1 className="mt-3 ms-4">{job?.jobTitle}</h1></td>
                               <td className="whitespace-nowrap px-6 py-4">{job.status ? <h1 className="border rounded-xl border-green-500 text-green-800 ps-3 py-1 mt-1 md:w-14">Live</h1> : <h1 className="border rounded-xl border-red-500 text-red-800 px-2 py-1 mt-1 md:w-16">Closed</h1>}</td>
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">{formatDate(String(job?.createdAt))}</h1></td>
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{formatDate(String(job?.expiry))}</h1></td>

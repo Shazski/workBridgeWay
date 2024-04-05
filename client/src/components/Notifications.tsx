@@ -8,7 +8,7 @@ import { getToken } from 'firebase/messaging';
 import { TODO } from '../config/constants';
 
 const Notifications = () => {
-  const [notification, setNotification] = useState<{ title: string; body: string }>({ title: "", body: "" });
+  const [_, setNotification] = useState<{ title: string; body: string }>({ title: "", body: "" });
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 

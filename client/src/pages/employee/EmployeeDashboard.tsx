@@ -47,7 +47,7 @@ const EmployeeDashboard = () => {
     return timeIn24HourFormat.toLocaleTimeString(undefined, options);
   };
   const calculateDateDifference = (date1: Date, date2: Date): number => {
-    const oneDay = 24 * 60 * 60 * 1000; 
+    const oneDay = 24 * 60 * 60 * 1000;
     const diffDays = Math.round(Math.abs((date1.getTime() - date2.getTime()) / oneDay));
     return diffDays;
   };
@@ -94,13 +94,13 @@ const EmployeeDashboard = () => {
       </div>
       <JoinRoom navigation="/employee/videocall/" isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <h1 className="text-2xl font-semibold font-serif text-center mt-12">Hello {user?.userName}</h1>
-      <div className="flex items-center  w-full  ms-12 mt-12">
-        <div className="border-2 px-4 py-2 w-3/6 h-2/6 ">
+      <div className="flex items-center  flex-wrap w-full ms-12 mt-12">
+        <div className="border-2 px-4 py-2 flex flex-col flex-wrap w-5/6">
           <div className="border-b mt-2">
             <h1 className="font-serif mb-2 font-semibold">Upcoming Interview</h1>
           </div>
           <div className="border-b mt-6 flex justify-between">
-            <h1>{ !isNaN(dateDifference) ? dateDifference === 0 ? 'Today' : `${dateDifference} days left`: "No Interview"}, { !isNaN(dateDifference) && new Date(sortedScheduleData?.[idx]?.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</h1>
+            <h1>{!isNaN(dateDifference) ? dateDifference === 0 ? 'Today' : `${dateDifference} days left` : "No Interview"}, {!isNaN(dateDifference) && new Date(sortedScheduleData?.[idx]?.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</h1>
             <div className="flex text-3xl font-semibold">
               <MdKeyboardArrowLeft className={`cursor-pointer ${idx === 0 ? 'hidden' : 'block'}`} onClick={() => idx > 0 && setIdx(idx - 1)} />
               <MdKeyboardArrowRight className={`cursor-pointer ${idx === sortedScheduleData?.length - 1 ? 'hidden' : 'block'}`} onClick={() => idx < (sortedScheduleData?.length - 1) && setIdx(idx + 1)} />
@@ -114,12 +114,12 @@ const EmployeeDashboard = () => {
                 <h1 className="text-xs">{formatAdjustedTimeToAMPM(sortedScheduleData?.[idx]?.time, 1)}</h1>
               </div>
             )}
-            <div className="border 4/6 flex px-4 py-2 h-16 mt-2 ms-4 rounded-lg gap-x-5 bg-light-blue-50">
+            <div className="flex px-4 py-2 h-16 mt-2 ms-4 rounded-lg gap-x-5 bg-light-blue-50">
               <img src={currentApplicant?.profilePic} alt="" className="w-12 h-12 rounded-full" />
-              <div className="pe-20 ps-5">
+              <div className="pe-20 ps-5 ">
                 <h1 className="font-serif ">Applicant: {currentApplicant?.userName}</h1>
                 <h1 className="text-xs font-semibold">Test Type: {sortedScheduleData?.[idx]?.testType}</h1>
-                <h1 className="text-xs ">Room:ID {sortedScheduleData?.[idx]?.roomId}</h1>
+                <h1 className="text-xs mb-4 bg-light-blue-50">Room:ID {sortedScheduleData?.[idx]?.roomId}</h1>
               </div>
             </div>
           </div>

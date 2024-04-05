@@ -22,6 +22,7 @@ const JobsSchema: Schema = new Schema(
       roomId: { type: String },
       time: { type: String },
       status: { type: String, default: "pending" },
+      feedback:{type: String}
      },
     ],
    },

@@ -18,7 +18,7 @@ const AttendanceTable = () => {
       setEmployeeData({ ...payload })
     }
     getEmployeeData()
-  })
+  }, [])
 
   function calculateWorkHoursWithDeduction(checkIn: string, checkOut: string): number {
     try {
@@ -40,7 +40,7 @@ const AttendanceTable = () => {
       return adjustedTimeDiffInHours;
     } catch (error: TODO) {
       console.error(`Error: ${error.message}`);
-      return NaN; 
+      return NaN;
     }
   }
 
@@ -68,7 +68,7 @@ const AttendanceTable = () => {
     setSelectedMonth(newMonth);
   };
 
-  return ( 
+  return (
     <div className="mt-2 mx-4 flex-grow">
       <div className='mt-20 text-center'>
         <label className="mr-2">Select Month:</label>

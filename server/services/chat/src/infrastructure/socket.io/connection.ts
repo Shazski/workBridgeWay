@@ -81,6 +81,7 @@ const connectSocketIo = (server: Server) => {
      roomCreater: ObjectId;
      roomJoiner: ObjectId;
      messageType?: "text" | "image" | "audio" | "video" | "file";
+     replyMessage: string | string[];
      recieverSeen?: boolean;
     }) => {
      let messageTypeText = messageData.message;

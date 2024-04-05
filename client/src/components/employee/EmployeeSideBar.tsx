@@ -58,16 +58,6 @@ const EmployeeSideBar = () => {
                                 <h1 className="hidden md:flex">Attendance</h1>
                             </div> </NavLink>
                     </div>
-
-                    {/* <div className='mt-3 md:ms-3 flex gap-3'>
-
-                        <NavLink to='/employee/leaves' className={({ isActive }) => {
-                            return `px-6 py-3 w-16 ms-7 md:ms-3 md:w-52 hover:text-lightgreen hover:bg-gray-200 rounded-md ${isActive ? "text-lightgreen bg-gray-200 rounded-md" : "text-gray-500"}`
-                        }}> <div className="flex gap-3">
-                                <SlCalender className="text-xl" />
-                                <h1 className="hidden md:flex">View Leaves</h1>
-                            </div> </NavLink>
-                    </div> */}
                     <div className="fixed bottom-10 w-full">
                         <div onClick={() => setIsModalOpen(true)} className="flex ms-9 items-center  justify-start relative cursor-pointer">
                             <div>
