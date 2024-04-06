@@ -121,10 +121,10 @@ const Dashboard = () => {
                                 <h1 className="text-xs">{formatAdjustedTimeToAMPM(sortedScheduleData?.[idx]?.time, 1)}</h1>
                             </div>
                         )}
-                        <div className="flex px-4 py-2 h-16 mt-2 ms-4 rounded-lg gap-x-5 ">
-                            <div className="pe-20 ps-5 bg-light-blue-50">
+                        <div className="flex px-4 py-2 h-16 mt-2 ms-4 rounded-lg gap-x-5 bg-light-blue-50 ">
+                            <div className="pe-20 ps-5">
                                 <h1 className="text-xs mt-2">Test Type: <span className="font-semibold"> {sortedScheduleData?.[idx]?.testType}</span> </h1>
-                                <h1 className="text-xs">RoomId: <span className="font-semibold"> {sortedScheduleData?.[idx]?.roomId}</span> </h1>
+                                <h1 className="text-xs mb-4 bg-light-blue-50">RoomId: <span className="font-semibold"> {sortedScheduleData?.[idx]?.roomId}</span> </h1>
                             </div>
                         </div>
                     </div>

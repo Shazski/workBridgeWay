@@ -64,21 +64,21 @@ const Login: FC = () => {
                 quantity: 1,
               },
               repulse: {
-                distance: 200,
+                distance: 5,
                 duration: 0.4,
               },
             },
           },
           particles: {
             color: {
-              value: "#20DC49",
+              value: "#197195",
             },
             links: {
-              color: "#20DC49",
+              color: "#197195",
               distance: 150,
               enable: true,
               opacity: 0.7,
-              width: 0.8,
+              width: 1,
             },
             move: {
               direction: "none",
@@ -95,10 +95,10 @@ const Login: FC = () => {
                 enable: true,
                 area: 800,
               },
-              value: 15,
+              value: 30,
             },
             opacity: {
-              value: 1.7,
+              value: 1,
             },
             shape: {
               type: "circle",
