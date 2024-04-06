@@ -353,7 +353,7 @@ const UserMessageForm = () => {
                     <div key={idx} className="flex justify-between items-center bg-white">
                       <div className='border-b-2 w-4/12 border-gray-300'>
                       </div>
-                      <h1 className="text-center px-4 py-3 bg-blue-gray-300 text-white rounded-full mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
+                      <h1 className="text-center px-4 py-3 bg-gray-600 text-white rounded-md mt-2">{format(new Date(message._id), 'EEEE ,MMMM dd yyyy')}</h1>
                       <div className='border-b-2 w-4/12  border-gray-300'>
                       </div>
                     </div>
@@ -369,6 +369,7 @@ const UserMessageForm = () => {
                           )}
                           <div className="">
                             <div className={`px-3.5 py-1.5 max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl -mt-5 rounded-b-2xl' : `bg-gray-200 rounded-e-xl rounded-b-xl ${idx === 0 || msg.senderId !== message.messagesByDate[idx - 1].senderId ? 'ms-2 mt-8' : 'ms-16 -mt-5'}`}`}>
+                              <h1 className="bg-gray-400 px-2 rounded-md w-full">{msg?.replyMessage}</h1>
                               {
                                 msg.messageType === "text" ? <>
                                   <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
@@ -557,26 +558,26 @@ const UserMessageForm = () => {
               }
             </Modal>
             <Modal isVisible={showVideoPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
-                {Array.isArray(showVideoPreview) ? (
-                  <Slider {...slickSettings}>
-                    {showVideoPreview.map((video, idx) => (
-                      <div key={idx}>
-                        <video controls src={video} className="w-full h-72 object-contain" />
-                      </div>
-                    ))}
-                  </Slider>
-                ) : (
-                  <video controls src={showVideoPreview} className="w-full h-72" />
-                )}
-                <h1 className="mb-4">
-                </h1>
-                {
-                  showSendBtn &&
-                  <>
-                    <button onClick={(e) => handleVideoUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
-                  </>
-                }
-              </Modal>
+              {Array.isArray(showVideoPreview) ? (
+                <Slider {...slickSettings}>
+                  {showVideoPreview.map((video, idx) => (
+                    <div key={idx}>
+                      <video controls src={video} className="w-full h-72 object-contain" />
+                    </div>
+                  ))}
+                </Slider>
+              ) : (
+                <video controls src={showVideoPreview} className="w-full h-72" />
+              )}
+              <h1 className="mb-4">
+              </h1>
+              {
+                showSendBtn &&
+                <>
+                  <button onClick={(e) => handleVideoUpload(e)} className="bg-lightgreen font-semibold text-white px-3 py-2 rounded-md mt-6">Send</button>
+                </>
+              }
+            </Modal>
             <Modal isVisible={showDocumentPreviewModal} onClose={() => setShowVideoPreviewModal(false)}>
               <div className="flex flex-col items-center">
                 <iframe width={"300px"} height={"400px"} src={showDocumentPreview}></iframe>

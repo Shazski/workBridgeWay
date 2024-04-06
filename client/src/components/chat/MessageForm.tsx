@@ -42,6 +42,8 @@ const MessageForm = () => {
   const [showImagesPreview, setShowImagesPreview] = useState<string | string[]>("");
   const [showVideoPreview, setShowVideoPreview] = useState<string | string[]>("");
   const [showDocumentPreview, setShowDocumentPreview] = useState<string>("");
+  const [showReplyMessage, setShowReplyMessage] = useState<boolean>(false);
+  const [replyMessage, setReplyMessage] = useState<string>("");
   const [imageFile, setImageFile] = useState<File[]>([]);
   const [videoFile, setVideoFile] = useState<File[]>([]);
   const [documentFile, setDocumentFile] = useState<File | null>(null);
@@ -65,11 +67,11 @@ const MessageForm = () => {
   const videoRef = useRef<TODO>(null)
   const documentRef = useRef<TODO>(null)
 
-  const sendMessage = (e: FormEvent<HTMLFormElement>, messageType?: string, msg?: string | string[]) => {
+  const sendMessage = (e: FormEvent<HTMLFormElement>, messageType?: string, msg?: string | string[], replyMessage?: string | string[]) => {
     e.preventDefault();
     setShowEmoji(false);
     setReRender && setReRender(!reRender)
-    socket?.emit("send-message", { roomId: currentRoom, roomCreater: user._id, senderId: user._id, message: msg, messageType: messageType, roomJoiner: chatUserId }); const updatedChatUserList = chatUserList?.map(chatUser => {
+    socket?.emit("send-message", { roomId: currentRoom, roomCreater: user._id, senderId: user._id, message: msg, messageType: messageType, roomJoiner: chatUserId, replyMessage: replyMessage }); const updatedChatUserList = chatUserList?.map(chatUser => {
       if (chatUser.roomJoiner === chatUserId) {
         return { ...chatUser, lastMessage: message, lastMessageTime: new Date() };
       }
@@ -77,6 +79,7 @@ const MessageForm = () => {
     }).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime());
 
     dispatch(updateChatUserList(updatedChatUserList));
+    setShowReplyMessage(false)
     setMessage("");
   };
 
@@ -309,6 +312,8 @@ const MessageForm = () => {
     })
   }, [socket])
 
+
+
   return (
     <>
       {
@@ -356,6 +361,7 @@ const MessageForm = () => {
                             )}
                             <div className="">
                               <div className={`px-3.5 py-1.5 shadow-md  max-w-xs mb-4 ${msg.senderId === user._id ? 'me-1 bg-lightgreen rounded-s-xl -mt-5 rounded-b-2xl' : `bg-gray-200 rounded-e-xl rounded-b-xl ${idx === 0 || msg.senderId !== message.messagesByDate[idx - 1].senderId ? 'ms-2 mt-8' : 'ms-16 -mt-5'}`}`}>
+                                <h1 className="bg-gray-400 px-2 rounded-md w-full">{msg?.replyMessage}</h1>
                                 {
                                   msg.messageType === "text" ? <>
                                     <h1 className={`break-all poppins text-sm ${msg.senderId === user._id ? 'text-white' : ''}`}>{msg?.message}</h1>
@@ -487,7 +493,7 @@ const MessageForm = () => {
                                 </div>
                               </div>
                             </div>
-                            <h1 className="ms-4 cursor-pointer">:</h1>
+                            <h1 onClick={() => { setShowReplyMessage(true), setReplyMessage(msg?.message) }} className="ms-4 cursor-pointer">:</h1>
                           </div>
                         </>
                       ))}
@@ -606,6 +612,42 @@ const MessageForm = () => {
                   }
                 </div>
               </div>
+              <Modal isVisible={showReplyMessage} onClose={() => setShowReplyMessage(false)}>
+                <div className=" relative ms-5 w-7/12">
+                  <EmojiPicker className=" bottom-2 ms-[460px]" height={"410px"} lazyLoadEmojis width={"350px"} open={showEmoji} reactionsDefaultOpen={false} onEmojiClick={(data) => setMessage((prev) => prev + data.emoji)} />
+                  <form action="" onSubmit={(e) => sendMessage(e, "text", message, replyMessage)}>
+                    <div className="flex gap-x-3">
+                      <FaPaperclip onClick={() => setShowMediaModal(!showMediaModal)} className="absolute left-2 bottom-32 text-gray-600 text-lg top-2.5 cursor-pointer" />
+                      <input value={message} onChange={(e) => handleTyping(e, user._id)} type="text" name="message" className="text-sm bg-blue-50 py-2 w-full outline-none text-gray-600 px-8 border border-gray-400 rounded-xl" placeholder="Message..." />
+                      <MdOutlineEmojiEmotions onClick={() => setShowEmoji(!showEmoji)} className="text-2xl cursor-pointer text-gray-700 absolute right-28 bottom-2" />
+                      <CiMicrophoneOn onMouseDown={handleRecord} onMouseLeave={stopRec} onMouseUp={stopRec} className={`text-2xl ${isRecording ? 'animate-bounce' : ''} cursor-pointer text-gray-700 absolute right-20 bottom-2`} />
+                      <button className={`bg-lightgreen px-3 pb-2  cursor-pointer py-2 w-min rounded-lg disabled:opacity-70 disabled:cursor-not-allowed`} disabled={message === ""}>
+                        <FiSend className="  text-xl text-white me-2" />
+                      </button>
+                    </div>
+                  </form>
+                  <div className={`absolute duration-300 transition-all ease-in-out ${showMediaModal ? 'w-52 h-24' : 'w-0 h-0'} bottom-12 rounded-e-xl rounded-t-xl bg-lightgreen ms-6`}>
+                    {
+                      showMediaModal && <>
+                        <div className="flex flex-wrap absolute gap-x-5 mt-6 ms-9 text-white">
+                          <div>
+                            <CiImageOn className="text-3xl cursor-pointer" onClick={() => { imageRef.current.click(), setShowMediaModal(false) }} />
+                            <label className="text-xs" htmlFor="">photos</label>
+                          </div>
+                          <div>
+                            <HiOutlineVideoCamera className="text-3xl cursor-pointer" onClick={() => { videoRef.current.click(), setShowMediaModal(false) }} />
+                            <label className="text-xs" htmlFor="">video</label>
+                          </div>
+                          <div>
+                            <IoDocumentOutline className="text-3xl cursor-pointer" onClick={() => { documentRef.current.click(), setShowMediaModal(false) }} />
+                            <label className="text-xs" htmlFor="">Files</label>
+                          </div>
+                        </div>
+                      </>
+                    }
+                  </div>
+                </div>
+              </Modal>
             </div>
           </>
         ) : (

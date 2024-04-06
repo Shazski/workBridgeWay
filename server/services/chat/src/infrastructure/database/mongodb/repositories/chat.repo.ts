@@ -68,6 +68,7 @@ export const getLastMessagesFromRoom = async (room: string) => {
      recieverSeen: 1,
      createdAt: 1,
      roomId: 1,
+     replyMessage: 1,
     },
    },
    {

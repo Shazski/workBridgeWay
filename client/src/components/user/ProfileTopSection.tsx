@@ -28,7 +28,7 @@ const ProfileTopSection = ({ user }) => {
     return (
         <div className='mt-5 ms-4'>
             <div className="lg:flex gap-4">
-                <div className="w-11/12  border shadow-md lg:h-60 lg:w-7/12">
+                <div className="w-11/12 rounded-lg border shadow-md lg:h-60 lg:w-7/12">
                     <div className='m-2 relative'>
                         <img src={PROFILECOVERPIC} alt="" className='lg:w-[750px] xl:w-[800px] lg:h-32 2xl:w-[850px]' />
                         <Circle percent={user?.profileScore} gapPosition="bottom" className='absolute w-32 z-10 top-20 left-6' trailColor='#0000' strokeWidth={5} strokeColor="#20b2aa   " />
@@ -42,7 +42,7 @@ const ProfileTopSection = ({ user }) => {
                         <Link to={'/user/settings/edit-profile'} className='text-sm  font-semibold px-2 lg:py-3 lg:px-6 text-lightgreen py-1 border border-gray-200 '>Edit Profile</Link>
                     </div>
                 </div>
-                <div className="w-9/12 sm:6/12 lg:w-2/6 shadow-md border h-48 lg:h-60 mt-2 lg:mt-0">
+                <div className="w-9/12 rounded-lg sm:6/12 lg:w-2/6 shadow-md border h-48 lg:h-60 mt-2 lg:mt-0">
                     <div className='m-2 '>
                         <div className="flex justify-between">
                             <h1 className='font-semibold text-blue-gray-800 mt-0.5'>Additonal Details</h1>
