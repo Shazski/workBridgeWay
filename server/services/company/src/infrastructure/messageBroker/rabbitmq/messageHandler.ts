@@ -49,14 +49,15 @@ export default class MessageHandler {
     response = await company_repo.findCompanyByIds(data);
     break;
    case "updatePassOrFail":
-    console.log(data,"data here in message handler==>>>")
     response = await job_repo.updatePassOrFail(data);
+    break;
+   case "confirmSlot":
+    response = await job_repo.confirmSlotForUser(data);
     break;
    default:
     response = "Request-key notfound";
     break;
   }
-
   await rabbitMQClient.Responder(response, correlationId, replyTo);
  }
 }

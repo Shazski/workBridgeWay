@@ -699,23 +699,63 @@ export const getEmployeeSchedules = async (
  }
 };
 export const updatePassOrFail = async (data: {
-  status: string;
-  scheduleId: ObjectId;
+ status: string;
+ scheduleId: ObjectId;
+}): Promise<any> => {
+ try {
+  const updatedJobs = await JobSchema.findOneAndUpdate(
+   { "applicants.schedule._id": data.scheduleId },
+   { $set: { "applicants.$[].schedule.$[elem].status": data.status } },
+   {
+    new: true,
+    arrayFilters: [{ "elem._id": data.scheduleId }],
+   }
+  );
+  if (!updatedJobs) return false;
+
+  return updatedJobs as any;
+ } catch (error) {
+  console.log(error, "<< Something went wrong in updatePassOrFail repo >>");
+  return false;
+ }
+};
+
+export const confirmSlotForUser = async (data: {
+  date: string;
+  time: string;
+  userId: ObjectId;
+  jobId: ObjectId;
+  scheduleId: string;
  }): Promise<any> => {
   try {
    const updatedJobs = await JobSchema.findOneAndUpdate(
-    { "applicants.schedule._id": data.scheduleId },
-    { $set: { "applicants.$[].schedule.$[elem].status": data.status } },
+    { 
+     _id: data.jobId, 
+     "applicants.applicantId": data.userId,
+     "applicants.schedule._id": data.scheduleId
+    },
     {
+     $set: { 
+      "applicants.$[applicant].schedule.$[schedule].date": data.date,
+      "applicants.$[applicant].schedule.$[schedule].time": data.time
+     },
+    },
+    { 
      new: true,
-     arrayFilters: [{ "elem._id": data.scheduleId }],
+     arrayFilters: [
+      { "applicant.applicantId": data.userId },
+      { "schedule._id": data.scheduleId }
+     ]
     }
-   );
-   if (!updatedJobs) return false;
+   ).populate({
+    path: "companyId",
+    select: "companyLogo name headOffice _id",
+   });
  
    return updatedJobs as any;
   } catch (error) {
-   console.log(error, "<< Something went wrong in updatePassOrFail repo >>");
+   console.error("Error updating job document:", error);
    return false;
   }
  };
+ 

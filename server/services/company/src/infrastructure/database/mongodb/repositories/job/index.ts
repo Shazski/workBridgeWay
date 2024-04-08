@@ -18,7 +18,8 @@ import {
  getAllApplicantsSchedule,
  getAllJobsForScheduleMail,
  getEmployeeSchedules,
- updatePassOrFail
+ updatePassOrFail,
+ confirmSlotForUser,
 } from "./jobRepo";
 
 export default {
@@ -41,5 +42,6 @@ export default {
  getAllApplicantsSchedule,
  getAllJobsForScheduleMail,
  getEmployeeSchedules,
- updatePassOrFail
+ updatePassOrFail,
+ confirmSlotForUser,
 };

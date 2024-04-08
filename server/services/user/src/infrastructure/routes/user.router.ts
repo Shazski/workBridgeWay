@@ -26,6 +26,7 @@ export = (dependencies: IDependenciesData) => {
   setUserFmcToken,
   getCompanyById,
   getCompanyDetailsByIds,
+  confirmSlot,
  } = userController(dependencies);
  const router = express.Router();
 
@@ -117,5 +118,6 @@ export = (dependencies: IDependenciesData) => {
   checkUserBlockOrNot,
   getCompanyDetailsByIds
  );
+ router.get("/confirmSlot/:date/:time/:userId/:scheduleId/:jobId", confirmSlot);
  return router;
 };

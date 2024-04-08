@@ -17,6 +17,7 @@ import getPreferredJobs_controller from "./getPreferredJobs_controller";
 import setUserFmcToken_controller from "./setUserFmcToken_controller";
 import getCompanyById_controller from "./getCompanyById_controller";
 import getCompanyDetailsByIds_controller from "./getCompanyDetailsByIds_controller";
+import confirmSlot_controller from "./confirmSlot_controller";
 export = (dependencies: IDependenciesData) => {
  return {
   editUser: editUser_controller(dependencies),
@@ -34,8 +35,9 @@ export = (dependencies: IDependenciesData) => {
   getUserApplications: getUserApplications_controller(dependencies),
   setUserPreferredCategory: setUserPreferredCategory_controller(dependencies),
   getPreferredJobs: getPreferredJobs_controller(dependencies),
-  setUserFmcToken:setUserFmcToken_controller(dependencies),
-  getCompanyById:getCompanyById_controller(dependencies),
-  getCompanyDetailsByIds:getCompanyDetailsByIds_controller(dependencies)
+  setUserFmcToken: setUserFmcToken_controller(dependencies),
+  getCompanyById: getCompanyById_controller(dependencies),
+  getCompanyDetailsByIds: getCompanyDetailsByIds_controller(dependencies),
+  confirmSlot: confirmSlot_controller(dependencies),
  };
 };

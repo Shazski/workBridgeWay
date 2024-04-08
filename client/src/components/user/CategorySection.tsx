@@ -9,11 +9,14 @@ import { getCategory } from "../../redux/actions/company/CompanyActions";
 const CategorySection = () => {
     const { jobsCount } = useSelector((state: RootState) => state.job)
     const { category } = useSelector((state: RootState) => state.company)
+    const { user } = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     useEffect(() => {
-        dispatch(getAllJobs(""))
-        dispatch(getCategory())
+        if (user) {
+            dispatch(getAllJobs(""))
+            dispatch(getCategory())
+        }
     }, [])
 
     return (

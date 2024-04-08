@@ -7,8 +7,10 @@ import { getUserpreferredJob } from "../../redux/actions/user/userActions"
 const PreferredJobs = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { userPreferredJobs } = useSelector((state: RootState) => state.job)
+    const { user } = useSelector((state: RootState) => state.user)
     useEffect(() => {
-        dispatch(getUserpreferredJob())
+        user &&
+            dispatch(getUserpreferredJob())
     }, [])
 
     return (

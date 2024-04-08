@@ -19,7 +19,9 @@ const ApplicantInterviewSchedule = () => {
   const [refetch, setRefetch] = useState<boolean>(false);
   const [scheduleId, setScheduleId] = useState<string>("");
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
-  const [scheduleDateAndTime, setScheduleDateAndTime] = useState<string>("");
+  const [scheduleDateAndTime1, setScheduleDateAndTime1] = useState<string>("");
+  const [scheduleDateAndTime2, setScheduleDateAndTime2] = useState<string>("");
+  const [scheduleDateAndTime3, setScheduleDateAndTime3] = useState<string>("");
 
   const { id, userId } = useParams()
   const dispatch = useDispatch<AppDispatch>()
@@ -53,8 +55,12 @@ const ApplicantInterviewSchedule = () => {
       jobId: id!,
       scheduleData: {
         testType: testType,
-        date: scheduleDateAndTime.split('T')[0],
-        time: scheduleDateAndTime.split('T')[1],
+        date: scheduleDateAndTime1.split('T')[0],
+        time: scheduleDateAndTime1.split('T')[1],
+        date2: scheduleDateAndTime2.split('T')[0],
+        time2: scheduleDateAndTime2.split('T')[1],
+        date3: scheduleDateAndTime3.split('T')[0],
+        time3: scheduleDateAndTime3.split('T')[1],
         employeeId: employeeId,
         roomId: uuidV4()
       }
@@ -115,7 +121,7 @@ const ApplicantInterviewSchedule = () => {
               </div>
               <div>
                 {
-                  schedule?.status === "pending" && 
+                  schedule?.status === "pending" &&
                   <GiCancel onClick={() => { setIsConfirmModalOpen(true), setScheduleId(schedule?._id) }} className='text-xl text-red-600 mt-5 me-12 cursor-pointer rounded-md ' />
                 }
               </div>
@@ -142,8 +148,16 @@ const ApplicantInterviewSchedule = () => {
               </select>
             </div>
             <div className='mt-4'>
-              <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Date and Time</label>
-              <input onChange={(e) => setScheduleDateAndTime(e.target.value)} required type="datetime-local" className='border rounded-md py-2 px-2 w-full outline-none' />
+              <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Date and Time 1</label>
+              <input onChange={(e) => setScheduleDateAndTime1(e.target.value)} required type="datetime-local" className='border rounded-md py-2 px-2 w-full outline-none' />
+            </div>
+            <div className='mt-4'>
+              <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Date and Time 2</label>
+              <input onChange={(e) => setScheduleDateAndTime2(e.target.value)} required type="datetime-local" className='border rounded-md py-2 px-2 w-full outline-none' />
+            </div>
+            <div className='mt-4'>
+              <label htmlFor="" className='text-gray-600 text-sm font-semibold'>Select Date and Time 3</label>
+              <input onChange={(e) => setScheduleDateAndTime3(e.target.value)} required type="datetime-local" className='border rounded-md py-2 px-2 w-full outline-none' />
             </div>
             <div className='mt-4 flex justify-center'>
               <button className='bg-lightgreen text-white font-semibold text-center px-3 py-2 rounded-md'>Schedule</button>
