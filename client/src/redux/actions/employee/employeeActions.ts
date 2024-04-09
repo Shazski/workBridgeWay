@@ -55,13 +55,17 @@ export const getEmployeeDetails = createAsyncThunk(
 export const updatePassOrFail = createAsyncThunk(
  "user/updatePassOrFail",
  async (
-  { status, scheduleId }: { status: string; scheduleId: string },
+  {
+   status,
+   scheduleId,
+   feedback,
+  }: { status: string; scheduleId: string; feedback: string },
   { rejectWithValue }
  ) => {
   try {
    const { data } = await axios.patch(
     `${EMPLOYEE_BASE_URL}/update-pass-or-fail`,
-    { status: status, scheduleId: scheduleId },
+    { status: status, scheduleId: scheduleId, feedback: feedback },
     config
    );
    return data;

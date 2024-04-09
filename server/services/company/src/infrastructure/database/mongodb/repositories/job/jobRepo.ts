@@ -699,63 +699,69 @@ export const getEmployeeSchedules = async (
  }
 };
 export const updatePassOrFail = async (data: {
- status: string;
- scheduleId: ObjectId;
-}): Promise<any> => {
- try {
-  const updatedJobs = await JobSchema.findOneAndUpdate(
-   { "applicants.schedule._id": data.scheduleId },
-   { $set: { "applicants.$[].schedule.$[elem].status": data.status } },
-   {
-    new: true,
-    arrayFilters: [{ "elem._id": data.scheduleId }],
-   }
-  );
-  if (!updatedJobs) return false;
-
-  return updatedJobs as any;
- } catch (error) {
-  console.log(error, "<< Something went wrong in updatePassOrFail repo >>");
-  return false;
- }
-};
-
-export const confirmSlotForUser = async (data: {
-  date: string;
-  time: string;
-  userId: ObjectId;
-  jobId: ObjectId;
-  scheduleId: string;
+  status: string;
+  scheduleId: ObjectId;
+  feedback: string;
  }): Promise<any> => {
   try {
    const updatedJobs = await JobSchema.findOneAndUpdate(
-    { 
-     _id: data.jobId, 
-     "applicants.applicantId": data.userId,
-     "applicants.schedule._id": data.scheduleId
-    },
+    { "applicants.schedule._id": data.scheduleId },
     {
-     $set: { 
-      "applicants.$[applicant].schedule.$[schedule].date": data.date,
-      "applicants.$[applicant].schedule.$[schedule].time": data.time
+     $set: {
+      "applicants.$[].schedule.$[elem].status": data.status,
+      "applicants.$[].schedule.$[elem].feedback": data.feedback,
      },
     },
-    { 
+    {
      new: true,
-     arrayFilters: [
-      { "applicant.applicantId": data.userId },
-      { "schedule._id": data.scheduleId }
-     ]
+     arrayFilters: [{ "elem._id": data.scheduleId }],
     }
-   ).populate({
-    path: "companyId",
-    select: "companyLogo name headOffice _id",
-   });
+   );
+   if (!updatedJobs) return false;
  
    return updatedJobs as any;
   } catch (error) {
-   console.error("Error updating job document:", error);
+   console.log(error, "<< Something went wrong in updatePassOrFail repo >>");
    return false;
   }
  };
  
+
+export const confirmSlotForUser = async (data: {
+ date: string;
+ time: string;
+ userId: ObjectId;
+ jobId: ObjectId;
+ scheduleId: string;
+}): Promise<any> => {
+ try {
+  const updatedJobs = await JobSchema.findOneAndUpdate(
+   {
+    _id: data.jobId,
+    "applicants.applicantId": data.userId,
+    "applicants.schedule._id": data.scheduleId,
+   },
+   {
+    $set: {
+     "applicants.$[applicant].schedule.$[schedule].date": data.date,
+     "applicants.$[applicant].schedule.$[schedule].time": data.time,
+    },
+   },
+   {
+    new: true,
+    arrayFilters: [
+     { "applicant.applicantId": data.userId },
+     { "schedule._id": data.scheduleId },
+    ],
+   }
+  ).populate({
+   path: "companyId",
+   select: "companyLogo name headOffice _id",
+  });
+
+  return updatedJobs as any;
+ } catch (error) {
+  console.error("Error updating job document:", error);
+  return false;
+ }
+};

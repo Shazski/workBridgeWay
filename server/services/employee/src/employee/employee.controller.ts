@@ -65,11 +65,20 @@ export class EmployeeController {
 
   @Patch('/update-pass-or-fail')
   async updatePassOrFail(
-    @Body() { status, scheduleId }: { status: string; scheduleId: string },
+    @Body()
+    {
+      status,
+      scheduleId,
+      feedback,
+    }: {
+      status: string;
+      scheduleId: string;
+      feedback: string;
+    },
   ) {
     const data = await this.rabbitMQService.sendMessage(
       'company_queue',
-      JSON.stringify({ status, scheduleId }),
+      JSON.stringify({ status, scheduleId, feedback }),
       'updatePassOrFail',
     );
     if (!data) throw new NotFoundException('status not updated');

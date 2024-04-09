@@ -99,7 +99,7 @@ const ApplicantInterviewSchedule = () => {
         </div>
       </div>
       {
-        ApplicantData?.schedule?.map((schedule: { testType: string, date: string, time: string, employeeId: string, _id: string, roomId: string, status: string }, idx: number) => (
+        ApplicantData?.schedule?.map((schedule: { testType: string, date: string, time: string, employeeId: string, _id: string, roomId: string, status: string, feedback: string }, idx: number) => (
           <>
             <div key={idx} className="border mt-5 flex justify-between flex-wrap ">
               <div className='ms-3 mt-4 flex gap-x-3'>
@@ -118,6 +118,7 @@ const ApplicantInterviewSchedule = () => {
                 </div>
                 <h1 className='text-xs'>RoomId : {schedule?.roomId}<span></span> </h1>
                 <h1 className='text-xs'>Result : {schedule?.status}<span></span> </h1>
+                <h1 className='text-xs break-all w-96'>feedback : {schedule?.feedback}<span></span> </h1>
               </div>
               <div>
                 {

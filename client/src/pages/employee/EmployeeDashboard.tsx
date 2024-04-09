@@ -2,11 +2,12 @@ import { MdKeyboardArrowLeft } from "react-icons/md";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { getAllUserDetails, getEmployeeSchedules, updatePassOrFail } from "../../redux/actions/employee/employeeActions";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { TODO, override } from "../../config/constants";
 import JoinRoom from "../chat/JoinRoom";
+import Modal from "../../components/Modal";
 const EmployeeDashboard = () => {
 
   const { user } = useSelector((state: RootState) => state.user)
@@ -15,6 +16,11 @@ const EmployeeDashboard = () => {
 
   const [idx, setIdx] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isFeedbackModal, setIsFeedbackModal] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<string>("");
+  const [status, setstatus] = useState<string>("");
+  const [scheduleId, setScheduleId] = useState<string>("");
+
   const [refetch, setRefetch] = useState<boolean>(false);
   const [sortedScheduleData, setSortedScheduleData] = useState<TODO>([]);
 
@@ -77,9 +83,17 @@ const EmployeeDashboard = () => {
     setIsModalOpen(true)
   }
 
-  const handlePassOrFail = async (status: string, scheduleId: string) => {
-    await dispatch(updatePassOrFail({ status, scheduleId }))
+  const handlePassOrFail = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await dispatch(updatePassOrFail({ status, scheduleId, feedback }))
     setRefetch(!refetch)
+    setIsFeedbackModal(false)
+  }
+
+  const handleModal = (status: string, scheduleId: string) => {
+    setstatus(status)
+    setScheduleId(scheduleId)
+    setIsFeedbackModal(true)
   }
 
   return (
@@ -165,8 +179,8 @@ const EmployeeDashboard = () => {
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500">{formatTimeToAMPM(schedule?.time)}</h1></td>
                               <td className="whitespace-nowrap px-6 py-4"><h1 className="text-gray-500 ">{schedule?.testType}</h1></td>
                               <td className="whitespace-nowrap px-6 py-4">
-                                <h1 onClick={() => handlePassOrFail("pass", schedule?._id)} className="text-white font-bold bg-green-600 inline px-2 py-1 cursor-pointer rounded-md">Pass</h1>
-                                <h1 onClick={() => handlePassOrFail("fail", schedule?._id)} className="text-white font-bold bg-red-600 py-1 px-2 inline rounded-md ms-1 cursor-pointer">Fail</h1></td>
+                                <h1 onClick={() => handleModal("pass", schedule?._id)} className="text-white font-bold bg-green-600 inline px-2 py-1 cursor-pointer rounded-md">Pass</h1>
+                                <h1 onClick={() => handleModal("fail", schedule?._id)} className="text-white font-bold bg-red-600 py-1 px-2 inline rounded-md ms-1 cursor-pointer">Fail</h1></td>
                             </tr>
                           </>
                         ))
@@ -182,6 +196,13 @@ const EmployeeDashboard = () => {
             </div>
             <div>
             </div>
+            <Modal isVisible={isFeedbackModal} onClose={() => setIsFeedbackModal(false)}>
+              <h1 className="text-gray-600 font-semibold">Interview Feedback</h1>
+              <form action="" onSubmit={handlePassOrFail}>
+                <textarea required className="border rounded-md ps-3 border-gray-400 outline-blue-500" cols={65} rows={4} onChange={(e) => setFeedback(e.target.value)} name="feedback" ></textarea>
+                <button className="border bg-lightgreen px-3 py-2 rounded-md text-white">Submit</button>
+              </form>
+            </Modal>
           </div>
         </div>
       </div>
