@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import { IChatroom } from "../../../../domain/entity";
 import ChatSchema from "../schemas/chatRoomSchema";
 import { Message } from "../schemas/messagesSchema";
@@ -132,11 +132,14 @@ export const updateLastMessage = async (messageData: {
 
 export const makeMessageReceiverSeen = async (
  roomId: string,
- senderId: ObjectId
+ senderId: string
 ) => {
  try {
   const updatedMessage = await Message.updateMany(
-   { roomId: roomId, senderId: { $ne: senderId } },
+   {
+    roomId: roomId,
+    senderId: { $ne: String(senderId) },
+   },
    {
     $set: { recieverSeen: true },
    }
@@ -147,6 +150,7 @@ export const makeMessageReceiverSeen = async (
   throw error;
  }
 };
+
 export const getUnreadMessages = async () => {
  try {
   const updatedMessage = await Message.find({ recieverSeen: false });
@@ -156,11 +160,7 @@ export const getUnreadMessages = async () => {
   throw error;
  }
 };
-export const getCompanyMessageCount = async (companyId: ObjectId) => {
- console.log(
-  "🚀 ~ file: chat.repo.ts:159 ~ getCompanyMessageCount ~ companyId:",
-  companyId
- );
+export const getCompanyMessageCount = async (companyId: string) => {
  try {
   const messageCount = await Message.find({
    senderId: {

@@ -5,8 +5,9 @@
  "main": "index.js",
  "scripts": {
   "test": "echo \"Error: no test specified\" && exit 1",
-  "build": "tsc --watch",
+  "build": "tsc",
   "dev": "nodemon dist/index.js",
+  "start": "node ./dist/index.js",
   "start:dev": "concurrently --kill-others-on-fail \"npm run build\" \"npm run dev\""
  },
  "keywords": [],

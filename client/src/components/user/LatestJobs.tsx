@@ -1,5 +1,4 @@
 import LOGO from "../../assets/images/Logo.png"
-import JobCategogyBtn from "./JobCategogyBtn"
 const LatestJobs = () => {
     return (
         <div className="ms-14 md:ms-36">

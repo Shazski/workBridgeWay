@@ -6,6 +6,11 @@ services:
     ports:
      - "5672:5672"
      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 30s
+      retries: 5  
     environment:
       RABBITMQ_DEFAULT_USERNAME: admin 
       RABBITMQ_DEFAULT_PASSWORD: password
@@ -16,5 +21,27 @@ services:
     ports:
      - "6379:6379"
      - "8001:8001"
+
+  workbridgewayclient:
+    image: 'sharoonkp/workbridgewayclient:latest'
+    container_name: workbridgewayclient
+    ports:
+     - "5173:5173"
      
+  workbridgewayauth:
+    image: 'sharoonkp/workbridgewayauth:latest'
+    container_name: workbridgewayauth
+    ports:
+     - "3000:3000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy 
+    environment:
+      PORT: 3000
+      ENV: production
+      MONGO_URL: mongodb+srv://sharoonkp:test123@cluster0.9aonsgn.mongodb.net/workBridgeWay-auth?retryWrites=true&w=majority
+      RABBITMQ_URL: amqp://rabbitmq:5672
+      MAILER_PASSWORD: iqtyaldszzgoweap
+      MAILER_EMAIL: ecommerce1419@gmail.com
+      JWT_SECRET: jsonwebsecret 
           

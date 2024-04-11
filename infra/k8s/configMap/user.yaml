@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-config
+  labels:
+    app: workbridgewayuser
+data:
+  PORT : "3001"
+  ENV : "production"
+  RABBITMQ_URL : "amqps://zyppsoza:hej41p9ErgF0o1rT1VV-zd8gN_Gk0s5e@fly.rmq.cloudamqp.com/zyppsoza"
+  MONGO_URL : "mongodb+srv://sharoonkp:test123@cluster0.9aonsgn.mongodb.net/workbridgeway-user?retryWrites=true&w=majority"
+  MAILER_PASSWORD : "iqtyaldszzgoweap"
+  MAILER_EMAIL : " ecommerce1419@gmail.com"
+  JWT_SECRET : "jsonwebsecret"
+  API_SECRET : "g7wriONkk9DShkOPRuEMxR0lnm0"
+  API_KEY : "887852491444688"
+  CLOUD_NAME : "dvjggxcc1"

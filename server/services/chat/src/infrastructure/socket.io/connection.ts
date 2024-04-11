@@ -36,7 +36,7 @@ const connectSocketIo = (server: Server) => {
     }
    });
 
-   socket.on("join-room", async (room: string, senderId: ObjectId) => {
+   socket.on("join-room", async (room: string, senderId: string) => {
     socket.join(room);
     await makeMessageReceiverSeen(room, senderId);
     const roomMessages = await getLastMessagesFromRoom(room);
@@ -67,7 +67,7 @@ const connectSocketIo = (server: Server) => {
     });
    });
 
-   socket.on("get-company-message", async (companyId) => {
+   socket.on("get-company-message", async (companyId: string) => {
     const count = await getCompanyMessageCount(companyId);
     socket.emit("company-messages-count", count);
    });

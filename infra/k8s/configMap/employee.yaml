@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: employee-config
+  labels:
+    app: workbridgewayemployee
+data:
+  JWT_SECRET: jsonwebsecret

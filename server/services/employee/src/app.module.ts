@@ -8,7 +8,9 @@ import { CronjobModule } from './cronjob/cronjob.module';
 @Module({
   imports: [
     EmployeeModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/workBridgeWay-employee'),
+    MongooseModule.forRoot(
+      'mongodb+srv://sharoonkp:test123@cluster0.9aonsgn.mongodb.net/workbridgeway-employee?retryWrites=true&w=majority',
+    ),
     ConfigModule.forRoot({
       isGlobal: true,
     }),

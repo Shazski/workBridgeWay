@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+  labels:
+    app: client
+data:
+  VITE_REACT_APP_FIRE_BASE_API_KEY: AIzaSyCg5SEoAYIt7hpRxFmSxYW5z2mITvLzG9s
+  VITE_REACT_APP_SOCKET_URL: https://workbridgeway.webhobecoshop.shop

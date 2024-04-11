@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { DependenciesData } from "../../../application/interfaces/IDependencies";
 import { JWT_SECRET } from "../../../config";
 import { ErrorResponse, generateToken } from "work-bridge-way-common";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { cookieConfig } from "../../../utils/constants/constant";
 import rabbitmqConfig from "../../../infrastructure/messageBroker/rabbitmq/rabbitmq.config";
 export = (dependencies: DependenciesData) => {

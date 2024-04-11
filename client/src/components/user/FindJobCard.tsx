@@ -15,7 +15,7 @@ const FindJobCard = ({ showCatTag = true, showApplied = true, jobs }: { showCatT
 	const navigate = useNavigate()
 	const resumeRef = useRef<TODO>(null)
 
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [_, setIsLoading] = useState<boolean>(false);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [showResumeUpload, setShowResumeUpload] = useState<boolean>(false);
 	const [pdfPreview, setPdfPreview] = useState<string>("");

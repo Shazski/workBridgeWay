@@ -10,7 +10,7 @@ const WaitingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<ICompanyData | null>(null);
   const dispatch = useDispatch<AppDispatch>()
-  const [reApplied, setReApplied] = useState<number>(0)
+  const [_, setReApplied] = useState<number>(0)
   const { user } = useSelector((state: RootState) => state.user)
 
   const { socket } = useContext(SocketContext) || {}

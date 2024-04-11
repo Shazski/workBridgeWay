@@ -3,14 +3,11 @@ import { useSelector } from "react-redux";
 import io, { Socket } from "socket.io-client";
 import { RootState } from "../redux/store";
 import { TODO } from "../config/constants";
-import Peer from "peerjs";
 
 const SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL;
-import { v4 as uuidV4 } from "uuid"
 
 export interface SocketContextType {
   socket: Socket;
-  me: Peer | null;
   message: string | null;
   setMessage: (message: string) => void;
   currentRoom: string;
@@ -21,7 +18,6 @@ export interface SocketContextType {
   setOnlineUsers: (users: { userId: string; socketId: string }[]) => void;
   roomMessages: TODO[],
   setRoomMessages: (messages: TODO) => void;
-  stream: MediaStream | null
 }
 interface SocketProviderProps {
   children: ReactNode;
@@ -32,8 +28,6 @@ export const socket = io(SOCKET_URL, { transports: ["websocket", "polling"] });
 
 
 export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
-  const [me, setMe] = useState<Peer | null>(null)
-  const [stream, setStream] = useState<MediaStream | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [currentRoom, setCurrentRoom] = useState<string>("");
   const [reRender, setReRender] = useState<boolean>(false);
@@ -41,7 +35,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [roomMessages, setRoomMessages] = useState<TODO>([])
   const contextValue: SocketContextType = {
     socket,
-    me,
     message,
     setMessage,
     currentRoom,
@@ -52,25 +45,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     setRoomMessages,
     reRender,
     setReRender,
-    stream
   };
   const { user } = useSelector((state: RootState) => state.user)
-
-
-  // useEffect(() => {
-  //   const meId = uuidV4()
-  //   const peer = new Peer(meId)
-  //   setMe(peer)
-
-  //   try {
-  //     navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-  //       setStream(stream)
-  //     })
-  //   } catch (error) {
-  //     console.log("🚀 ~ file: SocketContext.tsx:69 ~ useEffect ~ error:", error)
-  //   }
-  // }, [])
-
 
   useEffect(() => {
     if (user && socket) {
@@ -85,23 +61,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
       });
     }
   }, [user, socket]);
-
-  // useEffect(() => {
-  //   if (!me) return
-  //   if (!stream) return
-
-  //   socket.on("user-joined", ({ peerId }) => {
-  //     const call = me.call(peerId, stream)
-  //     call.on("stream", (peerStream) => {
-
-  //     })
-  //   })
-
-  //   me.on("call", (call) => {
-  //     call.answer(stream)
-  //   })
-  // }, [me, stream])
-
 
 
   return (

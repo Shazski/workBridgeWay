@@ -26,7 +26,7 @@ export default class Consumer {
         async (message: ConsumeMessage | null) => {
           if (!message) return;
           const { correlationId, replyTo } = message.properties;
-          const operation = message.properties.headers.function;
+          const operation = message.properties?.headers?.function;
           if (!correlationId || !replyTo) {
             console.log("Some properties are missing..");
           } else {

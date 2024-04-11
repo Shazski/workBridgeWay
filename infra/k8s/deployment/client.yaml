@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workbridgewayclient
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workbridgewayclient
+  template:
+    metadata:
+      labels:
+        app: workbridgewayclient
+    spec:
+      containers:
+      - name: workbridgewayclient
+        image: sharoonkp/workbridgewayclient:latest
+        ports:
+        - containerPort: 5173
+        envFrom:
+            - configMapRef:
+                name: client-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workbridgewayclient
+spec:
+  selector:
+    app: workbridgewayclient
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5173
+    targetPort: 5173
+    nodePort: 30100
+      

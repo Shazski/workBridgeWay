@@ -2,8 +2,6 @@ import { NavLink, Outlet } from "react-router-dom"
 import { GoHome } from "react-icons/go";
 import { FiGitPullRequest } from "react-icons/fi";
 import { FaUsers } from "react-icons/fa";
-import { MdCorporateFare } from "react-icons/md";
-import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import LOGO from "../../assets/images/Logo.png"
 import { IoExitOutline } from "react-icons/io5"
 import { useDispatch, useSelector } from "react-redux"

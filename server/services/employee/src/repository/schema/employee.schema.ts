@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes } from 'mongoose';
+import mongoose, { Document, Mongoose, ObjectId, SchemaTypes } from 'mongoose';
 
 @Schema()
 export class Employee extends Document {
@@ -12,10 +12,10 @@ export class Employee extends Document {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: String, required: true })
-  companyId: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  companyId: ObjectId;
 
-  @Prop({ type: String, required: true, default:"employee" })
+  @Prop({ type: String, required: true, default: 'employee' })
   role: string;
 
   @Prop({ type: String, required: true })

@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "build": "tsc",
     "build:watch": "npm run build -- --watch",
-    "start": "node ./dist/src/index.js",
+    "start": "node ./dist/index.js",
     "dev": "nodemon -L --watch ./dist ./dist/index.js",
     "start:dev": "concurrently --kill-others-on-fail \"npm run build:watch\" \"npm run dev\""
   },
@@ -28,7 +28,7 @@
     "@types/node": "^20.11.5",
     "@types/nodemailer": "^6.4.14",
     "amqplib": "^0.10.3",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -44,5 +44,8 @@
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3",
     "work-bridge-way-common": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6"
   }
 }

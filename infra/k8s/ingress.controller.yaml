@@ -1,0 +1,75 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-controller
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-cors: "true" 
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://webhobecoshop.shop"
+spec:
+  ingressClassName: webapprouting.kubernetes.azure.com
+  tls:
+  - hosts:
+    - workbridgeway.webhobecoshop.shop
+    secretName: webhobecoshop-tls
+  rules:
+  - host: workbridgeway.webhobecoshop.shop
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewayclient
+            port:
+              number: 5173
+      - path: /api/v1/chat
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewaychat
+            port:
+              number: 3004
+      - path: /socket.io  
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewaychat
+            port:
+              number: 3004
+      - path: /api/v1/user
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewayuser
+            port:
+              number: 3001
+      - path: /api/v1/admin
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewayuser
+            port:
+              number: 3001
+      - path: /api/v1/company
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewaycompany
+            port:
+              number: 3002
+      - path: /api/v1/employee
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewayemployee
+            port:
+              number: 3003
+      - path: /api/v1/auth
+        pathType: Prefix
+        backend:
+          service:
+            name: workbridgewayauth
+            port:
+              number: 3000
