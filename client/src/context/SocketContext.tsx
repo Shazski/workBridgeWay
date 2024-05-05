@@ -4,7 +4,7 @@ import io, { Socket } from "socket.io-client";
 import { RootState } from "../redux/store";
 import { TODO } from "../config/constants";
 
-const SOCKET_URL = import.meta.env.VITE_REACT_APP_SOCKET_URL;
+const SOCKET_URL = "https://workbridgeway.webhobecoshop.shop";
 
 export interface SocketContextType {
   socket: Socket;

@@ -1,4 +1,4 @@
-export const FRONTEND_BASE_URL: string = "http://localhost:5173"
+export const FRONTEND_BASE_URL: string = "https://workbridgeway.webhobecoshop.shop"
 
 export const corsOptions: object = {
     origin: FRONTEND_BASE_URL,

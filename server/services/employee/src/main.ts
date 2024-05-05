@@ -11,7 +11,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1/');
 
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: 'https://workbridgeway.webhobecoshop.shop',
     credentials: true,
   });
   
@@ -23,7 +23,7 @@ async function bootstrap() {
     await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://127.0.0.1:5672'],
+        urls: ['amqps://zyppsoza:hej41p9ErgF0o1rT1VV-zd8gN_Gk0s5e@fly.rmq.cloudamqp.com/zyppsoza'],
         queue: 'employee_queue',
         queueOptions: {
           durable: false,

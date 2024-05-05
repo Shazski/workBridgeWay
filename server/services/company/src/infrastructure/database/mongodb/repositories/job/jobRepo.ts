@@ -1,7 +1,6 @@
 import mongoose, { ObjectId, Types } from "mongoose";
 import { IJob } from "../../../../../application/interface/IJob";
 import JobSchema, { IJobsData } from "../../schema/jobSchema";
-import { Client } from "../../../redis/client";
 
 export const postJob = async (
  credentials: IJob,
@@ -14,7 +13,6 @@ export const postJob = async (
   });
 
   if (!job) return false;
-  await Client.del("jobs");
   const jobData = job as IJobsData;
 
   return jobData;
@@ -32,13 +30,6 @@ export const updateJobStatus = async (
  search: string
 ): Promise<IJobsData | boolean> => {
  try {
-  await Client.flushall()
-   .then(() => {
-    console.log("All keys cleared successfully.");
-   })
-   .catch((err) => {
-    console.error("Error clearing all keys:", err);
-   });
   const job = await JobSchema.findOneAndUpdate(
    {
     _id: updateData.id,
@@ -66,11 +57,6 @@ export const getAllCompanyJobs = async (
  const skip = Number(page! - 1 ?? 1) * 10 || 0;
 
  try {
-  const cachedJob = await Client.get(`jobs${page}${search}`);
-  if (cachedJob) {
-   await Client.expire(`jobs${page}${search}`, 10);
-   return JSON.parse(cachedJob);
-  }
   const jobs: IJob[] = await JobSchema.find({
    $or: [
     {
@@ -152,17 +138,6 @@ export const getAllCompanyJobs = async (
   ]);
 
   if (!jobs) return false;
-  if (jobs.length > 0) {
-   await Client.set(
-    `jobs${page}${search}`,
-    JSON.stringify([
-     jobs,
-     count,
-     totalPendingApplicantsCount[0]?.totalPendingApplicants,
-     scheduleTodayCount[0]?.todayScheduledCount,
-    ])
-   );
-  }
   return [
    jobs,
    count,
@@ -191,13 +166,6 @@ export const getJobById = async (id: ObjectId): Promise<IJob | boolean> => {
 };
 export const editJob = async (jobDetails: IJob): Promise<IJob | boolean> => {
  const { _id, ...restValue } = jobDetails;
- await Client.flushall((err, succeeded) => {
-  if (err) {
-   console.error("Error clearing Redis database:", err);
-  } else {
-   console.log("Successfully cleared Redis database", succeeded);
-  }
- });
  try {
   const job: IJob | null = await JobSchema.findOneAndUpdate(
    { _id: _id },

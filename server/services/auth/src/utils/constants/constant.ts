@@ -1,4 +1,4 @@
-const FRONTEND_BASE_URL = "http://localhost:5173";
+const FRONTEND_BASE_URL = "https://workbridgeway.webhobecoshop.shop";
 
 const corsOptions: object = {
   origin: `http://localhost:5173`,

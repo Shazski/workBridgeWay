@@ -1,4 +1,3 @@
-import { Client } from "../../infrastructure/database/redis/client";
 import RabbitMQClient from "../../infrastructure/messageBroker/rabbitmq/client";
 
 interface useCaseData {
@@ -52,5 +51,4 @@ export interface IDependencies {
   job_useCase: jobUseCaseData;
   job_repo: jobRepoData;
   RabbitMqClient: typeof RabbitMQClient;
-  Client: typeof Client;
 }

@@ -1,4 +1,4 @@
-export const FRONT_END_BASE_URL = "http://localhost:5173"
+export const FRONT_END_BASE_URL = "https://workbridgeway.webhobecoshop.shop"
 
 export const corsOptions = {
     origin:`${FRONT_END_BASE_URL}`,
