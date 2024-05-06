@@ -1,4 +1,4 @@
-const FRONTEND_BASE_URL = "https://workbridgeway.webhobecoshop.shop";
+const FRONTEND_BASE_URL = "https://workbridgewayclient.onrender.com";
 
 const corsOptions: object = {
   origin: `https://workbridgewayclient.onrender.com`,
