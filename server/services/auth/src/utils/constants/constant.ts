@@ -1,7 +1,7 @@
 const FRONTEND_BASE_URL = "https://workbridgeway.webhobecoshop.shop";
 
 const corsOptions: object = {
-  origin: `http://localhost:5173`,
+  origin: `https://workbridgewayclient.onrender.com`,
   methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
   credentials: true,
   optionSuccessStatus: 200,

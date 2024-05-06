@@ -1,4 +1,4 @@
-export const FRONT_END_BASE_URL = "https://workbridgeway.webhobecoshop.shop"
+export const FRONT_END_BASE_URL = "https://workbridgewayclient.onrender.com"
 
 export const corsOptions = {
     origin:`${FRONT_END_BASE_URL}`,

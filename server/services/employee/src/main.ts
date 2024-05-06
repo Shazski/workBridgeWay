@@ -11,7 +11,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1/');
 
   app.enableCors({
-    origin: 'https://workbridgeway.webhobecoshop.shop',
+    origin: 'https://workbridgewayclient.onrender.com',
     credentials: true,
   });
   
